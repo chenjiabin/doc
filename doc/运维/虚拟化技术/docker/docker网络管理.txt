@@ -1,0 +1,97 @@
+Docker允许通过外部访问容器或容器互联的方式来提供网络服务。
+容器中可以运行一些网络应用，要让外部也可以访问这些应用，可以通过 -P 或 -p 参数来指定端口映射。
+
+当使用 -P 时，Docker会随机映射一个49000~49900的端口到内部容器开放的网络端口。
+使用 docker ps 可以看到，本地主机的端口和容器间的映射关系。
+
+	docker pull nginx									#下载一个nginx镜像提供web服务
+	docker run -it -P --name test1 nginx /bin/bash		#运行容器，映射端口(需要进入容器中执行service nginx start)
+	
+	
+	
+-p则可以指定要映射的端口，并且，在一个指定端口上只可以绑定一个容器。
+格式：ip:hostPort:containerPort | ip::containerPort | hostPort:containerPort。
+	
+	docker run -it -p 8000:80 --name test2 nginx /bin/bash				#将本地主机的8000端口映射到容器的80端口
+	docker run -it -p 127.0.0.1:800:80 --name test3 nginx /bin/bash		#映射127.0.0.1:80到容器的80端口
+	docker run -it -p 127.0.0.1::5000/udp --name test4 nginx /bin/bash	#将127.0.0.1:随机端口映射到容器的udp5000端口
+
+	-p 可以多次使用来绑定多个端口
+	docker run -it -p 5001:5001 -p 3000:80 nginx /bin/bash
+
+
+容器互联：
+	1、容器的连接系统是除了端口映射外，另一种跟容器中应用交互的方式。
+	2、该系统会在源和接收容器之间创建一个隧道，接收容器可以看到源容器指定的信息。
+	3、连接系统依据容器的名称来执行。
+	4、容器的名称是唯一的，在执行docker run 的时候如果添加--rm参数，则容器在终止后会立刻删除。--rm和-d参数不能同时使用。
+	
+	
+	
+	使用 --link 参数可以让容器之间安全的进行交互
+	
+	docker run -it --name t1 ubuntu /bin/bash							#启动ubuntu容器
+	docker run -it --name t2 --link=t1:t1  nginx /bin/bash				#启动nginx并且和ubuntu互联
+		--link=name:alias，name要链接的容器名称，alias是这个连接的别名
+		ping t1										#在t2容器中执行ping命令，查看是否已经连接
+		cat /etc/hosts								#t2的host信息
+			127.0.0.1	localhost
+			172.17.0.2	t1 bee21196db68
+			172.17.0.3	70a8e884b256
+	
+	
+docker高级网络配置：
+	当Docker启动时，会自动在主机上创建一个docker0虚拟网桥，实际上是Linux的一个bridge，它会在挂载到它的网口之间进行转发。
+	同时，Docker 随机分配一个本地未占用的私有网段中的一个地址给docker0接口。
+	此后启动的容器内的网口也会自动分配一个同一网段的地址。
+	当创建一个Docker容器的时候，同时会创建了一对 veth pair接口(当数据包发送到一个接口时，另外一个接口也可以收到相同的数据包)。
+	这对接口一端在容器内，即eth0，另一端在本地并被挂载到docker0网桥，名称以veth开头。
+	通过这种方式，主机可以跟容器通信，容器之间也可以相互通信。Docker就创建了在主机和所有容器之间一个虚拟共享网络。
+
+
+DNS配置：
+	--hostname=HOSTNAME  				#设定容器的主机名，它会被写到容器内的/etc/hostname和/etc/hosts  
+	--dns=IP_ADDRESS  					#添加DNS服务器到容器的/etc/resolv.conf中
+	--link=CONTAINER_NAME:ALIAS			#添加一个其他容器的主机名到/etc/hosts文件中，让新容器的进程可以使用主机名ALIAS访问
+	
+		docker run -it --hostname=h1 --dns=8.8.8.8 ubuntu /bin/bash			#示例
+		
+	
+容器访问控制：
+	容器的访问控制，主要通过Linux上的iptables防火墙来进行管理和实现。
+	
+	vim /etc/sysctl.conf					#修改配置文件
+		net.ipv4.ip_forward=1				#开发路由转发(永久生效，重启生效)
+		
+	sysctl -w net.ipv4.ip_forward=1			#开发路由转发(临时有效，立即生效)
+
+	默认情况下，容器可以主动访问到外部网络的连接，但是外部网络无法访问到容器。
+	容器所有到外部网络的连接，源地址都会被NAT成本地系统的IP地址。这是使用iptables的源地址伪装操作实现的。
+	如果想要外部主机访问内部容器则需要使用端口映射。
+	
+	
+配置docker0网桥：
+	Docker服务默认会创建一个docker0网桥，它在内核层连通了其他的物理或虚拟网卡，将所有容器和本地主机都放到同一个物理网络。
+	Docker默认指定了docker0接口的IP地址和子网掩码，让主机和容器之间可以通过网桥相互通信，
+	docker0给出了MTU(接口允许接收的最大传输单元)，通常是 1500 Bytes，或宿主主机网络路由上支持的默认值。
+	创建容器时，Docker从docker0所在网段中获取一个空闲的ip地址分配给容器，本地主机上docker0接口的IP作为所有容器的默认网关。
+	
+	docker0是Linux网桥，可以使用brctl show来查看网桥和端口连接信息
+	
+	apt-get install bridge-utils					#安装brctl命令
+	brctl show						#查看接口信息
+	
+	
+	Docker 1.2.0开始支持在运行中的容器里编辑/etc/hosts、/etc/hostname和/etc/resolve.conf文件。
+	但是这些修改是临时的，只在运行的容器中保留，容器终止或重启后并不会被保存下来。也不会被  docker commit提交。
+		
+	
+	
+	
+	
+	
+	
+	
+	
+
+

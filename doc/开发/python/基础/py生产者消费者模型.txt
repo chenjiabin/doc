@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+#coding:utf-8
+from Queue import Queue
+from threading import Thread
+from time import sleep
+
+class Producer(Thread):
+    def __init__(self, queue, group=None, target=None, name=None,args=(), kwargs=None, verbose=None):
+        Thread.__init__(self, group=None, target=None, name=None,args=(), kwargs=None, verbose=None)
+        self.queue = queue
+
+    def run(self):
+        while True:
+            if self.queue.full():
+                print '\033[31m生产满了\033[0m'
+                sleep(2)
+            else:
+                queue.put('包子')
+                print '生产了一个包子'
+                sleep(2)
+
+class Consumer(Thread):
+    def __init__(self, queue, group=None, target=None, name=None,args=(), kwargs=None, verbose=None):
+        Thread.__init__(self, group=None, target=None, name=None,args=(), kwargs=None, verbose=None)
+        self.queue = queue
+
+    def run(self):
+        while True:
+            if self.queue.empty():
+                print '\033[31m没有包子了\033[0m'
+                sleep(2)
+            else:
+                queue.get()
+                print '消费了一个包子'
+                sleep(2)
+
+
+queue = Queue(maxsize=100)
+'''生产者'''
+pr = Producer(queue)
+pr.start()
+
+'''消费者'''
+for i in range(2):
+    con = Consumer(queue)
+    con.start()

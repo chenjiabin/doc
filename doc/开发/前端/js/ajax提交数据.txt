@@ -1,0 +1,122 @@
+ajax是jQuery封装的一个方法，使用时需要导入jQuery
+
+
+$.ajax({
+    url:'/ajax/',                                           //提交的url
+    type:'post',                                            //提交类型，post，get
+    data:{'user':'test','password':[1,2,3,4]},              //提交的数据，可以使用jQuery获取，在jQuery3版本以下不能直接提交非字符串数据
+    traditional:true                                        //允许向后台提交数组，对象等特殊数据
+    success:function (value) {                              //对服务器返回的数据进行处理，value为行参，代指服务器返回的数据
+        console.log(value)
+    }
+});
+
+
+$.('#form').serialize()             #获取指定表单内的数据
+JSON.parse();                       #将字符串转换为对象
+JSON.stringify()                    #将对象转换为字符串
+
+
+
+
+ajax提交django示例：
+
+urls.py文件：
+    from django.conf.urls import url
+    from app01.views import *
+
+    urlpatterns = [
+        url(r'^ajax/', ajax),
+    ]
+
+
+views.py文件：
+    from django.shortcuts import render
+    from django.shortcuts import HttpResponse
+    from django.views.decorators.csrf import csrf_exempt
+    import json
+
+
+    @csrf_exempt
+    def ajax(request):
+        redata = {'start':True,'error':'','info':''}
+
+        if request.method == 'GET':
+            return render(request,'ajax.html')
+        else:
+            user = request.POST.get('user')
+            password = request.POST.get('password')
+            if user and password:
+                redata['info'] = '提交成功'
+                return HttpResponse(json.dumps(redata))         #返回的字典必须序列化，否则前端无法接收
+            else:
+                redata['start'] = False
+                redata['error'] = '用户名或密码不能为空'
+                return HttpResponse(json.dumps(redata))
+
+
+settings.py
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
+
+
+ajax.html文件：
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>AJAX</title>
+        {% load static %}
+    </head>
+    <body>
+
+    <input type="button" value="提交" onclick="my2()">
+
+    <script src="{% static 'jquery-3.2.1.js' %}"></script>
+    <script src="{% static 'ajax.js' %}"></script>
+    </body>
+    </html>
+
+
+
+ajax.js文件：
+    function my2() {
+       $.ajax({
+            url:'/ajax/',
+            type:'post',
+            data:{'user':'test','password':'test'},
+            success:function (data) {
+                var info = JSON.parse(data);
+                var start = info['start'];
+                if(start){
+                    alert(info['info'])
+                } else {
+                    alert(info['error'])
+                }
+            }
+       });
+            location.reload()                   //刷新当前页面
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

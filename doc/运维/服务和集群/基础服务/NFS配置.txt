@@ -1,0 +1,49 @@
+NFS网络文件系统,它允许网络中的计算机之间通过TCP/IP共享资源,本地NFS客户端可以NFS服务器上的文件,就像访问本地文件一样
+
+安装nfs
+yum -y install rpcbind nfs-utils
+	#nfs-utils：nfs服务的主程序
+	#rpcbind：远程过程调用,能使客户端执行其他系统中程序
+
+	
+配置nfs服务：
+/etc/exports			#主配置文件,默认为空
+	配置文件语法：共享目录   允许访问ip或网段(权限)
+	例：
+		/var/www/html 192.168.0.0/24(rw,sync,no_root_squash)
+		#共享目录	允许网段	rw:读写	 sync:同步读写	no_root_squash:允许root用户访问时保留root权限
+		chmod 666 /var/www/html			#nfs权限是配置文件和文件系统权限的交集
+	
+启动服务：	
+	service rpcbind start				#必须rpc启动之后才能启动nfs服务
+	service nfs start	
+	netstat	-pta | grep rpcbind			#查看服务是否启动
+	netstat	-pta | grep nfs
+
+客户端访问：
+yum -y install nfs-utils
+showmount -e 服务器地址					#查看服务器共享的目录
+mount -t nfs 服务器地址/共享的目录	挂载点
+	
+
+	
+nfs配置实例:
+	服务器配置：
+		yum -y install rpcbind nfs-utils
+		vim /etc/exports 								#修改配置文件
+			/var/www/html 192.168.0.0/24(rw,sync)
+		chmod 666 /var/www/html/*
+		
+		service rpcbind restart
+		service nfs restart
+		netstat -napt | grep nfs
+
+	客户端配置：
+		yum -y install nfs-utils
+		mkdir /nfs
+		showmount -e 192.168.0.10
+		mount -t nfs 192.168.0.10:/var/www/html	/nfs
+		
+
+	
+	

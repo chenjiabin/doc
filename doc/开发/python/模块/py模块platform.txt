@@ -1,0 +1,16 @@
+platform：获取操作系统和python解释器信息
+	常用方法：
+        platform.platform()   		#获取操作系统信息
+		platform.dist()				#获取linux系统名称和版本号
+		platform.system()			#获取操作类型(Linux/Windows)
+		platform.release()			#返回内核版本
+        platform.architecture()   	#获取操作系统的位(32bit,64bit)
+        platform.machine()   		#计算机类型(x86_64,)
+        platform.node()       		#主机名
+        platform.processor()  		#计算机处理器信息
+        platform.uname()      		#计算机详细信息
+		
+		
+		
+		
+		

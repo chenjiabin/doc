@@ -1,0 +1,124 @@
+1、django默认支持Sqlite，Mysql，Oracle等数据库
+2、安装mysql模块：pip install PyMySQL				#安装mysql模块
+	常见模块：模块之间的操作基本都差不多
+		1、MySQLdb				#不支持python3	
+		2、mysqlclient			#MySQLdb的分支，支持python3
+		3、PyMySQL				#纯python模块，支持python2.7和python3.3-3.5
+		
+		
+3、在app目录下的__init__.py中添加
+	import pymysql	
+	pymysql.install_as_MySQLdb()
+	
+
+4、修改setting.py文件
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.mysql',		#使用mysql数据库
+			'NAME': 'DJ',								#数据库名，数据库必须已经存在
+			'USER': 'root',							    #用户名
+			'PASSWORD': '123.com',						#密码
+			'HOST': '127.0.0.1',						#ip地址
+			'PORT': '3306'								#监听端口
+		}
+	}
+		
+
+5、同步数据库
+	python manage.py makemigrations		#生成数据库配置脚本
+	python manage.py migrate			#同步数据库
+
+
+默认情况下，INSTALLED_APPS包含下面的应用，它们都是Django与生俱来的：
+    django.contrib.admin            管理站点
+    django.contrib.auth             认证系统
+    django.contrib.contenttypes     用于内容类型的框架
+    django.contrib.sessions         会话框架
+    django.contrib.messages         消息框架
+    django.contrib.staticfiles      管理静态文件的框架
+
+
+以上包含的默认应用用于常见的场景，但并不是每个人都需要它们。 如果你不需要它们中的任何一个或所有应用，可以在运行migrate之前从INSTALLED_APPS中自由地注释或删除相应的行
+
+
+
+
+
+
+
+
+
+
+配置django使用多个数据库：
+settings.py，定义两个数据库，一个默认的mysql数据库和一个叫做users的mysql数据库
+
+DATABASES = {
+    'default': {
+        'NAME': 'app_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'mysql_user',
+        'PASSWORD': 's3krit'
+    },
+    'users': {
+        'NAME': 'user_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'mysql_user',
+        'PASSWORD': 'priv4te'
+    }
+}
+
+
+如果default数据库在你的项目中不合适，Django要求default数据库必须定义，但是如果不会用到，其参数字典可以保留为空
+要执行此操作，您必须为所有应用程序的模型设置DATABASE_ROUTERS，以便不将查询路由到默认数据库
+
+DATABASES = {
+    'default': {},
+    'users': {
+        'NAME': 'user_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'mysql_user',
+        'PASSWORD': 'superS3cret'
+    },
+    'customers': {
+        'NAME': 'customer_data',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'mysql_cust',
+        'PASSWORD': 'veryPriv@ate'
+    }
+}
+
+同步数据库
+    python manage.py makemigrations
+    python manage.py migrate --database=users
+    python manage.py migrate --database=customers
+
+
+makemigrations命令会在创建新迁移之前验证数据库中的迁移历史记录，以捕获现有迁移文件问题。 默认情况下，它仅检查default数据库，但是如果有的话，它会参考routers的allow_migrate()方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

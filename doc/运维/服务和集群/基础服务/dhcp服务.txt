@@ -1,0 +1,40 @@
+dhcp分配的ip地址必须和dhcp服务器的网卡在同一网段下
+dhcp设置保留时，保留的地址不能是地址池中的地址
+
+1：安装DHCP软件包
+dhcp-4.1.1-38.P1.el6.centos.x86_64.rpm ：dhcp的主程序包，系统不同，版本可能不同
+
+
+2：配置DHCP主配置文件
+[root@server ~]# cp -p /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.bak	//备份配置文件
+[root@server ~]# vim /etc/dhcp/dhcpd.conf				//编辑主文件（可从模板文件导入）
+
+subnet 192.168.1.0 netmask 255.255.255.0; {				//设置局部待分配网段
+range 192.168.1.20 192.168.1.200;					//设地址池（可以是多个以逗号相隔）
+option domain-name-servers 192.168.1.253,114.114.114.114;		//设要分配的DNS服务器地址（可以多个）
+option domain-name "tarena.com";					//域名
+option routers 192.168.1.254;						//网关地址
+option broadcast-address 192.168.1.255;					//设广播地址
+default-lease-time 600;							//租约最短使用时间
+max-lease-time 7200;							//租约最长使用时间
+};
+
+
+host win7 {					//设保留地址（固定分配ip）
+hardware ethernet 08:00:07:26:c0:a5;		//设要绑定的mac
+fixed-address 192.168.1.7;			//设绑定IP地址
+};
+
+
+dhcpd -cf  /etc/dhcp/dhcpd.conf			#检查配置文件语法
+
+
+3：客户端验证
+1.[root@server ~]# service dhcpd restart重启服务
+2.打开一台win的客户机
+3.将网卡调成自动获取IP地址
+4.查看IP是否获取到了
+
+
+
+

@@ -1,0 +1,85 @@
+#w3c js简介
+    <button type="button" onclick="alert('Welcome!')">点击这里</button>         #js点击事件，alert弹框
+    
+    x = document.getElementById('test');                    #查找id为test的标签
+    x.innerHTML='<h1>java script content</h1>';             #改变html内容
+
+实例：
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>test javascript</title>
+        <script>
+            function myfunct() {
+                x = document.getElementById('test');
+                x.innerHTML='<h1>java script content</h1>';
+                //x.style.color="#ff0000";              #改变样式
+            }
+        </script>
+    </head>
+    <body>
+    <h1 id="test">start content</h1>
+    <button type="button" onclick="myfunct()">change file content</button>
+    </body>
+    </html>
+
+
+
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <script>
+            function myFunction() {
+                var x=document.getElementById("demo").value;        //获取用户输入的内容
+                //alert(x)                      //查看用户输入的内容
+
+                if(x==""||isNaN(x)) {           //判断用户输入的内容是否是数字
+                    alert("Not Number");        //如果不是数字
+                }
+                else {
+                    alert('ok')                 //如果是数字
+                }
+            }
+        </script>
+    </head>
+    <body>
+
+
+    <button type="button" onclick="myFunction()">点击这里</button>
+    <input id="demo" type="text">
+
+    </body>
+    </html>
+
+
+
+<script src="myScript.js"></script>         #调用外部js代码，外部脚本不能包含 <script> 标签。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

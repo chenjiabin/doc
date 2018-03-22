@@ -1,0 +1,137 @@
+from django.db import models
+
+class Blog(models.Model):
+    name = models.CharField(max_length=100)
+    tagline = models.TextField()
+
+
+
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.shortcuts import render
+from django.shortcuts import HttpResponse
+from django.http import HttpResponseRedirect
+from models import Blog                             #导入模型对象
+
+
+def create(request):
+    if request.method == 'GET':
+        return render(request,'create_data.html')
+    else:
+        name = request.POST.get('name')                     #从用户提交的表单中获取name的值
+        tag = request.POST.get('tag')                       #从用户提交的表单中获取tag的值
+        Blog.objects.create(name=name,tagline=tag)          #将用户与提交的数据插入到数据库中
+        return HttpResponseRedirect('http://127.0.0.1:8000/create/create_data.html')
+
+
+def show(request):
+    if request.method == 'GET':
+        return render(request,'show_data.html')
+    else:
+        ID = request.POST.get('id')
+        values = Blog.objects.filter(id=ID).values()            #获取指定id对应的值
+        return HttpResponse(values)
+
+
+def delete(request):
+    if request.method == 'GET':
+        return render(request,'delete_data.html')
+    else:
+        ID = request.POST.get('id')
+        try:
+            Blog.objects.get(id=ID).delete()                    #删除指定id对应的数据
+            return HttpResponseRedirect('http://127.0.0.1:8000/delete/delete_data.html')
+        except:
+            return HttpResponse('error')
+
+
+def update(request):
+    if request.method == 'GET':
+        return render(request,'update_data.html')
+    else:
+        ID = request.POST.get('id')
+        name = request.POST.get('name')
+        tag = request.POST.get('tag')
+        data = Blog.objects.get(id=ID)                  #查找旧数据
+        data.name = name                                #更新name字段的数据
+        data.tagline = tag                              #更新tag字段的数据
+        data.save()                                     #写入数据
+        return HttpResponseRedirect('http://127.0.0.1:8000/update/update_data.html')
+
+
+objects.get        #匹配用户指定的数据，数据库中只能有一条而且也必须有一条数据
+objects.filter     #匹配用户指定的数据，如果没有匹配到则返回空对象，如果匹配到多条则返回一个类似于字典的对象
+objects.exclude    #匹配用户没有指定的数据(反向查找)，如果没有匹配到则返回空对象，如果匹配到多条则返回一个类似于字典的对象
+objects.all        #获取所有的数据
+objects.all().values('id','username')	    #查询所有数据，只取出id和username字段的数据
+objects.filter(username=name).values()	    #查询指定数据
+objects.get(id=id).delete()	                #匹配指定的id，如果匹配成功则删除对应的数据，如果匹配失败者则返回异常
+objects.filter(id=id).delete()	            #匹配指定的id，如果匹配成功则删除对应的数据，如果匹配失败者则返回一个空对象
+objects.order_by                            #排序
+
+
+
+更新：
+obj = Blog.objects.get(username=name)	    #匹配旧的数据
+obj.username = update_name				    #更改的数据
+
+
+            
+实例：
+    objects.order_by('-id')                #根据id进行排序，从小到大
+    objects.order_by('+date')              #根据date进行排序，从大到小
+
+
+pk查找快捷方式：
+    pk它表示“primary key”的意思，即主键查询
+    Blog.objects.filter(pk=3) 
+
+
+使用Q对象对数据库进行复杂查询：
+    ands = Q(name='huyuan') & Q(tagline=123)                    #name=huyuan并且tagline=123(and查询)
+    ors = Q(name='huyuan') | Q(tagline=123)                     #name=huyuan或者tagline=123(or查询)    
+
+    Blog.objects.filter(ands).values()                          #执行and查询
+    Blog.objects.filter(ors).values()                           #执行or查询
+
+
+匹配规则
+	__exact 			#精确等于
+	__iexact 			#精确等于，忽略大小写
+	__contains 			#包含
+	__icontains 		#包含，忽略大小写
+	__gt 				#大于
+	__gte 				#大于等于
+	__lt 				#小于
+	__lte				#小于等于
+	__in 				#存在于一个list范围内
+	__startswith 		#以…开头
+	__istartswith 		#以…开头，忽略大小写
+	__endswith 			#以…结尾
+	__iendswith			#以…结尾，忽略大小写
+
+	
+def app_show(request):
+    name = request.POST.get('name')
+	date = user.objects.filter(username__contains=name).values()	#模糊查询
+    #date = user.objects.filter(id__in=[1,4,7]).values()	        #list范围查询
+	return HttpResponse(date)
+
+
+执行原生SQL：
+    from django.db import connection                        #使用connection连接数据库
+
+    with connection.cursor() as cursor:                     #打开数据库连接
+        cursor.execute('show tables')                       #查询数据
+        x = cursor.fetchall()                               #获取数据库返回的数据
+        print x                                             #打印数据库返回的数据
+        #cursor.execute("SELECT * FROM app01_data WHERE id = %s",10)         #向sql传递参数进行查询
+
+
+
+
+
+
+
+
+

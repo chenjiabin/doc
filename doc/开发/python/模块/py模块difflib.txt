@@ -1,0 +1,54 @@
+difflib模块主要用于实现文件比较
+
+difflib.ndiff(str1,str2)		#比较两个字符串的差异，以文本方式输出
+	+：str1中没有	-：str2中没有	?：特殊字符，一般有tab等控制键造成
+	
+difflib.HtmlDiff()				#比较两个字符串的差异，以HTML格式输出，可以拿到浏览器上更直观的展示
+
+
+实例：比较两个文件之间的差异
+	#!/usr/bin/py
+	import sys,difflib
+
+	try:
+		file1 = sys.argv[1]
+		file2 = sys.argv[2]
+	except:
+		print '\033[31m  FormatError: file1 file2\033[0m'
+		exit()
+
+	def readfile(filename):
+		try:
+			A = open(filename)
+			test = A.readlines()
+			A.close()
+			return test
+		except:
+			print '\033[31m  OpenError: open %s error\033[0m' %filename
+			exit()
+
+	test1 = readfile(file1)
+	test2 = readfile(file2)
+
+	diff = difflib.ndiff(test1,test2)	#创建类，以文本方式输出
+	for i in diff:
+		print i,
+
+	#diff = difflib.HtmlDiff()			#创建HTML类
+	#print diff.make_file(test1,test2)	#以html格式输出
+		
+		
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

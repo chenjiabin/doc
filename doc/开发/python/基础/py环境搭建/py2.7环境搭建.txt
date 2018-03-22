@@ -1,0 +1,37 @@
+一.编译安装python2.7
+
+1、yum install readline-devel						//必须安装，否则py的交互式接口可能无法使用控制键			
+2、yum groupinstall "Development Tools"				//安装编译环境
+3、tar zxvf Python-2.7.13.tgz -C /tmp				//解压源码包
+4、cd /tmp/Python-2.7.13							//进入安装目录
+5、sh configure --prefix=/usr/local/python2.7		//检查编译环境
+6、make && make install								//编译 && 安装
+7、ln -sv /usr/local/python2.7/bin/python2.7 /usr/bin/py		//链接至环境变量中
+
+
+二.编译安装setuptools
+1、tar zxvf setuptools-33.1.1.tar.gz -C /tmp
+2、cd /tmp/setuptools-33.1.1			
+3、py setup.py build 						//检查环境
+4、py setup.py install						//编译安装py模块
+
+
+三.编译安装pip
+1、tar zxvf pip-9.0.1.tar.gz -C /tmp
+2、cd /tmp/pip-9.0.1
+3、py setup.py build
+4、py setup.py install
+5、ln -sv /usr/local/python2.7/bin/pip /usr/bin/pip
+
+
+四.安装ipython（需要互联网）
+1、yum install python-devel		
+2、pip install ipython						//安装ipython
+3、ln -sv /usr/local/python2.7/bin/ipython /usr/bin/ipython
+
+
+
+
+
+
+

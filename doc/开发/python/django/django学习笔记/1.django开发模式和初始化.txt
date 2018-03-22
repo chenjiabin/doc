@@ -1,0 +1,68 @@
+著名的web开发模式MVC：
+    所谓MVC就是把Web应用分为模型(M)，控制器(C)和视图(V)三层，他们之间以一种插件式的、松耦合的方式连接在一起，模型负责业务对象与数据库的映射(ORM)，视图负责与用户的交互(页面)，控制器接受用户的输入调用模型和视图完成用户的请求
+
+
+Django的MTV：
+    M代表模型（Model）：负责业务对象和数据库的关系映射(ORM)
+    T代表模板 (Template)：负责如何把页面展示给用户(html)
+    V代表视图（View）：负责业务逻辑，并在适当时候调用Model和Template
+
+
+django处理请求的流程：
+    请求：用户请求-->中间件-->URL分发器-->view-->--[model][模板]
+    响应：view-->中间件-->用户
+    
+1、Web服务器（中间件）收到一个http请求
+2、Django在URLconf里查找对应的视图(View)函数来处理http请求
+3、视图函数调用相应的数据模型来存取数据、调用相应的模板向用户展示页面
+4、视图函数处理结束后返回一个http的响应给Web服务器
+5、Web服务器将响应发送给客户端
+
+这种设计模式关键的优势在于各种组件都是松耦合的。每个Django Web应用都有着明确的目的，并且可独立更改而不影响到其它的部分
+
+
+
+django版本：1.11.6
+
+pip install django                                  #安装django
+django-admin --version                              #查看django版本
+
+
+django-admin.py startproject web01                  #创建django项目
+cd web01
+python manage.py startapp app01		                #创建生成app
+
+
+python manage.py makemigrations                     #生成初始化数据库脚本
+python manage.py migrate                            #执行数据库初始化脚本
+
+python manage.py createsuperuser                    #初始化django管理页面用户名和密码，执行后依次输入用户名、邮箱和密码
+
+
+python manage.py runserver 8000                     #运行django程序
+http://127.0.0.1:8000/admin                         #登录后台页面
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

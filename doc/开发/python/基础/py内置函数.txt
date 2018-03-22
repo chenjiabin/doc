@@ -1,0 +1,59 @@
+help()：查看帮助信息
+dir()：查看帮助信息
+type()：查看数据类型
+id()：查看内存地址
+reload()：重新加载模块
+abs()：获得绝对值
+bool()：获得True和false
+max()：取最大值
+min()：取最小值
+map(function,argv)：将argv的只传给function，并以列表方式返回function的返回值
+sum()：求和
+len()：取字节长度
+all()：全部为真则为真
+any()：全部为假则为假
+chr()：将数字转换成对应的字符串（ascll）
+ord()：将字符串转换成对应的数字（ascll）
+bin()：求十六进制结果
+oct()：求八进制结果
+str()：转换为字符串
+int()：转换为数字
+eval()：将字典形式的字符串转换为字典
+dict()：转换为字典
+list()：转换为列表
+tuple()：转换为元组
+set()：转换为集合
+zip()：列表，列表里面包含元组
+range()：生成列表
+xrange()：生成列表
+
+enumerate()：生成编号，默认重一开始生成
+t = ['a','b','c','d','e']
+for i in enumerate(t,10):
+     print i
+    
+(10, 'a')
+(11, 'b')
+(12, 'c')
+(13, 'd')
+(14, 'e')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

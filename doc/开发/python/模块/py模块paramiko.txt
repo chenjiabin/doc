@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+#coding:utf-8
+import paramiko
+
+
+ssh = paramiko.SSHClient()					                    #实例化，ssh会话类
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())       #允许连接不在know_hosts文件中的主机
+ssh.connect('服务器ip',端口,'用户名','密码')			    #连接服务器
+stdin,stdout,stderr = ssh.exec_command("命令")    	    #执行命令，标准输出，命令成功返回，命令失败返回
+ssh.close()                        				        #断开连接
+
+
+get_put = paramiko.Transport((ip,port))				        #服务器ip和端口(使用SFTP时使用)
+get_put.connect(username="root", password="123.com")      	#连接服务器，用户名和密码
+sftp = paramiko.SFTPClient.from_transport(get_put)        	#使用SFTP协议
+
+sftp.put(需要上传的文件,上传文件保存的位置)                     	#上传
+sftp.get(下载文件的位置, 下载保存的位置) 			                #下载
+
+
+实例基于秘钥的登录：
+    def Connectssh(ip='127.0.0.1',port=22,user='huyuan',pkey='/home/huyuan/.ssh/id_rsa'):
+        key = paramiko.RSAKey.from_private_key_file(pkey)
+        #接受两个参数，第一个参数为秘钥文件位置，第二个参数为password='秘钥文件密码'，如果没有可以不用设置
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname=ip,port=port,username=user,pkey=key)
+        stdin,stdout,stderr = ssh.exec_command("ip a")
+        return stdout
+
+w = Connectssh()
+print w.read()
+
+
+
+
+

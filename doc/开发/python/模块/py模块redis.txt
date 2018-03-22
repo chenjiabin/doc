@@ -1,0 +1,24 @@
+redis：第三方模块,用于操作redis数据库
+
+REdis = redis.Redis(host='IP',port=6379)	//连接数据库
+
+
+常用操作(支持redis的所有操作)：
+REdis.set(key_name,value)					//创建集合
+REdis.get(key_name)							//获取集合内的数据
+REdis.rpush(key_name,value1,value2 ...)		//创建列表
+REdis.lrange(key_name,start,end)			//获取列表内的值
+
+
+订阅和发布(服务器端)：
+REdis.pubsub()					//开启订阅
+REdis.subscribe('6379')			//接收订阅的数据和订阅的频道
+REdis.unsubscribe				//关闭订阅
+
+客户端：
+REdis.publish('6379', DATA)		//发布到的频道,发布的数据
+
+
+
+
+

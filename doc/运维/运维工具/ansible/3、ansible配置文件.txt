@@ -1,0 +1,48 @@
+Ansible的一些的设置可以通过配置文件完成，在大多数场景下默认的配置就能满足大多数用户的需求，但在一些特殊场景下,用户还是需要自行修改这些配置文件
+
+用户可以修改一下配置文件来修改设置,他们的被读取的顺序如下:
+    * ANSIBLE_CONFIG (一个环境变量)
+    * ansible.cfg (位于当前目录中)
+    * .ansible.cfg (位于家目录中)
+    * /etc/ansible/ansible.cfg
+
+Ansible将会按以上顺序逐个查询这些文件,直到找到一个为止,并且使用第一个寻找到个配置文件的配置,这些配置将不会被叠加
+
+
+/etc/ansible/ansible.cfg
+    ask_pass=True           #控制Ansible playbook是否会自动默认弹出密码.默认为no，如果使用SSH密钥做身份认证可能需要修改这一参数
+    ask_sudo_pass=True      #类似ask_pass,用来控制Ansible playbook在执行sudo之前是否询问sudo密码.默认为no:如果使用系统平台开启了sudo密码的话,应该配置此参数
+    bin_ansible_callbacks
+        #控制callback插件是否在运行/usr/bin/ansible的时候被加载，这个模块将用于命令行的日志系统
+        #Callback插件如果存在将会永久性的被ansible-playbook加载,不能被禁用
+
+    callback_plugins                #Callbacks在ansible中是一段代码，在特殊事件时将被调用，并出发通知。这是一个以开发者为中心的特性,可以实现对Ansible的底层拓展
+    command_warnings = False        #从Ansible 1.8开始，当shell和命令行模块被默认模块简化的时,Ansible将默认发出警告
+    connection_plugins              #连接插件允许拓展ansible拓展通讯信道，用来传输命令或者文件。这是一个开发者中心特性,拓展插件可以从任何不同地方加载
+    forks=5                         #设置在与主机通信时的默认并行进程数，fork数量默认自动设置为主机数量，很多用户把这个设置为50或更多
+    inventory=/etc/ansible/hosts    #默认主机列表文件
+    library = /usr/share/ansible    #Ansible默认搜寻模块的位置
+    log_path=/var/log/ansible.log   #ansible日志文件，这个特性不是默认开启的.如果不设置,ansible将会把模块加载纪录在系统日志系统，不包含用密码.
+    module_lang=C                   #这是默认模块和系统之间通信的计算机语言,默认是C语言
+    module_name=command             #设置/usr/bin/ansible的默认模块名，默认是command模块建议修改为shell模块
+    nocolor=0                       #默认ansible会为输出结果加上颜色,用来更好的区分状态信息和失败信息
+    poll_interval=15                #对于Ansible中的异步任务，默认15秒钟，这个时间是个回查频率和任务完成的叫回频率和当任务完成时的回转频率
+    remote_port=22                  #设置ssh端口
+    remote_user                     #这是个ansible使用ansible-playbook连接的默认用户名，如果不指定/usr/bin/ansible默认使用当前用户的用户名
+    sudo_user=root                  #sudo使用的默认用户
+    timeout=10                      #SSH连接尝试超时时间
+    accelerate_port = 5099          #在急速模式下使用的端口
+    accelerate_timeout = 30         #这个设置用来控制从客户机获取数据的超时时间.如果在这段时间内没有数据传输,套接字连接会被关闭，不能小于timeout的值
+
+
+
+
+
+
+
+
+
+
+
+
+

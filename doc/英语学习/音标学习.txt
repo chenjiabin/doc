@@ -1,0 +1,129 @@
+英语拼写法则：
+	辅音在单词中出现，有且只有一种发育(c,l除外)
+	一辅一元，前辅后元
+
+
+元音部分：
+	单元音： [i:]、[ɪ]、[ɔ:]、[ɒ]、[u:]、[ʊ]、[ɜː]、[ə]、[ɑ:]、[ʌ]、[e]、[æ]
+	双元音： [eɪ]、[aɪ]、[ɔɪ]、[ɪə]、[eə]、[ʊə]、[aʊ] 、[əʊ]
+
+
+辅音部分：
+	[p]、[b] 、[t]、[d]、[k]、[g]、[f]、[v]、[s]、[z]、[θ]、[ð]、[ʃ]、[ʒ]、[tʃ]
+	[dʒ]、[tr]、[dr]、[ts]、[dz]、[m]、[n]、[ŋ]、[h]、[l]、[r]、[j]、[w]
+	
+
+
+音标和字母的对应关系：
+	单个字母发音：
+		A\[æ]								#示例:cat		cap
+		B\[b]								#示例:bed		beg		
+		C\[k]\[s](e,i,y)					#示例:create	cydey
+		D\[d]								#示例:dad		dance
+		E\[e]								#示例:ed		det
+		F\[f]								#示例:fax		find
+		G\[g]								#示例:get		flag
+		H\[h]								#示例:hand		hat
+		I\[ɪ]								#示例:disk		if
+		J\[dʒ]								#示例:jack		jill
+		K\[k]								#示例:book		kick
+		L\[l]\[ɒ](没有元音和它拼读)			#示例:list		fell
+		M\[m]								#示例:math		miss
+		N\[n]								#示例:nice		men
+		O\[ɒ]								#示例:not		lot	
+		P\[p]								#示例:pig		pop
+		QU\[kw]								#示例:quit		quick
+		R\[r]								#示例:rock		red
+		S\[s]								#示例:sum		set		
+		T\[t]								#示例:tag		top	
+		U\[ʌ]								#示例:cup		sum
+		V\[v]								#示例:ver		vivid
+		W\[w]								#示例:wet		watch
+		X\[ks]								#示例:fox		box
+		Y\[j]\[ɪ](在单词尾部)				#示例:yes		family				
+		Z\[z]								#示例:zip		zest
+	
+	
+	组合发音：
+		ee,ea\[i:]							#示例:seep		eat			
+		ir\[ɜː](儿化音)						#示例:girl		sir
+		er\[ə](儿化音)						#示例:sister	summer
+		ar\[ɑ:]								#示例:hard		mark
+		aw,au\[ɔ:]							#示例:raw		saucer
+		oo(k\d)\[ʊ]							#示例:look		good
+		oo(t)\[u:]							#示例:boot		loot
+		ea\[e]								#示例:head		bread
+		
+		
+		
+	元+辅+e规则：--表示一个或多个辅音	
+		a--e\[eɪ]							#示例:take		hake
+		i--e\[aɪ]							#示例:smile		white
+		o--e\[əʊ]							#示例:note		phone
+	
+	双元音组合发音：
+		ay\[eɪ]								#示例:day		way
+		ey\[eɪ]								#示例:hey		grey
+		ai\[eɪ]								#示例:email		remain
+		
+		ie\[aɪ]								#示例:tie		lie
+		
+		oa\[əʊ]								#示例:float		boat
+		ow\[əʊ]								#示例:yellow	window
+		
+		ow\[aʊ] 							#示例:now		allow
+		ou\[aʊ]								#示例:found		blouse
+		
+		ay\[ɔɪ]								#示例:toy		boy
+		oi\[ɔɪ]								#示例:noise
+		oy\[ɔɪ]								#示例:joy
+		
+		ear\[ɪə]							#示例:dear		near
+		eer\[ɪə]							#示例:deer		beer	
+		
+		air\[eə]							#示例:air		fair
+		ear\[eə]							#示例:fear		pear
+		
+		all\[ɔ:l]							#示例:small		fall
+		
+		ary\[əri](单词最后)					#示例:jnauary
+		
+		ew\[ju:]							#示例:new		knew
+		
+		
+	特殊组合：
+		ght\[t](特)							#示例:bought\[bɔ:t]
+		ight\[aɪt](爱特)					#示例:fight		light
+		ph\[f]								#示例:iphone
+		ge\[dʒ]								#示例:page		judge
+		ire\[aɪə]							#示例:fire		hire
+		ought[ɔ:t]							#示例:bought	sought
+		ck\[k]								#示例:quick		
+		wh\[w]\[h]							#示例:what		who
+		
+		
+	辅音组合：
+		sh\[ʃ]								#示例:english	shell
+		su\[ʒ]								#示例:
+		th\[θ]								#示例:thank
+		ch\[tʃ]								#示例:china
+		tch\[tʃ]							#示例:match
+		tr\[tr]								#示例:tree		trick
+		dr\[dr]								#示例:drop		drive
+		ts\[ts]								#示例:boots	
+		ds\[dz]								#示例:goods
+		
+	
+	
+http://en-yinbiao.xiao84.com/biao/				#音标在线拼读
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

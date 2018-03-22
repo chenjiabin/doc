@@ -1,0 +1,176 @@
+备份的目的：
+	实现灾难恢复：误操作、硬件故障、软件故障、自然灾害、黑客攻击
+	
+注意的要点：
+	1、能够容忍丢失多少数据
+	2、恢复数据所用的时间
+	3、备份需要的时间
+	4、是否对业务有影响
+	5、备份时服务器负载
+	
+	
+备份类型
+	完全备份：备份整个数据库的数据
+	部分备份：备份指定的一部分数据
+	增量备份：备份上一次备份后增加的数据
+	差异备份：备份从最后一次完全备份后起发生改变的数据
+	热备份：读写操作均可以进行
+	温备份：只读
+	冷备份：不可写，不可读
+	逻辑备份：从数据库中导出数据，与存储引擎无关
+	物理备份：直接复制数据文件
+	
+
+备份需要：
+	数据
+	二进制日志，事务日志
+	配置文件
+	
+	
+备份的设计方案：
+	数据：完全+增量、完全+部分
+	备份手段：逻辑或物理
+
+
+常用的备份工具：
+	mysqldump：mysql自带的备份工具，逻辑备份、完全备份、部分备份、温备
+	lvm2快照：几乎热备，需要借助cp,tar等工具完成，lvm2只负责生成快照
+	xtrabackup：支持对InnoDB的热备份(物理备份)
+	tar,cp：冷备份
+
+
+	mysqldump工具使用：逻辑备份工具，在数据小于1G时可以使用，数据大于1G之后则不建议使用
+	
+		mysqldump [OPTIONS] database [tables]				#不会自动创建数据库
+		mysqldump [OPTIONS] --databases DB1 [DB2 ...]		#备份指定数据库，会自动创建数据库
+		mysqldump [OPTIONS] --all-databases 				#备份所有数据库，会自动创建数据库
+			常用选项：
+				-u						#用户
+				-p						#密码
+				--flush-logs 			#执行二进制日志文件滚动
+				--single-transaction	#对InnoDB存储引擎进行热备份(只有InnoDB支持)
+				--master-data=2			#在数据文件中，记录备份那一刻二进制日志文件的位置，
+											并注释主要用于参考，多用于进行基于时间点还原
+				--lock-all-tables		#在执行备份时锁定所有库的所有表(二选一，必须)
+				--lock-tables			#对单个数据库在备份时锁定所有表(二选一，必须)
+		例：mysqldump -uroot -p123.com --databases --lock-tables --flush-logs --master-data=2 test > /tmp/mysql.back.`date "+%F__%R"`
+
+	
+	
+	LVM2快照实现数据几乎热备
+		实现条件：mysql数据存储在LVM逻辑卷中，需要有足够的空间做快照
+		备份策略：
+			1、创建全局锁
+				mysql> FLUSH TABLES WITH READ LOCK;
+			2、记录二进制日志文件及事件位置
+				mysql -uroot -p123.com -e 'FLUSH LOGS;'		#进行日志滚动
+				mysql -uroot -p123.com -e 'SHOW MASTER STATUS;'>/tmp/test.`date +%F`	#记录二进制日志位置
+			3、创建LVM快照
+				lvcreate -L 1GB -s -n test_snap /dev/vg_test/lv_test
+					-L 1G 					#快照大小，一般和数据文件差不多
+					-s 						#表示创建快照 
+					-n test_snap 			#快照名
+					/dev/vg_test/lv_test 	#要创建快照的逻辑卷
+			4、释放全局锁
+				mysql> UNLOCK TABLES;
+			5、挂载快照卷
+				mount /dev/vg_test/test_snap /mnt
+			6、备份数据并删除快照卷
+				cp -a /mnt/date/mysql /tmp				#复制数据文件
+				umount /mnt								#卸载快照卷
+				lvremove /dev/vg_test/test_snap 		#删除快照
+			7、制定好备份计划，每隔一段时间对二进制文件进行备份
+				每隔一段时间对mysql的二进制文件进行备份，以实现将来的基于时间点还原数据
+				例：cp -p /data/mysql-bin.000007 /tmp/mysql_7.sql		#备份二进制日志
+				
+			8、还原
+				还原时只需要将数据文件复制到mysql的数据目录中，在使用二进制日志对数据进行时间点还原
+				例：cp -a /tmp/mysql /data/mysql		#还原数据
+					mysql> source /tmp/mysql_7.sql;		#进行基于时间点的还原
+
+
+	xtrabackup实现mysql热备：
+		注意：xtrabackup只能对InnoDB实现热备和增量备份
+		https://www.percona.com/downloads/XtraBackup/LATEST/		#下载地址
+		安装：
+			1、配置好epel源
+			2、yum -y localinstall percona-xtrabackup-2.3.2-1.el6.x86_64.rpm		#安装
+
+			
+		备份工具：
+			xtrabackup包含两个主要的工具，即xtrabackup和innobackupex
+			innobackupex：是xtrabackup重封装的Perl脚本，能对innodb和myisam备份，对myisam不能实现热备和增量备份
+			xtrabackup：xtrabackup只能备份innodb和xtradb两种引擎的表，而不能备份myisam引擎的表
+			
+			
+		innobackupex基本使用
+			常用参数：
+				--help					#查看帮助信息
+				--backup				#进行备份操作，可省，默认为执行备份操作
+				--apply-log				#恢复前必须的整理工作
+				--defaults-file			#指定配置文件路径，可省，会自动到数据库中读取
+				--redo-only 			#在做整理操作时，未提交的数据不进行回滚，做增量备份恢复时必须加的选项
+				--copy-back				#执行还原操作
+				--incremental			#执行增量备份
+				--user=name				#指定用户名，默认为root
+				--host=name				#指定主机名，默认为host
+				--port=					#指定端口，默认为3306
+				--password=name			#指定密码，默认为空
+				--databases='db1 db2' 	#备份指定的数据库，
+				--no-timestamp=			#自定义备份目录名
+				incremental-basedir=	#基于那一次备份做增量备份
+				
+		
+		
+		
+		
+		使用实例：
+			innodb_file_per_table=1				#在mysql配置文件中添加，表示每个表使用单独的表空间文件
+			datadir=/usr/local/mysql/data		#在mysql配置文件中添加，表示指定数据文件位置	
+			mkdir /backups			#创建备份文件存放目录
+			
+			全库完全备份：
+				innobackupex --user=root --password=123.com /backups/
+					/backups/			#备份文件存放目录
+					注意：结尾出现completed OK!则为成功，否则则为错误
+		
+		
+		
+			还原一个完全备份：
+				innobackupex --apply-log /backups/2017-02-20_04-40-44/		#对备份文件进行整理
+				innobackupex --copy-back /backups/2017-02-20_04-40-44/		#还原数据
+				chown -R mysql:mysql /usr/local/mysql/*				#修改权限
+				
+		
+		
+			增量备份：
+				innobackupex --user=root --password=123.com  --incremental /backups/ --incremental-basedir=/backups/2017-02-20_04-40-44/
+					/backups/					#增量备份存储位置
+					--incremental-basedir		#指定基于哪一个备份文件进行增量备份，通常都是上一个增量备份
+		
+		
+			增量备份还原：
+				innobackupex --apply-log  --redo-only /backups/2017-02-20_05-01-49/		#整理完全备份
+				innobackupex --apply-log  --redo-only /backups/2017-02-20_05-01-49 --incremental-dir=/backups/2017-02-20_05-04-34			   #整理第一个增量备份
+				innobackupex --copy-back /backups/2017-02-20_05-01-49/		#还原数据
+				
+		
+			部分备份：
+				innobackupex --databases="testdb mysql" /backups/ --user=root --password=123.com
+						#备份testdb和mysql数据库，不管备份那个数据库都应该备份mysql数据库
+				
+			还原部分备份：
+				innobackupex --apply-log /backups/2017-02-20_05-24-07/		#准备
+				innobackupex --copy-back /backups/2017-02-20_05-24-07/		#还原
+				chown -R mysql:mysql /usr/local/mysql/*				#修改权限
+				
+				
+				
+				
+http://www.cnblogs.com/olinux/p/5207887.html				#参考博客
+http://www.tuicool.com/articles/RZRnq2						#参考博客
+	
+	
+	
+	
+	

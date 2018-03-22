@@ -1,0 +1,46 @@
+Python 中一个模块名字叫“netifaces”，使用C语言写的一个第三方模块
+主要功能：
+    1.获取本机的所有网关
+    2.获取本机所有的接口Interface（网卡NIC）
+    3.获取本机指定接口的详细信息，包括IP地址、子网掩码、广播地址、MAC地址等
+
+
+pip install netifaces
+
+
+netifaces.interfaces()          #获取网卡列表
+netifaces.gateways()            #获取网关地址
+netifaces.ifaddresses('lo')     #接受一个网卡名作为参数，获取接口的详细信息
+netifaces.AF_INET               #封装的获取ip地址和子网掩码的方式
+netifaces.AF_LINK               #封装的获取mac地址的方式
+
+
+
+示例：
+def Network():
+    import netifaces
+
+    data = {}
+    driver_name_list = netifaces.interfaces()
+
+    for driver_name in driver_name_list:
+        network_card_info = netifaces.ifaddresses(driver_name)
+        try:
+            mac = network_card_info[netifaces.AF_LINK].pop()['addr']
+            ip_and_mask = network_card_info[netifaces.AF_INET].pop()
+            ip = ip_and_mask['addr']
+            mask = ip_and_mask['netmask']
+            gateway = netifaces.gateways()['default'][netifaces.AF_INET][0]
+
+            data[driver_name] = {
+                'ip':ip,
+                'mask':mask,
+                'mac':mac,
+                'gateway':gateway,
+            }
+        except Exception:
+            continue
+
+    return data
+
+

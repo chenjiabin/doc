@@ -1,0 +1,48 @@
+pip install django-debug-toolbar                #安装
+
+settings.py文件：
+    DEBUG = True
+    INSTALLED_APPS = [                          #添加app
+        .....
+        'debug_toolbar',
+    ]   
+    MIDDLEWARE = [                              #添加中间件
+         .....
+        'debug_toolbar.middleware.DebugToolbarMiddleware',  
+    ]
+
+
+    DEBUG_TOOLBAR_CONFIG = {                            #配置使用的jQuery，默认是Google的(国内无法访问)
+        'JQUERY_URL' : r"http://code.jquery.com/jquery-3.2.1.min.js",
+    }
+
+
+    INTERNAL_IPS = ('127.0.0.1',)                       #授权访问的地址
+
+
+
+urls.py文件：
+    from django.conf import settings
+    from django.conf.urls import include, url
+
+    if settings.DEBUG:
+        import debug_toolbar
+        urlpatterns += [
+            url(r'^__debug__/', include(debug_toolbar.urls)),           #'^__debug__/'可以为任意
+        ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

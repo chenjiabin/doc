@@ -1,0 +1,63 @@
+保留空间:给root账户保留的空间，比如保留空间是100M，当一个分区用得差不多后，剩下100M了，那么普通用户就无法在这个分区上执行写入操作了,但换到root账户后，就能继续使用这100M
+在Linux ext2/ext3/ext4文件系统上通常默认预留5％的硬盘空间，如果硬盘是4TB的话就意味着有200GB的空间就这样浪费了，通过tune2fs来改变5％的默认设置不推荐设置为0%
+
+inode:在Linux的文件系统中，一个文件对应一个inode。一个inode大小默认值256字节
+inode的数量是由格式化程序自动计算出来的。默认是16K一个inode也就是说，就算你在这个分区全是16K小的文件，都有足够数量的inode使用
+
+
+设置Linux系统预留的硬盘空间:
+    tune2fs -m 1 /dev/sdd1                      #-m 1代表1%
+
+
+
+mkfs.ext命令参数:
+    -n              #模拟执行
+    -i              #指定inode,inode越大存储的文件越多,相应的inode所占用的空间就越大
+
+
+示例:sudo mkfs.ext4 -i 16384 -n /dev/sdc          #默认16k相当于,如果要更改inode数值最好是1024的倍数,单位字节
+
+
+label:
+    linux下用e2label命令来设定分区的label
+    e2label 分区 [新label]                         #设置分区label
+    e2label 分区                                  #查看分区label
+   
+    reiserfs文件系统:
+        reiserfstune -l 标签 设备 
+
+
+示例:
+    sudo e2label /dev/sda7 label-1              
+    sudo e2label /dev/sda7
+
+    reiserfstune -l /10 /dev/hda10 
+
+
+警告：请不要在您的Linux的安装分区（也就是Linux系统所在的分区）执行此操作，会导致您的Linux系统崩溃 
+
+
+
+
+
+
+http://blog.csdn.net/hunanchenxingyu/article/details/41832639/              #磁盘格式化,优化
+http://blog.csdn.net/topgun_chenlingyun/article/details/8030512             #label
+http://blog.csdn.net/shanliangliuxing/article/details/8267978               #设置Linux系统预留的硬盘空间:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

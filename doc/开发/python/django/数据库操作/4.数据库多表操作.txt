@@ -1,0 +1,131 @@
+一对多示例：
+# -*- coding: utf-8 -*-
+from django.db import models
+
+
+class group(models.Model):
+    name = models.CharField(max_length=100,unique=True)
+    item = models.CharField(max_length=100)
+
+
+class host(models.Model):
+    host = models.GenericIPAddressField()
+    group = models.ForeignKey(group)
+
+
+
+python manage.py makemigrations         #生成数据库脚本
+python manage.py migrate                #同步数据
+python manage.py shell                  #使用命令行
+  
+   
+
+In [1]: from app01.models import *                              #导入models
+In [2]: group.objects.create(name='name1',item='item1')         #插入数据
+In [3]: group.objects.create(name='name2',item='item2')
+In [4]: group.objects.create(name='name3',item='item3')
+In [5]: group.objects.create(name='name4',item='item4')
+
+In [6]: host.objects.create(host='h_name1',group_id=1)          #插入数据，host的group字段默认会对应表中的group_id字段
+In [7]: host.objects.create(host='h_name2',group_id=2)
+In [8]: host.objects.create(host='h_name3',group_id=3)
+In [9]: host.objects.create(host='h_name4',group_id=3)
+
+
+
+In [10]: obj = host.objects.all()
+In [11]: for data in obj:
+    ...:     print data.host,data.group.id,data.group.name      #使用对象方式跨表访问数据data.group.id为group表中的id字段
+
+
+In [12]: obj2 = host.objects.get(id=1)           #获取host表中id为1的数据
+In [13]: obj2.group.id                           #查看host中id为1的数据在group中的对应
+
+In [14]: host.objects.values('id','host','group__id','group__name')                #使用__(双下划线)直接跨表获取数据
+
+
+
+
+多对多示例：
+自定义关系表：
+    class HostList(models.Model):
+        hostname = models.CharField(max_length=50)
+        ip = models.GenericIPAddressField()
+        memory = models.IntegerField()
+        
+
+    class Application(models.Model):
+        name = models.CharField(max_length=50)
+        path = models.CharField(max_length=200)
+
+
+    class HostToGroup(models.Model):
+        hid = models.ForeignKey(HostList)
+        aid = models.ForeignKey(Application)
+
+
+
+django生成关系表：
+    class Hosts(models.Model):
+        hostname = models.CharField(max_length=50)
+        ip = models.CharField(max_length=200)
+        memory = models.IntegerField()
+
+
+    class Apps(models.Model):
+        name = models.CharField(max_length=50)
+        path = models.CharField(max_length=200)
+        table = models.ManyToManyField(Hosts)                       #django自动生成关系表，使用table去访问(table为Hosts的QuerySet对象)，在数据库中对应"名字_apps_table"
+
+
+python manage.py makemigrations         #生成数据库脚本
+python manage.py migrate                #同步数据
+python manage.py shell                  #使用命令行
+
+
+In [1]: from app01.models import Hosts,Apps
+
+In [2]: Hosts.objects.create(hostname=1,ip=1,memory=1)          #创建测试数据
+In [3]: Hosts.objects.create(hostname=2,ip=2,memory=2)
+In [4]: Hosts.objects.create(hostname=3,ip=3,memory=3)
+In [5]: Hosts.objects.create(hostname=4,ip=4,memory=4)
+In [6]: Hosts.objects.create(hostname=5,ip=5,memory=5)
+
+
+In [7]: Apps.objects.create(name='g1',path='g1')
+In [8]: Apps.objects.create(name='g2',path='g2')
+In [9]: Apps.objects.create(name='g3',path='g3')
+In [10]: Apps.objects.create(name='g4',path='g4')
+In [11]: Apps.objects.create(name='g5',path='g5')
+
+
+
+常用操作：
+In [12]: obj = Apps.objects.get(id=1)                   #查找Apps表中id=1的行
+In [13]: obj.table.add(1)                               #将Apps表中的id=1的行和Hosts中id=1的行创建关系
+In [14]: obj.table.add(2,3,4)                           #将Apps表中的id=1的行和Hosts中id=2，id=3的行创建关系
+In [15]: obj.table.add(*[4,5])                          #将Apps表中的id=1的行和Hosts中id=4，id=5的行创建关系
+In [16]: obj.table.all()                                #获取所有和Apps表中的id=1的行想关联的数据
+In [17]: obj.table.remove(1)                            #删除和Hosts=1的行的关联，支持和add一样的写法
+In [18]: obj.table.clear()                              #清空关系表中Apps表中id=1的数据
+In [19]: obj.table.set([1,2,3])                         #将Apps表中id=1的数据更新为只和Hosts表中的id=1，id=3，id=3创建关系
+In [20]: obj.table.values()                             #访问Hosts表中的所有数据
+In [21]: Apps.objects.values('name','path','table__hostname','table__ip','table__memory')          #查询所有数据和其关联数据
+
+
+__                  #从外键访问主键
+_set                #从主键访问外键        
+
+示例:
+    a = HostGroup.objects.get(group_name='hpc')
+    a.host_set.values('id')
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,111 @@
+编译安装squid：
+	tar xvf squid-3.5.25-20170408-r14154.tar.gz -C /usr/src/		#解压
+	cd /usr/src/
+	./configure --prefix=/usr/local/squid --enable-async-io=160
+	--enable-epoll --enable-linux-netfilter --enable-stacktraces 
+	--enable-gunregex --enable-linux-tproxy --enable-underscore 
+	--enable-arp-acl --enable-err-languages="Simplify_Chinese" 		#配置
+	make && make install			#编译   安装
+
+
+编译参数：
+--prefix						#安装位置
+--enable-kill-parent-hack		#启用关掉squid进程时连同父进程也一起关掉
+--enable-large-cache-files=		#支持大的缓存文件
+--enable-snmp					#启用SNMP,是监视网络设备和服务器的流行方法
+--enable-async-io=160			#启用同步I/O技术,用以提升存储性能
+--enable-storeio=ufs,aufs,diskd #支持不同存储模块
+--enable-epoll					#支持epoll的IO模式,内核26.以上才支持,比poll更高效
+--enable-poll					#支持poll的IO模式
+--enable-linux-netfilter 		#启用内核过滤
+--enable-stacktraces			#如果squid崩溃，数据追踪信息被写到cache.log文件
+--enable-referer-log			#激活来自客户请求的HTTP referer日志
+--enable-useragent-log			#激活来自客户请求的HTTP用户代理头日志
+--enable-err-languages="Simplify_Chinese" 	#指定错误日志显示语言
+--enable-gunregex				#启用GUN正则表达式
+--enable-linux-tproxy			#支持透明模式
+--enable-underscore				#支持URL中包含下划线(__)
+--enable-arp-acl				#支持ARP,或者以太地址访问控制列表
+--enable-htcp					#HTCP是超文本缓存协议,类似于ICP的内部缓存协议
+--with-large-files=				#支持大的文件
+--with-maxfd=					#覆盖的最大数量的文件描述符
+--sysconfdir=/etc				#指定配置文件目录
+
+
+
+初始化：
+	useradd -M -s /sbin/nologin squid			#创建程序用户
+	chown -R squid#squid /usr/local/squid/var		#修改权限
+	ln -s /usr/local/squid/sbin/* /usr/local/sbin	#链接命令到环境变量
+	squid -z					#初始化缓存目录
+	chmod -R 777 /usr/local/squid/var/			#赋予缓存目录权限
+	
+	
+squid命令：
+	squid -z			#初始化缓存目录
+	squid				#启动服务(默认端口#3128)
+	squid -k parse		#检查主配置文件语法
+	squid -k shutdown	#安全停止squid服务
+	squid -k reconfigure -f /usr/local/squid/etc/squid.conf		#重新加载配置文件
+	squid -k kill		#强制关闭服务
+	
+
+squid基本配置：
+主配置文件：/usr/local/squid/etc/squid.conf
+配置参考手册：/usr/local/squid/etc/squid.conf.documented
+备份主配置文件：cp -p /usr/local/squid/etc/squid.conf /usr/local/squid/etc/squid.conf.bak
+
+squid.conf文件详解
+	cache_effective_user   squid		#程序用户		
+	cache_effective_group  squid		#程序组
+	acl localnet src 192.168.0.0/24　 　#定义本地网段
+	http_port　3128　　　　　　			#监听的IP和端口
+	cache_mem 64 MB　  #额外提供给squid使用的内存,总内存大小 (cache目录大小)*10+15+(cache_mem)
+	maximum_object_size 4 MB 　　#设置squid磁盘缓存最大文件,超过4M的文件不保存到硬盘
+	minimum_object_size 10 KB 　 #设置squid磁盘缓存最小文件
+	cache_swap_high 95　　		#cache目录使用量大于95%时，开始清理旧的cache
+	cache_swap_low 70　　 		#cache目录清理到70%时停止
+	reply_body_max_size 5 MB	#允许下载的最大文件大小
+	visible_hostname localhost	#主机名
+	cache_mgr 123456789@.com	#管理员邮箱
+	http_access allow all　　	#允许所有
+	http_access deny all　　	#拒绝所有(默认拒绝)
+
+		
+squid配置实例：
+	普通代理：
+		vim squid.conf			#修改配置文件
+			visible_hostname  www.test.com
+			cache_mgr 2803660215@qq.com
+			http_access allow all
+			http_access deny all
+			reply_body_max_size 5 MB
+			
+		squid -k parse		#检查语法		
+		squid				#开启服务
+		netstat -napt | grep 3128	#查看服务是否开启
+		
+		验证：在客户端浏览器上设置代理,将代理服务器的ip指向squid服务器
+		tail -f /usr/local/squid/var/logs/access.log	#查看日志变化
+	
+	
+	透明代理：
+		vim squid.conf			#修改配置文件
+			visible_hostname  www.test.com
+			cache_mgr 2803660215@qq.com
+			http_port 0.0.0.0:3128 transparent		#配置透明代理
+			http_access deny all
+			reply_body_max_size 5 MB
+		iptables -t nat -I PREROUTING -i eth0 -p tcp --dport 80  -j REDIRECT --to-port 3128
+		iptables -t nat -I PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 3128
+			#iptables重定向,将重eth0进入的流量并且是访问80或443的数据重定向到squid服务器
+			
+		验证：
+			1、清空流量器上的所有代理设置
+			2、将客户端的网关指向eth0网卡上的ip地址
+			3、查看squid的访问日志是否发生变化
+
+
+
+
+

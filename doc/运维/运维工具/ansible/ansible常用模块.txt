@@ -1,0 +1,103 @@
+ansible常用模块详解：
+	ansible <host-pattern> [-m module_name] [-a args] [options]		#ansible命令格式
+		 指定主机组或ip地址	 指定调用模块   传递给模块的参数  
+	ansible-doc -l					#列出可用模块
+	ansible-doc -s model_name		#查看指定模块详细用法
+	
+
+command：ansible默认模块，对指定主机执行命令，不能理解特殊字符
+	例：ansible web -a 'date'		#对web组里的主机执行date命令，web需要在hosts中定义
+	
+	
+shell：执行命令操作，比command更强的，能够理解特殊字符
+	例：
+		ansible web -m shell -a 'useradd www'
+		ansible web -m shell -a 'echo centos | passwd --stdin www'
+
+		
+script：将本地主机的脚本放到远程主机执行
+	例：（脚本自己写）
+		ansible web -m script -a '/root/test.sh'
+		
+	
+ping：测试远端主机是否在线
+	例：ansible web -m ping
+	
+user：用户管理模块
+	常用参数：
+		name=					#指定用户名(必须指定)
+		state=present/absent	#添加/删除用户
+		system=yse/no			#是否创建为系统用户
+		uid=					#指定用户uid
+		shell=					#指定用户shell环境
+		home=					#指定用户家目录
+		group=					#指定用户组
+		groups=					#指定用户组附加组，以”,“分隔
+		
+	例：
+		ansible web -m user -a  'name=HR state=present system=yes uid=100 groups=root,ntp shell=/bin/csh home=/home/HR_home'
+				#创建用户
+		ansible web -m user -a  'name=HR state=absent'		#删除用户
+
+group：组管理模块
+	常用参数：
+		gid=					#指定组gid
+		name=					#指定组名(必须指定)
+		state=present/absent	#添加/删除组
+		system=yse/no			#是否创建为系统组
+
+		
+cron：计划任务管理模块
+	name         				#任务计划的描述信息(必须指定)
+	minute       				#分(0-59 ，* ，*/2)
+	hour         				#时(0-23 ，* ，*/2)
+	day          				#日(1-31 ，* ，*/2)
+	month        				#月(1-12 ，* ，*/2)
+	weekday     				#周(0-6 ，*)
+	job=path     		     	#执行的命令的绝对路径
+	backup=yes/no     			#是否先备份再创建新的任务计划
+	user         				#以哪个用户新建任务计划，默认 root
+	state=present/absent		#创建删除计划任务
+
+	例：
+	ansible web -m cron -a 'name=A user=root job="/bin/date &>/dev/null" weekday="*/1" state=present'
+	
+	
+copy：文件分发模块
+	常用参数：
+		src=path		#指定源文件路径
+		dest=path		#指定保存文件路径(必须指定)	
+		mode=			#拷贝到远程主机上的文件权限
+	例：	
+		ansible web -m copy -a 'src=/abc dest=/root mode=600'
+		#注意：拷贝文件夹是在文件夹默认加上"/"表示只拷贝文件夹里的内容不拷贝目录
+	
+	
+yum模块：基于yum源安装程序
+	常用参数：
+		name=			#安装程序名(必须指定)	
+		state=          #present：安装    latest：安装最新版    absent：卸载 
+	例：
+		ansible web -m yum -a 'name=httpd state=latest'	
+	
+	
+service模块：服务管理模块
+	常用参数：
+		name=  				#服务名称
+		state=stopped/started/restarted/reloaded 		#停止/启动/重启/重读配置文件
+		enabled=yes/no  	#是否开机自启动             
+
+setup模块：系统信息收集
+	例：
+		ansible web -m setup
+
+
+
+
+
+
+
+
+
+
+

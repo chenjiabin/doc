@@ -1,0 +1,74 @@
+编译安装mysql：
+
+1、准备工作
+rpm -e mysql  mysql-server --nodeps				#卸载rpm安装的mysql
+yum -y install ncurses-devel-5.7-3.20090208.el6.x86_64		#安装编译mysql时需要调用的插件
+userdel -r mysql						#删除mysql用户
+groupadd -g 27 mysql						#创建mysql组
+useradd -M -u 27 -g 27 -s /sbin/nologin mysql			#创建mysql用户并加入mysql组，运行mysql时使用
+
+
+2、编译安装
+编译安装cmake：							#配置mysql时使用的工具
+tar zxvf cmake-2.8.6.tar.gz -C /usr/src/			#解压				
+cd /usr/src/cmake-2.8.6/					#进入程序目录
+./configure && gmake && gmake install				#配置  编译  安装
+
+
+编译安装mysql
+tar zxvf mysql-5.5.22.tar.gz -C /usr/src/			#解压
+cd  mysql-5.5.22						#进入程序目录
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DSYSCONFDIR=/etc -DDEFAULT_CHARSET=utf8  -DDEFAULT_COLLATION=utf8_general_ci  -DWITH_EXTRA_CHARSETS=all					#配置安装参数
+make && make install						#编译 安装
+
+
+3、启动mysql
+chown  -R  mysql:mysql  /usr/local/mysql				#使mysql用户能操作mysql的主目录
+ln -s /usr/local/mysql/bin/* /usr/local/bin				#将mysql命令链接至环境变量
+cp  /usr/local/mysql/support-files/my-medium.cnf /etc/my.cnf		#复制配置文件到指定目录,配置文件必须叫my.cnf
+cp  /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld	#制作启动脚本
+chmod +x /etc/init.d/mysqld						#赋予启动脚本可执行权限
+chkconfig --add mysqld							#添加为系统服务
+chkconfig mysqld on							#开启默认启动级别
+chmod +x /usr/local/mysql/scripts/mysql_install_db			#赋予初始化脚本执行权限
+/usr/local/mysql/scripts/mysql_install_db --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data	#初始化mysql
+service mysqld start							#启动mysql服务
+netstat -anpt | grep 3306						#查看mysql服务是否启动
+
+初始化参数说明：
+--user：指定mysql的程序用户
+--basedi：指定mysql的主目录
+--datadir：指定mysql的数据库目录
+
+
+
+4、编译参数
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql 		#安装目录 
+-DMYSQL_DATADIR=/usr/local/mysql/data 			#数据库存放目录
+-DSYSCONFDIR=/etc 					#mysql配置文件
+-DDEFAULT_CHARSET=utf8   				#使用utf8字符 
+-DDEFAULT_COLLATION=utf8_general_ci 			#校验字符 
+-DEXTRA_CHARSETS=all  					#安装额外的编码集
+
+
+其他参数
+-DWITH_MYISAM_STORAGE_ENGINE=1 				#安装 myisam 存储引擎 
+-DWITH_INNOBASE_STORAGE_ENGINE=1 			#安装 innodb 存储引擎 
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 			#安装 archive存储引擎 
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 			#安装 blackhole存储引擎 
+-DENABLED_LOCAL_INFILE=1 				#允许从本地导入数据 
+ -DMYSQL_TCP_PORT=3306 					#MySQL 监听端口 
+-DMYSQL_USER=mysql 					#MySQL 用户名  
+-DWITH_SSL=yes 						#SSL 
+-DWITH_MEMORY_STORAGE_ENGINE=1 				#安装 memory 存储引擎 
+-DWITH_FEDERATED_STORAGE_ENGINE=1 			#安装 frderated 存储引擎 
+-DWITH_PARTITION_STORAGE_ENGINE=1 			#安装数据库分区 
+-DINSTALL_PLUGINDIR=/usr/local/mysql/plugin 		#插件文件及配置路径
+
+
+
+
+
+
+
+		

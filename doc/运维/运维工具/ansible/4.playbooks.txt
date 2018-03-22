@@ -1,0 +1,91 @@
+playbooks介绍：
+    playbooks是一种简单的配置管理系统与多机器部署系统的基础，非常适合于复杂应用的部署
+    playbooks中可以编排有序的执行过程,在多组机器之间来回有序的执行特别指定的步骤，并且可以同步或异步的发起任务
+    playbooks的格式是YAML，语法做到最小化,意在避免playbooks成为一种编程语言或是脚本
+
+
+﻿playbooks的概念：
+	playbooks的组成结构：
+		Host Inventory			#主机清单
+		models					#调用的模块
+		playbooks
+			tasks				#任务，playbooks的核心
+			var					#变量
+			templates			#模板
+			handlers			#处理器
+			roles				#角色，由那些主机去执行
+
+
+Tasks列表：
+    每一个play包含了一个task列表(任务列表)，一个task在其所对应的所有主机上执行完毕之后，下一个task才会执行，在一个play之中，所有hosts会获取相同的任务指令，这是play的一个目的所在
+    在运行playbook时(从上到下执行)，如果一个host执行task失败，这个host将会从整个playbook中移除，如果发生执行失败的情况，请修正playbook中的错误，然后重新执行即可
+    每个task的目标在于执行一个moudle，通常是带有特定的参数来执行，在参数中可以使用变量
+    modules具有”幂等”性,如果你再一次地执行moudle，moudle只会执行必要的改动，只会改变需要改变的地方，所以重复多次执行playbook也很安全
+    对于command和shell，重复执行playbook实际上是重复运行同样的命令
+    每一个task必须有一个名称name，这样在运行playbook时，从其输出的任务执行信息中可以很好的辨别出是属于哪一个task的
+
+
+﻿playbooks示例：	
+    - hosts: webservers                                 #指定由那些主机执行，可以是一个或多个主机或组
+      vars:                                             #变量
+        http_port: 80
+        max_clients: 200
+      remote_user: root                                 #用户名
+
+      tasks:                                                    #定义任务
+      - name: ensure apache is at the latest version            #任务名称
+        yum: pkg=httpd state=latest                             #模块:参数
+
+      - name: write the apache config file
+        template: src=/srv/httpd.j2 dest=/etc/httpd.conf
+
+        notify:                                                 #当/etc/httpd.conf发生改变是重启apache
+        - restart apache                                       
+
+      - name: ensure apache is running
+        service: name=httpd state=started
+
+      handlers:         
+        - name: restart apache
+          service: name=httpd state=restarted
+          sudo: yes                                             #使用sudo，sudo_user:postgres，su到指定用户
+
+
+	ansible-playbook playbook.yml -f 10		                    #执行playbooks
+    #ansible-playbook playbook.yml --list-hosts                 #查看playbook的执行会影响到哪些hosts
+			
+
+示例：
+    tasks:
+      - name: disable selinux
+        command: /sbin/setenforce 0                         #预期的command的返回值
+
+
+
+    tasks:
+      - name: run this command and ignore the result
+        shell: /usr/bin/somecommand || /bin/true            #如果第一条命令的返回值不为0则执行第二条命令
+
+
+    handlers:           #Handlers是由通知者进行notify如果没有被notify,handlers不会执行，不管有多少个通知者进行了notify，等到play中的所有task执行完成之后handlers也只会被执行一次
+                        #Handlers最佳的应用场景是用来重启服务，或者触发系统重启操作
+        - name: restart memcached
+          service:  name=memcached state=restarted
+        - name: restart apache
+          service: name=apache state=restarted
+
+
+
+
+
+https://galaxy.ansible.com/explore#/                            #官方提供的playbook(大约3000多个,涵盖各类软件)
+
+
+
+
+
+
+
+
+
+

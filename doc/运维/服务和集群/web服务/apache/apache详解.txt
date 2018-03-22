@@ -1,0 +1,73 @@
+apache的优点：
+1、事先加载响应程序
+2、模块化设置，核心较小，各功能由模块进行添加
+3、支持独立编译模块
+
+
+一、编译安装apache
+	tar zxvf /root/python/httpd-2.2.17.tar.gz  -C /usr/src/
+	cd /usr/src/
+	./configure --prefix=/usr/local/httpd --enable-so --enable-rewrite --enable-cgi --enable--charset-lite
+	make && make install
+	ln -s /usr/local/httpd/bin/* /usr/local/bin
+	cp -p apachectl /etc/init.d/httpd
+
+	
+二、常用指令介绍（apache指令大多数不区分大小写）
+	ServerRoot			#apache工作目录
+	include				#导入配置文件
+	Timeout 			#长连接超时时间
+	Listen 80			#监听端口
+	User apache			#程序用户
+	Group apache		#程序组
+	ServerAdmin 		#管理员邮箱地址
+	ServerName			#主机名
+	DocumentRoot		#网站根目录
+	DirectoryIndex index.html		#首页名
+	ErrorLog logs/error_log   		#错误日志存放位置
+	LogLevel warn					#日志级别
+	LogFormat "%h %l %u %t 			#日志格式
+	CustomLog logs/access_log combined		#访问日志存放位置
+	Order	allow,deny			#控制默认访问	
+
+	
+三、配置实例：
+
+1、用户认证
+	<Directory "/usr/local/httpd/htdocs">
+		Options Indexes FollowSymLinks
+		AllowOverride None
+		authtype basic				#认证类型
+		authname "apache 2.4"		#登录框说明
+		authuserfile  "/usr/local/http/conf"	#用户认证文件存放位置
+		require valid-user		#运行用户认证文件中的用户登录系统
+		Order allow,deny		#默认拒绝所有用户访问
+		Allow from all			#运行所有用户访问
+	</Directory>
+	创建配置文件：
+		htpasswd -c -m  /etc/httpd/conf   www   #创建用户认证文件，并添加root用户(第一次创建使用-c)
+		htpasswd -m  /etc/httpd/conf  lisi		#向用户认证文件中添加mysql用户(-m指定MD5加密)
+	
+	
+2、地址访问控制
+	Order allow,deny
+    Allow from 192.168.1.0/24		#只允许192.168.1.0网段访问
+	
+
+3、虚拟主机配置(基于域名)
+	#DocumentRoot "/usr/local/httpd/htdocs"			#注释中心主机
+	namevirtualhost 0.0.0.0:80					#监听ip和端口
+	
+	<virtualhost 192.168.1.1:80>
+		documentroot "/usr/local/httpd/htdocs/test"		#网站根目录
+		servername "www.test.com"					#域名
+	</virtualhost>
+	
+	<virtualhost 192.168.1.1:80>
+		documentroot "/usr/local/httpd/htdocs/test2"		#网站根目录
+		servername "www.apache.com"					#域名
+	</virtualhost>
+
+
+	
+	

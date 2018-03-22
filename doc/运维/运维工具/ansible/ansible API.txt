@@ -1,0 +1,140 @@
+Ansible的Python API 功能十分强大,它造就了ansible CLI和ansible-playbook
+
+示例：
+    import ansible.runner
+
+    runner = ansible.runner.Runner(
+       module_name='ping',
+       module_args='',
+       pattern='web*',
+       forks=10
+    )
+    datastructure = runner.run()            #datastructure是一个字典对象
+
+
+
+开发动态inventor：
+    ansible可以从一个动态的数据源获取到inventory信息
+    1、创建一个在适当参数下,能够返回正确JSON格式数据的脚本或者程序,可以使用任何语言来实现
+
+脚本规范
+    当我们在外部使用``–list``参数调用这个脚本时,这个脚本必须返回一个JSON散列/字典,它包含所管理的所有组，例如:
+    {
+        "databases"   : {
+            "hosts"   : [ "host1.example.com", "host2.example.com" ],
+            "vars"    : {
+                "a"   : true
+            }
+        },
+        "webservers"  : [ "host2.example.com", "host3.example.com" ],
+        "atlanta"     : {
+            "hosts"   : [ "host1.example.com", "host4.example.com", "host5.example.com" ],
+            "vars"    : {
+                "b"   : false
+            },
+            "children": [ "marietta", "5points" ]
+        },
+        "marietta"    : [ "host6.example.com" ],
+        "5points"     : [ "host7.example.com" ]
+    }
+
+
+简单的示例：
+    动态inventor文件：
+        #!/usr/bin/python  
+        # encoding:utf-8  
+        import json  
+        test1 = {  
+             "host":['127.0.0.1']   
+        }  
+        print json.dumps(test1)
+
+
+    调用ansible API：
+        import ansible.runner
+
+        runner = ansible.runner.Runner(
+            host_list='/home/huyuan/test.py',
+            module_name='setup',
+            module_args='',
+            pattern='host',
+            forks=1
+        )
+        datastructure = runner.run()
+        print datastructure
+
+
+ansible API说明：
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+#vetsion:1.9.4
+#ansible api 使用
+
+import ansible.runner
+
+runner = ansible.runner.Runner(
+    host_list='/home/huyuan/python/other/hosts',
+    module_name='shell',
+    module_args='ls /root',
+    pattern='abc',
+    forks=10,
+    become=True,
+    become_user='root',     
+    become_pass='123',      
+)
+
+datastructure = runner.run()
+print datastructure
+
+
+host_list=                  #初始化默认参数，默认为/etc/ansible/hosts
+module_name=　　　　　　　　　       #模块名字，必须指定
+module_args=                #模块的参数
+forks=                      #进程的数目
+timeout=                    #SSH的超时时间
+pattern=                    #执行hosts文件中的分组或指定ip
+remote_user=                #远程执行的用户
+remote_pass=                #远程执行的密码
+remote_port=                #远程执行的端口
+private_key_file=           #自钥地址，用来秘钥验证的
+check=                      #不做任何改变，仅做尝试
+become=                     #是否启用sudo，默认为False
+become_user=                #以那个用户的身份执行命令，一般都是root
+become_pass=                #sudo时使用的密码
+
+
+
+'''
+ansible Api使用前提：
+1、每台主机上拥有相同的用户
+2、为这些用户设置相同的密码或者配置秘钥(如果需要sudo还是得配置相同的密码)
+3、为ansible提供统一的目录，用于上次或下载文件
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

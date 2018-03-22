@@ -1,0 +1,79 @@
+js条件语句：
+
+if语句
+    a='wwwww';                          
+    if(a==='www'){
+        alert('OK');
+        }
+    else if(a==='wwww'){
+            alert('wOK')
+        }
+    else {
+           alert('no')
+    }
+
+switch语句：
+    name='x';
+    switch(name){
+        case 1:
+            alert(1);
+            break;              //使用break阻止程序继续往下一个case运行
+
+        case 2:
+            alert('2');
+            break;
+
+        default:
+            alert('other');
+            break;
+    }
+
+
+
+for语句：
+    ll = ['a','b','c','d','e','f','g'];
+    //第一种方式
+    for(i=0;i<ll.length;i++){           //第一种循环方式，不能循环字典
+        //alert(i);                     //for循环出的列表或字典都是对应值的下表位置
+        alert(ll[i]);                   //使用下标获取数据
+    }
+
+
+    //第二种方式
+    for(var index in ll){               //使用var申明的是局部变量，可以循环所有数据类型
+        //alert(index);
+        alert(ll[index]);               //使用下标获取数据
+    }
+
+
+
+while语句：
+    num=1;
+    while(num<100){                     //如果num小于100
+        console.log(a);                 //在浏览器的console终端输出a的值
+        a++                             //每次循环a=a+1
+        //可以使用循环控制语句
+        //break
+        //continue
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

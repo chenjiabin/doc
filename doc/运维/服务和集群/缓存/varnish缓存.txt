@@ -1,0 +1,137 @@
+varnishi由management(主进程)和(child/cache)子进程组成
+	management的工作：
+		1、提供命令行接口
+		2、监控和管理子进程，初始化varnish
+		3、将default.vcl编译为二进制生成新的配置文件
+		
+	child/cache的工作：
+		1、接收连接请求
+		2、处理用户请求
+		3、清除缓存中的过期对象
+		4、记录日志
+		5、根据default.vcl生成缓存策略
+
+			
+	VCL：
+		1、缓存策略配置接口
+		2、基于"域"的配置
+	
+	存储缓存对象：
+		flie：单个文件进行存储，不支持持久化，会产生大量磁盘i/o对性能有一定影响
+		malloc：内存存储，性能较高，代价更高(内存比磁盘贵)，长时间使用会产生内存碎片
+		persistent：单个文件进行存储，支持持久化，目前作为测试使用
+	
+	varnish安装：centos7环境
+		1、配置epel源
+		2、yum -y install varnish
+
+	
+	varnish配置：
+		/etc/varnish/default.vcl			#vcl配置文件
+		/etc/varnish/varnish.params			#命令行参数配置文件
+		/etc/varnish/secret					#连接命令行认证文件
+		
+	
+	varnish管理工具：
+		systemctl start varnish.service		#启动varnish
+		varnish默认监听*:6081和127.0.0.1:6082，6081提供服务，6082提供管理
+		
+		varnishadm			#交互式命令行管理工具
+		varnishlog			#交互式获取日志工具
+		varnishncsa			#交互式获取日志工具(apache格式)
+		varnishstat			#显示状态
+		varnishtop			#排序
+
+
+	varnish.params详解：
+		VARNISH_VCL_CONF=/etc/varnish/default.vcl			#指定vcl文件位置
+		VARNISH_LISTEN_PORT=6081					#指定服务端口，默认监听所有地址
+		VARNISH_ADMIN_LISTEN_ADDRESS=127.0.0.1		#管理ip
+		VARNISH_ADMIN_LISTEN_PORT=6082				#监听端口
+		VARNISH_SECRET_FILE=/etc/varnish/secret		#认证文件
+		VARNISH_STORAGE="file,/var/lib/varnish/varnish_storage.bin,1G" #缓存方式(单个文件缓存)		
+		#VARNISH_STORAGE="malloc,256M"				#缓存方式(内存缓存)，不能同时启动
+		VARNISH_USER=varnish			#程序用户
+		VARNISH_GROUP=varnish			#程序组
+		#DAEMON_OPTS="-p thread_pool_min=5 -p thread_pool_max=500 -p thread_pool_timeout=300"	#进程池配置
+		
+		
+	varnish状态引擎详解：状态引擎用于对客户端请求进行判断并作出相应处理
+		vcl_recv：接收用户请求，判断如何处理
+			vcl_pass: 绕过缓存，不从缓存中查询内容，将请求直接传递给后端主机
+			vcl_pipe：无法解析请求类型，直接交给后端处理
+		
+			vcl_hash：可缓存数据，通过hash进行处理
+				vcl_hit：缓存命中    
+					vcl_deliver：将缓存数据返回给客户端
+					
+				vcl_miss：缓存未命中          
+					vcl_fetch：从后端主机获取内容，通过判断将内容放入缓存或直接返回给客户端
+			
+			vcl_error：如果请求出现错误，由varnishi构建错误页返回给客户端
+
+		
+	varnish负载均衡集群算法：		
+		random         	#随机
+		round-robin    	#轮询
+		fallback		#备份
+		hash			#固定后端
+	
+	
+	配置实例：
+		vcl 4.0;					#varnish版本
+		probe cache {				#定义健康检查函数
+		   .url = "/index.html";	#检查的url  			  
+		   .timeout = 1s;			#超时时间
+		   .interval = 5s;  		#重试间隔
+		   .window = 5;    			#重试次数
+		   .threshold = 3;			#重试三次成功则认为服务器在线
+		}
+
+
+		backend www1 {				#定义后端主机
+			.host = "192.168.0.10";		#后端主机
+			.port = "80";				#监听端口
+			.probe = cache;				#调用健康检查函数
+		}
+
+
+		backend www2 {
+			.host = "192.168.0.40";
+			.port = "80";
+			.probe = cache;
+		}
+
+
+		backend www3 {
+			.host = "192.168.0.70";
+			.port = "80";
+			.probe = cache;
+		}
+
+
+		import directors; 				#导入集群模块
+		sub vcl_init {
+			new www = directors.round_robin();		#使用轮询算法
+				www.add_backend(www1);	#集群主机
+				www.add_backend(www2);	#集群主机
+				www.add_backend(www3);	#集群主机
+		}
+
+		sub vcl_recv {			
+			set req.backend_hint = www.backend();		#将所有流量发送给www集群
+		}
+	
+	
+	配置参考：
+		http://www.ttlsa.com/nginx/varnish-4-configure-file/
+		http://mingxiao.blog.51cto.com/8124243/1662408
+	
+	
+	
+
+	
+	
+	
+	
+	

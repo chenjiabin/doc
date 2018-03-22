@@ -1,0 +1,80 @@
+字典：dict
+可变类型，使用哈希算法进行查找，支持索引
+
+内置函数：
+dict.clear()：清空指定字典，本地修改
+dict.copy()：复制指定字典
+dict.get()：查看指定键对应的值
+dict.keys()：查看指定字典的键
+dict.has_key()：查看键是否存在
+dict.values()：查看指定字典的值
+dict.pop()：弹出指定字典的键和其对应的值
+dict.update()：将字典合并到指定字典中去，如果有重复的键则覆盖原有键
+dict.values()：只显示value值
+dict.items()：将字典转换成元组式列表
+
+
+
+创建字典：
+di = {'k1':123}
+print di
+{'k1':123}
+
+添加键：
+di['k2'] = 234
+print di
+{'k1': 123, 'k2': 234}
+
+修改值：
+di['k1'] = 1000
+print di
+{'k1': 1000, 'k2': 234}
+
+
+
+zip：快速生成列表异构的元组，多用于快速生成字典
+>>> w=zip('abcd','1234')
+>>> print w
+[('a', '1'), ('b', '2'), ('c', '3'), ('d', '4')]
+>>> w=dict(w)
+>>> print w
+{'a': '1', 'c': '3', 'b': '2', 'd': '4'}
+
+>>> w=range(1,5)
+>>> r=range(6,10)
+>>> print w,r
+[1, 2, 3, 4] [6, 7, 8, 9]
+>>> r=zip(w,r)
+>>> print r
+[(1, 6), (2, 7), (3, 8), (4, 9)]
+>>> s=dict(r)
+>>> print s
+{1: 6, 2: 7, 3: 8, 4: 9}
+
+
+如果zip左右不对应，则会丢弃多余的个元素
+>>> w=zip('abcd','12')
+>>> print w
+[('a', '1'), ('b', '2')]
+或者
+>>> w=zip('ab','1234')
+>>> print w
+[('a', '1'), ('b', '2')]
+
+
+如果zip的元素大于二个则不能转换为列表
+>>> w=zip('abc','123','fgh')
+>>> print w
+[('a', '1', 'f'), ('b', '2', 'g'), ('c', '3', 'h')]
+>>> w=dict(w)
+
+Traceback (most recent call last):
+  File "<pyshell#234>", line 1, in <module>
+    w=dict(w)
+ValueError: dictionary update sequence element #0 has length 3; 2 is required
+>>> print w
+[('a', '1', 'f'), ('b', '2', 'g'), ('c', '3', 'h')]
+
+
+
+

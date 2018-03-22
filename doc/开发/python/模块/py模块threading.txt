@@ -1,0 +1,57 @@
+线程：计算机最小工作单元
+进程：默认有一个主线程，可以有多个线程共存，线程间共享资源(主要是内存)
+协程：使用进程中一个线程去做多件事
+
+threading模块提供的类：  
+　　Thread, Lock, Rlock, Condition, [Bounded]Semaphore, Event, Timer, local。
+
+threading 模块提供的常用方法： 
+　　threading.currentThread(): 返回当前的线程变量。 
+　　threading.enumerate(): 返回一个包含正在运行的线程的list。正在运行指线程启动后、结束前，不包括启动前和终止后的线程。 
+　　threading.activeCount(): 返回正在运行的线程数量，与len(threading.enumerate())有相同的结果。
+
+threading 模块提供的常量：
+　　threading.TIMEOUT_MAX 设置threading全局超时时间。
+
+
+
+
+import threading
+
+T1 = threading.Thread(target=执行的函数,args=(函数需要的参数,))：创建线程
+
+T1.isDaemon()：查看子进程和主进程的关系，默认为False
+T1.setDaemon()：设置子进程和主进程的关系，(True/False)
+
+T1.start()          #启动线程
+T1.join(timeout)    #主进程在遇到join(不指定超时时间)后会停止执行，等子线程执行完之后才继续执行,timeout为等待超时时间
+T1.isAlive()        #返回线程是否在运行
+
+
+
+lock = threading.Lock()：创建线程锁，线程锁一般是需要独占资源时使用，线程锁保证了线程安全
+lock.acquire()：调用线程锁
+lock.release()：释放线程锁
+
+
+boun = threading.BoundedSemaphore(4)：设置同一时间的最大连接数,4代表同一时间只能有4个线程连接（最大连接数自定义）
+
+
+
+
+Queue模块：
+my = Queue.Queue( [maxsize=] )：实例化类
+maxsize=：指定队列长度，默认无限
+
+my.put(item)：生产队列
+my.get()：获取队列，如果没有处于阻塞状态
+my.get_nowait：()获取队列，如果没有返回异常
+my.qsize()：返回队列的大小 
+my.empty()：如果队列为空，返回True,反之False 
+my.full()：如果队列满了，返回True,反之False 
+
+
+线程知识参考博客：
+https://www.cnblogs.com/tkqasn/p/5700281.html               #threading
+http://blog.csdn.net/bravezhe/article/details/8588437       #Queue模块参考
+

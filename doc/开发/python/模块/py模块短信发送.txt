@@ -1,0 +1,21 @@
+#!/usr/bin/py
+#coding:utf-8
+from twilio.rest import Client							#导入第三方模块
+
+account_sid = "AC4c682acde8f318b2f6990512d5dc0aca"		#sid
+auth_token  = "082a54748174daf22270c2531cc21c60"		#秘钥
+
+client = Client(account_sid, auth_token)
+
+content = '''-				#发送内容
+ip: 192.168.0.10
+主机名:www
+报警类型:内存故障
+故障原因:剩余内存大小不足500M
+'''
+message = client.messages.create(
+    to="+8613521701096",				#收信人
+    from_="+13183024286",				#发信人
+    body=content,)						#内容
+
+#print(message.sid)

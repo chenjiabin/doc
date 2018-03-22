@@ -1,0 +1,98 @@
+索引：是一种按照特定存储格式存储的特殊数据，用于加速SQL查询
+索引的类型：
+	聚集索引和非聚集索引：数据是否和索引存储在一起
+	主键索引和辅助索引：索引是否在主键之上
+	左前缀索引和覆盖索引：是否只截取左边的前几个字节最为索引，mysql默认使用左前缀索引
+	
+左前缀索引的存储：	
+	在指定索引的字段中截取左边的前几个字节生成索引，并对索引进行排序处理，将排完序的索引进行分组管理
+	并生成源数据，当用户以索引字段作为查询条件时，mysql去扫描元数据，并定位到元数据对应数据的上
+
+	
+索引管理：
+	CREATE INDEX 索引名 ON 表名 (字段名);			#创建索引
+	SHOW INDEX FROM 表名;							#查看指定表的索引
+	DROP INDEX 索引名 ON 表名;						#删除索引
+	注意：索引没必要修改，因为没有意义
+
+	
+示例：
+	USE mysql;										#使用mysql库
+	CREATE INDEX test_index ON user (User);			#在user表的User字段索引
+	SHOW INDEX FROM user;							#查看索引是否创建成功
+	EXPLAIN SELECT * FROM user WHERE User='root'\G;	#使用EXPLAIN查看命令的执行过程(不会真正的去执行)
+
+		#使用索引的查询过程
+			   id: 1					#编号
+	  select_type: SIMPLE				#查询类型   SIMPLE：表示简单查询   
+			table: user					#查询关联到的表
+			 type: ref					#访问类型
+	possible_keys: test_index			#可能会用到的索引
+			  key: test_index			#最终用到的索引
+		  key_len: 48					#在索引中使用的字节数		
+			  ref: const				#一对一查询
+			 rows: 3					#为找到目标行而读取的行
+			Extra: Using where			#额外信息
+		
+	常见访问类型：ALL：全表扫描  index：根据索引进行全表扫描  range：范围扫描	
+		ref：更具索引返回表中匹配的值所在的行	const/system：直接返回单行(一般基于主键查询)
+
+
+		#没有使用索引的查询过程
+			   id: 1
+	  select_type: SIMPLE
+			table: user
+			 type: ALL				#全表扫描查询
+	possible_keys: NULL
+			  key: NULL
+		  key_len: NULL
+			  ref: NULL
+			 rows: 6
+			Extra: Using where
+
+
+
+视图管理：
+	视图也叫虚表，是由select语句生成，mysql的视图较为不稳定，不建议使用
+	
+	CREATE VIEW 视图名 AS select语句		#创建视图
+	DROP VIEW 视图名 						#删除视图
+
+示例：
+	CREATE DATABASE mydb;			#创建测试数据库
+	USE mydb;						#使用测试数据库
+	CREATE VIEW test_view AS SELECT User,Host,Password FROM mysql.user;			#创建视图
+	SELECT * FROM test_view;		#查看视图内容
+	SHOW TABLE STATUS LIKE 'test_view'\G;		#查看视图状态
+		           Name: test_view
+				 Engine: NULL
+				Version: NULL
+			 Row_format: NULL
+				   Rows: NULL
+		 Avg_row_length: NULL
+			Data_length: NULL
+		Max_data_length: NULL
+		   Index_length: NULL
+			  Data_free: NULL
+		 Auto_increment: NULL
+			Create_time: NULL
+			Update_time: NULL
+			 Check_time: NULL
+			  Collation: NULL
+			   Checksum: NULL
+		 Create_options: NULL
+				Comment: VIEW
+
+
+	注意：视图的修改其实是修改基表的数据(慎用)
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	

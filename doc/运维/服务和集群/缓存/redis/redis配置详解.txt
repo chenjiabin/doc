@@ -1,0 +1,77 @@
+daemonize yes						#是否运行为守护进程
+pidfile /var/run/redis.pid			#PID文件
+port 6379							#监听端口
+tcp-backlog 511						#tcp队列长度
+bind 0.0.0.0						#监听地址
+timeout 0							#客户端空闲多长时间后断开连接，0表示永久
+tcp-keepalive 60					#心跳检测时间
+loglevel notice						#日志级别
+logfile /var/log/redis/redis.log	#日志文件
+syslog-enabled no					#是否把日志记录到syslog中，通常为禁止
+databases 16						#数据库数目
+dir /var/lib/redis/					#redis工作目录
+
+
+#####################持久化配置###################
+save 60 10000						#一分钟之内key发生10000次变化就启动RDB持久化
+stop-writes-on-bgsave-error no		#redis持久化失败停止写操作(no:停止 yes:不停止)
+rdbcompression yes					#是否对rdb进行压缩
+rdbchecksum yes						#是否对rdb文件进行校验
+dbfilename dump.rdb					#rdb文件保存位置
+
+
+appendonly yes						#启用AOF
+appendfsync everysec				#没秒记录一次redis写操作
+appendfilename appendonly.aof		#aof文件保存位置
+auto-aof-rewrite-percentage 100		#当前文件是上一次重写的两倍时启动aof重写
+auto-aof-rewrite-min-size 100mb		#从100M开始启动重写机制
+		
+
+		
+#####################主从配置######################
+slaveof masterip masterport			#指定主节点ip和端口
+masterauth password					#设置主服务器认证密码
+slave-serve-stale-data yes			#主从无法连接时客户端请求数据，slave响应本地的缓存数据(可能已经过时)
+slave-read-only yes					#slave是否只读
+repl-ping-slave-period 10			#向主服务器发起ping请求时间间隔
+repl-timeout 60						#主从复制过期时间
+slave-priority 100					#从服务器优先级，数值越小，优先级越高
+		
+		
+		
+#####################其他配置######################		
+requirepass password				#认证密码
+maxclients 0						#最大连接数，0为不限制	
+include	/path/config				#导入其他配置文件
+vm-enabled no						#是否启用虚拟内存(不建议启动)
+
+
+#####################限制配置######################	
+maxmemory 6G						#最大内存值
+maxmemory-policy volatile-lru		#如果达到maxmemory值，采用此策略
+	可选策略：
+		volatile-lru		#默认策略，只对设置过期的key进行LRU算法删除
+		allkeys-lru			#删除不经常使用的key
+		volatile-random		#随机删除即将过期的key
+		allkeys-random		#随机删除一个key
+		volatile-ttl		#删除即将过期的key
+		noeviction			#不过期，写操作返回报错
+maxmemory-samples 3   				#随机选择key的数量，从中淘汰最不经常用的			
+	
+
+	
+#####################高级配置######################			
+hash-max-zipmap-entries 512   	#哈希表中元素（条目）总个数不超过设定数量时，采用线性紧凑格式存储来节省空间
+hash-max-zipmap-value 64     	#哈希表中每个value的长度不超过多少字节时，采用线性紧凑格式存储来节省空间
+list-max-ziplist-entries 512 	#list数据类型多少节点以下会采用去指针的紧凑存储格式
+list-max-ziplist-value 64    	#list数据类型节点值大小小于多少字节会采用紧凑存储格式
+set-max-intset-entries 512  	#set数据类型内部数据如果全部是数值型，且包含多少节点以下会采用紧凑格式存储
+activerehashing yes        		#是否激活重置哈希		
+		
+		
+redis-sentinel 		#redis3以后的新功能，能够实现redis复制的高可靠	
+
+
+
+redsi官方文档(中文)：http://doc.redisfans.com/
+

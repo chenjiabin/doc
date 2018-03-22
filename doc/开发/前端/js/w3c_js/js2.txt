@@ -1,0 +1,95 @@
+js字符类型：
+    字符串、数字、布尔、数组、对象、Null、Undefined
+
+    var answer="Nice to meet you!";         //字符串
+    var x1=34.00;      //使用小数点来写
+    var x2=34;         //不使用小数点来写
+    var y=123e5;       //科学计算法
+    var x=true         //布尔，真
+    var y=false        //布尔，假
+
+    var cars=new Array();               //数组
+    cars[0]="Audi";
+    cars[1]="BMW";
+    cars[2]="Volvo";
+
+    var cars=new Array("Audi","BMW","Volvo");           //数组
+    var cars=["Audi","BMW","Volvo"];            //数组
+
+
+    var person={firstname:"Bill", lastname:"Gates", id:5566};       //对象
+    对象属性的两种寻址方式：
+        name=person.lastname;
+        name=person["lastname"];
+
+    Undefined 这个值表示变量不含有值
+    可以通过将变量的值设置为 null 来清空变量
+
+
+使用String对象的length属性来查找字符串的长度：
+    var message="Hello World!";
+    var x=message.length;
+
+
+使用String对象的toUpperCase()方法来把文本转换为大写：
+    var message="Hello world!";
+    var x=message.toUpperCase();
+
+
+带参数的函数：
+    <script>
+        function myFunction(name,job) {
+            alert("Welcome " + name + ", the " + job);
+        }
+    </script>
+
+    <button onclick="myFunction('Bill Gates','CEO')">点击这里</button>
+
+    function myFunction() {
+        var x=5;
+        return x;                       #函数返回值
+    }
+
+
+    在 JavaScript 函数内部声明的变量（使用 var）是局部变量
+    在函数外声明的变量是全局变量，网页上的所有脚本和函数都能访问它
+
+
+js运算符：
+    运算符 描述	        例子	    结果
+    +	   加	        x=y+2	x=7
+    -	   减	        x=y-2	x=3
+    *	   乘	        x=y*2	x=10
+    /	   除	        x=y/2	x=2.5
+    %	求余数 (保留整数)	x=y%2	x=1
+    ++	   累加	        x=++y	x=6
+    --	   递减	        x=--y	x=4
+
+
+    运算符	    例子	    等价于	结果
+    =	        x=y	 	x=5
+    +=	        x+=y	x=x+y	x=15
+    -=	        x-=y	x=x-y	x=5
+    *=	        x*=y	x=x*y	x=50
+    /=	        x/=y	x=x/y	x=2
+    %=	        x%=y	x=x%y	x=0
+
+    运算符	描述	            例子
+    ==	    等于	            x==8 为 false
+    ===	    全等（值和类型）	x===5 为 true；x==="5" 为 false
+    !=	    不等于	        x!=8 为 true
+    >	    大于	            x>8 为 false
+    <	    小于	            x<8 为 true
+    >=	    大于或等于	    x>=8 为 false
+    <=	    小于或等于	    x<=8 为 true
+
+
+    运算符	    描述	        例子
+    &&	        and	        (x < 10 && y > 1) 为 true
+    ||	        or	        (x==5 || y==5) 为 false
+    !	        not	        !(x==y) 为 true
+
+
+
+
+

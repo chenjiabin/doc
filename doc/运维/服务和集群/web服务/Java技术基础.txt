@@ -1,0 +1,70 @@
+JAVA是一个面向对象的编程语言，由sun公司所研发，是目前世界上使用最广泛的编程语言，因为java虚拟机的存在所以Java可以一次编译到处运行
+
+JAVA技术的组成：
+	JVM(Java的虚拟机)：提供Java的运行环境
+	Java的程序编程语言：提供给程序员编写代码
+	Java Class(Java的类文件格式)：决定Java程序编译出的字节码应该遵循的规范，用于兼容不同的JVM
+	Java的应用程序接口(Java API)：提供Java的API接口，缩短应用程序的开发周期
+	
+	
+Java程序的运行步骤：
+	1、将.Java文件编译为.class文件
+	2、JVM的class loader(类加载器)加载.class文件和其他类文件，通过解释器将.class文件编译成对应OS平台的二进制程序
+	
+	
+JVM：				
+	JVM是Java的核心和基础，是Java解释器和OS平台之间的虚拟处理器(中间层)，它是一种基于操作系统和硬件平台利用软件方法抽象出的计算机
+	正是因为JVM的存在Java才实现了一次编译到处运行，可实现完全跨平台的运行
+	Java程序员在开发Java程序时只需要面对JVM编写代码即可，不用关心底层的操作系统和硬件平台  
+
+	
+
+JDK：Java语言的软件开发工具包，是实现Java语言开发并让其运行的最小环境。简单来说JDK=Java语言+API+编译器+JVM
+
+JDK的分类：
+	Java SE：标准版，是我们通常用的一个版本
+	Java EE：企业版，使用这种JDK开发Java EE
+	Java ME：主要用于移动设备、嵌入式设备上的java应用程序
+
+
+
+applet类：	
+	applet是采用Java编程语言编写的，经过编译后applet程序可以嵌到HTML中去，然后将applet程序发送到客户端，客户端的浏览器只要安装有J
+	DK插件就能执行这个applet程序，并将结果通过浏览器显示在客户端上，这便是客户端动态网站
+	缺点：如果applet带有病毒如果这个程序在客户端运行就可能会对客户端主机造成巨大的危害，所以后来出现了服务器端动态的概念	
+
+
+
+Servlet类：
+	Servlet：是用Java编写的服务器端程序，其主要功能为交互式的浏览和修改数据，生成动态的Web资源	
+	Servlet：可以让Java语言根据CGI技术开发运行在服务器端的动态web资源，Servlet的优点在于它们的执行速度更快于CGI程序
+	Servlet：各个用户请求被激活成单个程序中的一个线程，而无需创建单独的进程，这意味着服务器端处理请求的系统开销将明显降低
+
+
+Servlet处理请求的过程：
+	1.客户端发送请求至服务器端
+	2.服务器将请求信息发送至Servlet
+	3.Servlet生成响应内容并将其传给服务器。响应内容动态生成，通常取决于客户端的请求
+	4.服务器将响应返回给客户端
+
+
+JSP是Servlet的一个特殊的类，在根本上是一个简化的Servlet设计，JSP是在传统的网页HTML文件中插入Java的程序段，从而形成了JSP文件；
+
+
+区别：
+	Applet只是将一个编译后的Applet小程序嵌入到HTML中然后发送到client，在client端依据JRE运行；
+	Servlet主要是实现了用Java语言开发运行在server端的Web动态资源；这些动态资源是由Servlet代码生成(包括生成html标签等)
+	JSP是一种脚本语言，主要实现了将JAVA代码嵌入到html中，生成.jsp文件，从而实现了基于Java技术的动态网站开发
+		
+
+JSP容器的实现：
+	商业实现：websphere(IBM公司)、weblogic(oracle公司)
+	开源实现：tomcat、jetty
+	
+	
+	
+http://www.sohu.com/a/132920515_610730			#参考博客
+	
+	
+	
+	

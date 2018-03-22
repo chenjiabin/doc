@@ -1,0 +1,147 @@
+css选择器：
+    *                       匹配任意元素
+    a                       标签选择器，匹配所有的a标签
+    #searchform             id选择器，匹配所有id=searchform的标签
+    .idea                   class选则器，匹配所有class=idea的标签
+    div.idea                class选则器，匹配class=idea的div标签
+    a,p                     匹配所有a标签和p标签
+    div li                  匹配所有div标签里面的子标签，使用空格分隔
+    meta+link               毗邻标签选择器,匹配一个紧随meta之后出现的同级标签link
+    meta~link               同级标签选择器,匹配所有meta之后出现的同级标签link
+
+    a[href="/site/index.asp"]                   匹配属性href="/site/index.asp"的a标签(区分大小写)
+    meta[content^="w3s"]                        匹配属性content的值以w3s开头的meta标签(区分大小写)
+    input[title$="ool"]                         匹配属性title的值以ool结尾的input标签(区分大小写)
+    link[href*="logo"]                          匹配属性href的值包含logo的link标签(区分大小写)
+    meta[name="robots"][content="all"]          匹配属性name="robots"且content="all"的meta标签(区分大小写)
+    *:type('image')                             匹配属性type的值包含image的所有标签
+    link:type('image')                          匹配属性type的值包含image的link标签
+
+
+实例：
+    lxmlobject = etree.HTML(html)       #传入HTML文档,'html文档来源:http://www.w3school.com.cn/'
+
+    link = lxmlobject.cssselect('#searchform')       #查找id=searchform的标签
+    link1 = lxmlobject.cssselect('a')                #查找所有的a标签
+    link2 = lxmlobject.cssselect('div.idea')         #匹配class=idea的div标签
+    link3 = lxmlobject.cssselect('a,p')              #匹配所有a标签和p标签
+    link4 = lxmlobject.cssselect('div li')           #匹配所有div标签里面的子标签
+    ......
+
+    for i in link:
+        print i.attrib                               #查看找到的内容
+
+
+xpath选择器：
+
+注意：
+1、元素的xpath绝对路径可通过firebug直接查询。
+2、 一般不推荐使用绝对路径的写法，因为一旦页面结构发生变化，该路径也随之失效，必须重新写。
+3、绝对路径以单/号表示，相对路径则以//表示，当xpath的路径以/开头时，表示让Xpath解析引擎从文档的根节点开始解析。当xpath路径以//开头时，则表示让xpath引擎从文档的任意符合的元素节点开始进行解析。而当/出现在xpath路径中时，则表示寻找父节点的直接子节点，当//出现在xpath路径中时，表示寻找父节点下任意符合条件的子节点，不管嵌套了多少层级。
+4、如果在程序中大量使用xpath匹配的话会大大降低程序的执行效率
+
+xpath实例：
+	查找页面根元素：//
+	查找页面上所有的input元素：//input
+	查找页面上第一个form元素内的直接子input元素(即只包括form元素的下一级input元素，使用绝对路径表示，单/号)：//form[1]/input
+	查找页面上第一个form元素内的所有子input元素(只要在form元素内的input都算，使用相对路径表示，双//号)：//form[1]//input
+	查找页面上第一个form元素：//form[1]
+	查找页面上id为loginForm的form元素：//form[@id='loginForm']
+	查找页面上具有name属性为username的input元素：//input[@name='username']
+	查找页面上id为loginForm的form元素下的第一个input元素：//form[@id='loginForm']/input[1]
+	查找页面具有name属性为contiune并且type属性为button的input元素：//input[@name='continue'][@type='button']
+	查找页面上id为loginForm的form元素下第4个input元素：//form[@id='loginForm']/input[4]
+	查找页面上所以id为test的标签：*代表任意，可以在任意地方使用，//*[@id='test']
+
+	模糊匹配
+		//a[contains(@href, 'logout')]
+			contains：关键字，代表使用模糊查询    href：属性名    logout：关键字(只要href中包含即可)   
+		
+		//a[starts-with(@rel, 'nofo')]
+			starts-with：关键字，代表使用模糊查询   rel：属性名   nofo：表示查找rel属性并且值为以nofo开头的所以标签
+
+		//*[text()='贴吧']					查找页面中所有文本为'贴吧'的标签
+
+		//a[contains(text(), '提交')]		查找a标签的文本内容为提交的a标签
+	
+    '@'				#选取属性
+    '*'				#匹配任何元素
+    '@*'			#匹配任何属性
+	.				#代表当前位置
+
+	
+	
+	
+lxml：调用xpath解析html
+实例：
+#coding:utf-8
+from lxml import etree						#导入模块
+import requests
+
+response = requests.get('http://www.bidding.csg.cn/zbcg/index.jhtml')
+html = response.text
+page = etree.HTML(html)						#传入html文件
+hrefs = page.xpath(u"/html/body/div[5]/div[2]/div[2]/ul/li[1]/a")			#解析html文件
+
+for i in hrefs:								
+    print i.attrib							#输出结果
+	
+	
+实例2：
+    title = htm.xpath(u'/html/body/div[6]/div[1]/div[9]/ul//li/a[1]/@title')			#获取第一个a标签的title属性的值
+    href = htm.xpath(u'/html/body/div[6]/div[1]/div[9]/ul//li/a[1]/@href')				#获取第一个a标签的href属性的值
+    span = htm.xpath(u'/html/body/div[6]/div[1]/div[9]/ul//li/span[1]/text()')			#获取第一个span标签的文本内容
+
+
+soup = BeautifulSoup(html,"html.parser")						#打开一个html页面,指定解析器
+soup = BeautifulSoup(open('index.html'),"html.parser")			#打开一个html文件,指定解析器
+html文件来源：http://sou.zhaopin.com/jobs/searchresult.ashx?jl=全国&kw=python&kt=3&p=2
+
+
+soup.prettify()					#格式化输出
+soup.body.a                     #获取body标签中下的第一个a标签
+soup.a                          #获取html文件中第一个a标签
+soup.find_all('a')              #获取html文件中所有的a标签
+soup.find_all(["a", "b"])       #同时查找a标签和b标签
+soup.find_all(id='link2')       #查找id=link2的标签
+soup.find_all(name="elsie", id='link1') #查找name=elsie且id=link1的标签
+soup.select("head")             #查找head标签(select调用的为css选择器)
+soup.select("body a")           #查找body下面的a标签
+soup.select("head > title")     #查找head下的子标签title
+soup.select("p > a")            #查找p下的子标签a
+soup.select("p > #link1")       #查找p下面id=link1的标签
+soup.select(".sister")          #获取class=sister的标签
+soup.select("a#link2")          #查找所有的a标签且id=link2
+soup.select("#link1,#link2")    #查找id=link1或id=link2的标签
+soup.select('a[href]')          #查找a标签且必须包含href属性
+soup.select('a[href="http://example.com/elsie"]')       #通过属性值查找
+soup.select('a[href$="tillie"]')        #查找时可以使用shell通配符
+soup.prettify()                 #格式化html文件
+soup.find('a').get_text()       #获取第一个a标签的文本内容
+soup.find('a').get('id')        #获取第一个a标签的id属性
+soup.find('a').hidden = True    #删除指定标签
+soup.find('a').clear()          #清空指定标签内容
+
+
+import re									#和正则结合
+rep = re.compile('p')
+rep = re.compile('^p')
+v = soup.find_all(rep)
+print(v)
+ 
+
+tag = soup.find('a')								#查找第一个a标签
+tag.has_attr('class') and tag.has_attr('href')		#查看标签是否包含class属性和id属性,(True,Flase)
+tag.get_text()										#获取标签的文本内容
+tag = x.get('href')									#获取第一个a标签的href的内容(方法筛选)
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+worker_processes			#进程数。最优值取决于许多因素，包括（但不限于）CPU核的数量、存储数据的硬盘数量及负载模式
+worker_rlimit_nofile		#更改worker进程的最大打开文件数限制，默认为操作系统"ulimit -a"的值
+
+events { 
+	worker_connections 2048; 	#一个进程最大的连接数，必须小于worker_rlimit_nofile，受操作系统socket连接数的影响，最大64K
+	multi_accept on;			#告诉nginx收到一个新连接通知后接受尽可能多的连接
+	use epoll; 					#客户端线程的轮询方法。内核2.6以上建议使用epoll
+} 
+
+
+http { 
+	server_tokens off; 				#禁止在页面上显示nginx版本
+	keepalive_timeout 60;			#长连接超时时间
+	#access_log off;				#关闭访问日志减少磁盘io(访问量较大时开启)
+	access_log /var/log/nginx/access.log main buffer=32k;			#如果在较大规模中需要使用访问日志可以打开缓冲功能
+	error_log  logs/error.log  warn;		#减少磁盘io
+	
+	gzip on; 						#打开压缩功能
+	gzip_disable "msie6";			#为指定的客户端禁用gzip功能。msie6表示IE6及其以下版本不使用gzip功能
+	gzip_proxied any; 				#压缩所有的请求。
+	gzip_min_length 1000; 			#设置小于多少字节不使用gzip功能
+	gzip_comp_level 5;				#压缩级别1-9 
+	gzip_types text/plain text/css  text/xml text/javascript; 		#需要压缩的数据格式
+} 
+
+
+常用模块：
+	rewrite				#url重写
+	access				#来源控制
+	auth				#身份验证
+	ssl					#安全加密
+	upstream			#集群定义
+	proxy_pass			#反向代理
+	
+
+
+http://www.nginx.cn/821.html										#优化
+http://blog.csdn.net/gb4215287/article/details/51765110				#优化
+http://blog.csdn.net/xifeijian/article/details/20956605				#优化
+
+

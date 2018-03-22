@@ -1,0 +1,15 @@
+定义日志：
+haproxy
+
+vim /etc/sysconfig/rsyslog			#编辑环境配置文件
+	KEEPALIVED_OPTIONS="-D -d -S 0"		#修改内容
+		#-d 		导出配置数据
+		#-D 		详细日志信息
+		#-S 		设置本地的syslog设备，编号0-7
+		#-S 0 		表示指定为local0设备
+vim /etc/rsyslog.conf		#修改系统日志配置
+	local0.* /usr/local/haproxy/logs/haproxy.log		
+		#将haproxy产生的所有日志信息存到haproxy.log文件中
+	*.info;mail.none;authpriv.none;cron.none;local0.none       /var/log/messages
+		#haproxy产生的文件不记录到/var/log/messages文件中
+	service rsyslog restart			#重启日志服务

@@ -1,0 +1,114 @@
+1、准备工作
+rpm -e php --nodeps							//删除使用rpm安装的php
+rpm -ivh zlib-devel-1.2.3-29.el6.x86_64					//安装PHP依赖包
+rpm -ivh /media/Packages/libxml2-devel-2.7.6-14.el6.x86_64.rpm 		
+
+
+
+2、安装插件(互相有依赖关系,必须按顺序安装)
+libmcrypt	mhash		mcrypt					//数据加密工具,PHP插件			
+
+
+2.1安装libmcrypt-2.5.8							
+tar zxvf  libmcrypt-2.5.8.tar.gz -C /usr/src				//解压
+cd /usr/src/libmcrypt-2.5.8						//进入程序目录
+./configure && make && make install					//配置  编译   安装
+ln -s /usr/local/lib/libmcrypt.* /usr/lib				//创建运行环境
+
+
+2.2安装mhash-0.9.9.9
+tar zxvf  mhash-0.9.9.9.tar.gz -C /usr/src				//解压
+cd /usr/src/mhash-0.9.9.9						//进入程序目录
+./configure && make && make install					//配置  编译   安装
+ln -s /usr/local/lib/libmhash* /usr/lib					//创建运行环境
+
+
+
+2.3安装mcrypt-2.6.8
+tar zxvf  mcrypt-2.6.8.tar.gz -C /usr/src				
+cd /usr/src/mcrypt-2.6.8						
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH			//配置全局环境变量
+./configure make && make install					//配置 编译 安装
+
+
+3、配置，安装php
+
+
+3.1安装php-5.3.28
+tar zxvf  php-5.3.28.tar.gz -C /usr/src
+cd /usr/src/php-5.3.28
+./configure --prefix=/usr/local/php --with-mcrypt --with-apxs2=/usr/local/httpd/bin/apxs --with-mysql=/usr/local/mysql/ --with-config-file-path=/usr/local/php --enable-mbstring --enable-sockets && make && make install		//配置编译参数
+make && make install							//编译   安装
+make ZEND_EXTRA_LIBS='liconv'						//make执行错误时使用
+
+
+
+3.2配置php
+cp /usr/src/php-5.3.28/php.ini-development /usr/local/php/php.ini	//为php创建配置文件	
+vim /usr/local/php/php.ini						//修改配置文件
+        short_open_tag = On						//允许识别PHP<?....?>语法（配置文件内容）
+        default_charset = "utf-8"					//配置默认字符集（配置文件内容）
+
+
+
+4、安装ZendGuardLoader-php-5.3-linux-glibc23-x86_64模块			//页面加载速度优化php
+tar zxvf  ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz -C /usr/src	
+cd /usr/src/ZendGuardLoader-php-5.3-linux-glibc23-x86_64/php-5.3.x	//进入模块存放目录
+cp ZendGuardLoader.so  /usr/local/php/lib/php				//将模块复制到php能识别的目录
+					
+echo  zend_extension=/usr/local/php/lib/php/ZendGuardLoader.so >>/usr/local/php/php.ini	//使php能够识别模块
+echo  zend_loader.enable=1  >> /usr/local/php/php.ini					//启用模块
+     
+
+
+
+5、LAMP环境的配置
+
+5.1 vim  httpd.conf	//配置httpd支持php动态网站
+    AddType application/x-httpd-php  .php
+    DirectoryIndex  index.html  index.php
+service httpd restart
+    
+5.2安装phpMyAdmin mysql图像化管理工具
+tar zxvf phpMyAdmin-4.2.5-all-languages.tar.gz -C /usr/src
+cp -r /usr/src/phpMyAdmin-4.2.5-all-languages  /usr/local/httpd/htdocs/mysqld
+
+
+6、验证
+
+6.1编辑index.php文件
+vim /usr/local/httpd/htdocs/index.php
+    <?php phpinfo(); ?>			//如果看见php的介绍则httpd和php之间已经建立联系
+
+6.2测试php和mysql之间的联系
+vim /usr/local/httpd/htdocs/mysql.php
+    <?php $link=mysql_connect('local','root','') ; //连接数据库，登录地址，用户名，密码
+    if($link) echo 'ok' ;			   //连接成功则显示ok否则不显示
+    mysql_close() ;				   //关闭数据库连接
+    ?>
+
+6.3登录mysql图形化管理工具
+http://192.168.0.10/mysqld
+
+
+7、php常见配置参数
+--prefix=/usr/local/php 				//指定 PHP 安装目录
+--with-config-file-path=/usr/local/php			//指定配置文件存放目录
+--with-mysql=/usr/local/mysql				//指定mysql安装目录，对mysql的支持
+--with-mysqli=/usr/local/mysql/bin/mysql_config   	//mysqli扩展技术可以调用mysql，可以提高数据库的访问稳定性 
+--with-apxs2=/usr/local/apache/bin/apxs 		//编译的apache模块，参数是apxs工具的路径文件
+--with-mcrypt                    			//支持mcrypt算法
+--with-mhash                     			//支持mhash算法
+--with-openssl      					//openssl的支持，加密传输https时用到的
+--with-pcre-dir=/usr/local/bin/pcre-config     		//指定perl的正则库案安装位置
+--enable-sockets    					//开启sockets的支持
+--enable-bcmath   					//开启图片大小调整,使用zabbix监控会用到这个模块
+--enable-inline-optimization  				//优化线程
+--enable-mbstring					//启用多字节字符串功能
+
+
+
+
+
+
+

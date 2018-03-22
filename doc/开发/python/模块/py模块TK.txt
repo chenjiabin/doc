@@ -1,0 +1,83 @@
+TK：TKinter简称TK，用于实现GUI编程
+
+
+方法和属性：
+TK()：创建根窗口
+mainloop()：进入主循环（显示窗口）
+
+
+组件：
+Button		按钮
+Canvas		画布，提供绘图功能；可以包含图形或位图
+Checkbutton	多选按钮
+Entry		文本框，单行文字域，用来收集键盘输入
+Frame		框架，包含其他组件的纯容器
+Label		标签，用来显示文字或图片
+Listbox		列表框，一个选项列表，用户可以从中选择
+Menu		菜单，点下菜单按钮后弹出的一个选项列表，用户可以从中选择
+Menubutton	菜单按钮，用来包含菜单的组件
+Message		消息框，类似于标签，但可以显示多行文本
+Radiobutton	单选按钮
+Scale		进度条，线性“滑块”组件，可设定起始值和结束值，会显示当前位置的精确值
+Scrollbar	滚动条，对其支持的组件（文本域、画布、列表框、文本框）提供滚动功能
+Text		文本域，多行文字区域，可用来收集（或显示）用户输入的文字
+Toplevel	顶级，类似框架，但提供一个独立的窗口容器。
+
+
+
+插件：
+text：创建文本内容
+command：定义回调函数，quit退出
+bg：设置背景色		fg：设置字体颜色
+fill：填充
+geometry：设置窗口大小
+orient=HORIZONTAL：设置滑动条为横向，默认为纵向
+from_=10,to=40：设置滑动条滑动范围
+command=resize：将滑动条和字体关联起来
+
+
+实例：
+#coding: utf-8
+import Tkinter
+
+
+def test1():
+    top = Tkinter.Tk()						//创建主窗口
+    label = Tkinter.Label(top,text='hello world')		//创建文本，显示的文件是hello world
+    label.pack()						//调用文本
+    Tkinter.mainloop()						//进入主循环
+
+def test2():
+    top1 = Tkinter.Tk()
+    quit1 = Tkinter.Button(top1,text='hello world',command=top1.quit)	//创建按钮，当按钮释放时退出循环
+    quit1.pack()							//调用按钮
+    Tkinter.mainloop()							//进入主循环体
+
+def test3():
+    top = Tkinter.Tk()
+    hello = Tkinter.Label(top,text='hello world')					//创建文本
+    hello.pack()									//调用文本
+    quit1 = Tkinter.Button(top,text='end',command=top.quit,bg='blue',fg='white')	//创建按钮
+    quit1.pack(fill=Tkinter.X)								//调用按钮，进行填充	
+    Tkinter.mainloop()									//进入主循环体
+
+
+
+
+
+from Tkinter import *
+def resize(ev=None):
+    label.config(font='Helvetica -%d bold' % scale.get())			//设置字体格式
+top = Tk()
+top.geometry('250x150')								//设置窗口大小
+label = Label(top, text='Hello World!')
+label.pack()
+
+scale = Scale(top, from_=10,to=40,orient=HORIZONTAL,command=resize)		//创建滑动条，并关联字体
+scale.set(10)									//设置滑动条起始位置
+scale.pack(fill=X)								//设置填充
+quit = Button(top, text="QUIT",command=top.quit,bg='red',fg='white')		//设置按钮
+quit.pack()
+mainloop()
+
+

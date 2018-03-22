@@ -1,0 +1,219 @@
+代理的作用：web缓存、内容路由（如 比如动静分离）
+缓存的作用：
+	1、减少冗余内容传输
+	2、节省带宽、缓解网络瓶颈
+	3、降低服务器压力、减少传输延迟
+
+haproxy：提供http层的反向代理，提供tcp层的负载均衡
+	haproxy默认基于单进程，事件驱动模型工作，大大减少了上下文切换的开销及内心占用
+
+复制均衡器的性能评估：
+	会话率：创建会话消耗的时间
+	会话并发能力：支持的最大并发访问量
+	数据率：数据传输数率
+
+
+haproxy命令： 
+	-f 配置文件			#指定配置文件，不加子选项默认启动服务
+		-d		#前台，debug模式
+		-D 		#后台，daemon模式启动
+		-q 		#安静模式,不输出信息
+		-V 		#详细模式
+		-c		#对配置文件进行语法检查
+		-s 		#显示统计数据
+		-l 		#显示详细统计数据
+		-de 	#不使用epoll
+		-dp 	#不使用poll
+		-db 	#禁用后台模式，程序运行在前台，以非守护进程方式运行
+		-st 	#向pid文件发送TERMINATE信号，重启
+		
+
+HAProxy的负载均衡算法：
+	1. roundrobin		#轮询，最大支持4128个连接
+	2. static-rr		#加权轮询
+	3. leastconn		#最少连接数，更具后端服务器负载情况进行调度，仅适用于长连接会话
+	4. source			#相当于nginx的ip_hash，原地址绑定
+		hash-type:
+			map-based			#取模计算
+			consistent			#一致性哈希
+	
+	5. hdr(name)		#浏览器agent绑定
+		hash-type:
+			map-based			#取模计算
+			consistent			#一致性哈希
+			
+	6. uri				#根据请求的URI，将同一个url始终分发到一个服务器上
+		hash-type:
+			map-based			#取模计算
+			consistent			#一致性哈希
+			
+	7. url_param		#根据请求的URl参数
+		hash-type:
+			map-based			#取模计算
+			consistent			#一致性哈希
+
+	取摸和一致性哈希的区别：		
+		取摸：使用key的值进行hash计算除以server的总数来定位server，这种算法非常简单而且具有很高的随机分布性，但是当服务总数发送改变时，所有的缓存都会失效，必须重新构建缓存
+		一致性哈希：相比于取模，一致性哈希不仅对key进行hash运算，对每个server也进行hash运算，将hash计算的结果映射到一个有2^32个节点的环上，通过寻找hash值大于key的最小server来定位server
+		
+			虚拟节点：使用一致性哈希是在后端服务器叫少的时候可能会出现分布不均的情况，虚拟节点就是将环上的所有节点虚拟出多份，将这些虚拟节点和真实节点均匀的分布在环上
+	
+
+
+安装haproxy：
+	ntpdate ntp1.aliyun.com							#同步时间
+	tar zxvf haproxy-1.6.12.tar.gz -C /usr/src/		#解压
+	cd /usr/src/haproxy-1.6.12/						
+	make TARGET=linux26 PREFIX=/usr/local/haproxy	#安装，linux26内核版本2.6
+	make install PREFIX=/usr/local/haproxy			#安装路径
+	
+	
+环境配置：
+	mkdir /usr/local/haproxy/{etc,logs,run}		#创建配置文件，日志文件，运行文件目录
+	cd examples/
+	cp haproxy.init /etc/init.d/haproxy		#创建启动脚本
+	chmod 700 /etc/init.d/haproxy 		#只有root用户对启动启动脚本有控制权限
+	cp -p /usr/local/haproxy/sbin/haproxy /usr/local/sbin/	#创建管理命令
+	chkconfig  --add haproxy	#加入系统服务
+	chkconfig  haproxy on		#开启运行级别
+	useradd -M -s /sbin/nologin haproxy		#创建程序用户
+	cd /usr/local/haproxy/
+	touch etc/haproxy.cfg			#创建配置文件
+
+	
+haproxy配置详解：
+	配置文件格局：
+		全局配置：定义和haproxy性能相关的选项
+		代理配置：定义和代理相关的选项
+			默认配置：没有定义的参数将重默认定义中继承
+			前端配置：接收请求的前端虚拟节点
+			后端配置：后端集群服务配置
+			统计页面配置：haproxy管理界面配置
+			
+				
+	global					#全局配置
+		local2.*                       /var/log/haproxy.log			#将日志发送到rsyslog中，需要配置rsyslog
+		log         127.0.0.1 local2				#发送位置
+
+		chroot      /var/lib/haproxy				#虚拟根目录
+		pidfile     /var/run/haproxy.pid			#pid文件位置
+		maxconn     4000							#最大连接数
+		user        haproxy							#运行用户
+		group       haproxy							#运行组
+		daemon										#以守护进程方式运行
+		
+		其他的参数：
+			ulimit-n 文件数量 		#ulimit的数量限制，haproxy会自动计算，不建议定义
+			nbproc 进程数 			#设置进程数量，根据cpu进行配置，默认情况使用单进程+事件驱动模型
+			
+			
+			
+	defaults			#默认配置
+		mode                    http						#默认的模式mode{tcp|http|health}	
+		log                     global						#记录到全局定义的log文件中	
+		option                  httplog						#日志类别,采用httplog
+		option                  dontlognull					#不记录健康检查日志信息
+		option http-server-close							#每次请求完毕后主动关闭http通道
+		option forwardfor   except 192.168.0.0/8  #将客户端真实ip发往后端服务器，需要在后端服务器日志中添加"X-Forwarded-For"首部
+		option                  redispatch					#serverId对应的服务器挂掉后,强制定向到其他健康的服务器
+		retries                 3							#3次连接失败就认为服务不可用
+		timeout http-request    10s							#http请求超时时间
+		timeout queue           1m							#默认队列超时时间
+		timeout connect         10s							#连接超时时间
+		timeout client          1m							#客户端连接超时时间
+		timeout server          1m							#服务端连接超时时间
+		timeout http-keep-alive 120s						#长连接超时时间
+		timeout check           10s							#缓存超时时间
+		maxconn                 4096						#最大连接数
+						#错误页面配置，安装目录中提供有模板文件
+		errorfile 403 /usr/src/haproxy-1.6.12/examples/errorfiles/403.http
+		errorfile 500 /usr/src/haproxy-1.6.12/examples/errorfiles/500.http
+		errorfile 502 /usr/src/haproxy-1.6.12/examples/errorfiles/502.http
+		errorfile 503 /usr/src/haproxy-1.6.12/examples/errorfiles/503.http
+		errorfile 504 /usr/src/haproxy-1.6.12/examples/errorfiles/504.http
+		
+		
+
+	frontend  main *:5000
+		acl url_static       path_beg       -i /static /images /javascript /stylesheets
+		acl url_static       path_end       -i .jpg .gif .png .css .js
+
+		use_backend static          if url_static
+		default_backend             app
+
+	
+	frontend main		#前端配置，自定义名称
+		mode http
+		log 127.0.0.1 local0 err				#日志级别	
+		bind *:80 								#监听地址
+		acl web hdr(host) -i www.abc.com  		#web是规则名称，-i为忽略大小写，后面是访问的域名，支持正则表达式
+		acl img hdr(host) -i img.abc.com  		#如果访问img.abc.com这个域名，就触发img规则
+		#acl static path_end -i .jpg .png .jpeg		#如果访问的url以这些后缀名结尾就除非static规则  
+		use_backend webserver if web  	  		#如果上面定义的web规则被触发，即访问www.abc.com，就将请求分发到webserver
+		use_backend imgserver if img
+		#use_backend imgserver if static
+		default_backend def		 				#如果没有匹配到
+	
+	
+	backend webserver 			#后端配置，webserver作用域
+		mode http
+		balance roundrobin 					#使用轮询算法
+		#hash-type consistent				#hash类型
+		option httpchk /index.html 			#url健康检查，只能在使用http模式时使用
+		#cookie ck insert nocache		#使用cookie绑定服务器，不借助于调度算法，必要时可以启用，ck：名，插入，不缓存 
+		server web1 192.168.0.40:80 cookie 1 weight 5 check inter 2000 rise 2 fall 3
+		server web2 192.168.0.60:80 cookie 2 weight 3 check inter 2000 rise 2 fall 3
+			#cookie 1表示server_id为1，check inter 1500 是检测心跳频率 
+			#rise 3是3次正确认为服务器可用，fall 3是3次失败认为服务器不可用，weight代表权重
+
+	backend imgserver
+		mode http
+		option httpchk /index.html
+		balance roundrobin 
+		server img01 192.168.0.50:80 cookie 1 weight 5 check inter 2000 rise 2 fall 3
+		server img02 192.168.0.70:80 cookie 1 weight 5 check inter 2000 rise 2 fall 3
+		
+	backend def
+		option httpchk /index.html
+		balance roundrobin 
+		server test 192.168.0.254:80 cookie 1 weight 5 check inter 2000 rise 2 fall 3
+
+		
+	listen stats								#定义haproxy监控页面，backend和frontend的集合
+		bind *:9000								#监听地址
+		stats enable							#启用haproxy的监控页面
+		stats hide-version						#隐藏haproxy的版本
+		stats uri /haproxy/stats/admin			#haproxy监控页面的访问路径
+		stats realm 'login'						#认证登录时的提醒
+		stats auth root:123456					#启用 用户和密码
+		stats admin if TRUE						#认证成功后给予管理haproxy的权限
+	 
+		
+
+	
+	
+	
+定义日志：
+	vim /etc/rsyslog.conf		#修改系统日志配置
+		local0.* /usr/local/haproxy/logs/haproxy.log		
+			#将haproxy产生的所有日志信息存到haproxy.log文件中
+		*.info;mail.none;authpriv.none;cron.none;local0.none       /var/log/messages
+			#haproxy产生的文件不记录到/var/log/messages文件中
+		service rsyslog restart			#重启日志服务
+
+	
+		
+	
+参考博客：
+	http://blog.sina.com.cn/s/blog_67fe9ee60102wssq.html
+	http://www.cnblogs.com/xibei666/p/5877548.html
+	http://www.cnblogs.com/MacoLee/p/5853413.html
+	http://blog.csdn.net/zhu_tianwei/article/details/41117323
+	http://hao360.blog.51cto.com/5820068/1343422		
+		
+		
+		
+		
+		
+		
+		

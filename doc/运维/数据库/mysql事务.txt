@@ -1,0 +1,63 @@
+mysql事务：一个独立的工作单元
+事务必须通过ACID测试：
+	原子性(Atomicity)：一个事务的所有操作要么全部成功执行，要么全部失败后回滚
+	一致性(Consistency)：数据库总是从一个一致性状态转换成另一个状态
+	隔离性(Isolation)：一个事务在做出的操作在提交之前，其他事务是不可见的，隔离有多种级别
+	持久性(Durability)：一旦事务提交，其所做出的操作将永久保存在数据库中
+	
+	事务的执行流程：
+		启动事务-->执行SQL语句-->提交事务-->保存数据
+		启动事务-->执行SQL语句-->回滚-->数据不发生任何改变
+		
+	事务的隔离级别：
+		Read Uncommitted(读取未提交内容)
+			出现问题：1、2、3			#不建议使用此隔离级别
+		Read Committed(读提交)
+			出现问题：2、3				#大多数数据库使用的隔离级别，性能较好
+		Repeatable Read(不可重复读)	
+			出现问题：3					#mysql默认使用的隔离级别
+		Serializable(串行化)
+			出现问题：4					#数据安全性最好，并发访问能力最弱，可能会出现死锁，
+										除非在数据要求比较严格的情况下，否则不建议使用
+		
+		出现问题：
+			1、脏读：可以读取其他事务没有提交的数据			2、不可重复读：在当前事务中没有做出任何修改，但使用select查看数据时可能查看到不同的数	3、幻读：在当前事务提交之前只能看见启动事务时的数据和在当前事务中做出修改的数据，而其他事务所做出的修改将不能看见	4、加锁读：如果在此事务中对表进行修改，那么数据库将给做出修改的表加上表锁，在此事务提交之前其他事务对此表做出的操作都会阻塞
+		
+		
+		mysql> SHOW VARIABLES LIKE '%iso%';			#查看当前的隔离级别
+		SET tx_isolation='参数'			#修改隔离级别
+			对应参数(不区分大小写)：
+				Read-Uncommitted		#1
+				Read-Committed			#2
+				Repeatable-Read			#3(默认)
+				Serializable			#4
+
+		mysql> SET GLOBAL autocommit=0;		#建议修改，可提升一点性能
+		mysql> START TRANSACTION		#启动事务
+		mysql> COMMIT			#提交事务
+		mysql> ROLLBACK			#回滚
+		
+		
+		mysql事务日志：
+			事务日志和崩溃后安全恢复可以很好的保存数据安全
+		
+				事务日志包括：重做日志redo和回滚日志undo，事务日志通常比较小
+
+				Redo记录的是已经全部完成的事务，就是执行了COMMIT的事务
+					记录日志组是ib_logfile0、ib_logfile1	记录日志组可以更加需要调整文件数量
+
+				Undo记录的是已部分完成并且写入硬盘的未完成的事务			
+					在mysq重启后，innodb通过事务日志将所有已完成并写入磁盘的和未完成的事务进行同步并将数据写入到磁盘中完成数据库崩溃后安全恢复		
+
+					mysql> SHOW VARIABLES LIKE 'innodb_log%';		#查看事务日志的相关配置
+						innodb_log_file_size			#设置事务日志大小
+						innodb_log_files_in_group 		#设置事务日志组文件数量
+						innodb_log_group_home_dir  		#设置事务日志存放位置
+
+
+			http://www.cnblogs.com/snsdzjlz320/p/5761387.html		#实例
+
+
+
+
+

@@ -1,0 +1,15 @@
+function test1(arg) {           生成ao对象:
+    console.log(arg);           1.形式参数
+    var arg = 11;               2.局部变量
+    console.log(arg);           3.函数声明表达式
+    function arg() {}           
+    console.log(arg)
+}
+test1(2)
+
+运行过程:
+    1.ao.arg = undefined
+    2.ao.arg = 2
+    3.ao.agr = 11
+    4.ao.arg = undefined            在这儿我们传递的参数被undefined覆盖,所以最后输出的值为function,11,11
+    5.ao.agr = function

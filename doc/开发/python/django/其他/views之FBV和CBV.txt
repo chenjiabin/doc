@@ -1,0 +1,47 @@
+FBV：function base views
+CBV：class base views
+
+#写项目建议使用CBV写测试建议使用FBV
+
+
+FBV:
+def Fbv(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('request')
+    else:
+        return HttpResponseRedirect('response')
+
+        
+class CBV(View):
+    def dispatch(self, request, *args, **kwargs):                       
+        print '在接受到用户请求之后第一个执行的方法'
+        response = super(CBV, self).dispatch(request, *args, **kwargs)
+        #必须继承至父类
+        print '在返回用户数据之前执行'
+        return response         #必须返回父类的继承
+
+    def get(self,request):                              #接受get请求后执行的函数
+        print 'gggggggggggggggg'
+        return HttpResponse('CBV')
+
+    #['get', 'post', 'put', 'patch', 'delete', 'head', 'options', 'trace']          #类中支持的方法
+
+
+from app01.views import *
+urlpatterns = [
+    url(r'^fvb/', Fbv), 
+    url(r'^cbv/', CBV.as_view()),           #CBV固定写法
+]
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+FROM ubuntu:systemlib
+
+WORKDIR /dub
+
+RUN apt-get update && apt-get install -y \
+	python-dev python3-dev \
+	python-pip python3-pip \
+	python-dateutil python3-dateutil \
+	python-tz python3-tz \
+	python-pandas python3-pandas \
+	python-tables python3-tables \
+	python-pyproj python3-pyproj \
+	python-mpltoolkits.basemap \
+	python-sklearn \
+	python-pil python3-pil \
+	python-gdal python3-gdal \
+	libhdf5-serial-dev \							
+	libyaml-dev 									
+	
+# libhdf5-serial-dev和libyaml-dev是netCDF4的依赖
+
+	
+RUN USE_SETUPCFG=0 HDF5_INCDIR=/usr/include HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu		
+# netCDF4检查的头文件和库文件
+
+
+RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
+	
+	
+RUN pip install \
+	numpy \
+	scipy \
+	matplotlib \
+	"ipython<6" \
+	requests \
+	boto boto3 \
+	mako \
+	tomorrow \
+	envoy \
+	netCDF4
+		
+
+RUN pip3 install \
+	numpy \
+	scipy \
+	matplotlib \
+	ipython \
+	requests \
+	boto boto3 \
+	mako \
+	tomorrow \
+	envoy \
+	netCDF4
+	
+	
+RUN pip install --upgrade \
+	setuptools \
+	pandas \
+	awscli \
+	numexpr
+	
+
+RUN pip3 install --upgrade \
+	setuptools \
+	pandas \
+	awscli \
+	numexpr
+	
+	
+CMD ["/bin/bash"]
+

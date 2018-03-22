@@ -1,0 +1,173 @@
+简介：
+	1、MHA目前在MySQL高可用方面是一个相对成熟的解决方案，是MySQL高可用环境下故障切换和主从提升的高可用软件
+	2、MHA能在短时间内完成故障切换，并且在最大程度上保证数据的一致性，以达到真正意义上的高可用
+	3、MHA基于mysql协议，通过mysql主从或主主进行复制
+	4、MHA官网：https://code.google.com/p/mysql-master-ha/
+	
+软件由两部分组成：MHA Manager(关理节点)和MHA Node(数据节点)
+	1、MHA Manager可以单独部署在一台独立的机器上管理多个master-slave集群，也可以部署在一台slave节点上
+	2、MHA Node运行在每台MySQL服务器上		3、MHA_Manager会定时探测集群中的master节点，当master出现故障时，它可以自动将最新数据的slave提升为新的master，然后将所有其他的slave重新指向新的master
+	4、MHA配合半同步复制使用可以最大限度的保证数据安全性
+	
+工作原理：
+	1、从宕机崩溃的master保存二进制日志事件(binlog events)
+	2、识别含有最新更新的slave
+	3、应用差异的中继日志(relay log)到其他的slave
+	4、应用从master保存的二进制日志事件(binlog events)
+	5、提升一个slave为新的master
+	6、使其他的slave连接新的master进行复制
+	
+MHA工具：
+	Manager工具包：
+		masterha_check_ssh              #检查MHA的SSH配置状况，MHA强烈依赖ssh秘钥验证
+		masterha_check_repl             #检查MySQL复制状况
+		masterha_manager                #MHA主程序
+		masterha_check_status           #检测当前MHA运行状态
+		masterha_master_monitor         #检测master是否宕机
+		masterha_master_switch          #手动控制故障转移
+		masterha_conf_host              #添加或删除配置的server信息
+		masterha_stop					#MHA关闭工具
+	
+	Node工具包：
+		save_binary_logs                #保存和复制master的二进制日志
+		apply_diff_relay_logs           #识别差异的中继日志事件并将其差异的事件应用于其他的slave
+		filter_mysqlbinlog              #去除不必要的ROLLBACK事件(MHA已不再使用这个工具)
+		purge_relay_logs                #清除中继日志(不会阻塞SQL线程)
+
+	
+
+实验环境：
+	角色                    ip地址        
+	MHA_manager				192.168.0.70
+	Master                  192.168.0.40
+	Slave 			        192.168.0.60
+	Slave                   192.168.0.10
+
+
+	
+安装MHA：
+	1、配置elpe和baseyum源
+	2、下载MHA软件，并上传至当前目录：https://code.google.com/p/mysql-master-ha/		#需要翻墙
+	3、yum -y localinstall mha4mysql-manager-0.55-0.el6.noarch.rpm mha4mysql-node-0.54-0.el6.noarch.rpm
+			#非管理节点不用安装mha4mysql-manager-0.55-0.el6.noarch.rpm
+	4、配置ssh秘钥验证
+		ssh-keygen							#生成秘钥，一直回车就行
+		cat id_rsa.pub >> authorized_keys	#将authorized_keys  id_rsa  id_rsa.pub拷贝到所有节点的~/.ssh目录下
+		注意：不能禁止password登陆，否则会出现错误	
+
+		
+配置mysql主从(建议使用mysql5.5版本以上)：
+	master配置：
+		vim /etc/my.cnf					#修改配置文件，添加如下内容
+			[mysqld]						#找到mysqld配置段
+			log-bin=mysql-bin				#开启二进制日志
+			relay-log=relay-bin				#开启中继日志
+			binlog_format=mixed				#使用混合模式的二进制日志
+			server-id= 1					#全局唯一的server-id
+			innodb-file-per-table=1			#使用单独表空间文件
+			default-storage-engine=InnoDB	#使用InnoDB存储引擎
+			autocommit=0					#关闭事务自动提交
+			skip-name-resolve=1				#关闭主机名反解
+			relay-log-purge=0				#不允许自动清理中继日志，因为MHA会依靠中继日志恢复数据
+			
+		service mysqld restart			#重启mysql
+		mysql> SHOW MASTER STATUS;		#查看当前二进制日志位置
+			+------------------+----------+
+			| File             | Position |
+			+------------------+----------+
+			| mysql-bin.000004 |      360 |			#记住当前值
+			+------------------+----------+
+		mysql> GRANT REPLICATION SLAVE,REPLICATION CLIENT ON *.* TO 'mha'@'192.168.0.%' IDENTIFIED BY 'mha';
+		mysql> GRANT ALL ON *.* TO 'mymha'@'192.168.0.%' IDENTIFIED BY 'mymha';			#创建MHA监控用户
+		mysql> FLUSH PRIVILEGES;
+
+		
+	slave配置：
+		vim /etc/my.cnf					#修改配置文件，添加如下内容
+			[mysqld]						#找到mysqld配置段
+			log-bin=mysql-bin				#开启二进制日志
+			relay-log=relay-bin				#开启中继日志
+			binlog_format=mixed				#使用混合模式的二进制日志
+			server-id= 2					#全局唯一的server-id
+			innodb-file-per-table=1			#使用单独表空间文件
+			default-storage-engine=InnoDB	#使用InnoDB存储引擎
+			autocommit=0					#关闭事务自动提交
+			skip-name-resolve=1				#关闭主机名反解
+			read-only=1						#只读，对root用户无效(slave节点必须设置)
+			relay-log-purge=0				#不允许自动清理中继日志，因为MHA会依靠中继日志恢复数据
+	
+		mysql> CHANGE MASTER TO MASTER_HOST='192.168.0.10',MASTER_USER='mha',MASTER_PASSWORD='mha',MASTER_LOG_FILE='mysql-bin.000004',MASTER_LOG_POS=360,MASTER_PORT=3306;			#指定主服务器
+		mysql> START SLAVE;					#启动复制线程
+		mysql> SHOW SLAVE STATUS\G;			#查看从服务器状态
+		        Slave_IO_Running: Yes		#必须都为yes
+				Slave_SQL_Running: Yes
+		mysql> SELECT USER,PASSWORD,HOST FROM mysql.user;			#查看mha是否同步成功
+		
+		
+MHA配置：
+	mkdir /etc/mha	
+	mkdir /var/log/mha_app1
+	
+	vim /etc/mha/app1.cnf		
+		[server default]							#MHA工作属性定义(配置时不能有注释)
+		manager_workdir=/masterha/app1				            #MHA的工作目录
+		manager_log=/var/log/mha_app1/manager.log          #MHA的日志文件
+		password=mymha         				#设置MHA监控用户的密码
+		user=mymha               			#设置监控用户
+		ping_interval=1         			#设置监控主库，健康检查时间
+		remote_workdir=/masterha/app1     	#设置远端mysql在发生切换时binlog的保存位置
+		repl_password=mha    				#设置复制用户的密码
+		repl_user=mha          				#设置复制环境中的复制用户名
+		ssh_user=root           			#设置ssh的登录用户名
+		master_binlog_dir=/usr/local/mysql/data/				#二进制日志文件存放路径	
+
+		可选参数，脚本都需要自己写：
+			shutdown_script=/masterha/scripts/shutdown.sh     #故障发生后关闭故障主机脚本(用于防止脑裂)
+			master_ip_failover_script=/masterha/scripts/automatic.sh		#设置自动故障转移时执行的脚本	
+			master_ip_online_change_script=/masterha/scripts/manual.sh 		#设置手动故障转移时执行的脚本	
+			report_script=/masterha/scripts/twili.py   						#设置发生切换后发送的报警脚本
+				
+			
+		[server1]						
+		hostname=192.168.0.40			
+		port=3306						
+	
+		[server2]						#节点设置
+		hostname=192.168.0.60			#主机地址
+		port=3306						#端口
+		check_repl_delay=0 				#用防止master故障时，切换时slave有延迟
+		candidate_master=1 
+		#设置为候选master，如果没有设置则在slave中选择数据最新的成为master，如果设置了建议最好指向半同步节点
+
+		[server3]						
+		hostname=192.168.0.10			
+		port=3306
+	
+	
+MHA使用：
+	chmod 600 /etc/mha/app1.cnf				#设置为只有root用户对此文件有权限
+	masterha_check_ssh --conf=/etc/mha/app1.cnf				#检查ssh秘钥认证是否成功
+		--conf：指定配置文件
+
+	masterha_check_repl --conf=/etc/mha/app1.cnf			#检查mysql复制环境成功
+	masterha_check_status --conf=/etc/mha/app1.cnf			#检查MHA运行状态
+	masterha_manager --conf=/etc/mha/app1.cnf				#启动MHA
+	
+	
+	
+	
+	http://www.cnblogs.com/gomysql/p/3675429.html			#更多配置
+	http://www.linuxidc.com/Linux/2014-11/109460.htm
+	
+	galera cluster				#更好的mysql集群工具，但需要使用特别编译的mysql版本	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	

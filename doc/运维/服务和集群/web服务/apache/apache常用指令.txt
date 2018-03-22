@@ -1,0 +1,133 @@
+检查主配置文件是否有语法错误：service  httqd   configtest  或  httpd  -t
+启动服务：service  httqd  start
+关闭服务：service  httqd  stop
+重启服务：service  httqd  restart
+
+
+apache的特点：
+1、事先加载响应程序
+2、模块化设置，核心较小，各功能由模块进行添加
+3、支持独立编译模块
+
+
+工作根目录：/etc/httpd
+主配置文件：/etc/httpd/conf/httpd.conf
+模块目录：/etc/httpd/modules
+日志文件目录：/etc/httpd/logs
+	日志文件类型：access_log：访问日志   err_log：错误日志
+网页文件目录：/var/www
+	html：html文件存放目录
+	cgi-bin：动态网页存放目录
+	error：错误网页文件存放目录
+
+
+apache主配置文件由指令和OU组成
+      容器：<容器名称>内容</容器名称>
+	容器的指令，一般只在容器内生效
+
+
+ServerTokens OS				#相应主机头时显示的服务器版本
+ServerRoot "/etc/httpd"   		#工作根目录
+Timeout 60				#在六十秒内没有接收或送出数据就断开连接
+include					#导入配置文件
+
+KeepAlive Off   			#不使用保持连接的功能，即客户一次请求连接只能响应一个文件
+MaxKeepAliveRequests 100		#在保存连接的情况下一个用户的最大连接数
+KeepAliveTimeout 15			#在保存连接的情况下，的超时时间
+
+
+<IfModule prefork.c>		#设置使用prefork.c的运行方式参数
+StartServers       8		#默认启动的响应进程
+MinSpareServers    5		#最少空闲响应进程
+MaxSpareServers   20		#最大空闲响应进程
+ServerLimit      256		#给MaxClients的硬限制
+MaxClients       256		#限制同一时间内的响应进程
+MaxRequestsPerChild  4000  	#最大连接数
+</IfModule>
+
+
+Listen 80						#监听端口和ip地址，默认监听说有ip地址的80端口
+LoadModule aut_module modules/mod_auth.so		#动态加载的模块，模块名   路径（相对路径）
+Include conf.d/*.conf					#配置文件包含/etc/httpd/conf.d 目录下的所有以.conf结尾的文件 
+
+
+User apache			#程序用户
+Group apache			#程序组
+
+
+ServerAdmin root@localhost			#管理员邮箱地址
+ServerName					#在无法或的服务器主机名时，给服务器的默认名称，默认不启用
+
+
+DocumentRoot "/var/www/html"			#设置网页文件路径
+
+<Directory "/var/www/html">  			#定义网页文件的属性
+Options Indexes FollowSymLinks   		#设置网页文件的访问权限
+AllowOverride None  			 	#不允许覆盖
+
+Order allow,deny    				#默认为deny
+Allow from all					#设置允许访问的主机
+</Directory>
+
+
+
+DirectoryIndex index.html index.html.var  	#定义首页文件名
+HostnameLookups Off  				#只记录连接服务器的IP地址，而不记录主机名
+ 
+
+ErrorLog logs/error_log   			#错误日志存放位置
+LogLevel warn					#日志级别
+LogFormat "%h %l %u %t   			#格式
+CustomLog logs/access_log combined  		 #访问日志存放位置
+
+
+Alias /icons/ "/var/www/icons/"			#目录别名
+
+
+
+ServerRoot：apache的安装主目录
+	格式：ServerRoot   /安装主目录
+
+Listen：定义监听端口
+	格式：Lsiten [IP地址:]监视端口 [协议]
+	    []表示可省，如果省略使用则默认配置
+	默认使用TCP协议，监视所有IP地址的80端口
+
+LoadModule：加载模块
+	格式：LoadModule  模块  模块文件名称
+	模块一般在，ServerRoot定义的安装主目录下，名为modules的目录中
+
+LoadFile:加载模块
+	和LoadModule基本相同，但是LoadModule可以使用绝对路径加载模块
+
+ServerAdmin：当网站出现故障时，为客户提供的一个解决问题的邮箱地址
+	格式：ServerAdmin   邮箱地址
+
+ServerName：设置服务器本身的主机名和端口  
+
+DocumentRoot：设置网站文件的存放位置
+	格式：DocumentRoot  /网站文件路径（一般是html文件存放路径）
+
+ErrorLog：定义错误日志位置，默认使用相对路径
+
+ErrorLogFormat：设置错误日志格式
+
+CustomLog：设置客户端的访问日志文件名和日志格式，默认使用相对路径
+	格式：CustomLog  文件名  格式
+
+LogFormat：设置用户日志文件格式，通常和CustomLog指令，配合使用
+
+Include：允许apache在主配置文件中加载其他配置文件
+	格式：Include  其他配置文件路径
+
+Options：网页文件访问控制
+	格式：Options  [+|-]选项  [[+|-]选项]
+    常用选项：
+	All：开启除MultiViews之外的所有选项
+	ExecCDI：允许执行Options指定目录下的所有CGI脚本
+	FollowSymlinks：允许访问符号链接
+	Indexes：允许目录索引
+	None：表示不启用任何额外的功能（一般使用此选项）
+
+
+Order：控制默认访问状态以及Allow与Deny的次序

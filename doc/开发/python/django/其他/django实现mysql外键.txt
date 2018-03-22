@@ -1,0 +1,118 @@
+from django.db import models
+
+#多对多实现代码，多对多会生成一张关系映射表，用于存储两种表之间的对应关系
+#多对多主要用户实现用户和组之间的的对应
+#例：一个用户可以属于多个组，一个组可以包含多个用户
+
+class group(models.Model):
+    name = models.CharField(max_length=50)			#外键
+
+class user(models.Model):							#主键
+    username = models.CharField(max_length=50)
+    typeid = models.ManyToManyField(group)			#多对多
+	#typeid = models.ForeignKey(group) 				#一对多
+	#typeid = models.OneToOneField(group)			#一对一，用的很少
+	 
+	 
+	mysql数据库操作： 
+	
+	group
+	mysql> insert into web_app_group(name) values('CEO');		#创建两个组
+	mysql> insert into web_app_group(name) values('CTO');
+	mysql> select * from web_app_group;
+		+----+------+
+		| id | name |
+		+----+------+
+		|  1 | CEO  |
+		|  2 | CTO  |
+		+----+------+
+		
+	username
+	mysql> insert into web_app_user(username) values('root');		#创建三个用户
+	mysql> insert into web_app_user(username) values('mysql');
+	mysql> insert into web_app_user(username) values('ssh');
+	mysql> select * from web_app_user;
+		+----+----------+
+		| id | username |
+		+----+----------+
+		|  1 | root     |
+		|  2 | mysql    |   
+		|  3 | ssh      |      
+		+----+----------+
+
+
+	关系表：
+	mysql> insert into web_app_user_typeid(user_id,group_id) values(1,1);
+	mysql> insert into web_app_user_typeid(user_id,group_id) values(2,1);
+	mysql> insert into web_app_user_typeid(user_id,group_id) values(3,2);
+	mysql> insert into web_app_user_typeid(user_id,group_id) values(1,2);
+	mysql> select * from web_app_user_typeid;	
+		+----+---------+----------+
+		| id | user_id | group_id |
+		+----+---------+----------+	
+		|  1 |       1 |        1 |		#root用户CEO组
+		|  4 |       1 |        2 |		#root用户CTO组
+		|  2 |       2 |        1 |		#mysql用户CEO组
+		|  3 |       3 |        2 |		#ssh用户CTO组
+		+----+---------+----------+
+
+
+
+	一对多，需要一个外键和一个主键
+	from django.db import models
+
+	class type(models.Model):
+		name = models.CharField(max_length=50)			#外键
+
+	class users(models.Model):							#主键
+		username = models.CharField(max_length=50)
+		typeid = models.ForeignKey(type) 				#一对多
+
+		
+	mysql数据库操作：
+	
+	type
+	mysql> insert into web_app_type(name) values('admin');		#创建三个用户类型
+	mysql> insert into web_app_type(name) values('user');
+	mysql> insert into web_app_type(name) values('sysuser');
+	mysql> select * from web_app_type;
+		+----+---------+
+		| id | name    |
+		+----+---------+
+		|  1 | admin   |
+		|  2 | user    |
+		|  3 | sysuser |
+		+----+---------+
+		
+	users
+	mysql> desc web_app_users;
+		+-----------+-------------+------+-----+---------+----------------+
+		| Field     | Type        | Null | Key | Default | Extra          |
+		+-----------+-------------+------+-----+---------+----------------+
+		| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+		| username  | varchar(50) | NO   |     | NULL    |                |
+		| typeid_id | int(11)     | NO   | MUL | NULL    |                |		#外键对应的ID	
+		+-----------+-------------+------+-----+---------+----------------+
+
+	mysql> insert into web_app_users(username,typeid_id) values('root',1);	#创建用户
+	mysql> insert into web_app_users(username,typeid_id) values('bin',3);  #对应外键的ID为3的数据	
+	mysql> insert into web_app_users(username,typeid_id) values('ntp',3);
+	mysql> insert into web_app_users(username,typeid_id) values('lisi',2);
+		+----+----------+-----------+
+		| id | username | typeid_id |
+		+----+----------+-----------+
+		|  1 | root     |         1 |
+		|  2 | bin      |         3 |
+		|  3 | ntp      |         3 |
+		|  4 | lisi     |         2 |
+		+----+----------+-----------+
+
+	
+
+
+
+
+
+	 
+
+	 

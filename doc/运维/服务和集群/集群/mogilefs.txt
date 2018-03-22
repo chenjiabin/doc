@@ -1,0 +1,204 @@
+分布式：
+	分布式存储或分布式文件系统的概念：
+		多台计算机每一台提供一定的存储空间存储数据，通过元数据服务器将数据均匀的存储在各个节点上
+		元数据：描述数据的数据，主要是描述数据属性，用来支持如指示存储位置、资源查找、文件记录等功能
+	
+	分布式文件系统：可以直接挂载在系统上进行访问
+	分布式存储：只能通过API进行访问
+		有元数据节点服务器：元数据节点存储元数据，数据节点存储数据	
+		无元数据节点服务器：每个数据节点保存完整的元数据和部分数据
+		
+	常见软件：
+		GFS：google file system
+		HDFS：Hadoop file system
+		TFS：taobao(淘宝) file system
+		ceph：linux内核中实现的分布式文件系统
+		MooseFS：轻量级分布式文件系统
+		MogileFS：轻量级分布式文件系统，比moosefs的性能高
+	
+	
+	MogileFS
+		MogileFS有3个组件：
+
+Tracker：是文件系统集群的核心节点，基于数据库保存元数据，主要用于监控、指示storage节点完成数据的添加、删除、查询，及节点之间数据的复制等，Tracker节点通常有多个，以实现负载均衡和高可用
+storage：实际存储数据的位置，能完成文件创建、删除、重命名等操作
+database：存储Tracker节点的元数据及全局信息
+
+
+实现原理：	在MogileFS中，每一个数据块都会有多个副本，存放于多个storage上(一般是3份)，在Tracker上会分别每一个数 据块的存储位置。若某个storage节点不在线了，客户端向Tracker节点请求获取数据时，Tracker节点会返回副本的存储位置给客户端。这样就保证了整个集群高可用性。当有数据存储至某一storage节点后，各storage节点会根据Tracker的指示通过节点间通信将副本发送至其他节点上。若某一storage下线了，该节点上的副本会由其他节点重新提供，保证副本的个数不少于指定的值。
+	
+	
+	
+安装配置：
+环境准备：
+	[epel]					
+	nama=epel package
+	baseurl=http://mirrors.aliyun.com/epel/6/x86_64/		#阿里yum源
+	gpgcheck=1
+	enabled=1
+	gpgkey=http://mirrors.aliyun.com/epel/RPM-GPG-KEY-EPEL-6
+		
+	yum -y install Perlbal					#安装perl包管理工具
+	yum -y install perl-DBI					#安装其他依赖包
+	yum -y install perl-DBD-MySQL			#连接数据库模块
+	yum -y install perl-Danga-Socket
+	yum -y install perl-IO-AIO
+	yum -y install perl-Net-Netmask
+	yum -y install cpan						#perl模块管理工具
+	yum -y install mysql mysql-server		#安装数据库
+	
+	cpan		#第一次使用perl包管理工具需要输入yes进行环境配置
+		cpan[1]> install MogileFS::Client			#使用cpan安装MogileFS::Client
+		cpan[1]> install MogileFS::Utils			#管理工具集
+
+安装mogilefs：
+	http://search.cpan.org/CPAN/authors/id/D/DO/DORMANDO/MogileFS-Server-2.44.tar.gz   #安装包下载
+	tar zxvf MogileFS-Server-2.44.tar.gz -C /usr/src/
+	cd /usr/src/MogileFS-Server-2.44
+	perl Makefile.PL 					#检查环境	
+	make && make install				#编译  安装
+		
+	
+
+配置mysql数据库：
+	chkconfig --add mysqld
+	chkconfig mysqld on
+	service mysqld start			#启动mysql
+	mysqladmin -uroot password 123.com		#设置root密码
+	mysql -uroot -p			#连接数据库
+		create database mogilefs;		#创建数据库
+		grant all on mogilefs.* to 'mogilefs'@'192.168.%.%' identified by '456.com';	#授权用户
+		flush privileges;
+	mogdbsetup --dbhost=192.168.0.10 --dbrootpass='123.com' --dbuser=mogilefs --dbpass='456.com'
+		 --dbhost=	     			#数据库地址，默认为localhost
+		 --dbport=	       		 	#端口，默认3306
+		 --dbname=			   		#连接的库名，默认mogilefs
+		 --dbrootuser=				#初始化库的用户，默认root
+		 --dbrootpass=		    	#root的密码，默认为空
+		 --dbuser=			        #连接初始化库的用户，默认mogilefs
+		 --dbpass=			      	#初始用户的密码，默认为空
+
+
+配置mogilefs：
+	useradd -r mogilefs			#创建运行用户，mogilefs不能以root用户运行
+	mkdir /etc/mogilefs		
+	mkdir /var/run/mogilefsd			#pid文件存放位置
+	vim /etc/mogilefs/mogilefsd.conf 	#创建配置文件
+		pidfile = /var/run/mogilefsd/mogilefsd.pid		#pid文件位置
+		db_dsn = DBI:mysql:mogilefs:host=192.168.0.10;port=3306;mysql_connect_timeout=5   #连接数据库的信息
+		daemonize = 1				#运行为守护进程
+		db_user = mogilefs          #数据库上的用户名
+		db_pass = 456.com 	        #用户名对应的密码
+		listen = 0.0.0.0:7001       #监听的地址和端口
+		conf_port = 7001 
+		query_jobs = 10             #用于查询的进程数
+		delete_jobs = 1             #用于删除操作的进程数
+		replicate_jobs = 5          #用于复制的进程数
+		reaper_jobs = 1             #用于回收资源的进程数
+	
+	chown -R mogilefs:mogilefs /etc/mogilefs			#修改属主属组
+	chown -R mogilefs:mogilefs /var/run/mogilefsd		
+	su - mogilefs -c "mogilefsd -c /etc/mogilefs/mogilefsd.conf --daemon"	#启动服务
+	ss -tnl	| grep 7001			#查看服务是否启动
+	
+
+
+storage配置：安装和Tracker一样的包，如果不作为Tracker则不需要配置安装数据库
+	useradd -r mogilefs			#创建运行用户
+	mkdir -pv /mogilefs/data/dev1		#创建数据存储目录，dev1必须有代表第一个storage的设备
+	mkdir /etc/mogilefs	
+	vim /etc/mogilefs/mogstored.conf 
+		maxconns = 1000               #最大并发连接数
+		httplisten = 0.0.0.0:7500     #http监听的地址
+		mgmtlisten = 0.0.0.0:7501     #管理接口监听地址
+		docroot = /mogilefs/data      #用于存储的目录
+	
+	chown -R mogilefs:mogilefs /etc/mogilefs			#修改属主属组
+	chown -R mogilefs:mogilefs /mogilefs/	
+	su - mogilefs -c "mogstored -c /etc/mogilefs/mogstored.conf --daemon"	#启动服务
+	ss -ntl | grep 7500 
+	ss -ntl | grep 7501
+	
+	
+mogilefs管理：	
+	mogadm check			#检查状态
+	mogadm device list		#查看各节点设备情况
+	mogadm host list		#查看各节点情况
+	mogadm host add 192.168.0.10 --ip=192.168.0.10 --status=alive		#添加节点，192.168.0.10标示名称
+	mogadm host add 192.168.0.50 --ip=192.168.0.50 --status=alive		#添加节点，192.168.0.50标示名称
+	mogadm device add 192.168.0.10 1			#添加第一个节点
+	mogadm device add 192.168.0.50 2			#添加第二个节点
+	mogadm domain list				#查看域
+	mogadm domain add www			#添加www域
+	mogadm --trackers=192.168.0.10:7001 class add www user --mindevcount=2	
+		#在www域内添加user类，mindevcount：最小复制文件的份数  replpolicy ：复制份数
+		
+	mogupload --trackers=192.168.0.10:7001 --domain=www --key='pwd' --file='/etc/passwd'	#上传文件
+		key：上传保存位置，以dev为根   file：本地文件
+	mogfileinfo --trackers=192.168.0.10:7001 --domain=www --key='pwd'		#查看文件
+	moglistkeys --trackers=192.168.0.10 --domain=www			#列出所有key
+
+	
+配置实例：
+		实验环境：centos6.5
+			192.168.0.10  Nginx  	 192.168.0.20  mysql
+			192.168.0.30  mogilefs   192.168.0.40  mogilefs  192.168.0.50  mogilefs
+		
+		1、配置mogilefs：
+			mogadm --trackers=192.168.0.30 host add 192.168.0.30 --ip=192.168.0.30 --status=alive
+			mogadm --trackers=192.168.0.30 host add 192.168.0.40 --ip=192.168.0.40 --status=alive
+			mogadm --trackers=192.168.0.30 host add 192.168.0.50 --ip=192.168.0.50 --status=alive
+			mogadm domain add www
+			mogupload --trackers=192.168.0.10:7001 --domain=www --key='pwd' --file='/etc/passwd'
+			
+			
+		2、编译安装nginx：
+			groupadd -r nginx
+			useradd -r -g nginx nginx
+			yum -y install pcre-devel
+			tar zxvf nginx-1.8.1.tar.gz -C /usr/src/					#nginx
+			tar zxvf nginx_mogilefs_module-1.0.4.tar.gz -C /usr/src/	#支持mogilefs的第三方模块
+			 ./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --add-module=/usr/src/nginx_mogilefs_module-1.0.4/
+				--add-module：指定第三方模块位置
+			make && make install
+		
+		3、配置nginx：
+			http {
+				include       mime.types;
+				default_type  application/octet-stream;
+				
+				upstream mogfs{						#tracker地址
+					server 192.168.0.30:7001;
+					server 192.168.0.40:7001;
+					server 192.168.0.50:7001;
+				} 
+
+				sendfile        on;
+				keepalive_timeout  65;
+
+				server {
+					listen       80;
+					server_name  localhost;
+
+					location /img/ {    					#启用mogilefs集群
+						mogilefs_tracker mogfs;				#tracker地址
+						mogilefs_domain www;				#指定域
+						mogilefs_noverify on;				#不做校验
+						mogilefs_methods GET;				#请求方法
+					
+						mogilefs_pass {
+							proxy_pass $mogilefs_path;			#必须这样写，$mogilefs_path模块内置变量	
+							proxy_hide_header Content-Type;		#隐藏Content-Type
+							proxy_buffering off;		#关闭缓存
+						}
+					}   
+				}
+			}
+
+		4、验证
+			1、访问http://192.168.0.10/img/pwd
+			2、关闭192.168.0.30继续访问，查看访问是否正常
+		
+		
+		
+		

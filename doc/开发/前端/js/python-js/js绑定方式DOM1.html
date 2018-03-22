@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input id="i1" placeholder="dom0方式绑定">
+    <input type="button" value="DOM0" onclick="dom0()"> <br/>
+
+    <input id="i2" placeholder="dom1方式绑定">
+    <input type="button" value="DOM1" id="i3">
+
+
+    <script>
+        //DOM0
+        function dom0() {
+            var Dom0 = document.getElementById('i1');
+            alert(Dom0.value)
+        }
+
+        //DOM1
+        var Dom1 = document.getElementById('i3');
+        Dom1.onclick=(function () {
+            var results = document.getElementById('i2');
+            alert(results.value);
+        })
+
+
+    </script>
+</body>
+</html>
+
+

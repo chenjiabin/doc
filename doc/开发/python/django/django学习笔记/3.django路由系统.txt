@@ -1,0 +1,99 @@
+django路由系统作用是使views里面处理数据的函数与请求的url建立映射关系。使请求到来之后，根据urls.py里的关系映射，去查找到与请求对应的处理方法，从而返回给客户端http页面数据。
+
+
+Django路由系统：
+
+from django.conf.urls import url
+from django.contrib import admin
+from app01.views import *
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^login/', login),
+]
+
+
+url(r'^login/', login),             #一对一路由关系
+
+
+基于正则的路由
+    url(r'^users/(\d*)', users),
+    url(r'^manage/(?P<name>\w*)/(?P<id>\d*)',manage),       #在路由系统正则内部定义了关键字<n1>,<n2>，views.py接收参数也必须是n1和n2
+    url(r'^user_list/(\d+)/(\d+)$', user_list),             #\d+是匹配任意的数字，在分页时灵活运用
+
+
+
+路由分发:
+    from django.conf.urls import include                #导入include
+    url(r'^app01/', include('app01.app01_urls')),       #将访问app01的url映射到app01下的app01_urls.py文件中
+
+
+带参数的路由：
+    url(r'^list/(?P<name>\d*)/',list ,{'id':1918}),      #设置默认值，id=1918
+
+
+拥有别名的URL:
+    url(r'^$', index,name='index')                       #别名,使用URL的时候可以根据别名进行调用,在url发生改变后不会影响网站正常访问
+
+
+反解别名:
+    from django.core.urlresolvers import resolve
+    obj = resolve(request.path_info)
+    print(obj.url_name)                                 #获取URL对应的别名
+    print(obj)                                          #获取指定URL的所有参数
+
+
+
+实例：
+from django.conf.urls import url
+from django.contrib import admin
+from app01.views import *
+
+
+
+urls.py
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^login/', login),
+    url(r'^config/(?P<name>\d*)/(?P<id>\d*)/$', config),
+    url(r'^manager/(\w*)/(\d*)/$', manager),
+]
+
+
+
+views.py
+
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.shortcuts import render
+from django.shortcuts import HttpResponse
+
+
+def login(request):
+    if request.method == 'GET':
+        return render(request,'login.html')
+    elif request.method == 'POST':
+        return HttpResponse('登录成功')
+    else:
+        return HttpResponse('无效的请求方式')
+
+
+def config(request,name,id):
+    response = str(name) + ',' + str(id)
+    return HttpResponse(response)
+
+
+def manager(request,n1,n2):
+    response = str(n1) + ',' + str(n2)
+    return HttpResponse(response)
+
+
+
+
+
+
+
+
+
+

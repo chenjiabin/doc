@@ -1,0 +1,17 @@
+random：随机数生成
+random.random()：生成0-1之间的任意随机数
+random.randint(int1,int2)：生成int1-int2之间的任意整数
+random.randrange(int1,int2)：生成int1-(int2-1)之间的任意整数
+
+
+
+
+
+
+
+
+
+
+
+
+

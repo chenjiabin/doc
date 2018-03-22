@@ -1,0 +1,61 @@
+ftp匿名用户：ftp和anonymous
+/etc/vsftpd目录下的文件
+vsftpd.conf：主配置文件
+ftpusers：禁止在此文件中的用户登录ftp（黑名单）
+user_list：用户访问列表，此目录中的用户有可能允许访问ftp（常用），也有可能禁止访问ftp；在主配置中配置userlist_deny=YES时禁止在此文件中的用户登录ftp，userlist_deny=NO时允许在此文件中的用户登录ftp
+
+
+ftp默认共享用户的家目录和/var/ftp目录中的文件
+
+
+权限控制：
+	匿名用户：一般以anon开头的配置
+		anonymous_enable：是否允许匿名访问
+		anon_umask：匿名用户的默认上传权限
+			文件夹：777减anon_umask的值
+			  文件：666减anon_umask的值
+		anon_max_rate：限制匿名用户的最大传输数率，以"字节/秒"为单位
+	不常用的匿名用户设置：
+		anon_root：匿名用户的ftp根目录，默认在/var/ftp下
+		anon_upload_enable：是否允许匿名用户上传文件
+		anon_mkdir_write_enable：是否允许匿名用户上传目录
+		anon_other_write_enable：是否允许匿名用户有其他写入权限
+	
+
+	本地用户：一般以local开头
+		local_enable：是否允许本地用户访问
+		local_umask：本地用户的默认上传权限，规则和匿名用户相同
+		chroot_local_user：是否将本地用户禁锢在宿主目录中		
+		local_max_rate：限制本地用户的最大传输数率，以"字节/秒"为单位
+	不常用的本地用户设置：	
+		local_root：本地用户的ftp根目录，默认在用户的宿主目录下
+
+
+	全局配置：
+		max_per_ip：设置最大并发数（一定要设置）		
+		listen：是否以独立运行的方式监听服务
+		listen_address：设置监听的IP地址
+		listen_port：设置监听的端口（默认为21端口）
+		write_enable：是否启用ftp的上传功能
+		download_enable：是否启用ftp的下载功能
+		xferlog_std_format：是否启用日志，默认日志目录在/var/log/xferlog
+		connect_form_port_20：是否允许服务器启动主动模式，从20号端口建立数据连接
+		pasv_enable：是否开启被动模式
+		pasv_max_port：设置用于被动模式的服务器最大端口号
+		pasv_min_port：设置用于被动模式的服务器最小端口号	
+		userlist_enable：是否启用user_list列表文件
+		userlist_deny：是否禁止user_list中的用户访问ftp
+		max_clients：最多允许多少个客户端同时访问ftp
+		
+		
+
+
+
+
+
+
+
+
+
+
+

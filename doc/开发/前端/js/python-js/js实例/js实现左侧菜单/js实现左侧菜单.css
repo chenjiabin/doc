@@ -1,0 +1,59 @@
+.ppp{
+    margin-left: 40px;
+}
+
+.tops{
+    background-color: blue;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 30px;
+}
+
+
+.lefts{
+    background-color: darkgreen;
+    float: left;
+    width: 20%;
+}
+
+
+.contents{
+    background-color: red;
+    height: 600px;
+    width: 80%;
+    float: right;
+    line-height: 600px;
+    text-align: center;
+    font-size: 50px;
+
+}
+
+
+.menu{
+    padding: 0 10px;
+    color: aqua;
+
+}
+
+
+.hide{
+    display: none;
+}
+
+
+.lefts div{
+    cursor:default
+}
+
+.colors{
+    height: 2px;
+    background-color: white;
+}
+
+
+
+
+
+

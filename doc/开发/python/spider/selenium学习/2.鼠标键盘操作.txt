@@ -1,0 +1,150 @@
+常见的鼠标操作(由ActionChains提供的方法)：
+    context_click()             #右击
+    double_click()              #双击
+    drag_and_drop()             #拖动
+    move_to_element()           #鼠标悬停在一个元素上
+    click_and_hold()            #按下鼠标左键在一个元素上
+
+
+对定位到的元素执行鼠标操作：
+    ActionChains(driver).context_click(result).perform()                    #对定位到的元素进行鼠标右击操作
+    ActionChains(driver).double_click(result).perform()                     #对定位到的元素进行鼠标双击操作
+    ActionChains(driver).drag_and_drop(element, target).perform()           #执行拖放操作
+    ActionChains(driver).move_to_element(result).perform()                  #将鼠标移动到定位到的元素上面
+    ActionChains(driver).click_and_hold(left).perform()                     #对定位到的元素执行鼠标左键按下的操作
+
+
+实例：
+    #!/usr/bin/env python
+    #coding:utf-8
+
+    from selenium import webdriver
+    from selenium.webdriver.common.action_chains import ActionChains
+    #引入ActionChains类
+
+    driver = webdriver.Firefox()
+    driver.get('http://blog.51cto.com')
+    result = driver.find_element_by_xpath("//div/h1/a/img")                         #定位元素
+    ActionChains(driver).context_click(result).perform()                            #对定位到的元素进行鼠标右击操作
+
+    '''
+    ActionChains(driver)    #实例执行用户操作
+    ActionChains            #生成用户的行为，所有的行为都存储在ActionChains对象
+    perform()               #执行ActionChains中存储的行为
+    '''
+
+
+
+鼠标拖放操作：
+    drag_and_drop(start,end)         #在源元素上按下鼠标左键,然后移动到目标元素上释放(对用于拖动验证码)
+        start: 鼠标按下的源元素         end：鼠标释放的目标元素
+    start = driver.find_element_by_xpath("//div/ul/li[1]/h2/a")             #定位开始元素
+    end = driver.find_element_by_xpath("//div/ul/li[8]/h2/a")               #定位目标元素
+    ActionChains(driver).drag_and_drop(element, target).perform()           #执行拖放操作
+
+
+
+
+
+
+键盘操作(Keys)：
+    send_keys(Keys.BACK_SPACE)      删除键(BackSpace)
+    send_keys(Keys.SPACE)           空格键(Space)
+    send_keys(Keys.TAB)             制表键(Tab)
+    send_keys(Keys.ESCAPE)          回退键(Esc)
+    send_keys(Keys.ENTER)           回车键(Enter)
+    send_keys(Keys.CONTROL,'a')     全选(Ctrl+A)
+    send_keys(Keys.CONTROL,'c')     复制(Ctrl+C)
+    send_keys(Keys.CONTROL,'x')     剪切(Ctrl+X)
+    send_keys(Keys.CONTROL,'v')     粘贴(Ctrl+V)
+
+
+实例：
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys                             #导入keys(对键盘操作的方法由keys类提供)
+    import time
+
+    driver = webdriver.Firefox()
+    driver.get("http://www.baidu.com")
+    
+    driver.find_element_by_id("kw").send_keys("selenium")                       #输入框输入内容
+    time.sleep(3)
+
+    driver.find_element_by_id("kw").send_keys(Keys.BACK_SPACE)                  #删除最后一个字符
+    time.sleep(3)
+    
+    driver.find_element_by_id("kw").send_keys(Keys.SPACE)                       #输入空格键+“教程”
+    driver.find_element_by_id("kw").send_keys(u" 教程")
+    time.sleep(3)
+    
+    driver.find_element_by_id("kw").send_keys(Keys.CONTROL,'a')                 #ctrl+a全选输入框内容
+    time.sleep(3)
+    
+    driver.find_element_by_id("kw").send_keys(Keys.CONTROL,'x')                 #ctrl+x剪切输入框内容
+    time.sleep(3)
+
+    driver.find_element_by_id("kw").send_keys(Keys.CONTROL,'v')                 #输入框重新输入内容
+    time.sleep(3)
+    
+    driver.find_element_by_id("su").send_keys(Keys.ENTER)                       #回车
+    time.sleep(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,78 @@
+zabbix-server.cnf配置文件：
+	ListenPort=10051			#服务器端监听端口
+	SourceIP= 					#运行连接服务器的ip，默认运行所有
+	LogFile=PATH				#日志文件的存放位置
+	LogFileSize=0 				#日志文件的大小，单位为MB，当设置为0时，表示不进行日志轮询	
+	DebugLevel=3				#日志级别，默认为3
+	PidFile=PATH				#PID文件的存放位置
+
+
+	DBHost=localhost			#连接的数据库地址
+	DBName=zabbix				#使用的数据库名
+	DBUser=zabbix				#连接数据库的用户
+	DBPassword=					#连接数据库用户的密码
+	DBSocket=/tmp/mysql.sock	#基于本地连接时sock文件位置
+	DBPort=3306					#mysql端口
+
+
+	StartPollers=30				#开启的线程数，一般不要超过30个
+	StartPollersUnreachable=1	#用于单独监控无法连接的主机
+	StartTrappers=8				#trapper线程数
+	StartDiscoverers=1			#自动发现的线程数（建议修改为0，不启用此项功能）
+	CacheUpdateFrequency=300	#缓存更新的频率
+
+
+	SNMPTrapperFile=/tmp/zabbix_traps.tmp		#SNMP发送到server的数据临时存放文件
+	StartSNMPTrapper=0 							#如果设置为1则启用基于SNMP监控
+	ListenIP=0.0.0.0							#监听地址
+	AlertScriptsPath=/usr/lib/zabbix/scripts	#报警存放脚本目录
+	AllowRoot=0					#是否允许使用root启动，0:不允许，1:允许
+	User=zabbix					#以zabbix用户运行zabbix服务
+	CacheSize=8M				#缓存大小，用于存储host，item等数据
+	ExternalScripts=/usr/lib/zabbix/webscripts	#web脚本存放位置
+	HistoryCacheSize=8M			#历史记录缓存大小，用于存储历史记录
+	HistoryTextCacheSize=16M	#文本类型历史记录的缓存大小，存储text、log历史记录
+	Include=PATH						#导入其他配置文件
+	LoadModulePath=/var/lib/modules		#模块存放目录
+	LoadModule=modename					#加载的模块名
+	MaxHousekeeperDelete=500 			#每次最多删除历史数据的行 
+
+	SenderFrequency=30			#报警间隔，默认单位秒
+	SSHKeyLocation				#SSH秘钥路径		 
+	SSLCertLocation				#SSL证书目录，用于web监控
+	SSLKeyLocation				#SSL认证私钥路径、用于web监控
+	Timeout=3					#agent，snmp，external check的超时时间，单位为秒
+
+	UnavailableDelay=60			#间隔多少秒再次检测主机是否可用
+	UnreachableDelay=15			#间隔多少秒再次检测主机是否可达
+	UnreachablePeriod=45		#检测到主机不可用，多久将它置为不可达
+
+
+
+zabbix-agent.cnf配置文件：
+	PidFile=/tmp/zabbix_agentd.pid 			#pid文件的存放位置 
+	LogFile=/tmp/zabbix_agentd.log 			#日志文件的位置 
+	LogFileSize=0 							#当日志文件达到多大时进行轮询操作，0为不进行
+	DebugLevel=3 							#日志级别 
+	SourceIP= 								#连接的源ip地址，默认即可
+	Server=127.0.0.1 						#允许获取数据的zabbix server地址
+	ListenPort=10050 						#zabbix agent监听的端口 
+	ListenIP=0.0.0.0 						#zabbix agent监听的ip地址 
+	StartAgents=3 							#zabbix agent开启进程数 
+	ServerActive=127.0.0.1 					#开启主动模式，指定zabbix server地址 
+	Hostname=Zabbix server					#全局唯一主机名,如果是监控zabbix server,主机名必须和web设置的一样
+	RefreshActiveChecks=120 				#主动检查刷新的时间，单位秒 
+	BufferSend=5 							#数据缓冲的时间 
+	BufferSize=100 							#数据缓冲区的大小，当达到该值便会发送数据到zabbix server 
+	MaxLinesPerSecond=100 					#zabbix agent发送给zabbix server最大的数据行 
+	Timeout=3 								#处理超时的时间 
+
+
+
+
+
+
+
+
+
+

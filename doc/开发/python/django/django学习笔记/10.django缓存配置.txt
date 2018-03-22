@@ -1,0 +1,258 @@
+动态网站的基本定义就是，它们是动态的。 每次用户请求页面，服务器会重新计算。从开销处理的角度来看，这比读取一个现成的标准文件的代价要昂贵的多
+因此尽可能地减少开销是必要的，这就是缓存存在的价值，缓存一些东西是为了保存那些需要很多计算资源的结果，这样的话就不必在下次重复消耗计算资源
+
+Django提供了一个健壮的缓存系统来让你保存动态页面这样避免对于每次请求都重新计算
+Django提供了三个级别的缓存力度：
+    1、缓存部分网页    
+    2、缓存一个views函数
+    3、缓存整个网站
+    同时配置时的优先级顺序：3-->2-->1
+
+
+设置缓存
+    缓存系统需要一些设置才能使用。你必须告诉Django你要把数据缓存在哪里，缓存的配置是通过setting文件的CACHES配置来实现的
+    Django支持5种缓存：
+        1、开发调试
+        2、内存
+        3、文件
+        4、数据库
+        5、memcache缓存（python-memcached或pylibmc模块）
+
+
+Django支持的最快，最高效的缓存类型是Memcached，Memcached是一个全部基于内存的缓存服务
+Memcached的所有工作就是为缓存提供一个快速的添加，检索，删除的接口。所有的数据直接存储在内存中，所以它不能取代数据库或者文件系统的使用
+在安装Memcached后，还需要安装Memcached依赖的模块。最常见的是python-memcached和pylibmc
+
+
+Linux系统安装memcached，首先要先安装libevent库。
+    sudo apt-get install libevent libevent-deve     #ubuntu系列
+    yum install libevent libevent-deve              #centos系列
+
+    sudo apt-get install memcached                  #安装memcached
+    yum install memcached                           #安装memcached
+
+
+安装模块：
+    pip install python-memcached            #安装依赖模块，二选一即可
+    pip install python-pylibmc
+
+
+Django使用memcached配置(settings文件)：
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            #'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+            'LOCATION': '127.0.0.1:11211',
+            'LOCATION': '192.168.1.2:11211',
+            #'LOCATION': 'unix:/tmp/memcached.sock',
+            #'LOCATION': '/tmp/memcached.sock',                 #使用PyLibMCCache不需要加unix前缀
+        }
+    }
+
+default：缓存池的名称，可以设置多个
+BACKEND：MemcachedCache使用python-memcached模块，PyLibMCCache使用python-pylibmc模块
+LOCATION：ip:port或者设置为path值unix:path是Memcached Unix socket file的路径
+
+
+关于Memcached最后要说一点，基于内存的缓存有一个缺点：因为缓存数据是存储在内存中的，所以如果你的服务器宕机数据就会丢失。 还要明确， 内存不能替代常驻的数据存储，所以不要把基于内存的缓存当成你唯一的数据存储方式。 毫无疑问的，没有任何的Django缓存后台应该被用来替代常驻存储--它们要做的是缓存解决方案，而不是存储方案--但是我们在这里指出这一点是因为基于内存的缓存真的是非常的临时。
+
+
+
+Django数据库缓存设置：
+    Django可以把缓存保存在你的数据库里。如果你有一个快速的、专业的数据库服务器的话那这种方式是效果最好的。
+
+
+
+把BACKEND设置为django.core.cache.backends.db.DatabaseCache
+把 LOCATION 设置为 tablename， 数据表的名称。 这个名字可以是任何你想要的名字，只要它是一个合法的表名并且在你的数据库中没有被使用过。
+在这个示例中，缓存表的名字是 my_cache_table:
+
+CACHES = {
+    'default': {                                                            
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',           #使用数据库进行缓存，具体使用什么数据库取决于DATABASES的设置
+        'LOCATION': 'my_cache_table',                                       #缓存数据的数据库表
+    }
+}
+
+
+python manage.py createcachetable               #创建缓存表
+这将在你的数据库中创建一个Django的基于数据库缓存系统预期的特定格式的数据表。表名会从LOCATION中获得
+
+
+django配置redis：
+    redis相对与memcached的优势在于支持持久话存储，支持更多的数据级，django内部没有直接提供相应的组件支持，不过我们可以自定制
+    http://django-redis-chs.readthedocs.io/zh_CN/latest/#keys       #详细配置过程(目前支持的最高版本为django1.10)
+
+
+文件系统级别缓存配置：
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',       #使用文件系统缓存引擎
+            'LOCATION': '/tmp/django_cache',        #缓存存储路径
+        }
+    }
+
+
+
+更多缓存配置请参考官方文档：
+    http://python.usyiyi.cn/translate/Django_111/index.html         #django1.11中文文档
+    https://docs.djangoproject.com/en/1.11/                         #django1.11官方文档
+
+
+
+缓存参数：
+TIMEOUT:缓存的默认过期时间，以秒为单位，默认是300s(5分钟)
+    None：缓存永远不会过期，缓存服务器down机之后数据还是会丢失  0：缓存立即失效，无意义
+
+OPTIONS: 这个参数应该被传到缓存后端。有效的可选项列表根据缓存的后端不同而不同
+    MAX_ENTRIES:高速缓存允许的最大条目数，超出这个数则旧值将被删除. 这个参数默认是300
+    CULL_ENTRIES:当达到MAX_FREQUENCY的时候,被删除的条目比率。实际比率是1/CULL_FREQUENCY,这个参数必须是整数，默认为1/3
+    CULL_FREQUENCY：值设置为0意味着当达到MAX_ENTRIES时,缓存将被清空
+
+KEY_PREFIX: '',                                             #缓存key的前缀(默认空)
+VERSION: 1,                                                 #缓存key的版本(默认1)
+KEY_FUNCTION:函数名                                          #生成key的函数(默认函数会生成为：[前缀:版本:key])
+
+
+示例：
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',   #使用python-memcached模块
+        'LOCATION': '127.0.0.1:11211',
+        'OPTIONS': {
+            'server_max_value_length': 1024 * 1024 * 2,                     #缓存对象的最大大小，超过则不缓存
+            'MAX_ENTRIES': 1000                                             #缓存的最大条目
+        }
+    }
+}
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',     #使用pylibmc
+        'LOCATION': '127.0.0.1:11211',
+        'OPTIONS': {
+            'binary': True,
+            'username': 'user',                     #使用用户名密码认证
+            'password': 'pass',
+            'behaviors': {
+                'ketama': True,
+            }
+        }
+    }
+}
+
+
+
+Django缓存使用：
+    1、全站缓存配置
+        使用中间件，经过一系列的认证等操作，如果内容在缓存中存在，则使用FetchFromCacheMiddleware获取内容并返回给用户
+        当返回给用户之前，判断缓存中是否已经存在，如果不存在则UpdateCacheMiddleware会将缓存保存至缓存，从而实现全站缓存
+        注意：'update'中间件，必须放在列表的开始位置，而fectch中间件，必须放在最后
+            MIDDLEWARE = [
+                'django.middleware.cache.UpdateCacheMiddleware',
+                 #其他中间件...
+                'django.middleware.cache.FetchFromCacheMiddleware',
+            ]
+
+            CACHE_MIDDLEWARE_ALIAS = ""
+            CACHE_MIDDLEWARE_SECONDS = ""
+            CACHE_MIDDLEWARE_KEY_PREFIX = ""
+
+
+        CACHE_MIDDLEWARE_ALIAS      用于存储的缓存的别名
+        CACHE_MIDDLEWARE_SECONDS    每个page需要被缓存多少秒.
+        CACHE_MIDDLEWARE_KEY_PREFIX – 如果缓存被使用相同Django安装的多个网站所共享，那么把这个值设成当前网站名，或其他能代表这个Django实例的唯一字符串，以避免key发生冲突。
+
+        另外UpdateCacheMiddleware在每个HttpResponse里自动设置了一些头部信息
+            Expires         头部为当前日期/时间加上定义的CACHE_MIDDLEWARE_SECONDS.
+            Cache-Control   头部来给页面一个最长的有效期, 来自CACHE_MIDDLEWARE_SECONDS的设置.
+
+
+    2、views函数缓存配置
+        from django.views.decorators.cache import cache_page
+
+        @cache_page(10)            #在需要使用缓存的函数上面增加装饰器，60 * 15代表15分钟，可接受key_prefix参数，设置key前缀优先级高于全局的前缀配置
+        def cache(request):
+            import time
+            times = time.time()
+            return HttpResponse(times)
+        
+        #另一种方法，在url中配置
+        from django.views.decorators.cache import cache_page
+
+        urlpatterns = [
+            url(r'^cache/$', cache_page(60 * 15)(cache)),
+        ]
+
+
+    3、局部缓存配置
+        views文件：
+        def cache(request):
+            import time
+            times = time.time()
+            return render(request,'cache.html',{'date':times})
+
+        url配置：
+            url(r'^cache/', cache),
+
+        cache.html文件：
+            <body>
+                测试1：<h2>{{ date }}</h2>           #默认不会缓存，除非设置了别的缓存
+                测试2：<h2>{{ date }}</h2>
+                {% load cache %}                    #加载缓存标签
+                {% cache 10 testkey %}              #缓存的内容开始，10代表缓存10秒，testkey代表缓存的key
+                    缓存10秒：<h2>{{ date }}</h2>    
+                {% endcache %}                      #缓存的内容结束
+            </body>
+
+
+
+Django API操作缓存：
+
+In [1]: from django.core.cache import cache
+In [2]: cache.set('my_key', 'hello, world!', 30)            #更新key的值，如果不存在则会创建
+In [3]: cache.get('my_key')                                 #或去key对象，如果不存在则返回None
+Out[3]: 'hello, world!'
+
+要添加键（如果它尚不存在），请使用add()方法。 它使用与set()相同的参数，但如果指定的键已经存在，add会返回False不会更新值
+
+
+In [4]: cache.set('a', 1)
+In [5]: cache.set('b', 2)
+In [6]: cache.set('c', 3)
+In [7]: cache.get_many(['a', 'b', 'c'])                         #get_many返回一个字典
+Out[7]:{'a': 1, 'b': 2, 'c': 3}
+
+
+cache.set_many({'a': 1, 'b': 2, 'c': 3})                        #set_many接受一个字典，同时设置多个值，可以接受timeout参数
+
+cache.delete('a')                                               #删除key
+ache.delete_many(['a', 'b', 'c'])
+
+cache.clear()                                                   #清除所有的key、
+
+
+
+http://python.usyiyi.cn/translate/Django_111/topics/cache.html#setting-up-the-cache         #更多使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

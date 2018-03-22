@@ -1,0 +1,96 @@
+redis的概念：
+	Redis是一个开源的基于内存亦可持久化的日志型、Key-Value数据库
+	
+redis工具：
+	redis-benchmark 		#用于进行redis性能测试的工具
+	redis-sentinel 			#用于集群管理
+	redis-cli 				#redis客户端
+	redis-server 			#redis服务端
+	redis-check-aof			#用于修复出问题的AOF文件
+	redis-check-dump 		#用于修复出问题的dump.rdb文件
+
+
+安装redis
+	1、、安装依赖包tcl,8.5版本以上
+		tar zxvf tcl8.6.0-src.tar.gz -C /usr/src/		#解压		
+		cd /usr/src/tcl8.6.0/unix/						#进入源代码目录
+		./configure && make && make install				#配置 编译 安装
+
+	2、安装redis
+		rpm -ivh jemalloc-3.6.0-1.el6.x86_64.rpm 		#安装依赖库
+		rpm -ivh redis-3.2.8-1.el6.remi.x86_64.rpm 		#安装redis
+		service redis start								#启动服务
+		ss -nalt | grep 6379							#查看服务是否启动
+
+
+redis主要数据类型：
+	1.字符串(strings)
+	2.列表(lists)
+	3.集合(sets)
+	4.有序集合(sorted sets)
+	5.哈希(hashes)
+		
+redis key的命令规则：
+	1.key不要太长，避免过度消耗内存，降低查找效率
+	2.在一个项目中，key最好使用统一的命名模式
+		
+redis-cli的基本使用：
+	redis-cli主要用于连接redis-server，多redis-server进行操作
+	常用选项：
+		--help 		#获取帮助信息
+		-h			#指定redis数据库地址，默认为localhost
+		-p			#指定端口，默认为6379
+		-a			#指定认证密码，默认为空
+		-n			#指定登录数据库，默认为0号数据库
+	
+		
+		
+三、redis的基本操作
+
+字符串								
+	set key value [EX seconds]				#创建字符串,EX设置超时时间	
+	get key									#获取指定key的值
+	
+列表								
+	rpush key value1 value2 ... 			#创建有序列表,先进先出(常用)
+	lpush key value1 value2 ...				#创建有序列表,先进后出
+	lrange key start stop					#获取列表内的元素
+	
+集合：
+	sadd  key  value						#创建集合
+	smembers key							#获取集合的值
+	sismember key value						#判断value的值是否在这个集合内
+	sinter key1 key2						#返回交集
+	sunion key1 key2						#返回并集
+	sdiff key1 key2							#返回差集
+
+hash：
+	hset key hash_name hash_value			#创建hash映射关系，类似于python中的字典数据
+	hgetall key								#获取指定hash的值
+	
+通用命令：
+	help @server							#查看一组命令帮助
+	help set								#查看指定命令帮助
+	del key									#删除指定key
+	expire key								#为指定key设置超时时间
+	ttl key									#查看key的超时时间
+	persist key								#取消指定key的超时时间
+	type key								#返回指定key的类型
+	rename key1 key2						#将key1重命名为key2
+	flushdb									#清空当前数据库的key
+	flushall								#清空所有数据库的key
+	dbsize									#返回当前数据库的key数量
+	
+	
+redis订阅和发布
+	频道：在一个频道内的消费者都可以接收生成者在这个频道内的信息
+	subscribe 频道			#订阅一个频道
+	psubscribe 频道			#通过匹配定义一个或多个频道
+		例：psubscribe *    	#订阅所有频道
+			psubscribe s[io] 	#订阅si和so两个频道
+	publish 频道 消息		#向指定频道发送消息
+	
+	
+	
+
+

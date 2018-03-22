@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../frontend_study/.idea/frontend_study.iml" filepath="$PROJECT_DIR$/../frontend_study/.idea/frontend_study.iml" />
+      <module fileurl="file://$USER_HOME$/work/大贤FTP密码更改网站/.idea/loginftp.iml" filepath="$USER_HOME$/work/大贤FTP密码更改网站/.idea/loginftp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../other/.idea/other.iml" filepath="$PROJECT_DIR$/../other/.idea/other.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../server/.idea/server.iml" filepath="$PROJECT_DIR$/../server/.idea/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/web01.iml" filepath="$PROJECT_DIR$/.idea/web01.iml" />
+    </modules>
+  </component>
+</project>

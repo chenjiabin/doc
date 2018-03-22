@@ -1,0 +1,189 @@
+django模板:
+    模版是纯文本文件,它可以生成任何基于文本的格式(HTML，XML，CSV等)
+    模版包括在使用时会被值替换为变量，和控制模版逻辑的标签
+
+
+变量看起来是这样:{{ variable }}
+    当模版引擎遇到一个变量，它将计算这个变量，然后用结果替换掉它本身,变量的命名遵循python变量的命名规则
+    django模板变量使用点 (.) 来访问变量的属性,如果变量不存在默认被替换成一个空字符串
+
+
+标签看起来像是这样的：{% tag %}
+    标签比变量复杂得多：有些用于在输出中创建文本，有些用于控制循环或逻辑，有些用于加载外部信息到模板中供以后的变量使用
+    一些标签需要开始和结束标签({％ 标签 ％} 内容 {％ end标签 ％})
+    Django自带了大约24个内置的模版标签
+
+
+常用标签:
+    {% for athlete in athlete_list %}                                   #for循环
+        <li>{{ athlete.name }}</li>
+    {% endfor %}
+
+    {% if athlete_list %}                                               #if elif else判断,支持and or not等
+        Number of athletes: {{ athlete_list|length }}
+    {% elif athlete_in_locker_room_list %}
+        Athletes should be out of the locker room soon!
+    {% else %}
+        No athletes.
+    {% endif %}
+
+    {% url 'some-url-name' v1 v2 %}                                     #返回指定的URL(不带域名),some-url-name为url配置中的别名(name=....)
+
+    {% extends "base.html" %}                                           #表示当前模板继承自一个父模板
+    {% block title %}My amazing site{% endblock %}                      #模板继承和重写
+
+    {% include 'test.html' %}                                           #导入模板
+
+    {% load static %}                                                   #加载指定标签库,static表示加载静态文件
+
+    {% now "Y-m-d" %}                                                   #获取当前时间
+
+    {% spaceless %}<p><a href="foo/">Foo</a></p>{% endspaceless %}      #删除HTML标签之间的空白格. 包括制表符和换行.
+    
+    {% cache 10 testkey %}缓存的内容{% endcache %}                        #用于局部缓存，10代表缓存10秒，testkey代表缓存的key             
+
+    {% verbatim %}.....{% endverbatim %}                                #停止渲染,包裹的内容都当做字符串解释
+    
+    {% csrf_token %}                                                    #用于跨站请求伪造保护
+
+
+for循环:
+    forloop.counter	        循环的当前迭代（1索引）
+    forloop.counter0	    循环的当前迭代（0索引）
+    forloop.revcounter	    循环结束的迭代次数（1索引）
+    forloop.revcounter0	    循环结束的迭代次数（0索引）
+    forloop.first	        如果这是第一次通过循环，则为真
+    forloop.last	        如果这是最后一次循环，则为真
+    forloop.parentloop	    对于嵌套循环，这是围绕当前循环的循环
+
+
+if判断:
+    ==, !=, <, >, <=, >=
+    and,or,not,in, not in, is, and is not
+    in在什么什么中,is身份是否相等
+
+
+常用过滤器:
+    {{ value|cut:" " }}                         #移除value中所有的与给出的变量相同的字符串
+    {{ value|date:"D d M Y" }}                  #对指定的date对象格式化
+    {{ value|dictsort:"name" }}                 #接受一个字典列表，并返回按参数中给出的键排序后的列表
+    {{ value|first }}                           #返回列表中的第一个元素
+    {{ value|last }}                            #返回列表中的最后一个元素
+    {{ value|floatformat:3 }}                   #保留3为小数,如果不给定参数默认保留一位小数
+    {{ value|length }}                          #返回value的长度
+    {{ value|length_is:"4" }}                   #如果值的长度是参数，则返回True，否则返回False。
+    {{ value|linenumbers }}                     #显示带行号的文本
+    {{ value|lower }}                           #将字符串转换为全部小写
+    {{ value|upper }}                           #将字符串转换为大写形式
+    {{ value|time:"H:i" }}                      #根据给定的格式格式化时间
+    {{ value|title }}                           #使字符以大写字符开头，其余字符小写
+    {{ value|truncatechars:9 }}                 #如果字符串字符多于指定的字符数量，那么会被截断。 截断的字符串将以(“...”)结尾
+    {{ value|urlencode }}                       #转义url
+    {{ value|add:1 }}                           #对vaue的值加1
+    {{ value|add:-1 }}                          #对vaue的值减1
+    {{ value|cut:'.mp3' }}                      #删除value中的.mp3
+
+
+模板继承示例:
+    #母版-
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.css" />
+        <title>{% block title %}My amazing site{% endblock %}</title>
+    </head>
+
+    <body>
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+    </html>
+
+
+    #子版:
+    {% extends "base.html" %}           #导入母版
+
+    {% block title %}My amazing blog{% endblock %}      #重写母版,通过title关联到母版的指定位置
+
+    {% block content %}
+        .......
+    {% endblock %}
+
+
+自定义模板标签和过滤器
+    Django的模板语言提供了各式各样的标签和过滤器。然而这些工具不一定能全部满足你的功能需要，你可以通过使用Python代码自定义标签和过滤器来扩展模板引擎，然后使用{% load %}加载
+    在app目录下创建名为 "templatetags" 的python包(和views.py同级),将自定义的标签和过滤器放入templatetags中
+    目录结构:
+        polls/
+            __init__.py
+            models.py
+            templatetags/
+                __init__.py
+                poll_extras.py
+            views.py
+        {% load poll_extras %}                  #在模板中导入
+
+
+自定义模板标签:
+    from django import template
+
+    register = template.Library()               #变量名必须是register
+
+    @register.simple_tag                        #注册标签
+    def Testtag(arg1):                          #自定义的标签可以接受多个参数
+        result = arg1 * 10                      #对模板中传递的参数进行处理
+        return result                           #必须返回一个值
+
+    模板中调用:
+    {% load poll_extras %}                      #导入自定义的模板,poll_extras模块名
+    {% Testtag 10 %}                            #函数名和参数
+    
+
+自定义过滤器:
+    @register.filter                            #注册过滤器
+    def Testfilter(arg1,arg2):                  #过滤器最多只能接收两个参数
+        result = arg1 * arg2
+        return result
+
+    模板中调用:
+    {% load poll_extras %}  
+    {{ 10|Testfilter:20 }}                      #10为参数1,20为参数2,|之间不能有空格
+
+
+自定义标签和自定义过滤器的比较:
+    自定义标签:
+        1.可以接收多个参数
+        2.不能作为if for等语句的条件
+    
+    自定义过滤器
+        1.最多只能接收2个参数
+        2.可以作为if for等语句的条件
+
+
+http://python.usyiyi.cn/translate/Django_111/ref/templates/language.html            #template
+http://python.usyiyi.cn/documents/Django_111/ref/templates/builtins.html
+
+
+
+
+
+静态文件配置:
+
+settings.py文件：
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
+
+html文件：
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/hostmanager.css' %}"/>                  #加载css文件
+    <script src="{% static 'js/jquery-3.2.1.js' %}"></script>                           #加载js文件
+
+
+
+官方文档：http://python.usyiyi.cn/translate/Django_111/howto/static-files/index.html#configuring-static-files
+
+
+

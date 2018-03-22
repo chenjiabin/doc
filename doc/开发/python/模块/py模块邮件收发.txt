@@ -1,0 +1,41 @@
+smtplib模块：
+	SMTP = smtplib.SMTP()			#创建实例
+
+	SMTP.connect(host,port)			#连接到指定的smtp服务器
+	SMTP.login(user, password)		#登陆到smtp服务器，必须登录后才能发送邮件
+	SMTP.sendmail(from_addr, to_addrs, msg)		#发送邮件，发件人地址，收件人地址，邮件内容
+	SMTP.quit()						#断开与smtp服务器的连接
+
+
+email模块：
+	from email.mime.text import MIMEText
+	from email.utils import formataddr
+		
+	msg = MIMEText('发送内容', 'text', 'utf-8')					  #邮件内容，类型，编码
+	msg['From'] = formataddr(["user",'hy2803660215@163.com'])     #发件人信息
+	msg['To'] = formataddr(["Saneri",'2803660215@qq.com'])        #收件人信息
+	msg['Subject'] = subject		#邮件主题
+
+实例：
+	import smtplib
+	from email.mime.text import MIMEText
+	from email.utils import formataddr
+
+	sender = 'hy2803660215@163.com'
+	receiver = '2803660215@qq.com'
+	subject = 'memory error'
+	password = 'password'
+
+	msg = MIMEText('user', 'text', 'utf-8')
+	msg['From'] = formataddr(["user",'hy2803660215@163.com'])     #显示发件人信息
+	msg['To'] = formataddr(["Saneri",'2803660215@qq.com'])          #显示收件人信息
+	msg['Subject'] = subject
+
+	smtp = smtplib.SMTP()
+	smtp.connect('smtp.163.com')
+	smtp.login(sender, password)
+	smtp.sendmail(sender, receiver, msg.as_string())	#msg.as_string，msg封装的邮件头
+	smtp.quit()
+	
+	
+	

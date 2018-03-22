@@ -1,0 +1,40 @@
+有道翻译API：
+API key：902574943
+keyfrom：huyuanpy
+http://fanyi.youdao.com/openapi.do?keyfrom=huyuanpy&key=902574943&type=data&doctype=json&version=1.1&q=要翻译的文本
+
+
+
+
+
+python 发送短信或语音
+网站：https://www.twilio.com/console/sms/getting-started/build/it-service-alerts
+
+curl 'https://api.twilio.com/2010-04-01/Accounts/AC4c682acde8f318b2f6990512d5dc0aca/Messages.json' -X POST \
+--data-urlencode 'To=+86xxxxx' \		
+--data-urlencode 'From=+13183024286' \	#从13183024286到86135xxxxxxxx
+-u AC4c682acde8f318b2f6990512d5dc0aca:082a54748174daf22270c2531cc21c60	#用户SID和秘钥
+
+使用实例：
+	#!/usr/bin/py
+	#coding:utf-8
+	from twilio.rest import Client			#第三方模块需要安装(pip install twilio)
+
+	account_sid = "AC4c682acde8f318b2f6990512d5dc0aca"		#sid
+	auth_token  = "082a54748174daf22270c2531cc21c60"		#秘钥
+
+	client = Client(account_sid, auth_token)
+
+	message = client.messages.create(
+		to="+8613521701096", 				#收信端
+		from_="+13183024286",				#发送端
+		body="服务器故障，内存不足")		#发送内容
+
+	print(message.sid)
+
+
+
+
+
+
+

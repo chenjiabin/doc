@@ -1,0 +1,50 @@
+执行js代码：
+    driver.execute_script(script,*args)                         #执行js脚本，args参数
+
+
+控制浏览器滚懂条：
+    使用场景：要操作的页面元素不在视觉范围,无法进行操作,需要拖动滚动条
+
+
+
+用于标识滚动条位置的代码：
+    <body onload= "document.body.scrollTop=0 ">                 #滚动条处于浏览器最上方
+    <body onload= "document.body.scrollTop=100000 ">            #滚动条处于目前浏览器的最下方
+
+
+
+实例：
+    from selenium import webdriver
+    import time
+
+    driver = webdriver.Firefox()
+    driver.get('http://blog.51cto.com/')
+    js="var q=document.documentElement.scrollTop=10000"         #定义js脚本
+    driver.execute_script(js)                                   #执行js脚本，第一次滚动到浏览器最下方
+    time.sleep(1)                                               #等待浏览器加载内容
+    
+    driver.execute_script(js)                                   #第二次滚动到浏览器最下方
+    time.sleep(1)
+    
+    driver.execute_script(js)                                   #第三次滚动到浏览器最下方
+    time.sleep(10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

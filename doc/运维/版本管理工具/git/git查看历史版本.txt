@@ -1,0 +1,171 @@
+git clone https://github.com/schacon/simplegit-progit mytest            #获取测试项目
+
+cd  mytest
+git log                                                      #查看Git仓库的日志信息
+    commit ca82a6dff817ec66f44342007202690a93763949
+    Author: Scott Chacon <schacon@gmail.com>
+    Date:   Mon Mar 17 21:52:11 2008 -0700
+
+        changed the verison number
+
+    commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+    Author: Scott Chacon <schacon@gmail.com>
+    Date:   Sat Mar 15 16:40:33 2008 -0700
+
+        removed unnecessary test code
+
+    commit a11bef06a3f659402fe7563abf99ad00de2209e6
+    Author: Scott Chacon <schacon@gmail.com>
+    Date:   Sat Mar 15 10:31:28 2008 -0700
+
+        first commit
+
+git log会按提交时间列出所有的更新，列出每个提交的校验和、作者的名字和电子邮件地址、提交时间以及提交说明
+
+git log有许多选项可以帮助搜寻你所要找的信息，接下来我们介绍些最常用的
+-p：显示每次提交的内容差异
+-N：显示最近N次提交
+
+
+git log -p -1
+    commit ca82a6dff817ec66f44342007202690a93763949
+    Author: Scott Chacon <schacon@gmail.com>
+    Date:   Mon Mar 17 21:52:11 2008 -0700
+
+        changed the verison number
+
+    diff --git a/Rakefile b/Rakefile
+    index a874b73..8f94139 100644
+    --- a/Rakefile
+    +++ b/Rakefile
+    @@ -5,7 +5,7 @@ require 'rake/gempackagetask'
+     spec = Gem::Specification.new do |s|
+         s.platform  =   Gem::Platform::RUBY
+         s.name      =   "simplegit"
+    -    s.version   =   "0.1.0"
+    +    s.version   =   "0.1.1"
+         s.author    =   "Scott Chacon"
+         s.email     =   "schacon@gmail.com"
+         s.summary   =   "A simple gem for using Git in Ruby code."
+
+
+--stat：显示每次提交简略的统计信息
+
+git log --stat -1
+    commit ca82a6dff817ec66f44342007202690a93763949
+    Author: Scott Chacon <schacon@gmail.com>
+    Date:   Mon Mar 17 21:52:11 2008 -0700
+
+        changed the verison number
+
+     Rakefile | 2 +-
+     1 file changed, 1 insertion(+), 1 deletion(-)
+
+
+
+--pretty=<format>：指定使用不同于默认格式的方式展示提交历史
+    format:
+        oneline将每个提交放在一行显示，查看的提交数很大时非常很有用
+        full：查看作者和提交者(修改者)
+        fuller：输出比full更详细的信息(提交者)
+
+git log --pretty=oneline
+    ca82a6dff817ec66f44342007202690a93763949 changed the verison number
+    085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7 removed unnecessary test code
+    a11bef06a3f659402fe7563abf99ad00de2209e6 first commit
+
+
+git log --pretty=full  -1
+    commit ca82a6dff817ec66f44342007202690a93763949
+    Author: Scott Chacon <schacon@gmail.com>
+    Commit: Scott Chacon <schacon@gmail.com>
+
+        changed the verison number
+
+git log --pretty=fuller   -1
+    commit ca82a6dff817ec66f44342007202690a93763949
+    Author:     Scott Chacon <schacon@gmail.com>
+    AuthorDate: Mon Mar 17 21:52:11 2008 -0700
+    Commit:     Scott Chacon <schacon@gmail.com>
+    CommitDate: Fri Apr 17 21:56:31 2009 -0700
+
+        changed the verison number
+
+
+
+git log --pretty=format                 #定制要显示的记录格式
+
+git log --pretty=format:"%h - %an, %ar : %s"
+    ca82a6d - Scott Chacon, 10 years ago : changed the verison number
+    085bb3b - Scott Chacon, 10 years ago : removed unnecessary test code
+    a11bef0 - Scott Chacon, 10 years ago : first commit
+
+选项	        说明
+%H          提交对象的完整哈希字串
+%h          提交对象的简短哈希字串
+
+%T          树对象的完整哈希字串
+%t          树对象的简短哈希字串
+
+%P          父对象的完整哈希字串
+%p          父对象的简短哈希字串
+
+%an         作者的名字
+%ae         作者的电子邮件地址
+%ad         作者修订日期(可以用--date=选项定制格式)
+%ar         作者修订日期，按多久以前的方式显示
+
+%cn         提交者的名字
+%ce         提交者的电子邮件地址
+%cd         提交日期
+%cr         提交日期，按多久以前的方式显示
+%s          提交说明
+
+
+当oneline或format与另一个log选项--graph结合使用时，这个选项添加了一些ASCII字符串来形象地展示你的分支、合并历史
+git log --pretty=oneline --graph 
+    * ca82a6dff817ec66f44342007202690a93763949 changed the verison number
+    * 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7 removed unnecessary test code
+    * a11bef06a3f659402fe7563abf99ad00de2209e6 first commit
+
+git log <PATH>          #只显示指定路径或文件的历史信息
+
+git log README
+    commit a11bef06a3f659402fe7563abf99ad00de2209e6
+    Author: Scott Chacon <schacon@gmail.com>
+    Date:   Sat Mar 15 10:31:28 2008 -0700
+
+        first commit
+
+
+git log的常用选项
+选项	                说明
+-p                  按补丁格式显示每个更新之间的差异
+-N                  N代表一个数字，表示显示前N条信息
+--stat              显示每次更新的文件修改统计信息
+--shortstat         只显示--stat中最后的行数修改添加移除统计
+--name-only         仅在提交信息后显示已修改的文件清单
+--name-status       显示新增、修改、删除的文件清单
+--abbrev-commit     仅显示校验和的前几个字符，而非所有的 40 个字符
+--relative-date     使用较短的相对时间显示
+--graph             显示ASCII图形表示的分支合并历史
+--pretty            使用其他格式显示历史提交信息。可用的选项包括oneline，full，fuller和format(后跟指定格式)
+--since             显示指定时间之后的提交。
+--until             显示指定时间之前的提交。
+--author            显示指定作者相关的提交。
+--committer         显示指定提交者相关的提交。
+--grep              显示含指定关键字的提交
+-S                  显示添加或移除了某个关键字的提交
+
+
+实例：git log --pretty="%h - %s" --author=gitster --since="2017-09-01" --before="2008-10-01"
+
+
+
+详细参考：https://git-scm.com/book/zh/v2/Git-基础-查看提交历史
+
+
+
+
+
+

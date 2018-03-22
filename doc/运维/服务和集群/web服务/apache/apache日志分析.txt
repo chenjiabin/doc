@@ -1,0 +1,44 @@
+Apache日志格式说明
+
+access_log日志格式：
+apache的access_log日志一般由九部分组成
+192.168.0.110 - - [13/Jan/2017:19:01:54 +0800] "GET /stats/awstats.pl?config=e800 / HTTP/1.1" 200 5039 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.22 Safari/537.36 SE 2.X MetaSr 1.0"
+
+
+第一项：远程主机的地址
+
+第二项："-"，占位符
+
+第三项："-"，占位符，当需要用户认证时产生的信息
+
+第四项：[13/Jan/2017:19:01:54 +0800]，请求时间，13/1/2017:19:01:54，+0800表示服务器所处时区位于UTC之后的8小时
+Jan：一月（缩写）	UTC：世界标准时间
+January February March April May June  July August September October November December
+  1月	  2月	  3月	4月  5月	  6月   7月   8月     9月      10月    11月     12月
+    
+
+第五项：服务器收到的请求，"METHOD(方法) RESOURCE(资源) PROTOCOL(协议)"
+RESOURCE是指浏览者向服务器请求的文档，或URL
+METHOD是GET，其他经常可能出现的METHOD还有POST和HEAD
+PROTOCOL是HTTP，后面是版本号
+
+
+第六项：200，状态码
+1xx：纯信息
+2xx：成功类的信息（200...）
+3xx：重定向类的信息（301  302   304）
+4xx：客户端错误类信息（404 ...）
+5xx：服务器端错误类信息
+
+
+第七项：5039，服务器发送给客户端的总字节数
+
+第八项：记录的是客户在提出请求时所在的目录或URL
+
+第九项：记录客户端的详细信息
+
+
+
+
+
+

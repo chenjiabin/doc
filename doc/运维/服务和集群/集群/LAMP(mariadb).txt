@@ -1,0 +1,107 @@
+1、安装mariadb
+tar zxvf cmake-3.9.1.tar.gz -C /usr/src/
+cd /usr/src/cmake-3.9.1/
+./configure  && make && make install
+ln -s /usr/local/bin/cmake /usr/bin/
+useradd -M -s /sbin/nologin mysql							
+tar zxvf mariadb-10.1.26.tar.gz -C /usr/src/
+mkdir -pv /mysql/{data,tmp}
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql  -DMYSQL_DATADIR=/mysql/data  -DMYSQL_UNIX_ADDR=/mysql/tmp/mysql.sock \
+-DMYSQL_UNIX_ADDR=/mysql/tmp/mysql.sock -DSYSCONFDIR=/etc -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci \
+-DMYSQL_USER=mysql -DEXTRA_CHARSETS=all -DWITH_EXTRA_CHARSETS=all  -DENABLED_LOCAL_INFILE=1
+make && make install
+chown  -R  mysql:mysql  /usr/local/mysql							#使mysql用户能操作mysql的主目录
+ln -s /usr/local/mysql/bin/* /usr/local/bin							#将mysql命令链接至环境变量
+cp  /usr/local/mysql/support-files/my-medium.cnf /etc/my.cnf		#复制配置文件到指定目录,配置文件必须叫my.cnf
+cp  /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld	#制作启动脚本
+chmod +x /etc/init.d/mysqld											#赋予启动脚本可执行权限
+chkconfig --add mysqld												#添加为系统服务
+chkconfig mysqld on													#开启默认启动级别
+chmod +x /usr/local/mysql/scripts/mysql_install_db					#赋予初始化脚本执行权限
+/usr/local/mysql/scripts/mysql_install_db --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data	#初始化mysql
+service mysqld start												#启动mysql服务
+netstat -anpt | grep 3306											#查看mysql服务是否启动
+
+参数说明：
+	-DCMAKE_INSTALL_PREFIX=/usr/local/mysql				安装根目录
+	-DMYSQL_DATADIR=/mysql/data						    数据存储目录
+	-DMYSQL_UNIX_ADDR=/mysql/tmp/mysql.sock				socket文件
+	-DSYSCONFDIR=/etc									配置文件(my.cnf)目录
+	-DDEFAULT_CHARSET=utf8								默认字符集
+	-DDEFAULT_COLLATION=utf8_general_ci					默认字符校对
+	-DWITH_EXTRA_CHARSETS=all							扩展支持编码 ( all | utf8,gbk,gb2312 | none )
+	-DEXTRA_CHARSETS=all								扩展字符支持	
+	-DMYSQL_USER=mysql									mysql用户
+	-DENABLED_LOCAL_INFILE=1							允许从本地导入数据
+
+
+	
+2、安装apache
+tar zxvf httpd-2.2.17.tar.gz -C /usr/src/
+cd /usr/src/httpd-2.2.17/
+./configure --prefix=/usr/local/httpd --enable-so --enable-rewrite --enable-cgi --enable--charset-lite
+make && make install
+ln -s /usr/local/httpd/bin/* /usr/local/bin
+cp -p /usr/local/httpd/bin/apachectl /etc/init.d/httpd
+
+
+
+3、安装php
+wget http://www.atomicorp.com/installers/atomic							#第三方yum源
+sh ./atomic
+yum install php-mcrypt libmcrypt libmcrypt-devel mhash mhash-devel		#安装libmcrypt、mhash、mcrypt
+tar jxvf php-5.6.31.tar.bz2 -C /usr/src/
+cd /usr/src/php-5.6.31/
+cp -frp /usr/lib64/libldap* /usr/lib
+./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql=/usr/local/mysql --with-mysqli=/usr/bin/mysql_config --with-pdo-mysql=/usr/bin/mysql_config	 --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --enable-xml --disable-rpath  --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl --enable-mbregex  --enable-fpm  --enable-mbstring --with-mcrypt --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-ldap --with-ldap-sasl --with-xmlrpc --enable-zip --enable-soap --without-pear --with-zlib --enable-pdo --with-pdo-mysql --with-mysql --with-apxs2=/usr/local/httpd/bin/apxs	--with-bz2 
+make && make install													#安装
+cp /usr/src/php-5.6.31/php.ini-production /usr/local/php/php.ini		#创建配置文件
+vim /usr/local/php/php.ini												#修改配置文件
+        short_open_tag = On												#支持<?....?>语法
+        default_charset = "utf-8"										#配置默认字符集
+		data.timezone = "Asia/Shanghai"									#设置时区
+		
+vim httpd.conf															#配置httpd支持php
+	LoadModule php5_module        modules/libphp5.so					#查看php模块是否生成，如果没有生成则php安装失败
+	AddType application/x-httpd-php  .php
+    DirectoryIndex  index.html  index.php
+
+
+参数说明：
+	--prefix=/usr/local/php									指定 php 安装目录 
+	--with-apxs2=/usr/local/httpd/bin/apxs					加载指定模块到 apache，要求 apache 要打开SO模块
+	--with-config-file-path=/usr/local/php/etc              指定php.ini位置
+	--with-mysql=/usr/local/mysql							mysql安装目录，对mysql的支持
+	--with-mysqli=/usr/local/mysql/bin/mysql_config         mysqli扩展技术可以调用MySQL的存储过程、处理事务，可以使访问数据库更加稳定 
+	--with-pdo-mysql=/usr/bin/mysql_config					支持pdo-mysql
+	--enable-zip  											打开对zip的支持 
+	--with-bz2    											打开对bz2文件的支持        
+	--with-jpeg-dir   										打开对jpeg图片的支持 
+	--with-png-dir   										打开对png图片的支持 
+	--with-freetype-dir   									打开对freetype字体库的支持 
+	--with-gd    											打开gd库的支持 
+	--enable-gd-native-ttf   								支持TrueType字符串函数库 
+	--with-curl    											打开curl浏览工具的支持 
+	--with-pear    											打开pear命令的支持，PHP扩展用的  
+	--enable-mbstring    									多字节，字符串的支持 
+	--enable-bcmath    										打开图片大小调整,用到zabbix监控的时候用到了这个模块
+	--enable-sockets     									打开sockets支持 
+	--disable-rpath    										关闭额外的运行库文件 
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+

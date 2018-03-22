@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主机组管理</title>
+</head>
+<body>
+    <form action="hostgroup" method="post">
+        {% csrf_token %}
+        添加组：<input type="text" name="group"/>&emsp;&emsp;&emsp;&emsp;&emsp;
+        所属项目：<input type="text" name="item"/><br/>
+        删除组：<input type="text" name="delete"/><br/>
+        &nbsp;<input type="submit" value="提交"><br/><br/><br/>
+    </form>
+
+    <table border="2">
+        <tr style="color:red">
+            <td width="50" height="50">ID</td>
+            <td width="500" height="50">组名</td>
+            <td width="1000" height="50">所属项目</td>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <td width="50" height="50">{{ item.id }}</td>
+            <td width="500" height="50">{{ item.name }}</td>
+            <td width="1000" height="50">{{ item.item }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

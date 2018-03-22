@@ -1,0 +1,131 @@
+中间件简介：    
+    中间件是一个钩子框架，它们可以介入Django的请求和响应处理过程。 是一个轻量级、底层的“插件”系统，用于在全局修改Django的输入或输出。
+    django的中间件（middleware），在django中表现为一个类，在请求到来和结束后，django会根据自己的规则在合适的时机执行中间件中相应的方法。
+    在django项目的settings模块中，有一个名为MIDDLEWARE的列表，其中每一个元素就是一个中间件。
+
+    MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ]
+
+
+
+中间件的执行顺序和分层：
+    在请求阶段，在调用视图之前，Django以MIDDLEWARE定义的顺序自上而下的应用中间件。
+    每个中间件类都是一个“层”，它覆盖了核心的视图。 如果请求通过了所有的中间件，一直到核心的视图，响应将以相反的顺序穿过中间件返回给用户。（再次提醒，在处理响应期间，中间件的执行顺序是倒序执行的）
+    如果其中一个层决定短路并返回响应，那么该层以下的中间件(包括视图)都不会看到请求或响应。 响应将只返回通过请求传递的层。
+
+
+
+中间件中可以定义五个方法：
+    process_request(self,request)
+    process_response(self, request, response)
+    process_exception(self, request, exception)
+    process_view（request，view_func，view_args，view_kwargs）
+    process_template_response(self,request,response)
+
+以上方法的返回值可以是None和HttpResonse对象，如果是None，则继续按照django定义的规则向下执行，如果是HttpResonse对象，则直接将该对象返回给用户。
+
+
+
+方法详解：
+    process_request(self,request)
+        当用户发起请求的时候会依次经过所有的的中间件，这个时候请求将通过process_request,最后到达views的函数中，views函数处理后
+        request为用户请求的URL
+
+
+    process_response(self, request, response)
+        当服务器返回数据时,将依次穿过中间件，这个时候是通过process_response处理,最后返回给请求者
+        它必须返回一个response或HttpResponse对象，response及服务器返回给用户的数据
+
+
+    process_exception（request，exception）
+        当一个视图抛出异常时，Django会调用process_exception()来处理。 它应该返回None或HttpResponse对象。
+        如果它返回一个HttpResponse对象，将生成的数据返回给浏览器。
+
+
+    process_view（request，view_func，view_args，view_kwargs）
+        request是一个HttpRequest对象。view_func是Django会调用的一个Python的函数。view_kwargs是一个会被传递到视图的位置参数列表，而view_args是一个会被传递到视图的关键字参数字典。
+        process_view()会在Django调用视图之前被调用。
+
+        它应该返回一个None或一个HttpResponse对象。 如果返回None，Django将会继续处理这个请求，执行其它的process_view()中间件，然后调用对应的视图。
+        如果它返回一个HttpResponse对象，Django会调用相应的视图；通过HttpResponse返回结果。
+
+
+    process_template_response（请求，响应）
+        只有当views函数中返回的对象中具有render方法，是就会直接process_template_responseprocess。
+
+
+django请求周期：
+    请求-->中间件(process_request)-->ur映射-->中间件(process_exception)-->views(-->template,models)
+    响应-->views(-->template,models)-->中间件(process_response)-->用户名
+    
+    process_exception和process_template_response不会自动调用只会在条件满足只会触发
+
+
+自定义中间件：
+    1、在与manage.py同级的目录中创建一个"包"(包名任意)，在包里面创建一个.py文件，在文件中创建任意的类，每一个类就是一个中间件，一个.py文件中可以有多个类
+    2、将自定义的中间件在settings.py中注册
+
+
+
+中间件示例：
+    1、在与manage.py同级的目录中创建一个middle包，在middle里创建test.py文件
+    test.py文件内容：
+
+    from django.utils.deprecation import MiddlewareMixin
+
+    class test(MiddlewareMixin):
+        def process_request(self,request):
+            print "中间件1请求"
+            #return HttpResponse('拦截你的请求')
+
+        def process_view(self, request, index, index_args, index_kwargs):
+            print("中间件3view")
+
+        def process_response(self,request,response):
+            print "中间件1返回"
+            #print response
+            return response
+
+        def process_exception(self, request, exception):
+            print exception
+            return HttpResponse('error')
+
+
+    url文件：
+    from django.conf.urls import url
+    urlpatterns = [
+        url(r'^index/', indxe),
+        url(r'^$', indxe),
+    ]
+
+    
+    views文件：
+    def indxe(request):
+        #int('aaaaa')                                           #产生异常，触发process_exception
+        return HttpResponseRedirect('welcome')
+
+
+    settings文件：
+    MIDDLEWARE = [
+        ......
+        'middle.test.test'              #注册中间件
+    ]
+
+
+
+
+
+
+
+
+
+
+
+

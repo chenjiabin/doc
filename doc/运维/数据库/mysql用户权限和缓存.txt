@@ -1,0 +1,96 @@
+mysql用户由用户和主机名组成，使用'user'@'hosst'表示，mysql的用户和权限信息存储在mysql库中
+	
+mysql数据库表：
+	user			#用户账号、全局权限
+	db				#库级别权限
+	host			#主机
+	tables_priv		#表级别权限
+	colums_priv		#字段级别权限
+	procs_priv		#存储过程和存储函数相关的权限
+	proxies_priv	#代理用户权限
+
+	
+权限级别：
+	库级别
+	表级别
+	字段级别
+		
+		
+mysql用户权限
+	GRANT 权限列表 ON 数据库.表  '用户名'@'主机地址' IDENTIFIED BY '密码';		#授权用户
+		例：mysql> GRANT CREATE,SELECT ON *.* TO 'tr'@'localhost' IDENTIFIED BY 'mypass';
+	
+	REVOKE 权限列表 ON 数据库.表 FROM '用户名'@'主机地址'				#撤销授权
+		例：mysql> REVOKE SELECT ON *.* FROM 'tr'@'localhost';
+	
+	mysql> SHOW GRANTS FOR 'tr'@'localhost';		#查看指定用户的授权情况
+
+
+	
+mysql root密码恢复
+	vim my.cnf			#修改配置文件
+		[mysqld]
+		skip-grant-tables		#登录数据库是跳过授权表(必须)
+		skip-networking			#禁止用户从网络连接(为了安全起见)
+
+	service mysqld restart		#重启mysql
+	mysql> UPDATE user SET Password=PASSWORD('root') WHERE User='root';		#更新root密码
+	
+	
+	
+	
+mysql查询缓存
+	1、用于保存查询语句返回的结果，命中时，MySQL会立即返回结果，省去解析、优化和执行等步骤
+	2、MySQL保存结果于缓存中，对select语句做hash计算，计算的结果作为key，查询结果作为value
+	3、mysql查询缓存对大小写敏感，所以使用SQL时尽量使用同一种风格
+	
+
+不会被缓存的语句
+	1、不确定的数据，不会缓存，如now()，current_time()等
+	2、若查询SQL中包含用户自定义函数，存储函数，用户变量，临时表，mysql库中系统表
+	3、SQL中包含字段权限
+
+	
+缓存会带来额外开销，如果开启缓存的代价大于不开启缓存的代价则不建议开启缓存
+
+	缓存的开销：
+		1、读查询在开始之前会先检查查询缓存
+		2、若某个读查询可以被缓存且未被缓存，那么当完成执行后，MySQL会将其结果存入查询缓存	3、对写操作也有影响，因为当写入数据时，MySQL必须将对应表的所有缓存都设置失效，这在缓存内存较大时将导致很大的系统消耗，所以缓存内存并不是越大越好
+
+		
+		
+缓存的系统变量
+	mysql> SHOW VARIABLES LIKE 'query%';			#查看和查询缓存相关的系统变量
+		query_cache_type: 是否打开缓存	
+			OFF: 关闭		ON: 打开	DEMAND: 只有明确写了SQL_CACHE的查询才会写入缓存
+		query_cache_size: 缓存使用的总内存空间大小,单位是字节,这个值必须是1024的整数倍
+		query_cache_min_res_unit: 分配的最小内存块大小，太大可能导致内存碎片，太小可能导致频繁请求内存
+		query_cache_limit: 能够缓存的最大结果，如果超出这个大小则清处已经缓存的数据
+		query_cache_wlock_invalidate: 如果某个数据表被锁住,是否仍然从缓存中返回数据，OFF：表示可以返回
+
+
+	mysql> SHOW STATUS LIKE '%qcache%';			#查看缓存状态
+		Qcache_free_blocks			#缓存池中空闲块的个数
+		Qcache_free_memory			#缓存中空闲内存量
+		Qcache_hits					#缓存命中次数
+		Qcache_inserts				#缓存写入次数
+		Qcache_lowmen_prunes		#因内存不足删除缓存次数
+		Qcache_not_cached 			#查询未被缓存次数
+		Qcache_queries_in_cache 	#当前缓存中缓存的SQL数量
+		Qcache_total_blocks 		#缓存的总内存块
+
+
+是否使用缓存
+	1. 通过缓存命中率判断, 缓存命中率 = 缓存命中次数 (Qcache_hits) / 查询次数 (Com_select)
+	2. 通过缓存写入率, 写入率 = 缓存写入次数 (Qcache_inserts) / 查询次数 (Com_select)
+	3. 比率 = 命中次数 (Qcache_hits) / 写入次数 (Qcache_inserts)
+		3:1则算是查询缓存有效，而最好能够达到10:1
+
+	mysql> SHOW GLOBAL STATUS LIKE 'com_select';		#查看查询次数
+
+		
+
+
+
+
+

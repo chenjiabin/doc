@@ -1,0 +1,167 @@
+忽略文件：
+    在实际开发过程中总有些文件无需纳入Git的管理，比如日志文件、临时文件等
+    在这种情况下，我们可以在工作目录中创建一个名为.gitignore的文件，列出要忽略的文件名或者表达式 
+    
+    例：cat .gitignore
+        *.[oa]
+        *~
+        *.log
+    
+    第一行告诉Git忽略所有以.o或.a结尾的文件
+    第二行告诉Git忽略所有以 ~ 结尾的文件
+    第三行告诉Git忽略所有以.log结尾的文件
+
+    要养成一开始就设置好.gitignore文件的习惯，以免将来误提交这类无用的文件
+
+    .gitignore的格式规范：
+        所有空行或者以＃开头的行都会被Git忽略
+        可以使用标准的glob模式匹配
+        匹配模式可以以(/)开头防止递归
+        匹配模式可以以(/)结尾指定目录
+        要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反
+
+
+
+glob模式指shell命令行所使用的统配符
+    *：匹配零个或多个任意字符
+    ?：匹配任意一个字符
+    **：表示匹配任意中间目录，比如'a/**/z'，可以匹配 a/z,a/b/z 或'a/b/c/z'等
+    [abc]：匹配任何一个列在方括号中的字符；
+    [0-9]：匹配0到9的数字
+    [a-z]：匹配a到z的字母
+    [A-Z]：匹配A到Z的字母
+
+
+.gitignore例子：
+    # no .a files
+    *.a
+
+    # but do track lib.a, even though you're ignoring .a files above
+    !lib.a
+
+    # only ignore the TODO file in the current directory, not subdir/TODO
+    /TODO
+
+    # ignore all files in the build/ directory
+    build/
+
+    # ignore doc/notes.txt, but not doc/server/arch.txt
+    doc/*.txt
+
+    # ignore all .pdf files in the doc/ directory
+    doc/**/*.pdf
+
+GitHub上有一个十分详细的针对数十种项目及语言的.gitignore文件列表
+地址：https://github.com/github/gitignore
+
+
+
+
+git diff查看具体修改的内容   
+    echo "/usr/bin/python" > test.py                        #修改文件
+    git diff                                                #比较当前文件和快照中文件的差异
+        diff --git a/test.py b/test.py                      #产生差异的文件
+        index df2203b..d5aba22 100644
+        --- a/test.py
+        +++ b/test.py
+        @@ -1 +1 @@ 
+        -coding:utf-8                                       #"-"表示删除的行
+        +/usr/bin/python                                    #"+"表示新增的行
+
+
+git diff --cached(或--staged)查看已暂存的下次提交里的内容：
+    git add test.py                                     #将文件添加到暂存区     
+    git diff                                            #这时使用git diff将什么也不会输出，应为文件已经放入暂存区
+    git diff --cached                                   #查看暂存区的文件差异
+        diff --git a/test.py b/test.py
+        index df2203b..d5aba22 100644
+        --- a/test.py
+        +++ b/test.py
+        @@ -1 +1 @@
+        -coding:utf-8
+        +/usr/bin/python
+
+
+git difftool                #打开一个文本编辑器显示文件差异(适合文件少时使用，较为直观)
+
+
+提交更新
+    在提交之前，请一定要确认还有什么修改过的或新建的文件还没有git add过，否则提交的时候不会记录这些还没暂存起来的变化
+    每次准备提交前，先用git status看下，是不是都已暂存起来了，然后再运行git commit提交
+
+
+    git commit会启动一个默认文本编辑器以便输入本次提交的说明(使用git config --global core.editor='vim'设定默认的编辑器)
+
+    编辑器会显示类似下面的信息：
+
+        # Please enter the commit message for your changes. Lines starting
+        # with '#' will be ignored, and an empty message aborts the commit.
+        # On branch master
+        # Changes to be committed:
+        #       modified:   test.py
+
+    #开头的为注释信息不会提交到git仓库中
+
+    如果想要更详细信息，可以用-v选项，这会将你所做的改变的diff输出放到编辑器
+    退出编辑器时，Git会丢掉注释行，用你输入提交附带信息生成一次提交
+
+
+    git commit -m "version-6"               #直接在命令行输入说明信息
+        [master 3687f51] version-6                              #提交后输出的信息(master分支名称，3687f51校验和，version-6 注释信息)
+        1 file changed, 1 insertion(+), 1 deletion(-)
+
+
+    提交时记录的是放在暂存区域的快照，任何还未暂存的仍然保持已修改状态
+    每一次运行提交操作，都是对项目作一次快照，以后可以回到这个状态，或者进行比较
+
+
+跳过使用暂存区域
+    使用git commit -a时Git会自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过git add步骤，但不会把未跟踪的文件暂存
+
+
+
+移除文件
+    git rm              #从已跟踪的文件清单中删除，并连带从工作目录中删除指定的文件
+    
+    git rm命令后面可以列出文件或者目录的名字，也可以使用glob模式
+    如果使用shell命令rm删除文件，需要再运行git rm记录此次移除文件的操作
+    如果删除之前修改过并且已添加到暂存区域，则必须-f强制删除，这是一种安全特性，用于防止误删还没有添加到快照的数据，这样的数据不能被Git恢复
+
+
+如果想把文件从Git仓库中删除，但仍然希望保留在当前工作目录中。(想让文件保留在磁盘，但是并不想让 Git 继续跟踪)
+git rm --cached <file>                #从git仓库中删除文件或目录
+
+例：
+    git rm --cached test.py 
+        rm 'test.py'
+    git status
+        On branch master
+        Changes to be committed:
+          (use "git reset HEAD <file>..." to unstage)
+
+	        deleted:    test.py
+
+        Untracked files:
+          (use "git add <file>..." to include in what will be committed)
+    
+	        test.py                     #从git
+    ls
+        test.py
+
+
+移动文件或改名
+    git mv <file-from>  <file-to>
+    
+    git mv相当于下面三条命令的结合：
+        mv README.md README
+        git rm README.md
+        git add README
+
+
+详细参考：https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库
+
+
+
+
+
+

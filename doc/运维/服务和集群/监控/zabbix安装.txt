@@ -1,0 +1,122 @@
+zabbix2.4
+
+一、安装前的准备
+	1、配置本地yum源
+	2、yum -y install ntpdate			#安装时间同步	
+	3、echo '*/1 * * * * /usr/sbin/ntpdate ntp1.aliyun.com &>/dev/null' >>/var/spool/cron/root 
+			#配置计划任务,每隔1分钟更新一次时间,ntp1.aliyun.com阿里时间服务器
+	4、service crond restart			#重启计划任务
+	5、echo '192.168.0.10  www.zabbix-server' >> /etc/hosts		#设置主机名解析
+	
+
+二、配置zabbix网络yum源
+	1、rpm -ivh http://mirrors.aliyun.com/zabbix/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
+			#配置zabbix网络yum源
+	2、vim /etc/yum.repos.d/zabbix.repo
+			[zabbix]
+				name=Zabbix Official Repository - $basearch
+				baseurl=http://mirrors.aliyun.com/zabbix/zabbix/2.4/rhel/6/$basearch/
+					#修改为阿里的yum源,默认为官方yum源(国外)
+				enabled=1
+				gpgcheck=1
+				gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX
+
+			[zabbix-non-supported]
+				name=Zabbix Official Repository non-supported - $basearch 
+				baseurl=http://mirrors.aliyun.com/zabbix/non-supported/rhel/6/$basearch
+					#修改为阿里的yum源
+				enabled=1
+				gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX
+				gpgcheck=1
+
+	
+三、安装zabbix
+	yum -y install httpd						#安装web服务器
+	yum -y install mysql mysql-server			#安装数据库
+		#安装相关依赖包(下载地址：http://rpmfind.net/linux/rpm2html)
+	rpm -ivh php-common-5.3.3-49.el6.x86_64.rpm
+	rpm -ivh php-mbstring-5.3.3-49.el6.x86_64.rpm
+	rpm -ivh php-bcmath-5.3.3-49.el6.x86_64.rpm
+	rpm -ivh php-common-5.3.3-26.el6.x86_64.rpm --force(6.5光盘中有)
+		#安装zabbix
+	yum -y install zabbix zabbix-server zabbix-server-mysql zabbix-get zabbix-web zabbix-web-mysql zabbix-agent zabbix-sender
+			
+
+	
+	
+四、配置zabbix环境
+	mysql配置：
+		chkconfig --add mysqld				#设置开机自启动
+		chkconfig mysqld on					#开启运行级别
+		service mysqld start				#启动数据库
+		mysqladmin -uroot password 123.com			#设置数据库管理员密码
+			
+		mysql -uroot -p						#进入数据库	
+			create database zabbix character set utf8;		#创建数据库并设置字符集
+			grant all on zabbix.* to "zabuser"@"192.168.0.10" identified by '123.com';   #授权用户
+			
+	导入数据到mysql中(必须按顺序导入)
+		cd /usr/share/doc/zabbix-server-mysql-2.4.8/create
+		mysql -uroot -p123.com zabbix < schema.sql 
+		mysql -uroot -p123.com zabbix < images.sql 
+		mysql -uroot -p123.com zabbix < data.sql 
+
+		
+五、初始化zabbix配置：		
+	vim /etc/zabbix/zabbix_server.conf		#修改主配置文件
+		#注意：下面执行配置只需要更改配置文件即可
+		DBHost=192.168.0.10		#数据库地址
+		DBName=zabbix 			#存放zabbix数据的数据库名 
+		DBUser=zabuser 			#连接数据库的用户名 
+		DBPassword=123.com		#用户连接数据库需要的密码 
+		DBPort=3306 			#数据库的端口号
+	
+	vim /etc/php.ini 
+		[Date]				
+			date.timezone = Asia/Shanghai		#更改时区
+		
+	service httpd start					#启动httpd
+	service zabbix-server start			#启动zabbix
+	netstat -napt | grep 10051			#zabbix默认监听10051端口
+	
+六、web端配置
+	/etc/httpd/conf.d/zabbix.conf	#zabbix的web配置文件
+	http://192.168.0.10/zabbix		#进入zabbix的web配置端
+	
+	
+
+七、zabbix客户端配置
+	1、配置网络yum源
+	2、yum -y install zabbix zabbix-agent zabbix-sender
+	
+	vim /etc/zabbix/zabbix_agentd.conf
+		Server=127.0.0.1,192.168.0.10		#服务器ip,如果监控zabbix本身必须是127.0.0.1
+		ServerActive=127.0.0.1,192.168.0.10		#开启主动模式,通知的zabbix服务器ip
+		Hostname=www.zabbix-server	#全局唯一主机名,如果是监控自己,主机名必须和web设置的一样
+		ListenPort=10050			#客户端监听的端口
+		StartAgents=3				#启动的agent进程,默认是3个
+	service zabbix-agent start		#启动zabbix客户端
+	netstat -napt|grep 10050		#查看服务是否启动
+	
+	web端添加监控主机
+		Configuration >> Hosts >> Zabbix Server >> Status >> Disabled	#添加监控本身
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

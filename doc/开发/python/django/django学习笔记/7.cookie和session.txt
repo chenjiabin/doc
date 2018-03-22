@@ -1,0 +1,242 @@
+cookie本质:
+    cookie其实就是后台生成的一段字符串,发送给客户端,客户端已字典的方式存储在计算机上的一个文件
+    用户可以对cookie做任意修改
+
+
+设置Cookie：
+    response = HttpResponse() 或 response ＝ render(request, ...)
+     
+    response.set_cookie(key,value,...)                              #设置cookie,不能设置加密,默认为明文
+    response.set_signed_cookie(key,value,salt='',...)               #允许设置加密盐,在解密时传入加密时的字符串即可
+    参数：
+        key,              键
+        value='',         值
+        salt='',          加密盐
+        max_age=None,     超时时间(秒),如果不设置超时时间则默认在浏览器关闭后失效
+        expires=None,     超时时间(时间段)
+        path='/',         Cookie生效的路径，/表示根路径，表示此网站下的页面都可以使用此cookie,/logintest表示此cookie只对logintest生效
+        domain=None,      Cookie生效的域名
+        secure=False,     https传输
+        httponly=False    只能http协议传输，无法被JavaScript获取（不是绝对，底层抓包可以获取到也可以被覆盖）
+
+
+获取cookie:
+    request.COOKIES['key']
+    request.get_signed_cookie(key, default=RAISE_ERROR, salt='', max_age=None)
+    参数：
+        default: 默认值
+           salt: 加密盐
+        max_age: 后台控制过期时间
+
+
+cookie示例(明文cookie):
+
+from django.conf.urls import url
+from app01.views import *
+
+urlpatterns = [
+    url(r'^login/', login),
+    url(r'^logintest/', logintest),
+]
+
+
+
+from django.shortcuts import render,redirect
+from django.shortcuts import HttpResponse
+
+
+def login(request):
+    if request.method == 'GET':
+        return render(request,'login.html')
+    else:
+        user = request.POST.get('user')
+        pwd = request.POST.get('pwd')
+        if user == 'root' and pwd == '123':
+            respons = redirect('/app01/logintest/')
+            respons.set_cookie('username',user)
+            respons.set_cookie('password',pwd)
+            return respons
+        else:
+            return HttpResponse('登录失败')
+
+
+def logintest(request):
+    user = request.COOKIES.get('username')
+    pwd = request.COOKIES.get('password')
+    request.get_signed_cookie()
+    if user == 'root' and pwd == '123':
+        return HttpResponse('登录成功')
+    else:
+        return redirect('/app01/login/')
+
+
+<body>
+    <form action="/app01/login/" method="post">
+        {% csrf_token %}
+        <i>用户名:</i><input type="text" name="user">
+        <i>密码:</i><input type="password" name="pwd">
+        <input type="submit" value="提交">
+    </form>
+</body>
+
+
+
+session本质:
+    session本质上就是一个存储在服务器端的k,v数据
+    session必须依赖于cookie,session相对于cookie更安全
+
+session生成步骤:
+    1.生成随机字符串(django自动完成)
+    2.将随机字符串写入到用户的cookie中(django自动完成)
+    3.将随机字符串保存在session中(django默认保存在数据库中,可以自定义)
+    4.在随机字符串对应的字典中设置相应的值(可以自定义)
+
+
+
+
+Django默认支持session，其内部提供了5种类型的session供开发者使用：
+    1.数据库（默认）
+    2.缓存
+    3.文件
+    4.缓存+数据库
+    5.加密cookie
+
+Django默认支持session，并且默认是将session数据存储在数据库中，即：django_session表中
+
+ 
+ 
+session使用:
+    request.session['k1']                   #获取session的值,没有的话抛出异常
+    request.session.get('k1',None)          #获取session的值,没有的话返回None
+    request.session['k1'] = 123             #设置session的值
+    request.session.setdefault('k1',123)    #存在则不设置
+    del request.session['k1']               #删除session的值
+
+
+    request.session.keys()                  #session是字典类型,支持字典拥有的所以方法
+    request.session.values()
+    request.session.items()
+    request.session.iterkeys()
+    request.session.itervalues()
+    request.session.iteritems()
+
+
+    #以下操作django会自动完成
+    request.session.session_key                             #获取用户session的随机字符串
+    request.session.clear_expired()                         #将所有session失效日期小于当前日期的数据删除
+    request.session.exists("session_key")                   #检查用户session的随机字符串在数据库中是否存在
+    
+    request.session.delete("session_key")                   #删除当前用户的所有session数据,用于注销时使用
+    request.session.set_expiry(value)                       #设置超时时间,默认为两2周,建议默认情况下设置为0
+        #如果value是个整数，session会在设置的秒数后失效
+        #如果value是个datatime或timedelta，session就会在这个时间后失效
+        #如果value是0,用户关闭浏览器session就会失效
+        #如果value是None,session会依赖全局session失效策略。
+
+
+session简单示例:
+
+def login(request):
+    if request.method == 'GET':
+        return render(request,'login.html')
+    else:
+        user = request.POST.get('user')
+        pwd = request.POST.get('pwd')
+        if user == 'root' and pwd == '123':
+            request.session['username'] = user              #设置session值,实际应用中这儿一般是数据库中获取的用户名和密码
+            request.session['password'] = pwd
+            return redirect('/app01/session/')
+        else:
+            return HttpResponse('登录失败')
+
+
+def session(request):
+    user = request.session.get('username')                  #获取session的值
+    pwd = request.session.get('password')
+    if user == 'root' and pwd == '123':                     #做密码匹配
+        return HttpResponse('登录成功')
+    else:
+        return redirect('/app01/login/')
+
+
+
+session高级配置:
+
+
+
+session的所有默认值都可以在settings.py中配置:
+    
+    使用数据库:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'   # 引擎（默认使用数据库存储）
+    SESSION_COOKIE_NAME ＝ "sessionid"                       # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串（默认）
+    SESSION_COOKIE_PATH ＝ "/"                               # Session的cookie保存的路径（默认）
+    SESSION_COOKIE_DOMAIN = None                             # Session的cookie保存的域名（默认）
+    SESSION_COOKIE_SECURE = False                            # 是否Https传输cookie（默认）
+    SESSION_COOKIE_HTTPONLY = True                           # 是否Session的cookie只支持http传输（默认）
+    SESSION_COOKIE_AGE = 1209600                             # Session的cookie失效日期（2周）（默认）
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = False                  # 是否关闭浏览器使得Session过期（默认）
+    SESSION_SAVE_EVERY_REQUEST = False                       # 是否每次请求都保存Session，默认修改之后才保存（默认,建议修改为True）
+
+
+    使用缓存:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cache'   # 引擎
+    SESSION_CACHE_ALIAS = 'default'                             # 使用的缓存别名（默认内存缓存，也可以是memcache），此处别名依赖缓存的设置
+    SESSION_COOKIE_NAME ＝ "sessionid"                          # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串
+    SESSION_COOKIE_PATH ＝ "/"                                  # Session的cookie保存的路径
+    SESSION_COOKIE_DOMAIN = None                                # Session的cookie保存的域名
+    SESSION_COOKIE_SECURE = False                               # 是否Https传输cookie
+    SESSION_COOKIE_HTTPONLY = True                              # 是否Session的cookie只支持http传输
+    SESSION_COOKIE_AGE = 1209600                                # Session的cookie失效日期（2周）
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = False                     # 是否关闭浏览器使得Session过期
+    SESSION_SAVE_EVERY_REQUEST = False                          # 是否每次请求都保存Session，默认修改之后才保存
+
+
+    使用文件:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.file'    #引擎
+    SESSION_FILE_PATH = None          # 缓存文件路径，如果为None，则使用tempfile模块获取一个临时地址tempfile.gettempdir()
+    SESSION_COOKIE_NAME ＝ "sessionid"                          # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串
+    SESSION_COOKIE_PATH ＝ "/"                                  # Session的cookie保存的路径
+    SESSION_COOKIE_DOMAIN = None                                # Session的cookie保存的域名
+    SESSION_COOKIE_SECURE = False                               # 是否Https传输cookie
+    SESSION_COOKIE_HTTPONLY = True                              # 是否Session的cookie只支持http传输
+    SESSION_COOKIE_AGE = 1209600                                # Session的cookie失效日期（2周）
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = False                     # 是否关闭浏览器使得Session过期
+    SESSION_SAVE_EVERY_REQUEST = False                          # 是否每次请求都保存Session，默认修改之后才保存
+
+
+    使用加密cookie:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'   # 引擎
+
+
+    使用缓存+数据库:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'        # 引擎
+
+
+
+    CACHES = {
+        'default': {                                                    #缓存名称，和上面session的SESSION_CACHE_ALIAS配置对应
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': [                                               #memcache主机配置
+                （'192.168.1.1:11211',5）                                #设置权重
+                '192.168.1.2:11211',
+            ]
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

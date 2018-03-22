@@ -1,0 +1,17 @@
+hashlib：python加密模块
+
+MD5加密：
+hashlib.md5():创建一个MD5对象
+hashlib.md5.update('str')：使用MD5对象去调用updat函数，加密字符串
+hashlib.md5.hexdigest()：使用MD5对象去调用hexdigest函数，查看加密后的密文
+
+例：
+
+In [38]: import hashlib
+In [39]: md5 = hashlib.md5()
+In [40]: md5.update('root')
+In [41]: md5.hexdigest()
+Out[41]: '63a9f0ea7bb98050796b649e85481845'
+
+
+

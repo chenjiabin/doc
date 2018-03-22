@@ -1,0 +1,48 @@
+2017-10-7
+	file n. 文件；v. 保存文件
+	command n. 命令，指令
+	use v. 使用，用途
+	program n. 程序
+	line n. (数据，程序)行，线路
+	if conj. 如果
+	display vt. 显示，显示器
+	set v. 设置，n. 集合
+	key n. 键，关键字，关键码
+	list n. 列表，显示，v. 打印
+	format n. 格式
+	change v. 更换，改变，变动
+	cursor n. 光标										[ˈkɜ:sə(r)]
+	directory n. 目录，索引簿							[dəˈrektəri]
+	menu n. 菜单，目录									[ˈmenju:]
+	option n. 任选，选择，可选项						[ˈɒpʃn]
+
+
+2017-10-8
+	character n. 字符，符号，特性						[ˈkærəktə(r)]
+	current n. 电流										[ˈkʌrənt]
+	type n. 型，类型；v. 打印
+	screen n. 屏幕，屏；v. 屏蔽							[skri:n]
+	specify v. 指定，规定，确定							[ˈspesɪfaɪ]
+	move v. 移动
+	disk n. 盘，磁盘
+	text n. 正文，文本
+	drive v. 驱动；n. 驱动器
+	see v. 看，看出，查看
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

@@ -1,0 +1,37 @@
+__import__(str)：以字符串方式导入模块
+getattr(mode_name,function_name)：以字符串方式调用函数
+
+
+例：
+In [2]: model = 'sys'
+In [3]: sys1 = __import__(model)
+
+In [4]: sys1.path
+Out[4]: 
+['',
+ '/usr/local/python2.7/bin',
+ '/root/.ipython']
+
+In [5]: function = 'path'
+In [6]: func_sys_path = getattr(sys1,function)
+
+In [7]: func_sys_path
+Out[7]: 
+['',
+ '/usr/local/python2.7/bin',
+ '/root/.ipython']
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

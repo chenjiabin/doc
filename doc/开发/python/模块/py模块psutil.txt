@@ -1,0 +1,65 @@
+psutil:获取系统状态模块
+单位换算:(psutil读取的容量已字节为单位)
+1000字节=1k
+1000k=1M
+1000M=1G 
+1000000000字节 = 1g
+"%.nf" %a:保留小数的之后n为数字(四舍五入)
+
+常用方法：
+
+CPU信息：
+psutil.cpu_count(logical=True)		#获取cup线程数
+psutil.cpu_count(logical=False)		#获取cup核心数
+psutil.cpu_times_percent()			#获取当前cpu的详细信息,以百分比的方式显示
+    user:执行用户进程的百分比,system:执行系统进程的百分比,idle:空闲时间,interrupt:系统中断
+
+	
+内存信息：
+psutil.virtual_memory()				#获取物理内存的详细信息
+psutil.swap_memory()				#获取虚拟内存的详细信息
+    total:内存总大小,  used:已使用大小,   free:剩余大小
+	
+
+磁盘信息：
+psutil.disk_io_counters()				#获取磁盘IO信息
+psutil.disk_io_counters(perdisk=True)	#获取单个分区的IO信息
+psutil.disk_partitions()				#获取磁盘分区信息
+psutil.disk_usage(分区挂载点)			#获取分区详细信息
+    IO信息：
+		read_count:读操作请求次数   write_count:写操作请求次数
+		read_bytes:读字节数         write_bytes:写字节数
+		read_time:读操作使用时间    write_time:写操作使用时间
+	磁盘分区：
+		device:分区类型		 	mountpoint:分区挂载点
+		fstype:文件系统类型		opts:文件系统权限
+	分区信息：
+		total:总大小, used:已使用大小, free:剩余大小,
+
+网卡信息：
+	psutil.net_if_addrs()			#获取网卡配置信息
+	psutil.net_io_counters()		#获取接收数据信息
+		bytes_sent:发送数据大小			bytes_recv:接收数据大小
+		packets_sent:发送数据包个数 	packets_recv:接收数据包个数
+		
+用户信息：
+	psutil.boot_time()				#获取系统开机时间
+	psutil.users()					#获取当前系统上的所有用户信息
+		name:用户名  	terminal:登录终端 		host:登录主机 
+		
+		
+进程信息:
+	psutil.pids()						#列出所有进程PID
+	process = psutil.Process(PID)		#进程处理的一个类,接收一个PID做为参数
+	
+	process.username()					#获取运行进程的用户
+	process.name()						#获取进程名
+	process.exe()						#程序的绝对路径
+	process.create_time()				#进程创建时间
+	process.io_counters()				#进程IO
+	process.num_threads()				#进程创建的线程数
+
+
+
+
+

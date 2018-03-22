@@ -1,0 +1,77 @@
+分支管理：
+branch命令
+    git branch                          #查看分支列表
+    git branch -v                       #查看分支列表，更详细的
+    git branch -a                       #查看所有的分支，保护远程分支
+    git branch --merged                 #查看那些分支已经合并到当前分支
+    git branch --no-merged              #查看所有为合并的分支
+    git branch -d                       #删除指定分支(已合并，不会造成工作丢失的分支)
+    git branch -D                       #强制删除指定分支(慎用，可能会造成工作丢失)
+
+
+
+工作流程实例：
+
+分支的新建与合并
+    实际工作中可能会用到类似的工作流，你将经历如下步骤：
+        1、开发某个网站
+        2、为实现某个新的需求，创建一个分支
+        3、在这个分支上开展工作
+
+    正在此时，突然有一个严重的bug需要解决，你将按照如下方式来处理：
+        1、切换到你的线上分支
+        2、为这个紧急任务新建一个分支，并在其中修复它
+        3、在测试通过之后，切换回线上分支，然后合并这个修补分支，最后将改动推送到线上分支
+        4、切换回你最初工作的分支上，继续工作
+
+
+
+
+git checkout -b iss53                               #创建并切换到iss53分支
+echo '#!/usr/bin/env python' > a.py                 #修改文件内容
+git commit -a -m 'test1'                            #提交
+git log --pretty=oneline --decorate                 #查看分支状况
+
+
+git checkout master                                 #切换回master分支
+git checkout -b test                                #创建并切换到test分支
+
+
+echo '#coding:utf-8' > a.py                         #修改文件内容
+git commit -a -m 'testbranch1'                      #提交
+
+
+git checkout master                                 #切换回master分支
+git merge test                                      #将test分支合并到master分支
+git branch -d test                                  #删除test分支
+
+
+git checkout iss53                                  #切换分支
+echo 'import os' > a.py                             #修改文件内容
+git commit -a -m 'v1'                               #提交
+
+
+git checkout master                                 #切换回master分支
+git merge iss53                                     #因为在不同的分支中修改了同一个文件的不同为，所有产生了冲突
+    Auto-merging a.py 
+    CONFLICT (content): Merge conflict in a.py 
+    Automatic merge failed; fix conflicts and then commit the result.
+
+
+git status                                          #查看冲突的情况
+git mergetool                                       #打开mergetool开始解决冲突,mergetool会启用默认的文本编辑器并带领你解决冲突
+git status                                          #查看是否解决完毕
+git add -A                                          #解决完后跟着所有文件
+git commit -m 'ok'                                  #提交并合并分支
+
+
+
+
+详细内容：https://git-scm.com/book/zh/v2/Git-分支-分支的新建与合并
+详细内容：https://git-scm.com/book/zh/v2/Git-分支-分支管理
+详细内容：https://git-scm.com/book/zh/v2/Git-分支-分支开发工作流       #开发流程
+https://git-scm.com/book/zh/v2/Git-分支-变基                       #另一种合并方式
+
+
+
+

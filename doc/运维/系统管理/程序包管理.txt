@@ -1,0 +1,93 @@
+yum仓库申明文件存放目录：/etc/yum.repos.d
+	仓库申明文件必须已.repo结尾
+		[yum-id]：容器的名字，也是唯一标识符
+		name=：描述，对容器的说明，可以忽略
+		baseurl=：容器的存放位置
+			ftp://网络路径
+			http://网络路径
+			file://本地路径（绝对路径）
+		enabled={1|0}：是否启用这个仓库（1:启用,0:禁用）
+		gpgcheck={1|0}：是否开启gpg校验功能
+		gogkey=：gpg密钥文件所在地（/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release）
+
+
+如和把红帽6.5的光盘做成yum仓库
+	1.复制Packages目录到任意一个地方
+	2.复制repodata目录到Packages目录中去 
+	3.在/etc/yum.repos.d目录中创建一个已.repo结尾的文件，在其中申明将Packages目录做为一个yum仓库
+
+yum：rpm软件包后端管理工具，可以自动解决rpm软件的依赖关系
+	格式：yum   选项     软件包
+	-y：当需要用户输入时，不提示直接以yes方式执行
+	list：列出当前系统中已经安装的rpm包和yum仓库中的软件包
+	lnfo：列出当前系统中已经安装的rpm包和yum仓库中的软件包的详细信息
+	install：按装yp-tools.x86_64     
+	info：查看指定软件的详细信息 
+	provides：查看某个文件由那个软件包提供
+	update：更新yum源（通常在更换yum源的时候使用）
+	clean all：删除已下载过得所有容器的相关数据，含软件和列表（通常在更换yum源的时候使用）
+	remove：删除指定软件
+	search：搜索指定软件包名，或关键字
+	grouplist：列出所有可使用的组列表
+	groupinfo：查看指定组的详细信息
+	groupinstall：安装指定组
+	groupremove：删除指定组
+	repolist  all：列出所有yum仓库
+	                    
+rpm -ivh http://mirrors.aliyun.com/epel/epel-release-latest-6.noarch.rpm
+		#安装网络yum源
+
+
+阿里yum源
+[epel]
+nama=epel package
+baseurl=http://mirrors.aliyun.com/epel/6/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=http://mirrors.aliyun.com/epel/RPM-GPG-KEY-EPEL-6
+
+
+
+rpm：RPM	包管理
+格式：rpm  选项  要处理的rpm软件包名
+	-q：查看指定软件包是否以安装
+	-qa：显示当前系统中以prm方式安装的软件
+	-qi：显示指定rpm格式的软件的详细信息
+	-ql：显示指定rpm格式的软件相关文件所在路径
+	-qf：显示指点的文件有那个rpm包提供
+	-qc：查看指定软件的配置文件所路径
+	p：一般同上面的选项一起使用，操作的是rpm软件包
+
+	-i：安装新软件
+	-e：卸载软件，指定软件包的名称
+	-U：升级软件，如果当前系统没有安装，则安装
+	-F：更新，若果当前系统没有，则退出安装
+	-v：显示安装时的详细信息
+	-vv：显示更详细的信息
+	-h：显示安装时的进度
+	--nodeps：不检查依赖关系（多用于卸载）
+	--force：强行安装（多用于老版本替换新版本）
+
+
+校验RPM包：
+密钥文件所在位置：/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release：导入密钥文件 
+rpm -K：校验指定软件包
+	md5,sha1：验证来源和法性，也即验证签名
+	pgp,rsa：验证软件包的完整性
+
+
+
+重建RPM数据库：
+rpm数据库：
+	1.主要存放所有rpm软件安装时生成的所有相关文件的存放位置
+	2.rpm数据库所在路径var/lib/rpm
+rpm  --rebuilddb：重建RPM数据库（速度较慢，取决去当前系统上安装的rpm格式的软件包的数量）
+
+
+
+
+
+
+
+

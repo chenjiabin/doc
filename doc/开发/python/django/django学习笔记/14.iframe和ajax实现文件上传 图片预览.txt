@@ -1,0 +1,177 @@
+iframe实现伪ajax：
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>iframe</title>
+        {% load static %}                                                      <!--加载标签库-->
+    </head>
+    <body>
+        <form action="/iframe/" method="post" target="item1" enctype="multipart/form-data">                  <!--通过target和iframe的name值相同形成关联-->
+            {% csrf_token %}
+            <iframe name="item1" id="i1"></iframe>
+            <input type="text" name="user">
+            <input type="file" name="file">                                    <!-上传文件按钮-->
+            <input type="submit" value="提交" onclick="myfunc()">               <!--绑定事件-->
+        </form>
+        <script src='{% static "jquery-3.2.1.min.js" %}'></script>             <!--导入jQuery-->
+        <script>
+            function myfunc() {
+                var result = $('#i1').contents().find('body').text();          <!--获取服务器端返回的数据-->
+                console.log(result)                                            <!--在console控制台输出-->
+            }
+        </script>
+    </body>
+    </html>
+
+
+
+views文件：
+    class Iframe(View):
+        def get(self,request):
+            return render(request,'iframe.html')
+
+        def post(self,request):
+            files =  request.FILES.get('file')
+            with open('/tmp/test/aaaaaaa.txt','w+') as f:
+                for ff in files.chunks():
+                    f.write(ff)
+            return HttpResponse('ok')
+
+
+
+
+
+ajax实现文件上传：
+    <form id= "uploadForm">
+        <p >上传文件： <input type="file" name="file"/></p>
+        <input type="button" value="上传" onclick="doUpload()" />
+    </form>
+
+    <script src='{% static "jquery-3.2.1.min.js" %}'></script>
+    <script>
+        function doUpload() {
+             var formData = new FormData($( "#uploadForm" )[0]);
+             $.ajax({
+                  url: '/iframe/' ,
+                  type: 'POST',
+                  data: formData,
+                  contentType: false,
+                  processData: false,
+                  success: function (returndata) {
+                      console.log(returndata);
+                  }
+             });
+        }
+    </script>
+
+
+
+views文件：
+    class Iframe(View):
+        def get(self,request):
+            return render(request,'iframe.html')
+
+        def post(self,request):
+            files =  request.FILES.get('file')
+            with open('/tmp/test/bbbb.txt','w+') as f:
+                for ff in files.chunks():
+                    f.write(ff)
+            return HttpResponse('ok')
+
+
+
+图片预览：
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>img</title>                                                             
+    {% load static %}                                                       <!--加载标签库-->
+</head>     
+<body>
+<form id="uploadForm">
+      <p >上传图片：<input type="file" name="file" id="i1" onchange="dis()"/></p>            <!--图片按钮-->
+</form>
+    <img id='i2'>                                                           <!--实现预览图片的标签-->
+
+    <script src='{% static "jquery-3.2.1.min.js" %}'></script>              <!--加载jQuery-->
+    <script>
+        function doUpload() {                                       <!--实现ajax上传图片功能的函数-->
+             var formData = new FormData($("#uploadForm")[0]);              
+             $.ajax({
+                  url: '/img/' ,
+                  type: 'POST',
+                  data: formData,
+                  contentType: false,
+                  processData: false
+             });
+        }
+        function dis() {                                            <!--实现图片预览的函数-->
+            doUpload();                                             <!--上传图片-->
+            var imgname = $('#i1').val().split('\\');               <!--获取图片在本地文件系统的路径-->
+            var name_index = imgname.length - 1;                    <!--获取文件名所在的索引-->
+            var name = imgname[name_index];                         <!--获取图片名-->
+
+            var img_request_url = '/img/static/imgs/' + name;       <!--拼接为访问的url-->
+            $('#i2').attr('src',img_request_url)                    <!--将url添加到img标签的src属性中-->
+        }
+    </script>
+</body>
+</html>
+
+
+url文件：
+    urlpatterns = [
+        url(r'^admin/', admin.site.urls),
+        url(r'^img/$', csrf_exempt(views.Img.as_view())),
+        url(r'^img/static/imgs/', views.Displayimg),
+    ]
+
+
+views文件：
+class Img(View):
+    def get(self,request):
+        return render(request,'img.html')                                   #返回上传文件的页面
+
+    def post(self,request):
+        files = request.FILES.get('file')                                   #获取用户上传的文件
+        if not files:                                                       #如果用户没有上传文件将当前页面返回给用户
+            return redirect('/img/')
+
+        path = self.Path('static/imgs/',str(files))                         #拼接图片存储的路径
+        with open(path,'wb+') as img:                                       #打开文件写入图片
+            for img_block in files.chunks():                                #分块写入文件
+                img.write(img_block)
+        return HttpResponse(path)                                           #将存放路径返回给前端
+
+    def Path(self,paths,name):                                #接收两参数拼接路径
+        import os
+        name = name.lower()                                   #全部转换为小写
+        path = os.path.join(paths,name)
+        return path
+
+
+def Displayimg(request):
+    if request.method == 'GET':
+        path_info = request.path_info                                   #获取用户请求的url
+        path = path_info.replace('/img/','').strip().lower()            #除去前缀，并全部转换为小写
+        with open(path,'rb') as returndata:                             #打开图片读入内存
+            data = returndata.read()                                        
+        return HttpResponse(data,content_type="image")                  #将图片返回给前端，content_type必须指名为图片类型
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

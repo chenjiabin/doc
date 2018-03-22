@@ -1,0 +1,74 @@
+基于openssl的ssh
+
+ssh：客户端程序
+sshd：服务端软件
+
+sshd：centos默认安装并运行了
+
+ssh协议：ssh  v1   ssh  v2	v1现在基本见不到
+
+ssh认证：
+	1、基于口令的认证（默认认证方法）
+	2、基于密钥的认证（更安全的认证方法）
+
+sshd的主配置文件：
+/etc/ssh/sshd_config
+
+主要指令：
+
+Port  22						//监听端口，默认22，建议修改默认端口
+ListenAddress  0.0.0.0			//允许从本机的那个ip地址远程，默认本机的所有ip
+Protocol   2					//启用版本2
+PenmitRootLogin	  yes			//是否允许管理员直接登录，默认为允许，建议修改
+AllowUsers	redhat				//允许redhat登录，拒绝其他所有用户登录包括管理员用户
+AllowGroups	centos				//允许centos组的成员登录
+DenyUsers  centos				//仅拒绝centos用户登录
+DenyGroups redhat				//拒绝redhead组成员登录，拒绝优先
+KeyRegenerationInterval 1h		//重新生成密钥的时间
+ServerKeyBits 1024				//密钥长度
+PubkeyAuthentication yes		//启用秘钥认证
+AuthorizedKeysFile  .ssh/authorized_keys	//指定秘钥文件存放位置
+Compression	 delayed			//是否对通信数据加密
+PermitRootLogin yes				//是否允许root用户直接登录
+UseDns  on						//禁止dns方向解析
+MaxAuthTries  2					//密码最大重试次数
+PermitEmptyPasswords no			//禁止空密码登录
+
+
+基于密钥的认证：
+服务器端：
+在sshd_config文件中启用：
+	  PubkeyAuthentication yes
+	  AuthorizedKeysFile  .ssh/authorized_keys
+
+客户端：
+ssh-keygen			//生成密码对，默认存放位置~/.ssh/
+ssh-copy-id -i /root/.ssh/id_rsa.pub root@192.168.0.10
+//将id_rsa.pub文件拷贝到192.168.0.10主机的/root/.ssh并改名为authorized_keys
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

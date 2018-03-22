@@ -1,0 +1,144 @@
+编译安装nginx
+1、安装依赖库
+yum -y install pcre-devel					//yum安装依赖库
+
+编译安装：
+yum groupinstall "Development Tools"				//安装编译环境
+tar jxvf pcre-8.00.tar.bz2 -C /usr/src/				//解压依赖包
+cd /usr/src/pcre-8.00/						
+./configure && make && make install				//编译安装依赖包
+
+
+
+2、编译nginx
+useradd -M -s /sbin/nologin  nginx				//创建程序运行用户
+./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --with-http_ssl_module --with-http_gzip_static_module --with-http_gunzip_module --with-http_stub_status_module		//配置
+make && make install						//编译  安装
+
+
+3、nginx命令
+ln -s /usr/local/nginx/sbin/nginx /usr/local/sbin		//创建控制脚本
+nginx：		//启动服务
+    -h		//显示帮助信息
+    -v		//显示版本
+    -V		//显示编译模块
+    -t		//测试配置文件语法
+    -c		//指定测试其他nginx的配置文件
+    -s		//运行控制
+          stop：关闭服务		quit：退出服务	reopen：重启	reload：重载
+
+
+
+
+nginx常用编译参数
+
+基本参数：
+--prefix				//Nginx安装的根路径
+--pid-path				//nginx主进程pid写入的文件位置,通常在var/run下
+--user					//指定运行用户
+--group					//指定运行组
+--error-log-path			//错误日志路径
+--http-log-path				//访问日志路径
+
+模块参数：
+--with-http_stub_status_module  	//获取nginx的运行状态
+--with-http_gunzip_module 		//对于不支持gzip编码的客户,该模块用于为客户解压缩预压缩内容
+--with-http_image_filter_module		//图像过滤器(需要libgd库)
+--with-http_ssl_module   		//SSL加密模块
+--with-http_flv_module   		//支持对FLV文件的拖动播放
+--with-http_realip_module  		//显示真实来源IP地址，主要用于NGINX做前端负载均衡服务器使用,
+--with-http_gzip_static_module		//检查是否客户端已经存在以“.gz”结尾的压缩文件，防止文件被重复压缩
+
+
+
+
+nginx配置实例：
+user  nginx;
+worker_processes  4;
+worker_rlimit_nofile  65535;
+error_log  logs/error.log  info;
+pid        logs/nginx.pid;
+
+events {
+    use epoll;
+    worker_connections 20480;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+		
+		#定义日志格式和日志格式名
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  logs/access.log  main;		#访问日志路径,调用main格式
+    sendfile        on;
+    keepalive_timeout  120;			
+    gzip  on;
+    gzip_comp_level 9;	
+
+    upstream name_back {				#集群配置
+	server 192.168.0.2;
+	server 192.168.0.3 weight=2;
+	server 192.168.0.4 weight=3;
+	server 192.168.0.5 backup;
+    }  
+
+	
+    server {							#主机配置
+        listen       80;
+        server_name  www.test.com;		#域名
+
+
+        location / {
+            root   html/test;
+	        #proxy_pass http://name_back;	#启用集群
+            index  index.html index.php;
+        }
+			#错误页面
+        error_page  404              /404.html;
+        location = /404.html {
+            root   html;
+        }
+			
+			#50x错误
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+
+			#主机配置
+    server {
+        listen       80;
+        server_name www.nginx.com;		#域名
+
+        location / {
+            root   html/nginx;
+			#url重写,将访问html目录下的请求全部交给www.test.com处理
+	    #rewrite ^/(.*)$  http://www.test.com/$1 redirect;	
+            index  index.html index.php;
+        }
+    }
+
+			#ssl配置,需要ca证书,私有ca的搭建请参考我以前的博客
+    server {
+        listen       443;
+        server_name  www.apache.com;
+
+        ssl_certificate      ssl/cert.pem;		#证书文件
+        ssl_certificate_key  ssl/cert.key;		#秘钥文件位置
+
+        ssl_session_timeout  5m;			#会话超时时间
+
+        ssl_prefer_server_ciphers  on;		#启用ssl
+
+        location / {
+            root   html;
+            index  index.html index.php;
+        }
+    }
+}

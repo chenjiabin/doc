@@ -1,0 +1,10 @@
+from IPy import IP
+
+
+ip = IP('192.168.1.0/24')
+print ip.version()             							#获取ip的版本
+print ip.len()                 							#获取ip个数
+for i in ip:print i            							#打印此范围内的所有ip地址
+print IP('1.1.1.1').strBin()              				#将ip转换成二进制
+print IP('1.1.1.1').make_net('255.255.255.0')       	#获取ip的子网数
+print  IP('192.168.1.1/255.255.255.252',make_net=True) 	#获取ip的子网数

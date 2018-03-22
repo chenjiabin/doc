@@ -1,0 +1,87 @@
+SQS　AWS提供的一种队列服务
+
+aws_key = 'xxxxxxxxxxxxxx'
+aws_secret = 'xxxxxxxxxxxxxx'
+
+sqs = boto3.client(                                 #初始化登录
+    'sqs',
+    region_name='cn-north-1',
+    aws_access_key_id=aws_key,
+    aws_secret_access_key=aws_secret,
+)
+
+
+sqs_obj = sqs.create_queue(                         #如果queue不存在则创建queue，有则忽略
+    QueueName='python_api',
+    Attributes={                                    #可选项，注意当queue存在时想要使用create_queue对其进行操作则必须保证Attributes的值相同
+        'DelaySeconds': '0',
+        'MaximumMessageSize':'262144',
+        'MessageRetentionPeriod':'345600',
+        'VisibilityTimeout':'3600',
+    }
+)
+queueurl = sqs_obj.get('QueueUrl')                  #获取queue的url地址
+
+
+sqs.send_message(                                   #发送消息
+    QueueUrl = queueurl,
+    MessageBody = 'queue的内容!!!!'
+)
+
+
+data = sqs.receive_message(                         #获取队列里面的数据
+    QueueUrl = queueurl,        注意:获取之后的数据被放入“传输中的消息（不可见）”中，当超过”默认可见性超时“所定义的时间时数据将会再次出现在queue里面(即队列里面的数据是可重复的)
+)
+
+
+
+
+msqs = boto3.resource(   
+    'sqs',
+    region_name='cn-north-1',
+    aws_access_key_id=aws_key,
+    aws_secret_access_key=aws_secret,
+)
+message = msqs.Message(queueurl,'receipt_handle')            #receipt_handle为data包含的数据,使用receive_message不仅能够获得队列里面的数据还包含一些额外的属性
+message.delete()                                            #删除队列的名的指定数据，包括“传输中的消息（不可见）”，如果想要实现数据获取之后不在出现在队列中，可以使用此功能可以实现
+
+
+
+
+http://boto3.readthedocs.io/en/latest/reference/services/sqs.html           #官方文档
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,88 @@
+http://hwraid.le-vert.net/wiki/LSIMegaRAIDSAS       #使用帮助
+http://hwraid.le-vert.net/wiki/DebianPackages       #安装文档和安装包列表
+
+dmesg |grep RAID        ＃查看raid卡生产厂家
+HP服务器使用hpacucli查看RAID
+DELL服务器使用MegaCli查看
+
+
+MegaCli是一款管理MegaRAID卡的RAID软件，可以通过它来了解当前raid卡的所有信息
+包括raid卡的型号，raid的阵列类型，raid上各磁盘状态，等等
+通过MegaCli的Media Error Count: 0　和　Other Error Count: 0 这两个数值来确定阵列中磁盘是否有问题；
+Medai Error Count 表示磁盘可能错误，可能是磁盘有坏道，这个值不为0值得注意，数值越大，危险系数越高
+Other Error Count 表示磁盘可能存在松动，可能需要重新再插入
+
+
+megacli -LDInfo -LAll　-aAll          查看硬盘信息
+megacli -LDInfo -Lall -aALL          查raid级别
+megacli -PDList -aALL                查看硬盘信息
+megacli -AdpBbuCmd -aAll             查看电池信息
+megacli -FwTermLog -Dsply -aALL      查看raid卡日志
+megacli -adpCount                    显示适配器个数
+megacli -AdpGetTime -aALL            显示适配器时间
+megacli -AdpAllInfo -aAll            显示所有适配器信息
+megacli -LDInfo -LALL -aAll          显示所有逻辑磁盘组信息
+megacli -PDList -aAll                显示所有的物理信息
+megacli -AdpBbuCmd -GetBbuStatus -aALL |grep 'Charger Status'    查看充电状态
+megacli -AdpBbuCmd -GetBbuStatus -aALL                           显示BBU状态信息
+megacli -AdpBbuCmd -GetBbuCapacityInfo -aALL                     显示BBU容量信息
+megacli -AdpBbuCmd -GetBbuDesignInfo -aALL                       显示BBU设计参数
+megacli -AdpBbuCmd -GetBbuProperties -aALL                       显示当前BBU属性
+megacli -cfgdsply -aALL                                          显示Raid卡型号，Raid设置，Disk相关信息
+
+
+
+设置磁盘缓存策略
+    WT    (Write through)
+    WB    (Write back)
+    NORA  (No read ahead)
+    RA    (Read ahead)
+    ADRA  (Adaptive read ahead)
+    Cached
+    Direct
+
+例子：
+    megacli-LDSetProp WT|WB|NORA|RA|ADRA -L0 -a0
+    megacli-LDSetProp -Cached|-Direct -L0 -a0
+
+
+megacli-CfgLdAdd -r5 [1:2,1:3,1:4] WB Direct -Hsp[1:5] -a0    创建一个raid5 阵列，由物理盘2,3,4 构成，该阵列的热备盘是物理盘5
+megacli-CfgLdAdd -r5 [1:2,1:3,1:4] WB Direct -a0              创建阵列，不指定热备
+megacli-CfgLdDel -L1 -a0                                      删除阵列
+megacli-LDRecon -Start -r5 -Add -PhysDrv[1:4] -L1 -a0         在线添加磁盘
+
+
+查看同步进度：
+    megacli-LDInit -ShowProg -LALL -aALL          阵列创建完后，会有一个初始化同步块的过程，可以看看其进度。
+    megacli-LDInit -ProgDsply -LALL -aALL         以动态可视化文字界面显示
+
+
+查看初始化进度：
+    megacli-LDBI -ShowProg -LALL -aALL            查看阵列后台初始化进度
+    megacli-LDBI -ProgDsply -LALL -aALL           以动态可视化文字界面显示
+
+
+磁盘热备：
+    megacli-PDHSP -Set [-EnclAffinity] [-nonRevertible] -PhysDrv[1:5] -a0                             指定第5块盘作为全局热备
+    megacli-PDHSP -Set [-Dedicated [-Array1]] [-EnclAffinity] [-nonRevertible]-PhysDrv[1:5] -a0       指定为某个阵列的专用热备
+    megacli-PDHSP -Rmv -PhysDrv[1:5] -a0                              删除全局热备
+
+
+上下线磁盘：
+    megacli　-PDOffline -PhysDrv [1:4] -a0       将某块物理盘下线
+    megacli　-PDOnline -PhysDrv [1:4] -a0  　     将某块物理盘上线
+
+查看重建进度：
+    megacli-PDRbld -ShowProg -PhysDrv [1:5] -a0           查看物理磁盘重建进度
+    megacli-PDRbld -ProgDsply -PhysDrv [1:5] -a0          以动态可视化文字界面显示
+
+
+
+
+
+
+
+
+
+
+

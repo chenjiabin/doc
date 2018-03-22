@@ -1,0 +1,57 @@
+socket：套接字模块
+socket.socket()：创建套接字
+创建TCP/IP套接字：socket.socket()
+创建UDP/IP套接字：socket.socket(socket.AF_INET,socket.SOCK.DGRAM)
+socket.AF_INET		//ipv4(默认)
+socket.AF_INET6		//ipv6
+socket.SOCK_STREAM	//tcp连接(默认)
+socket.SOCK.DGRAM	//udp连接
+
+常用方法：
+socket.bind()：绑定套接字对象
+socket.listen()：最长等待序列
+socket.accept()：被动阻塞式的接受请求
+socket.recv()：接收TCP数据（阻塞）
+socket.send()：发送TCP数据，存入缓存区
+socket.sendall：发送TCP数据
+socket.close()：关闭套接字
+scoket.connect()：初始化连接(客户端方法)
+
+
+
+创建服务器端：
+import  socket							//导入模块
+
+host = '192.168.1.1'						//服务器的ip地址
+port = 8080							//监听的端口
+
+sk = socket.scoket(socket.AF_INET,socket.SOCK_STREAM)		//创建套接字
+sk.bind((host,port))						//绑定ip和端口
+sk.listen(10)							//允许最大序列
+while True:							//建立循环
+    sinfo,saddr = sk.accept()					//开始监听服务请求
+    print saddr[0]						//打印客户端ip地址和端口
+    date = sinfo.recv(1024)					//接收数据，一次最大接受1024字节				
+    print date							//打印到接收的数据				
+    sinfo.send('hello cilent')					//回复客户端的数据
+sinfo.close()							//关闭套接字
+
+
+创建客户端：
+import  socket
+
+host = '192.168.1.1'
+port = 8080
+
+ck = socket.socket(socket.AF_INTE,socket.SOCK_STREAM)		//创建套接字
+ck.connect((host,port))						//初始化，指定服务器的ip和端口
+ck.send('hello server')						//发送给服务器的数据	
+data = ck.recv(1024)						//接收服务器发送的数据，一次最大接受1024字节
+print data							//打印接收到的数据		
+
+
+
+
+
+
+

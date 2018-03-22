@@ -1,0 +1,213 @@
+if的三种语法：
+    if(条件){条件为true执行代码}        
+
+  
+    if(条件){
+        条件为true执行代码    
+    }
+    else{
+        条件为false执行代码
+    }
+
+    
+    if(){}
+    else if(){}
+    else {}
+ 
+
+实例：
+    <script>
+        function myFunction() {
+            var a='o'
+            if(a=="x"){
+                alert('correct');
+            }
+            else if(a=='o'){
+              alert('tow')
+            }
+            else {
+                alert('errar')
+            }
+        }
+    </script>
+
+    <button type="button" onclick="myFunction()">点击这里</button>
+
+    </body>
+
+
+switch工作原理：首先设置表达式n(通常是一个变量)。表达式的值与结构中的每个case的值做比较。如果匹配，则执行与case关联的代码块，请使用break来阻止代码自动地向下一个case运行
+switch语句实例：
+    <script>
+        var data = new Date().getDay()              #获取当前是一周的第几天，0代表星期日
+        function myFunction() {
+            switch (data){
+                case 0:
+                    alert('7')
+                    break
+                case 1:
+                    alert('1')
+                    break
+                case 2:
+                    alert('2')
+                    break
+                case 3:
+                    alert('3')
+                    break
+            }
+        }
+    </script>
+
+<button type="button" onclick="myFunction()">点击这里</button>
+
+
+for语句：
+    <script>
+        var data = new Date().getDay()
+        function myFunction() {
+            for(var i=0;i<100;i++){                                 //初始化i=0判断i是否大于100，如果大于则退出循环否则，则i每次在原来的基础上+1
+                document.write(i+'<br/>');                          //输出i每次的值
+            }
+        }
+    </script>
+
+    <button type="button" onclick="myFunction()">点击这里</button>
+
+实例二：
+    <script>
+        function myFunction() {
+            for(x in '123456'){                             //每次从123456中取出一个值
+                document.write(x+'<br/>');
+            }
+        }
+    </script>
+
+    <button type="button" onclick="myFunction()">点击这里</button>
+
+
+
+
+while语句：
+    <script>
+        function myFunction() {
+            var x = 1;                                      //设置x=1
+            while(true){                                    //while循环
+                document.write(x+'<br/>')                   //输出每一次循环的结果
+                if(x==100){                                 //当x=100时
+                    break                                   //跳出循环
+                }
+                x++;                                        //当条件不满足时每一次在原来的基础上+1
+            }
+        }
+    </script>
+
+<button type="button" onclick="myFunction()">点击这里</button>
+
+实例二：
+    <script>
+        function myFunction() {
+            var x = 1;                                      //设置x=1
+            while(x<100){                                   //当x<100时执行以下代码
+                document.write(x+'<br/>')                   //输出每一次循环的结果
+                x++;                                        ////当条件不满足时每一次在原来的基础上+1
+            }
+        }
+    </script>
+<button type="button" onclick="myFunction()">点击这里</button>
+
+
+do/while循环会执行一次代码块，在检查条件是否为真之前，然后如果条件为真的话，就会重复这个循环直到条件为假。
+    do
+      {
+      需要执行的代码
+      }
+    while (条件);
+
+
+
+循环数组实例：
+    <script>
+        function myFunction() {
+            cars=["BMW","Volvo","Saab","Ford"]; 
+            var i=0;
+            for (;cars[i];) {                                   #for循环取出数组值
+                document.write(cars[i] + "<br>");
+                i++;
+            }
+        }       
+    </script>
+
+<button type="button" onclick="myFunction()">点击这里</button>
+
+
+实例二：
+    </script>
+        function myFunction() {
+            cars=["BMW","Volvo","Saab","Ford"];
+            var i=0;
+            while (cars[i]){                                    #while循环取出数组值
+            document.write(cars[i] + "<br>");
+            i++;
+            }
+        }
+    </script>
+
+    <button type="button" onclick="myFunction()">点击这里</button>
+
+
+break 语句用于跳出循环
+continue 用于跳过循环中的一个迭代
+
+
+
+
+错误捕捉：
+    try
+      {
+      //在这里运行代码
+      }
+    catch(err)
+      {
+      //在这里处理错误
+      }
+
+自定义异常：
+    Throw 语句
+    throw 语句允许我们创建自定义错误。
+    正确的技术术语是：创建或抛出异常（exception）。
+    如果把 throw 与 try 和 catch 一起使用，那么您能够控制程序流，并生成自定义的错误消息。
+
+实例：
+    <script>
+        function myFunction(){
+            try{ 
+                var x=document.getElementById("demo").value;
+                if(x=="")    throw "值为空";
+                if(isNaN(x)) throw "不是数字";
+                if(x>10)     throw "太大";
+                if(x<5)      throw "太小";
+            }
+            catch(err){
+                var y=document.getElementById("mess");
+                y.innerHTML="错误：" + err + "。";
+                }
+            }
+    </script>
+
+    <p>请输入 5 到 10 之间的数字：</p>
+    <input id="demo" type="text">
+    <button type="button" onclick="myFunction()">测试输入值</button>
+    <p id="mess"></p>
+
+
+
+
+
+
+
+
+
+
+
+
+

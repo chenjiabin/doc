@@ -1,0 +1,76 @@
+爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供 Item 类来满足这样的需求。
+
+Item 对象是种简单的容器，保存了爬取到得数据。 其提供了类似于词典的API以及用于声明可用字段的简单语法。
+
+
+Item使用简单的class定义语法以及 Field 对象来声明：
+
+In [84]: import scrapy
+In [86]: class testitem(scrapy.Item):
+    ...:     name = scrapy.Field()
+    ...:     link = scrapy.Field()
+    ...:     datetime = scrapy.Field()
+
+	
+In [87]: product = testitem(name='test', link='www.jd.com')
+
+In [88]: print product
+{'link': 'www.jd.com', 'name': 'test'}				#Item以字典存储获取的内容，可以使用字典的内置方法对数据进行处理
+
+
+
+
+import scrapy
+from spider.items import SpiderItem
+
+class ExampleSpider(scrapy.Spider):
+	name = 'test'
+	allowed_domains = ['cnblogs.com']
+	start_urls = ["https://www.cnblogs.com/",]
+
+	def parse(self, response):
+		atext = response.xpath('//*[@id="editor_pick_lnk"]/@href').extract()
+		item = SpiderItem()
+		item['link'] = atext			#将获取的内容保存到items中
+		
+		yield item						#返回一个生成器
+			
+		
+items.py：
+
+import scrapy
+
+class SpiderItem(scrapy.Item):
+	link = scrapy.Field()
+
+
+
+Item Loaders：		
+	Item Loaders更加方便的Item API，这些API通过自动完成那些具有共通性的任务，可从抓取进程中得到这些信息, 比如预先解析提取到的原生数据。 
+	Items 提供了存放抓取到的数据的容器，而Item Loaders提供了构件装载该容器
+		
+	
+from scrapy.loader import ItemLoader					#ItemLoader
+from spider.items import testitem						#导入item
+
+
+def parse(self, response):
+    l = ItemLoader(item=testitem(), response=response)
+    l.add_xpath('name', '//div[@class="product_name"]')
+    l.add_xpath('name', '//div[@class="product_title"]')
+    l.add_xpath('price', '//p[@id="price"]')
+    return l.load_item()								#返回获取的数据
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/items.html
+
+
+

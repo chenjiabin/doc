@@ -1,0 +1,154 @@
+选择器:
+    $('#id')                                #id选择器
+    $('.class')                             #class选择器
+    $('标签')                                #标签选择器
+    $('标签1,标签2,标签3..')                  #同时获取多个标签
+    $(".c1.i2")	                            #获取class="c1"且id="i2"的标签
+    $("#i1 a")                              #获取id=i1标签下面的所以a标签
+    $("#i1>a")                              #获取id=i1标签下面的子标签a
+    $("div:first")	                        #获取第一个div标签
+    $("div:last")	                        #获取最后一个div标签
+    $("ul li:eq(3)")	                    #列表中的第四个元素(index从0开始)
+    $("[id]")                               #获取具有id属性的所以标签
+    $("[id='i1']")                          #获取id=i1的所以标签
+
+
+$(":checkbox")                          #获取所有的checkbox
+$(":checkbox").prop('checked')          #判断checkbox是否选中,选中为true,未选中为false
+$(":checkbox").prop('checked',true)     #选中所以的checkbox,prop专门为radio和checkbox提供的方法
+$(":checkbox").prop('checked',false)    #是否所以的checkbox
+
+$(":checkbox").each()                   #each jq提供的循环方法,自动循环每一个元素
+
+筛选器:
+    $(this).next()                          #当前标签的下一个标签
+    $(this).prev()                          #当前标签的上一个标签
+    $(this).parent()                        #当前标签的父标签
+    $(this).children()                      #当前标签的所有的子标签
+    $(this).siblings()                      #当前标签的所有的兄弟标签
+    $('#il').find('.c2')                    #在id=ild的子孙标签中查找class=c2的标签
+    .nextall()                              #获取向下的所以标签                    
+    .prevall()                              #获取向上的所以标签
+    .parents()                              #获取当前标签所有的父标签
+    .eq()                                   #获取指定所以的值
+    .first()                                #获取第一个
+    .last()                                 #获取最后一个
+
+
+
+样式操作:
+    $('i1').addClass('yy')                  #添加样式yy
+    $('i1').removeClass('it')               #删除样式it
+
+
+文本操作:
+    .html()                                 #获取标签
+    .html('<p>input<p>')                    #设置标签
+    .text()                                 #获取文本
+    .text('input')                          #设置文本
+    .val()                                  #获取值
+    .val('input')                           #设置值
+
+
+input系列操作:
+    :input	            所有 <input> 元素
+    :text	            所有 type="text" 的 <input> 元素
+    :password	        所有 type="password" 的 <input> 元素
+    :radio	            所有 type="radio" 的 <input> 元素
+    :checkbox		    所有 type="checkbox" 的 <input> 元素
+    :submit	            所有 type="submit" 的 <input> 元素
+    :button		        所有 type="button" 的 <input> 元素
+    :file               所有 type="file" 的 <input> 元素
+
+
+属性操作:
+    .attr('name')                   #获取name属性的值
+    .attr('name','host')            #设置name=host
+    .removeAttr('id')               #删除id属性
+
+
+文档操作:
+    .append('<h1>123</h1>')         #在指定标签的尾部添加内容
+    .prepend('<h1>456</h1>')        #在指定标签开头添加内容
+    .after('<input>')               #在指定标签的下面添加内容
+    .before('<input type="text">')  #在指定标签的上面添加内容 
+    .remove()                       #删除指定标签
+    
+
+样式操作:
+    .css('background-color','red')  #为指定的标签添加红色背景
+
+
+定时器:
+    setInterval                             #设置定时器
+    clearInterval                           #清除定时器
+
+
+jq扩展:
+    $.extend(function () {                  #创建扩展
+        'test':function() {
+            
+            return 'extent_test'
+        }
+    })    
+
+    $.test          #调用扩展
+
+
+特殊的this示例:
+    <div>
+        <input>
+        <input id="tt" type="button" value="提交">
+    </div>
+
+
+    $('#tt').click(function () {            //当鼠标点击标签时
+        var v = $(this).prev().val();       //获取当前标签的上一个标签,this代表当前标签
+        alert(v);                           //输出用户输入的值
+    })
+
+
+验证表单示例:
+    <form>
+        用户名:<input type="text" name="user"><br/>
+        密码:<input type="password" name="pwd"><br/>
+        <input type="submit" value="提交">
+    </form>
+
+
+    <script src="jquery-3.2.1.js"></script>
+    <script>
+        $('[type=submit]').click(function () {
+            var user = $('[name="user"]').val();
+            var pass = $('[name="pwd"]').val();
+            if(user && pass){
+               return true;
+            }else {
+                alert('用户名或密码不能为空,请重新输入');
+                return false;
+            }
+        })
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,54 @@
+步骤：
+	1、在需要监控的server中添加如下内容：
+		location /nginx_status {			#启用nginx状态检测模块
+            stub_status on;
+            access_log off;
+        }
+	nginx -s reload							#重读配置文件
+	curl http://127.0.0.1/nginx_status			#测试配置是否生效，出现如下内容则配置生效
+		Active connections: 2 
+		server accepts handled requests
+		21 21 184 
+		Reading: 0 Writing: 1 Waiting: 1 
+	
+	2、编写监控脚本，放入agent端
+	vim nginx.sh
+		#!/bin/bash
+		HOST="127.0.0.1"
+		PORT="80"
+		
+		function ping {
+			/sbin/pidof nginx | wc -l 
+		}
+		function active {
+			/usr/bin/curl "http://$HOST:$PORT/ngx_status/" 2>/dev/null| grep 'Active' | awk '{print $NF}'
+		}
+		function reading {
+			/usr/bin/curl "http://$HOST:$PORT/ngx_status/" 2>/dev/null| grep 'Reading' | awk '{print $2}'
+		}
+		function writing {
+			/usr/bin/curl "http://$HOST:$PORT/ngx_status/" 2>/dev/null| grep 'Writing' | awk '{print $4}'
+		}
+		function waiting {
+			/usr/bin/curl "http://$HOST:$PORT/ngx_status/" 2>/dev/null| grep 'Waiting' | awk '{print $6}'
+		}
+		function accepts {
+			/usr/bin/curl "http://$HOST:$PORT/ngx_status/" 2>/dev/null| awk NR==3 | awk '{print $1}'
+		}
+		function handled {
+			/usr/bin/curl "http://$HOST:$PORT/ngx_status/" 2>/dev/null| awk NR==3 | awk '{print $2}'
+		}
+		function requests {
+			/usr/bin/curl "http://$HOST:$PORT/ngx_status/" 2>/dev/null| awk NR==3 | awk '{print $3}'
+		}
+		$1
+
+	3、vim /etc/zabbix/zabbix_agentd.conf		#编辑zabbix-agent端配置文件
+		mkdir /etc/zabbix/scripts
+		UserParameter=nginx.status[*],/etc/zabbix/scripts/nginx.sh $1	#添加nginx脚本存放位置
+
+	4、web端导入模板
+		http://www.ttlsa.com/wp-content/uploads/2015/10/zabbix_monitor_nginx_template_ttlsa_com.zip
+				#模板下载位置
+
+

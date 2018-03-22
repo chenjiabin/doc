@@ -1,0 +1,171 @@
+models文件使用ORM方式和数据库建立关系：
+    ORM(对象关系映射)：是在关系型数据库和业务实体对象之间作一个映射，使我们在具体的操作业务对象的时候，不需要再去和SQL语句打交道，只需简单的操作对象的属性和方法
+
+    ORM的优缺点：
+	    优点：摆脱复杂的SQL操作，适应快速开发；让数据结构变得简洁；数据库迁移成本更低（如从mysql->oracle）
+	    缺点：性能较差、；无法完成复杂的SQL语句
+
+
+模型是你的数据的唯一的、确定的信息源。 它包含你所储存数据的必要字段和行为。 通常，每个模型对应数据库中唯一的一张表。
+    1、每个模型都是django.db.models.Model的一个子类
+    2、模型的每个属性都表示为数据库中的一个字段
+    3、通过所有这一切，Django为你提供一个自动生成的数据库访问API
+
+
+
+from django.db import models
+
+class userinfo(models.Model):
+    user = models.CharField(max_length=200)
+    passwd = models.CharField(max_length=200)
+
+user和passwd是模型的两个字段。每个字段都是类属性，每个属性映射到一个数据库的列。
+
+上面的模型相当于在数据库中执行以下sql语句
+    CREATE TABLE app01_userinfo (   
+        "id" serial NOT NULL PRIMARY KEY,
+        "user" varchar(30) NOT NULL,
+        "passwd" varchar(30) NOT NULL
+    );
+    app01_userinfo是根据app名称+模型名称组成的，这个行为可以被重写
+    id字段是自动添加的，这个行为可以被重写
+    Django会根据settings文件中指定的数据库类型来使用相应的SQL语句
+
+
+关系：
+关系数据库的威力体现在表之间的相互关联。Django提供了三种最常见的数据库关系：多对一，多对多，一对一
+
+Django使用ForeignKey定义多对一关系，ForeignKey需要一个位置参数：与该模型关联的类
+Django使用ManyToManyField定义多对多关系，ManyToManyField需要一个位置参数：和该模型关联的类
+Django使用OneToOneField定义一对一关系，OneToOneField要一个位置参数：与模型关联的类
+
+
+from django.db import models
+
+class slave(models.Model):
+    pass
+
+class master(models.Model):
+    test1 = models.ForeignKey(slave,models.CASCADE)                 #多对一
+    #test2 = models.ManyToManyField(slave)                          #多对多
+    #test3 = models.OneToOneField(slave)                            #一对一
+
+
+
+模型继承：
+    当你想将一些共有信息放进其它一些model的时候，抽象化类是十分有用的。你编写完基类之后，在Meta类中设置abstract=True，这个模型就不会被用来创建任何数据表。 取而代之的是，当它被用来作为一个其他model的基类时，它的字段将被加入那些子类中。 如果抽象基类和它的子类有相同的字段名，那么Django将抛出一个exception异常
+
+实例：
+from django.db import models
+
+class CommonInfo(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.PositiveIntegerField()
+
+    class Meta:
+        abstract = True
+
+class Student(CommonInfo):
+    home_group = models.CharField(max_length=5)
+
+Student模型将有三个字段：name、age和home_group。CommonInfo模型无法像一般的Django模型一样使用，因为它是一个抽象基类
+
+
+
+多表继承
+使用这种继承方式时，每个model都有专属的数据表，都可以查询和创建数据表
+
+实例：
+from django.db import models
+
+class Place(models.Model):
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=80)
+
+class Restaurant(Place):
+    serves_hot_dogs = models.BooleanField(default=False)
+    serves_pizza = models.BooleanField(default=False)
+
+
+所以下面两个语句都是可以运行的
+    Place.objects.filter(name="Bob's Cafe")
+    Restaurant.objects.filter(name="Bob's Cafe")
+
+
+
+代理：
+from django.db import models
+
+class Person(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+
+class MyPerson(Person):
+    class Meta:
+        proxy = True                    #使用代理
+
+    def do_something(self):
+        # ...
+        pass
+
+MyPerson类和它的父类Person操作同一个数据表。Person的任何实例可以通过MyPerson访问，反之亦然：
+    p = Person.objects.create(first_name="foobar")
+    MyPerson.objects.get(first_name="foobar")
+
+
+
+字段类型：
+    AutoField                       #自增列，如果没有另外指定，主键字段将自动添加到您的模型中。 
+    CharField　　			            #字符串字段，必须max_length选项，用来限定字段的长度
+    BooleanField　　		            #布尔类型
+    TextField　　			            #存储巨大的文本类型
+    DateField　　			            #日期类型
+    DateTimeField　　		            #年月+日期类型
+    FloatField　　		            #浮点类型
+    IntegerField　　		            #整形
+    BigIntegerField                 #长整形
+    IPAddressField　		            #字符串类型(用于检查ipv4地址是否合法),django1.10以后被GenericIPAddressField取代
+    GenericIPAddressField           #IPv4或IPv6地址格式
+    EmailField                      #用来检查输入的email地址是否合法
+    FileField                       #上传文件的字段
+    ImageField                      #继承FileField的所有属性和方法，但还对上传的对象进行校验，确保它是个有效的图片
+    DecimalField                    #表示十进制浮点数，有两个必须的参数
+        max_digits                      #位数总数，包括小数点后的位数。必须大于等于decimal_places
+        DecimalField.decimal_places     #小数点后的数字数量
+        例子：models.DecimalField(max_digits=5, decimal_places=2)     #保存最大为 999 并有两位小数的数字
+
+
+
+字段选项：
+    null=True			        #数据库中字段是否可以为空
+    max_length			        #字符串长度
+    default　　			        #字段的默认值
+    auto_now				    #修改时间
+    auto_now_add			    #创建时间
+    blank                       #默认值是 False。如果字段设置blank=True，表单验证时将允许输入空值。如果字段设置blank=False，则该字段为必填
+    db_index                    #如果True，将为该字段创建一个数据库索引
+    primary_key                 #若为True, 则该字段会成为模型的主键字段，一个对象上只能拥有一个主键
+    unique                      #唯一键，当设置unique为True时，不需要再指定db_index，因为unique 本身就意味着一个索引的创建
+
+
+
+关系字段：
+    ForeignKey                  #多对一关系，需要两个位置参数：模型相关的类和on_delete选项
+        on_delete常用的值有：
+            CASCADE         级联删除。 Django模拟SQL约束ON DELETE CASCADE的行为，并删除包含ForeignKey的对象
+            PROTECT         抛出ProtectedError以阻止被引用对象的删除，它是django.db.IntegrityError的一个子类
+
+    ManyToManyField             #多对多关联关系，要求一个关键字参数：与该模型关联的类
+    OneToOneField               #一对一关联关系，需要一个位置参数：与该模型关联的类
+
+
+
+
+
+
+
+
+
+
+
+

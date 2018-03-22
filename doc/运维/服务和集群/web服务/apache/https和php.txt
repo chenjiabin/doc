@@ -1,0 +1,85 @@
+https：apache的https服务的功能由mod_ssl模块提供
+
+mod_ssl安装方法：mod_ssl默认没有安装
+	1、yum安装
+	2、编译安装
+
+
+https配置的注意事项：
+1、https服务是基于ip地址的，说以如果有基于域名的虚拟主机那么只能有一台虚拟主机能够使用https
+2、https的网页文件应该和http的网页文件是同一个
+
+
+https的配置：
+yum  install   mod_ssl				//使用yum安装mod_ssl模块
+vim /etc/httpd/conf.d/ssl.conf		//编辑ssl的主配置文件
+
+配置文件重要指令：
+<VirtualHost 192.168.0.10:443>				//监听的IP和端口
+SSLEngine    on								//启用ssl服务
+
+ServerName www.test.com:443					//使用https的服务器域名
+DocumentRoot "/var/www/html"				//使用https服务器的网页文件位置
+
+SSLCertificateFile       /etc/httpd/ssl/https.crt	//证书文件，证书要由证书颁发机构颁发，或私有CA颁发
+SSLCertificateKeyFile   /etc/httpd/ssl/https.key	//服务器生成的密钥文件
+</VirtualHost>
+
+
+服务器证书申请：
+cd   /etc/httpd/ssl/								//进入/etc/httpd/ssl/目录
+(umask 077; openssl genrsa 1024 > httpd.key)		//生成密钥文件
+openssl  req  -new  -key httpd.key >  httpd.csr		//生成证书颁发请求httpd.csr
+注意：在生成证书颁发请求时，主机名必须和你准备使用https的主机名相同
+
+将证书颁发请求发送给CA服务器进行签署
+服务器签署：
+openssl ca -in httpd.csr -out httpd.crt -days 3655
+
+
+
+
+
+php动态网站搭建：
+php动态网站由mod_php模块提供
+
+php安装方法：php默认没有安装
+	1、yum安装
+	2、编译安装
+
+Apache+PHP
+	实现方法：基于CGI协议
+	    1、Module（Apache动态共享模块）
+	    2、FastCGI（通常和Nginx搭配）
+
+配置PHP：
+/etc/httpd/conf.d/php.conf				//搭建动态网站的配置文件
+
+<IfModule prefork.c>					//定义工作模式
+  LoadModule php5_module modules/libphp5.so		//定义模块位置
+</IfModule>
+
+DirectoryIndex index.php				//定义首页名
+
+AddHandler php5-script .php				//定义动态文件后缀
+AddType text/html    .php				//定义网页类型
+
+
+cd  /var/www/html		//进入网页文件位置
+mv  index.html   index.php	//将静态网页改为动态网页
+
+
+验证：
+1、在index.php中添加：<?php phpinfo (); ?>
+2、打开浏览器验证效果
+
+
+
+
+
+
+
+
+
+
+

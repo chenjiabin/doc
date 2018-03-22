@@ -1,0 +1,58 @@
+django为用户实现防止跨站请求伪造的功能，通过中间件 django.middleware.csrf.CsrfViewMiddleware来完成。而对于django中设置防跨站请求伪造功能有分为全局和局部。
+
+全局：
+    django.middleware.csrf.CsrfViewMiddleware                   #settings 中间件配置
+
+局部：
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
+
+@csrf_protect           #为当前函数设置防跨站请求伪造功能(关闭)
+@csrf_exempt            #取消当前函数防跨站请求伪造功能(开启)
+
+
+
+from提交设置：
+　　{% csrf_token %}          #在html中添加
+
+
+ajax提交设置：
+data:{
+    csrfmiddlewaretoken:{{ csrf_token }},           //必须写在模板中，才会被渲染
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

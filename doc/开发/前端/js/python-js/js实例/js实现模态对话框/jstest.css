@@ -1,0 +1,39 @@
+.pg2{
+    background-color: darkgrey;
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    opacity: 0.6;
+}
+
+
+.pg3{
+    background-color: white;
+    width: 400px;
+    height: 400px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -200px;
+    margin-top: -200px;
+    z-index: 10;
+}
+
+
+.dis{
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+

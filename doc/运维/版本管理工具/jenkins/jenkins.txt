@@ -1,0 +1,14 @@
+http://blog.csdn.net/wangmuming/article/details/22924815		#jenkins
+
+
+
+/var/lib/jenkins/secrets/initialAdminPassword			#jenkins密码保存位置
+
+
+http://www.cnblogs.com/bincoding/p/6156236.html			#maven
+
+
+http://blog.csdn.net/quuqu/article/details/52458589
+
+
+

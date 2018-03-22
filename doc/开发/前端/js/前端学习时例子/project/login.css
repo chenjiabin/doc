@@ -1,0 +1,14 @@
+.pg{
+    width: 100%;
+    height: 500px;
+}
+
+
+.sign_in{
+    width: 500px;
+    height: 200px;
+    background-color: antiquewhite;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 100px;
+}

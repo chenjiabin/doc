@@ -1,0 +1,58 @@
+mysql-proxy：用于实现mysql主从分离，基于主从架构
+读写分离存在的最大问题就是主从同步延迟
+	
+
+安装mysql-proxy：
+	1、wget https://downloads.mysql.com/archives/get/file/mysql-proxy-0.8.5-linux-el6-x86-64bit.tar.gz
+	2、tar zvxf mysql-proxy-0.8.5-linux-el6-x86-64bit.tar.gz -C /usr/local
+	3、cd /usr/local/
+	4、mv mysql-proxy-0.8.5-linux-el6-x86-64bit/ mysql-proxy
+	5、useradd -r mysql-proxy			#创建运行用户
+	6、chown -R root:root mysql-proxy/	#修改权限
+	7、cd mysql-proxy/
+	8、mkdir etc			#创建配置文件目录
+	9、mkdir logs			#创建日志文件目录
+	
+
+	
+配置mysql-proxy：
+	1、cp share/doc/mysql-proxy/rw-splitting.lua  etc/ 		 #实现mysql读写分离的文件 
+	2、cp share/doc/mysql-proxy/admin-sql.lua  etc/			 #实现mysql读写分离的文件
+	3、vim /etc/mysql-proxy.cnf					#编辑配置文件
+		[mysql-proxy]
+		user=root					#运行mysql-proxy的用户
+		admin-username=root			#连接主从的用户，在主从中必须授权mysql-proxy可以登录
+		admin-password=123.com		#用户密码，主从的用户名和密码必须相同
+		proxy-address=0.0.0.0:4041	#监听地址和端口
+		proxy-backend-addresses=192.168.0.10:3306				#主mysql服务器
+		proxy-read-only-backend-addresses=192.168.0.40:3306		#从mysql服务器(只读)
+		proxy-read-only-backend-addresses=192.168.0.60:3306		#从mysql服务器(只读)
+		proxy-lua-script=/usr/local/mysql-proxy/etc/rw-splitting.lua	#实现mysql读写分离的重要文件位置
+		admin-lua-script=/usr/local/mysql-proxy/etc/admin-sql.lua		#实现mysql读写分离的重要文件位置
+		pid-file=/var/run/mysql-proxy.pid						#PID文件
+		log-file=/usr/local/mysql-proxy/logs/mysql-proxy.log	#日志文件
+		log-level=info			#日志级别
+		daemon=true				#是否已守护进程方式运行
+		keepalive=true 			#mysql-proxy崩溃时，尝试重启
+	4、chmod 660 /etc/mysql-proxy.cnf		#修改权限(必须)
+  
+  
+修改rw-splitting.lua(为了测试试验效果)
+vim /usr/local/mysql-proxy/etc/rw-splitting.lua 
+	if not proxy.global.config.rwsplit then
+		proxy.global.config.rwsplit = {
+			min_idle_connections = 1,		#默认超过4个连接数时，开始读写分离，改为1，其余不动
+			max_idle_connections = 8,		
+			is_debug = false
+		}
+	end
+	
+
+
+
+
+
+
+
+
+

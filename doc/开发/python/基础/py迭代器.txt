@@ -1,0 +1,42 @@
+迭代：重复做一件事
+
+iter（可迭代对象）
+
+可迭代对象：
+list，tuple，str，dict，file
+
+使用iter()可以从任何序列中得到迭代器
+若要实行迭代器需要在类中定义next()
+
+当没有元素时引发StopIteration异常，并且退出迭代器
+
+for循环可用于任何迭代对象
+
+
+>>> w=[1,2,3]
+>>> i=iter(w)
+>>> i.next()
+1
+>>> i.next()
+2
+>>> i.next()
+3
+>>> i.next()
+
+Traceback (most recent call last):
+  File "<pyshell#36>", line 1, in <module>
+    i.next()
+StopIteration
+
+
+
+
+
+
+
+
+
+
+
+
+

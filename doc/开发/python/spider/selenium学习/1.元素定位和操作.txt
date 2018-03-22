@@ -1,0 +1,85 @@
+http://phantomjs.org/		   #下载phantomjs(无界面浏览器)
+pip install selenium           #安装selenium
+https://github.com/mozilla/geckodriver/releases         #firefox驱动下载
+
+
+常用的元素定位方法
+	id，name，class name，tag name，link text，partial link text，xpath，css selector
+
+分别对应方法为：
+	find_element_by_id()
+	find_element_by_name()
+	find_element_by_class_name()
+	find_element_by_tag_name()
+	find_element_by_link_text()
+	find_element_by_partial_link_text()
+	find_element_by_xpath()
+	find_element_by_css_selector()
+
+
+常用的操作元素的方法:
+    clear()           清除元素的内容,如果可以的话
+    send_keys()       在元素上模拟按键输入
+    click()           单击元素
+    submit()          提交表单
+
+
+selenium使用
+    from selenium import webdriver
+    from time import sleep
+
+    browser = webdriver.Firefox()
+    browser.get("http://www.baidu.com")						#打开百度
+    browser.find_element_by_id("kw").send_keys("selenium")	#通过id定位百度搜索框位置，并在搜索框内输入selenium
+    browser.find_element_by_id("su").click()				#通过id定位搜索按钮位置，通过click触发按钮
+    sleep(10)											    #等待10秒
+    browser.quit()										    #退出浏览器
+
+
+实例：模拟登录51cto
+    from selenium import webdriver
+
+    driver = webdriver.Firefox()
+    driver.get('http://home.51cto.com/index?reback=http://blog.51cto.com')
+    driver.find_element_by_id('loginform-username').clear()
+    driver.find_element_by_id('loginform-username').send_keys('用户名')
+
+    driver.find_element_by_id('loginform-password').clear()
+    driver.find_element_by_id('loginform-password').send_keys('密码')
+
+    driver.find_element_by_name('login-button').submit()
+
+
+
+实例：爬取百度图片(selenium+phantomjs)
+	#coding:utf-8
+	from selenium import webdriver
+	from selenium.webdriver.common.by import By
+	from selenium.webdriver.support.ui import WebDriverWait
+	from selenium.webdriver.support import expected_conditions as EC
+
+	driver = webdriver.PhantomJS()                                  #调用phantomjs
+	driver.get("http://image.baidu.com/")							#访问百度图片
+	driver.find_element_by_id("kw").send_keys(u"美女")				#在搜索框中输入'美女'
+	driver.find_element_by_class_name("s_btn").click()				#点击'百度一下'
+
+	try:
+		WebDriverWait(driver,60,1).until(EC.presence_of_element_located((By.CLASS_NAME, "imgitem")))
+			#等待页面加载60s，每隔1s检查一次条件是否成立，60过后判断页面中是否有class=imgitem的标签，如果没有则抛出异常(显形等待)
+		print driver.page_source			#打印源代码
+		driver.close()						#关闭浏览器
+	except:
+		print 'error'                       #如果class=imgitem没有出现则打印error
+
+
+selenium等待元素出现的三种方式：
+    1、强制等待，使用time.sleep()指定超时时间
+    2、隐形等待，使用driver.implicitly_wait(30)             #隐性等待，最长等30秒
+    3、显形等待，WebDriverWait(driver,60,1).until(EC.presence_of_element_located((By.CLASS_NAME, "imgitem")))
+
+
+
+
+
+
+

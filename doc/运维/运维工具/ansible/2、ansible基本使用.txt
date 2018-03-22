@@ -1,0 +1,169 @@
+Ansible可同时操作属于一个组的多台主机,组和主机之间的关系通过inventory文件配置. 默认的文件路径为 /etc/ansible/hosts
+
+/etc/ansible/hosts文件格式:
+    mail.example.com                                    #单独的主机
+    
+    [dbservers]                                         #一组主机，webservers为组名
+    foo.example.com
+    bar.example.com
+
+    [dbservers]
+    one.example.com
+    two.example.com
+    three.example.com
+
+    badwolf.example.com:5309                            #当客户机的ssh端口不是22时也可以指定
+
+    [webservers]
+    www[01:50].example.com                              #数字的简写模式，代表1-50
+        
+    [databases]
+    db-[a:f].example.com                                #字母的简写模型，代表a-f  
+
+
+    [targets]
+    localhost              ansible_connection=local
+    other1.example.com     ansible_connection=ssh        ansible_ssh_user=mpdehaan              #指定连接类型和连接时使用的用户名
+    other2.example.com     ansible_connection=ssh        ansible_ssh_user=mdehaan
+
+
+    [atlanta]   
+    host1 http_port=80 maxRequestsPerChild=808              #定义主机变量
+    host2 http_port=303 maxRequestsPerChild=909
+
+    
+    [atlanta:vars]                                          #定义组变量
+    ntp_server=ntp.atlanta.example.com
+    proxy=proxy.atlanta.example.com
+
+
+    [southeast:children]                                    #把一个组作为另一个组的子成员
+    webservers
+    targets
+
+
+    [southeast:vars]                                        #定义组变量
+    some_server=foo.southeast.example.com
+    halon_system_timeout=30
+    self_destruct_countdown=60
+    escape_pods=2
+
+
+
+Inventory参数说明：
+    ansible_ssh_host                #将要连接的远程主机名.与你想要设定的主机的别名不同的话,可通过此变量设置
+    ansible_ssh_port                #ssh端口号.如果不是默认的端口号,通过此变量设置
+    ansible_ssh_user                #默认的ssh用户名
+    ansible_ssh_pass                #ssh密码，默认使用--ask-pass或SSH密钥
+    ansible_sudo_pass               #sudo密码，这种方式并不安全，建议使用--ask-sudo-pass
+    ansible_sudo_exe                #sudo命令路径
+    ansible_connection              #与主机的连接类型，local、ssh或paramiko，Ansible1.2以前默认使用paramiko以后默认使用smart，smart会根据是否支持ControlPersist,来判断ssh方式是否可行
+    ansible_ssh_private_key_file    #ssh使用的私钥文件，适用于有多个密钥，而你不想使用SSH代理的情况
+    ansible_shell_type              #目标系统的shell类型，默认情况下，命令的执行使用sh语法
+    ansible_python_interpreter      #目标主机的python路径，适用于的情况:系统中有多个Python,或者命令路径不是/usr/bin/python或/usr/bin/python
+
+
+
+ansible命令参数：
+	-a   			#模块的参数,如果执行默认COMMAND的模块
+	-k  			#密码认证,默认使用秘钥认证
+	-K  			#提示密码使用sudo,sudo表示提权操作
+	-B      		#后台运行超时时间
+	-f   			#启动的进程数量,默认是5
+	-h				#打开帮助文档API
+	-i				#指定库存主机文件的路径,默认为/etc/ansible/hosts
+	-l    			#进一步限制所选主机/组模式  --limit=192.168.91.135 只对这个ip执行
+	-m   			#执行模块的名字，默认使用command模块
+	-M    			#要执行的模块的路径，默认为/usr/share/ansible/
+	-T    			#指定SSH默认超时时间， 默认是10S
+	-u     			#远程用户，默认是当前用户
+	--version       #输出ansible的版本
+	
+
+ansible-doc
+	-h           		#显示命令参数API文档
+	-M 					#查询模块，--module-path=MODULE_PATH指定模块的路径
+	-l            		#显示已存在的所有模块列表
+	-s         			#显示playbook制定模块的用法	
+
+
+使用示例：
+	$ ansible atlanta -a "/sbin/reboot" -f 10               #默认以当前用户的身份去执行这个命令
+    $ ansible raleigh -m shell -a 'echo $PATH'
+    command模块不支持shell变量，也不支持管道等shell相关的东西，如果你想使用shell相关的这些东西，请使用shell模块
+
+
+
+File Transfer
+    Ansible能够以并行的方式同时SCP大量的文件到多台机器
+    $ ansible atlanta -m copy -a "src=/etc/hosts dest=/tmp/hosts"
+
+
+使用 file 模块可以做到修改文件的属主和权限,(在这里可替换为 copy 模块,是等效的):
+    $ ansible webservers -m file -a "dest=/srv/foo/a.txt mode=600"
+    $ ansible webservers -m file -a "dest=/srv/foo/b.txt mode=600 owner=mdehaan group=mdehaan"
+
+使用file模块创建目录,与执行mkdir -p效果类似:
+    $ ansible webservers -m file -a "dest=/path/to/c mode=755 owner=mdehaan group=mdehaan state=directory"
+
+删除目录(递归的删除)和删除文件:
+    $ ansible webservers -m file -a "dest=/path/to/c state=absent"
+
+
+
+
+
+Managing Packages
+    Ansible提供对yum和apt的支持
+    $ ansible webservers -m yum -a "name=acme state=present"                #确认一个软件包已经安装
+    $ ansible webservers -m yum -a "name=acme-1.5 state=present"            #确认一个软件包的安装版本
+    $ ansible webservers -m yum -a "name=acme state=absent"                 #确认一个软件包还没有安装
+
+
+$ ansible webservers -m git -a "repo=git://foo.example.org/repo.git dest=/srv/myapp version=HEAD"           #直接使用git部署 webapp
+
+
+Managing Services
+    $ ansible webservers -m service -a "name=httpd state=started"       #确认某个服务在所有的webservers上都已经启动:
+    $ ansible webservers -m service -a "name=httpd state=restarted"     #或是在所有的webservers上重启某个服务
+    $ ansible webservers -m service -a "name=httpd state=stopped"       #确认某个服务已经停止
+
+
+
+需要长时间运行的命令可以放到后台去,在命令开始运行后我们也可以检查运行的状态.如果运行命令后,不想获取返回的信息, 可执行如下命令:
+$ ansible all -B 3600 -P 0 -a "/usr/bin/long_running_operation --do-stuff"
+
+如果你确定要在命令运行后检查运行的状态,可以使用 async_status 模块.前面执行后台命令后会返回一个job id,将这个 id传给 async_status模块:
+$ ansible web1.example.com -m async_status -a "jid=488359678239.2844"
+
+获取状态的命令如下:
+$ ansible all -B 1800 -P 60 -a "/usr/bin/long_running_operation --do-stuff"
+
+其中-B 1800表示最多运行30分钟, -P 60表示每隔60秒获取一次状态信息
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

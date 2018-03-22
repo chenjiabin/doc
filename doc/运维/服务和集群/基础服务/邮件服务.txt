@@ -1,0 +1,353 @@
+基本概念：
+	MUA：邮件用户代理，通常用于收信和发信，并将需要发送的邮件交给MTA
+	MTA：邮件传输代理，通过MTA将用户的邮件送往目的地，Sendmail和Postfix都是MTA软件	MDA：当邮件发送到目的地并不是立即交给用户的，而是存放在一个公共邮桶里，只有相应的用户才有权限读取自己的邮件，当用户通过MRA连接的邮件服务器时MDA把邮件从公共邮桶里将邮件交给MRA
+	MRA：通过MRA服务器提供的邮政服务协议来接收自己的邮件
+	SASL：提供用户账号认证功能
+	
+　　所以一封邮件的流程是：
+		发件人：MUA --> MTA --> MTA --> MTA... --> MDA --> MRA <-- MUA：收件人
+		http://www.tuicool.com/articles/3EzaqqQ				#邮件原理
+		
+
+postfix配置：
+	postconf -A			#客户端支持的sasl类型
+	postconf -a			#服务器端支持的sasl类型
+	postconf -n			#修改的配置文件
+	postconf -d			#默认的配置	
+	postconf -m			#支持的查找表类型
+	newaliases			#生成别名文件
+	
+
+
+基础配置实例：
+	yum -y install bind					#安装DNS服务，提供MX记录解析
+	yum -y install postfix				#安装postfix服务，用于提供发送邮件功能
+	yum -y install dovecot				#安装dovecot服务，用于提供接收邮件功能
+	sed 's/HOSTNAME=.*/HOSTNAME=mail.test.com/' /etc/sysconfig/network			#永久修改主机名
+	hostname mail.test.com				#临时更改主机名(或者重启系统)
+	
+	vim /etc/named.conf				#DNS编辑主配置文件
+		listen-on port 53 { 192.168.0.10; };			#监听的地址
+	
+	
+	vim /etc/named.rfc1912.zones			#编辑区域配置文件
+		zone "test.com" IN {				
+				type master;
+				file "test.com.zone";
+				allow-update { none; };
+		};
+
+		zone "0.168.192.in-addr.arpa" IN {
+				type master;
+				file "192.168.0.zone";
+				allow-update { none; };
+		};
+		
+
+		
+	vim /var/named/test.com.zone		#编辑正向解析文件
+		$TTL 86400
+		@       IN SOA  ns.test.com. admin.test.com. (
+												1       ; serial
+												1D      ; refresh
+												1H      ; retry
+												1W      ; expire
+												3H )    ; minimum
+				IN      NS      ns.test.com.
+				IN      MX 10   mail.test.com.
+		ns      IN      A       192.168.0.10
+		mail    IN      A       192.168.0.10
+		
+		
+	vim /var/named/192.169.0.zone		#编辑反向解析文件
+		$TTL 86400 
+		@       IN SOA  ns.test.com. admin.test.com. (
+												1       ; serial
+												1D      ; refresh
+												1H      ; retry
+												1W      ; expire
+												3H )    ; minimum
+				IN      NS      ns.test.com.
+		10      IN      PTR     ns.test.com.
+		10      IN      PTR     mail.test.com.	
+	
+	service named start					#启动服务
+	
+	
+	newaliases							#生成别名文件
+	vim /etc/postfix/main.cf			#编辑postfix主配置文件
+		myhostname = mail.test.com		#指定主机名
+		mydomain = test.com				#指定域名
+		myorigin = test.com				#指定发件人所在的域
+		mynetworks = 192.168.0.0/24, 127.0.0.0/8			#运行中继的网段
+		mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain	#指定那些邮件为本地邮件
+		inet_interfaces = ipv4			#监听ipv4地址
+		
+	service postfix start				#启动服务
+	
+	
+	vim /etc/dovecot/dovecot.conf		#编辑dovecot主配置文件
+		protocols = imap pop3 lmtp				#启用相应协议(修改)
+		mail_location = maildir:~/Maildir		#设置邮件目录(添加)
+		log_path=/tmp/dovecot.log				#指定日志文件路径
+		
+	service dovecot start			#启动服务
+
+	
+	ss -tunl		#查看对应服务是否启动，DNS：udp/53   postfix：tcp/35   dovecot：tcp/110/143
+	
+	
+	vim /etc/sysconfig/network-scripts/ifcfg-eth0			#编辑网卡配置文件
+		DNS1=192.168.0.10					#指定DNS服务器地址
+	 service network restart				#重启网络服务
+		
+	
+	
+配置sasl+/etc/shadow实现用户身份认证
+	saslauthd -v			#列出sasl支持的认证方式	
+	sed -i 's/MECH=.*/MECH=shadow/' /etc/sysconfig/saslauthd 			#修改为使用shadow认证	
+		
+	vim /usr/lib64/sasl2/smtpd.conf			#文件可能并不存在
+		pwcheck_method:saslauthd
+		mech_list:PLAIN LOGIN
+	
+	vim /etc/postfix/main.cf
+		mynetworks = 127.0.0.0/8
+		broken_sasl_auth_clients=yes			#开启认证
+		smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination
+				permit_sasl_authenticated	#允许sasl认证，其余两个必须这么写
+		smtpd_sasl_auth_enable=yes						#开启认证
+		smtpd_sasl_local_domain=$myhostname				#本机可以不认证
+		smtpd_sasl_security_options=noanonymous		
+		smtpd_sasl_path=smtpd	
+		smtpd_banner='hello welcome'		#欢迎信息(可以不写)
+	
+	
+	service postfix restart					#重启postfix服务
+	service saslauthd start					#启动sasl认证服务
+	
+
+	
+验证：
+	useradd hadoop							#创建测试用户，密码hadoop
+	echo -n "hadoop" | openssl base64		#生成base64编码
+	telnet 192.168.0.10 25		#连接邮件服务器
+		auth login 			#认证
+			aGFkb29w		#用户名，base64编码格式
+			aGFkb29w		#密码，base64编码格式
+				235 2.7.0 Authentication successful			#认证成功
+		helo mail.test.com							#探测服务器是否在线
+		mail from:hadoop@test.com				#发件人，通过认证的用户
+		rcpt to:hy21803660215@163.com			#收件人
+		data					#内容
+			123
+			.
+		quit									#如果整个过程没有出现报错，说明sasl认证成功
+
+
+postfix + mysql实现虚拟用户认证：
+	yum -y install libtool-ltdl libtool-ltdl-devel expect perl-DBD-MySQL tcl tcl-devel libart_lgpl libart_lgpl-devel libtool-ltdl libtool-ltdl-devel					#安装相关依赖包
+	yum -y install mysql mysql-server			   #安装mysql
+	yum -y install apache						   #安装apache
+	
+	tar jxvf courier-unicode-1.4.tar.bz2 -C /usr/src/
+	tar jxvf courier-authlib-0.67.0.tar.bz2 -C /usr/src/	
+	cd /usr/src/courier-unicode-1.4/
+	./configure 
+	make && make install			#安装依赖包
+	
+	cd /usr/src/courier-authlib-0.67.0/
+	./configure \
+		--prefix=/usr/local/courier-authlib \			#安装路径
+		--sysconfdir=/etc \								#配置文件路径
+		--without-authpam \								#不支持基于pam认证
+		--without-authshadow \							#不支持基于shadow认证
+		--without-authvchkpw \							#不支持基于vchkpw认证
+		--without-authpgsql \							#不支持基于vchkpw认证
+		--without-authsqlite \							#不支持基于sqlite认证
+		--with-authmysql \								#基于mysql认证
+		--with-mysql-libs=/usr/lib64/mysql \			#指定mysql库文件路径
+		--with-mysql-includes=/usr/include/mysql \		#指定mysql头文件路径
+		--with-authmysqlrc=/etc/authmysqlrc \			#指定mysqlrc配置文件位置
+		--with-authdaemonrc=/etc/authdaemonrc \			#指定守护进程配置文件位置
+		--with-mailuser=postfix \						#指定邮件收发管理用户
+		--with-mailgroup=postfix						#指定用户组
+	
+	make && make install			#安装courier-authlib
+	
+	cp courier-authlib.sysvinit /etc/init.d/courier-authlib				#复制启动脚本
+	chmod 755 /etc/init.d/courier-authlib
+	
+	
+	vim /usr/lib64/sasl2/smtpd.conf
+		pwchech_menthod: authdaemond 				#使用courier-authlib进行认证
+		mech_list: PLAIN LOGIN 															
+		authdaemond_path= /usr/local/courier-authlib/var/spool/authdaemon/socket		#courier-authlib进程sock文件位置
+		
+	chmod 755 /usr/local/courier-authlib/var/spool/authdaemon			#修改sock目录权限
+	cp /etc/authdaemonrc.dist /etc/authdaemonrc				#复制配置文件
+	cp /etc/authmysqlrc.dist /etc/authmysqlrc				#复制配置文件
+	
+	vim /etc/authdaemonrc								#修改配置文件
+		authmodulelist="authmysql"						#只使用基于mysql认证
+		authmodulelistorig="authmysql"
+		daemons=5 										#默认启动的进程个数，可以不用更改	
+		authdaemonvar=/usr/local/courier-authlib/var/spool/authdaemon			#sock文件位置
+		
+	
+	vim /etc/authmysqlrc					#编辑mysql认证文件，此文件必须和严格按照格式进行修改
+		MYSQL_SERVER          localhost						#mysql服务地址
+		MYSQL_USERNAME        extmail						#连接mysql的账号，(尽量使用extmail)
+		MYSQL_PASSWORD        extmail						#连接mysql的密码，(尽量使用extmail)
+		MYSQL_SOCKET          /var/lib/mysql/mysql.sock		#sock文件位置，如果不使用sock可以不用修改
+		MYSQL_PORT            3306							#监听端口
+		MYSQL_database        extmail						#连接的数据库，(尽量使用extmail)
+		MYSQL_USER_TABLE      mailbox						#指定存放用户数据的表				
+		MYSQL_CRYPT_PWFIELD   password						#指定存放用户密码的字段
+		MYSQL_UID_FIELD       89							#运行postfix用户的UID
+		MYSQL_GID_FIELD       89							#运行postfix用户的GID
+		MYSQL_LOGIN_FIELD     username						#指定用户账号字段
+		MYSQL_HOME_FIELD      concat('/mailbox/',homedir)	#指定用户家目录，虚拟用户没有家目录，所以和邮箱目录保持一致
+		MYSQL_NAME_FIELD      name							#指定用户名称的字段
+		MYSQL_MAILDIR_FIELD   concat('/mailbox/',maildir)	#指定用户邮箱目录的位置
+		
+	mkdir -p /var/mailbox							#创建邮件存放目录
+	chown postfix:postfix /var/mailbox/				#修改属主属组
+	
+	vim /etc/postfix/main.cf						#以前配置的sasl需要保留
+		virtual_mailbox_base = /var/mailbox			指定用户邮件存放目录的路径
+		virtual_mailbox_maps = mysql:/etc/postfix/mysql_virtual_mailbox_maps.cf			#mysql认证语句定义，由extman提供
+		virtual_mailbox_domains = mysql:/etc/postfix/mysql_virtual_domains_maps.cf		#mysql认证语句定义，由extman提供
+		virtual_alias_maps = mysql:/etc/postfix/mysql_virtual_alias_maps.cf				#别名映射表，由extman提供
+		virtual_uid_maps = static:89				#运行postfix用户的UID
+		virtual_gid_maps = static:89				#运行postfix用户的GID
+		virtual_transport = virtual					#投递代理
+		virtual_alias_domains =
+		
+		
+	tar zxvf extman-1.0.1.tar.gz -C /usr/src/
+	cd	/usr/src/extman-1.0.1/docs
+	sed -i 's/TYPE=MyISAM/ENGINE=InnoDB/' extmail.sql			#mysql5.1及以上版本需要修改
+	mysql < extmail.sql						#导入SQL文件，创建相关数据库和表
+	mysql < init.sql						#导入SQL文件，创建相应数据
+	mysql> GRANT ALL ON extmail.* TO 'extmail'@'localhost' IDENTIFIED BY 'extmail';	#授权用户
+	mysql> GRANT ALL ON extmail.* TO 'extmail'@'127.0.0.1' IDENTIFIED BY 'extmail';	#密码和用户名尽力使用extmail
+	mysql> FLUSH PRIVILEGES;
+	cp mysql_virtual_* /etc/postfix/		#如果用户名和密码使用的都是extmail则不需要更改，否则全部需要更改
+		
+		
+    vim /etc/postfix/main.cf					#编辑postfix配置文件
+            #myhostname = www.mali.com			#注释掉
+            #myorigin = $mydomain				#注释掉
+            #mydomain = mali.com				#注释掉
+			mail_location = maildir:~/Maildir	#注释掉
+            #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain		#注释掉
+            mynetworks = 127.0.0.0/8 			#只允许为本地中继
+	
+	vim /etc/dovecot/conf.d/10-mail.conf				#修改配置
+		mail_location = maildir:/var/mailbox/%d/%n/Maildir 			#设置邮件的位置，%d表示域名，%n表示用户名(修改)
+		namespace inbox {
+			inbox = yes
+		}
+		
+	
+	vim /etc/dovecot/conf.d/10-auth.conf			#修改配置		
+		disable_plaintext_auth = no
+		auth_mechanisms = plain
+	
+		
+	vim /etc/dovecot/conf.d/auth-sql.conf.ext				#文件默认不存在
+		driver = mysql 
+        connect = host=localhost dbname=extmail user=extmail password=extmail		#mysql地址，用户名，密码
+        default_pass_scheme = CRYPT 						#默认加密方式
+        password_query = SELECT username AS user,password AS password FROM mailbox WHERE username = '%u'  #%u表示登录用户名
+        user_query = SELECT maildir, uidnumber AS uid, gidnumber AS gid FROM mailbox WHERE username = '%u'
+		
+	
+	service saslauthd stop			#关sasl认证
+	
+	
+	cd /var/www/html/
+	tar zxvf /root/extmail-1.1.1.tar.gz -C /var/www/html/
+	mkdir /var/www/extsuite/
+	mv extmail-1.1.1/  /var/www/extsuite/extmail
+	cd /var/www/extsuite/extmail
+	cp webmail.cf.default  webmail.cf
+	chown -R postfix:postfix -R cgi
+	
+	vim webmail.cf							#编辑webmail配置文件
+		SYS_SMTP_HOST = localhost		#邮件服务器地址
+		SYS_USER_LANG = zh_CN				#使用中文
+		SYS_USER_CHARSET = utf-8			#指定字符集
+		SYS_MAILDIR_BASE = /var/mailbox		#邮件存放位置
+		SYS_MYSQL_USER = extmail			#连接数据库的用户(生产环境不建议使用root直接连接)
+		SYS_MYSQL_PASS = extmail			#root用户密码
+		SYS_MYSQL_DB = extmail				#连接的数据库
+		SYS_MYSQL_HOST = hostlocah		    #数据库地址
+		SYS_MYSQL_SOCKET = /var/lib/mysql/mysql.sock			#sock文件位置
+		SYS_MYSQL_TABLE = mailbox			#指定存放用户数据的表		
+		SYS_MYSQL_ATTR_USERNAME = username	#指定存放用户账号的字段
+		SYS_MYSQL_ATTR_DOMAIN = domain		#指定域
+		SYS_MYSQL_ATTR_PASSWD = password	#指定存放用户密码的字段
+		SYS_AUTHLIB_SOCKET = /usr/local/courier-authlib/var/spool/authdaemon/socket			#sock文件存放路径
+		
+	
+	mv /usr/src/extman-1.0.1/ /var/www/extsuite/extman
+	cd /var/www/extsuite/extman/
+	cp webman.cf.default  webman.cf
+	
+	vim  webman.cf
+		SYS_MAILDIR_BASE = /var/mailbox
+		SYS_DEFAULT_UID = 89			#postfix用户uid
+		SYS_DEFAULT_GID = 89
+		SYS_MYSQL_USER = extmail		#连接mysql的用户
+		SYS_MYSQL_PASS = extmail		#密码
+		SYS_MYSQL_SOCKET = /var/lib/mysql/mysql.sock
+		SYS_CAPTCHA_ON = 0				
+		
+	chown -R postfix:postfix /var/www/extsuite/extman/cgi/
+	mkdir  -pv  /tmp/extman
+	chown postfix:postfix  /tmp/extman
+	
+	
+	tar zxvf Unix-Syslog-0.100.tar.gz			#安装依赖的perl模块
+	cd Unix-Syslog-0.100
+	perl Makefile.PL
+	make
+	make install
+	
+	
+	vim /etc/httpd/conf/httpd.conf			#编辑http配置文件
+		#DocumentRoot "/var/www/html"		#注释中心主机
+		User postfix			#修改apache的运行用户和组
+		Group postfix
+
+		<VirtualHost *:80>
+			ServerName mail.magedu.com
+			DocumentRoot /var/www/extsuite/extmail/html/
+			ScriptAlias /extmail/cgi /var/www/extsuite/extmail/cgi			#指定CGI脚本
+			Alias /extmail /var/www/extsuite/extmail/html					#指定别名
+			ScriptAlias /extman/cgi /var/www/extsuite/extman/cgi
+			Alias /extman /var/www/extsuite/extman/html
+		</VirtualHost>
+
+
+	service httpd restart						#重启服务
+	service postfix restart	
+	service mysqld restart
+	service courier-authlib restart
+
+验证：
+	http://主机ip/extmail		#访问
+	默认后台管理帐号为：root@extmail.org  密码为：extmail*123*
+	
+	
+参考：
+	http://www.07net01.com/linux/jiyumysql_cryus_courier_authlib_dovecot_postfxiyoujianfuwuqide_373847_1370793307.html
+	http://willow.blog.51cto.com/6574604/1785683
+	
+
+
+	
+	
+		

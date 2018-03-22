@@ -1,0 +1,14 @@
+http://rpmfind.net						#RMP包下载
+http://www.rpm-find.net					#RMP包下载
+http://pkgs.org							#RMP包下载	
+https://pypi.python.org					#python常用模块下载
+http://linux.linuxidc.com				#linux教程
+https://www.processon.com/diagrams		#画图工具
+
+
+
+
+
+https://passport.csdn.net/account/login?ref=toolbar			#论坛
+https://yum.puppet.com/el/6.5/products/x86_64/				#puppet
+

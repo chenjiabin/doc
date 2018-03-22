@@ -1,0 +1,108 @@
+scrapy startproject spider						#创建爬虫项目
+cd spider	
+scrapy genspider example example.com			#创建爬虫，在spider/spiders/创建example.py文件
+scrapy crawl NAME								#启动指定爬虫
+
+
+scrapy命令：
+	bench         
+	check  										#检查语法      
+	crawl     									#运行一个爬虫   
+	fetch    									#测试scrapy下载器
+	genspider     								#创建一个爬虫
+	list   										#列出可用的spider      
+	runspider    								#在未创建项目的情况下，运行spider文件，语法scrapy runspider file.py
+	shell										#以指定的URL启动Scrapy shell，语法scrapy shell [url]        
+	startproject 								#创建一个项目
+	version       								#查看版本
+	view   										#在浏览器中打开指定的URL，多用于检查scrapy下载的页面是否和浏览器看到的页面相同
+		示例：scrapy view --nolog https://www.jd.com			
+
+
+		
+
+example.py：
+	import scrapy								#导入模块
+	
+	class ExampleSpider(scrapy.Spider):			#必须继承至Spider
+		name = 'example'						#项目名称
+		allowed_domains = ['example.com']		#爬取的域名
+		start_urls = ['http://example.com/']	#访问入口(从哪儿开始爬)
+	
+		def parse(self, response):
+			pass	
+
+scrapy crawl NAME(py文件里的name的值)			#启动爬虫(开始爬取网页)		
+			
+			
+settings.py
+	ROBOTSTXT_OBEY = False						#拒绝遵循Robot协议
+	DEPTH_LIMIT = 2								#爬取深度为2
+
+
+	
+example.py：	
+
+import scrapy
+
+class ExampleSpider(scrapy.Spider):
+    name = "test"
+    allowed_domains = ["cnblog.com"]
+    start_urls = ["https://www.cnblogs.com/"]
+
+    def parse(self, response):
+        for sel in response.xpath('//ul/li'):				#xpath简单使用
+            title = sel.xpath('a/text()').extract()			#获取//ul/li//a标签的文本内容
+            link = sel.xpath('a/@href').extract()			#获取//ul/li//a标签的href属性
+            desc = sel.xpath('text()').extract()			获取所有的文本内容
+            print title, link, desc	
+
+			
+response常用方法
+	response.body 				#输出下载到的网页内容
+	response.headers 			#输出响应头部
+	response.xpath()			#调用xpath选择器
+	response.css()				#调用css选择器
+	
+	
+实例：
+	example.py：
+		
+	import scrapy
+	from spider.items import SpiderItem
+
+	class ExampleSpider(scrapy.Spider):
+		name = 'test'
+		allowed_domains = ['cnblogs.com']
+		start_urls = ["https://www.cnblogs.com/",]
+
+		def parse(self, response):
+			atext = response.xpath('//*[@id="editor_pick_lnk"]/@href').extract()
+			item = SpiderItem()
+			item['link'] = atext			#将获取的内容保存到items中
+			print item						#输出item的值
+			yield item						#返回一个生成器
+			
+		
+	items.py：
+		
+	import scrapy
+
+	class SpiderItem(scrapy.Item):
+		link = scrapy.Field()
+
+	
+	
+	crapy crawl dmoz -o items.json --nolog		#在终端中运行，item.('xml', 'jsonlines', 'jl', 'json', 'csv', 'pickle', 'marshal')
+	
+
+	
+http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html			#官方文档(中文)
+
+
+
+
+
+
+
+

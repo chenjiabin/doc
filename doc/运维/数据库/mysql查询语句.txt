@@ -1,0 +1,78 @@
+单表查询：
+	SELECT
+    [ DISTINCT ]
+    [SQL_CACHE | SQL_NO_CACHE]
+    select_expr [,select_expr ...]
+    [FROM table_references [ WHERE where_condition ]
+    [GROUP BY {col_name | expr |}] [HAVING where_condition] 
+	[ORDER BY [ASC | DESC]]
+  
+
+	DISTINCT：数据去重
+	SQL_CACHE：指定存入缓存
+	SQL_NO_CACHE：指定进行缓存
+
+	
+	WHERE子句：指定条件，实现过滤功能
+		过滤条件：
+			算数运算：+   -   *   /   %  >  <  >=  <=
+			逻辑运算：AND：与运算  OR：或运算  NOT：非运算
+			字符比较：=  !=    
+			列表元素比较：IN (元素1,元素2,元素3,...)	
+			IS NULL：空	
+			IS NOT NULL：非空
+			LIKE：模糊匹配，能不用尽量不用
+			RLIKE：基于正则的模糊匹配，能不用尽量不用
+		
+		
+	GROUP BY子句：更具指定的条件把匹配的结果进行分组，实现"聚合"运算
+		常用函数：
+			sum(条件)		#求和	　　　　
+			max(条件)		#最大值	　　　　
+			min(条件)		#最小值	　　　　
+			avg(条件)		#平均值	　　　　
+			count(条件)		#统计记录数		
+		HAVING：对GROUP BY之后的结果进行过滤
+
+
+示例：
+	mysql> CREATE DATABASE mydb;		#创建测试数据库
+	mysql> USE mydb;
+	mysql> CREATE TABLE test (id int(50),name varchar(50),qq int(15),gender char(2));	#创建测试表
+	
+	mysql> INSERT INTO test VALUES(1,'zhangshan',12345,'F');		#插入测试数据
+	mysql> INSERT INTO test VALUES(2,'lisi',123142,'F');
+	mysql> INSERT INTO test VALUES(3,'zsf',124312,'M');
+	mysql> INSERT INTO test VALUES(4,'yyy',124312,'F');
+	mysql> INSERT INTO test VALUES(5,'ytt',124312,'M');
+
+	单表查询示例：	
+		mysql> SELECT * FROM test WHERE id>2 AND id<5;				#查询ip大于2小于5的数据
+		mysql> SELECT * FROM test WHERE id>2 GROUP BY gender;		#对性别进行分组
+		mysql> SELECT sum(id),gender FROM test GROUP BY gender;		#对性别进行分组，并求他们的id之和
+		mysql> SELECT * FROM test GROUP BY gender HAVING id>2;		#对性别进行分组，显示id大于2的组
+		
+	
+	多表关联查询：
+		mysql> CREATE TABLE test2 (emain varchar(200),age int(10));		#创建测试环境
+		mysql> INSERT INTO test2 values('123@qq.com',10);
+		mysql> INSERT INTO test2 values('456@qq.com',15);
+		mysql> INSERT INTO test2 values('789@qq.com',20);
+
+		mysql> SELECT test.id,test2.age FROM test,test2 WHERE test.id>2 AND test2.age>10;
+			test.id			#第一章表的id字段
+			test2.age		#第二章表的age字段
+			test			#第一章表 表名
+			test2			#第二章表 表名
+			test.id>2 AND test2.age	
+			#拼接显示test的id字段和test2的age字段，但是test的id字段必须大于2并且test2的age字段必须大于10
+
+		mysql> SELECT * FROM test,test2 WHERE test.id>2 AND test2.age>10;
+			拼接显示test,test2的所有字段，但是test的id字段必须大于2并且test2的age字段必须大于10
+
+		
+			
+			
+			
+			
+			

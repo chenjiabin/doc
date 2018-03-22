@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js函数</title>
+</head>
+<body>
+    <input id='i1' type="text">
+    <input type="button" onclick="myfunc()" value="确定">
+
+<!--js函数类型-->
+<!--<script>
+    //普通函数
+    function myfunc() {
+        var i1 = document.getElementById('i1');
+        var values = i1.value;
+        alert('这是输入的值：  ' + values);
+    }
+
+    //匿名函数，setInterval定时器，每隔1000毫秒执行一次
+    /*setInterval(function(){
+        alert('这是匿名函数');
+    },1000)*/
+
+    //自执行函数
+    (function () {
+        alert('这是自执行函数');
+    })();
+
+    //所以的函数都可以传递参数
+    function test(argv) {
+        alert(argv);
+    }
+
+    test('这是传递的参数');
+
+</script> -->
+
+<!--js函数作用域-->
+<script>
+    /*
+    js奇葩的作用域：
+        1、js已函数做为作用域
+        2、js的作用域在函数未调用之前，已经创建
+        3、函数的作用域存在作用域链，在函数未调用之前，已经创建
+        4、函数内部局部变量提前声明
+    */
+
+    //js函数作用域实例1，第一个定义的证明
+    function test1() {
+        if(1===1){
+            var name1 = '第一个定义的证明';
+        }
+        alert(name1);       //编程语言中有的已{}做为一个作用域,有的已函数做为作用域
+    }
+    //test1();           //函数未执行但是起作用域已经存在
+
+
+    //js函数作用域实例3，第三个定义的证明
+    function test2() {
+        var t1 = 'test1';
+        function test2_1() {
+            alert(t1)
+        }
+        var t1 = 'test1.1';
+        return test2_1;
+    }
+    var result = test2();
+    //result();
+
+
+    //js函数作用域实例4，第二个定义的证明
+    function test3() {
+        alert(name3);     //因为在整个函数林中声明了name3所以不会报错,但name3没有赋值,所以alert返回undefined
+        var name3 = '第四个定义的证明';
+    }
+    //test3()
+
+
+</script>
+
+</body>
+</html>
+
+
+
+

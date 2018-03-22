@@ -1,0 +1,97 @@
+zfs存储池属性：
+    zpool get all tank                    #获取存储池的所有属性信息
+    zpool set autoreplace=on tank         #设置存储池的属性
+    zpool get autoreplace tank            #获取存储池的指定属性信息
+
+    常用属性说明：
+           Name            Type     Default-value      Explain
+        allocated         字符串         N/A          只读值，表示池中已分配的存储空间
+        autoreplace       布尔值         off          是否启用设备自动替换功能
+        capacity          数字           N/A          只读值，显示已用池空间的百分比
+        delegation        布尔值         on           是否向非特权用户授予为文件系统定义的访问权限
+        failmode          字符串         wait         控制发生灾难性池故障时的系统行为
+            这种情况通常是由于失去与底层存储设备的连接或池中所有设备出现故障而导致的
+            wait：阻止所有对池的I/O请求(读操作可能会成功)，直到设备连接恢复且使用zpool clear命令清除错误为止
+            continue：对任何新的写入I/O请求返回EIO错误，但允许对其余任何运行状况良好的设备执行读取操作，任何未提交到磁盘的写入请求都会被阻止。直到设备连接恢复且使用zpool clear命令清除错误为止
+        free              字符串         N/A          只读值，表示池中未分配的存储空间
+        guid              字符串         N/A          只读值，池的唯一编号
+        health            字符串         N/A          只读值，表示池的当前运行状况(如：ONLINE、DEGRADED...)
+        size              数字           N/A          只读值，表示存储池的总大小
+
+
+查询zfs存储池的状态：
+    zpool list                                      #显示有关系统上所有池的下列信息。
+        NAME      SIZE    ALLOC       FREE     CAP       HEALTH     ALTROOT
+        池名称    总大小  已使用的空间   剩余空间  已使用%比   运行状况    池的备用根(如果有)
+
+    zpool list tank -T d 3 5          #每隔3s打印一次弹框池的信息，打印5次之后退出
+    zpool list -o name,size           #显示指定信息
+    zpool list -H                     #不显示标题，通常用在shell中
+    zpool list -H -o name,size        #显示指定信息
+
+    zfs list                          #显示文件系统信息
+    zfs list -H                       #显示文件系统信息，不显示标题
+
+    zpool status -l             #显示有关池设备的物理位置的信息，当需要以物理方式移除或替换磁盘时使用
+
+    zpool history               #显示存储池的命令历史
+    zpool history -l tank       #以长格式显示
+    zpool history -i tank       #显示可用于诊断目的的内部事件信息
+
+
+查看 ZFS 存储池的 I/O 统计信息
+    zpool iostat              #显示zfs I/O信息
+        alloc capacity        #当前存储在池或设备中的数据量,可能有少量差异
+        free capacity         #池或设备中的可用磁盘空间量，可能有少量差异
+        read operations       #发送到池或设备的读取I/O操作数
+        write operations      #发送到池或设备的写入I/O操作数
+        read bandwidth        #所有读取操作的带宽，以每秒单位数表示
+        write bandwidth       #所有写入操作的带宽，以每秒单位数表示
+
+    zpool iostat tank 2       #每2s统计一次
+    zpool iostat 2 3          #每2s统计一次，重复3次
+    zpool iostat -v           #显示详细信息
+
+
+确定ZFS存储池的运行状况：
+    ZFS提供了一种检查池和设备运行状况的集成方法，池的运行状况是根据其所有设备的状态确定的
+    池和设备的潜在故障记录于/var/log/messages(系统日志)文件中
+
+    常见池状态：
+        ONLINE：设备或虚拟设备处于正常工作状态
+        DEGRADED：虚拟设备出现过故障，但仍能工作，此状态在镜像或RAID-Z设备损坏时最常见，池的容错能力可能会受到损失
+        FAULTED：设备或虚拟设备完全无法访问，此状态通常表示设备出现全面故障，以致于ZFS无法向该设备发送数据或从该设备接收数据，如果顶层虚拟设备处于此状态，则完全无法访问池
+        OFFLINE：管理员将设备脱机
+        UNAVAIL：无法打开设备或虚拟设备，如果顶层虚拟设备的状态为UNAVAIL，则无法访问池中的任何设备
+        REMOVED：系统正在运行时已物理移除了该设备
+
+    池的状态变化：
+        池的运行状况是根据其所有顶层虚拟设备的运行状况确定的
+        如果所有虚拟设备状态都为ONLINE，则池的状态也为ONLINE
+        如果任何一个虚拟设备状态为DEGRADED或UNAVAIL，则池的状态也为DEGRADED
+        处于DEGRADED状态的池会继续运行，但是，如果池处于联机状态，则可能无法实现相同级别的数据冗余或数据吞吐量
+        如果顶层虚拟设备的状态为FAULTED或OFFLINE，则池的状态也为FAULTED
+        处于FAULTED状态的池完全无法访问，附加或修复必需的设备后，才能恢复数据
+
+    zpool status -x             #快速查看池状况
+    zpool status -v tank        #查看详细信息
+    zpool status -T d 3 2       #每3s打印一次，重复2次
+
+    zpool status的输出：
+        READ 和 WRITE 列提供了在设备上出现的 I/O 错误的计数
+        而 CKSUM 列则提供了在设备上出现的无法更正的校验和错误的计数
+        这两种错误计数指示可能的设备故障，并且需要执行更正操作
+        如果针对顶层虚拟设备报告了非零错误，则表明部分数据可能无法访问
+        errors: 字段标识任何已知的数据错误
+
+
+
+
+
+
+
+
+
+
+
+https://docs.oracle.com/cd/E26926_01/html/E25826/gfifk.html#scrolltoc           #参考

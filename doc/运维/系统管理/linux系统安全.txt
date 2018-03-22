@@ -1,0 +1,140 @@
+与系统安全相关的几个文件：
+/etc/shells 		//可用shell环境
+/etc/passwd		//用户账号信息
+/etc/shadow		//用户密码信息
+/etc/group		//组信息
+/var/log/secure		//su日志信息
+/etc/sysconfig/network	//主机名配置文件
+
+
+锁定用户密码：
+usermod -L username			
+passwd -l username
+
+解锁用户密码：
+usermod -U username
+passwd -u username
+passwd -S		//查看用户状态
+
+
+用户文件管理：
+/etc/skel		//所有用户家目录的模板目录
+.bash_profile		//登录系统时执行
+.bash_logout		//注销时执行
+.bashrc			//切换shell时执行
+
+
+
+
+文件锁定：
+chattr  +i    file		//锁定文件
+chattr  -i    file		//解锁文件
+lsattr				//查看文件状态
+
+
+用户密码管理：
+chage -d 0  username		//强制用户下一次登录必须更改密码
+chage -M 30 username		//设置用户密码有效期 
+sed -i 's/^PASS_MAX_DAYS.*/PASS_MAX_DAYS   30/' /etc/login.defs	//以后创建的用户密码默认有效期为30天
+
+
+命令历史管理：
+history							//查看命令历史
+history  -c						//清空命令历史
+sed -i 's/HISTSIZE.*/HISTSIZE=10/' /etc/profile		//修改命令历史的默认条数为10条
+echo 'export TMOUT=600' >> /etc/profile			//设置终端在600毫秒没有操作将注销用户
+. /etc/profile						//读取配置文件使修改的配置生效
+
+
+su命令管理：
+su -l username			//切换用户
+echo 'auth   required   pam_wheel.so  use_uid' >> /etc/pam.d/su		//设置指定用户才能使用su切换用户
+gpasswd -a username  wheel		//将允许使用苏命令的用户添加到wheel组中
+
+
+
+sudo命令详解：
+sudo：当前用户，能够以另外一个指定用户，在指定的主机上，执行指定的命令
+
+配置文件：/etc/sudoers,sudo的定义文件,一般使用visudo去编辑sudoers文件,visudo会自动检查语法
+授权用户    允许登录主机=(以什么用户身份运行,一般为root)     运行命令
+
+例：lisi    ALL=(root)     /sbin/ifconfig	//允许lisi用户在所有主机上以root用户身份运行ifconfig命令
+
+
+别名(组)设置：
+	1、User_Alias	（用户别名）
+	2、Host_Alias	（主机别名）
+	3、Cmnd_Alias	（命令别名）
+
+
+用户别名可以包含：
+	1、用户的用户名
+	2、组名，以%作为引导
+	3、其他已经定义的用户别名
+
+
+主机别名可以包含：
+	1、主机名
+	2、IP地址
+	3、其他已经定义的主机别名
+
+
+命令别名可以包含：
+	1、命令的绝对路径
+	2、其他已经定义的命令别名
+
+
+注意：别名的名字，必须是全部大写的英文字母
+
+
+特殊的格设置：
+COM = /usr/bin/passwd [a-zA-Z]*		//在使用passwd命令时用户名中必须有一个字母
+ELSE = ! /usr/bin/passwd root		//不能使用执行passwd  root这条命令
+
+一般一起来使用：	
+NAME = /usr/bin/passwd [a-zA-Z]* , ! /usr/bin/passwd root  	//不允许对root进行密码设置,!取反
+
+这种格式一般用在某条命令可以对root用户本身的安全造成威胁时使用
+
+
+别名例子：
+	
+User_Alias   USER = user1,user2,user3,user4,user5  ...		//设置用户别名
+Host_Alias   HOST = host1,host2,host3,host4,host5  ...		//设置主机别名
+Cmnd_Alias   COMD = comd1,comd2,comd3,comd4,comd5  ...		//设置命令别名
+
+
+
+禁用ctrl+alt+del重启：
+/etc/init/control-alt-delete.conf		//注释掉配置文件里的所有内容
+
+
+设置grub密码
+/boot/grub/grub.conf 				//修改grub配置文件
+grub-md5-crypt					//生成加密字符串
+password --md5  加密的字符串		     //grub编辑密码
+title						//title之前和之后的差别
+password --md5	加密的字符串		     //内核加载密码
+
+
+tty终端个数控制：
+/etc/init/start-ttys.conf			//tty终端配置文件
+	env ACTIVE_CONSOLES=/dev/tty[1-6]	//配置文件内容，终端的开启数量
+	env X_TTY=/dev/tty1			//配置文件内容，默认登录终端
+
+/etc/sysconfig/init				//tty终端配置文件
+	ACTIVE_CONSOLES=/dev/tty[1-6]		//配置文件内容，终端的开启数量，如果要更改需要同时更改两个文件		
+
+
+控制root用户登录终端
+/etc/securetty					//允许root用户从哪些终端登录，配置文件
+
+
+禁止所有普通用户登录系统
+touch /etc/nologin				//只需要创建文件
+
+
+
+
+

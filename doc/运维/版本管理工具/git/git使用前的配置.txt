@@ -1,0 +1,61 @@
+sudo apt-get install git                                            #安装Git(ubuntu)
+git clone git://git.kernel.org/pub/scm/git/git.git                  #更新Git
+
+
+
+初次运行Git前的配置：
+    Git自带一个git config的工具来帮助设置控制Git外观和行为的配置变量
+    这些变量存储在三个不同的位置：
+
+    /etc/gitconfig：包含系统上每一个用户及他们仓库的通用配置，--system对系统级别进行配置
+    ~/.gitconfig或~/.config/git/config：只针对当前用户，--global对用户全局进行配置
+    .git/config：针对该仓库的配置文件
+
+    每一个级别覆盖上一级别的配置，所以.git/config的配置会覆盖/etc/gitconfig中的配置
+
+
+
+用户信息：
+    当安装完Git应该做的第一件事就是设置你的用户名称与邮件地址，每一次Git的提交都会使用这些信息，并且它会写入到你的每一次提交中：
+        git config --global user.name "huyuan"
+        git config --global user.email huyuan@example.com
+
+
+编辑器配置：
+    git config --global core.editor vim  
+
+
+
+检查配置信息
+    使用git config --list命令来列出所有Git当时能找到的配置
+
+    $ git config --list
+      user.name=John Doe
+      user.email=johndoe@example.com
+      core.editor=vim
+      color.status=auto
+      .......
+
+    如果出现重复的变量名，Git会使用它找到的每一个变量的最后一个配置
+
+    git config <key>：来检查 Git 的某一项配置
+
+    $ git config user.name
+    huyuan
+
+
+获取帮助
+    git help <verb>
+    git <verb> --help
+    man git-<verb>
+
+
+更多内容：https://git-scm.com/book/zh/v2/起步-初次运行-Git-前的配置
+
+
+
+
+
+
+
+

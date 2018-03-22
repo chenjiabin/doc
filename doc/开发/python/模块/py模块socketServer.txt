@@ -1,0 +1,81 @@
+TCPServer(address,handler)使用IPv4的TCP协议，address是一个(ip,port)元组,handler是BaseRequestHandler类的子类的实例
+要使用SocketServer模块，必须定义一个继承于基类BaseRequestHandler的处理程序类
+
+BaseRequestHandler的实例的方法：
+handle()：解析传入的请求，处理数据，并发送响应
+
+handle的常用变量：
+self.request：包含请求
+self.client_address：包含客户端地址
+self.server：包含调用处理程序的实例
+
+ThreadingTCPServer(address,handler)：基本的网络同步TCP服务器
+s.serve_forever()：处理请求
+
+
+例：
+#!/usr/bin/env py
+#coding: utf-8
+import SocketServer
+
+class MyServer(SocketServer.BaseRequestHandler):        #使用SocketServer必须的实例化的类
+
+    def handle(self):                   #解析请求,BaseRequestHandler子类的方法
+       conn = self.request              #创建请求
+
+       conn.send('hello')               #发送给客户端的数据
+       while True:                      #循环发送数据
+           data =conn.recv(1024)        #接收客户端发送的数据,最大1024字节
+           print data                   #打印客户端发送的数据
+           conn.send('world')           #发送给客户端的数据
+
+       conn.close()                     #关闭连接
+
+
+server = SocketServer.ThreadingTCPServer(('192.168.0.10',8888),MyServer)        #基本的网络同步TCP服务器
+server.serve_forever()                  #无限处理请求
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

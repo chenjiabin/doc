@@ -1,0 +1,109 @@
+/*display属性: */
+    display: inline;                /*将标签转换为行内标签*/
+    display: block;                 /*将标签转换为块级标签*/
+    display: inline-block;          /*使标签具有行内标签和块级标签的属性*/
+    display: none;                  /*让标签消失*/
+
+    /*行内标签：无法设置高度、宽度、padding，margin*/
+    /*块级标签：e可以设置高度、宽度、padding，margin*/
+
+
+/*position属性: */
+    position: fixed;            /*生成绝对定位的元素，相对于浏览器窗口进行定位*/
+    top:0;                      /*距离浏览器顶部多少像素*/
+    left: 0;                    /*距离浏览器左部多少像素*/
+    right: 0;                   /*距离浏览器右部多少像素*/
+    bottom: 0;                  /*距离浏览器底部多少像素*/
+    position: relative;         /*指定父标签，单独使用无意义需要和absolute一起使用*/
+    position: absolute;         /*和relative一起是使用时根据父标签定位，单独使用时根据浏览器窗口定位，定位之后会根据页面滑动而滑动不会永久固定在浏览器的窗口上*/
+
+    opacity: 0.6;               /*设置透明度，多和position属性一起使用，生成模态对话框，模态对话框还需要和display属性结合使用*/
+    z-index:10;                 /*设置多层页面时使用z-index设置页面的优先级(层级顺序)，数字越大优先级越高，多用于模态对话框*/ 
+
+
+/*margin和padding属性: */
+    margin: 50px;                       /*外边距*/
+    margin: 0 auto;                     /*外边距，上下间距为0，左右自动居中*/
+    margin:10px 5px 15px 20px;          /*上 右 下 左*/
+    margin-top: ;                       /*上*/
+    margin-bottom: ;                    /*下*/
+    margin-left: ;                      /*左*/
+    margin-right: ;                     /*右*/ 
+
+    padding: 0 5px;                     /*上下为0，左右5px，padding支持和margin相同的写法*/
+
+
+/*浮动: */
+    float: right;                       /*右浮动*/
+    float: left;                        /*左浮动*/
+    clear: both;                        /*约束子标签*/
+    /*float注意事项：当子标签浮动起来时将不受父标签的限制，需要在父标签的最后标签中加上<div style="clear: both;"></div>使父标签重新约束子标签*/
+
+
+/*其他常用属性*/
+    text-decoration: none;              /*去掉a标签的下划线*/
+    background-color: red;              /*设置背景色*/
+    width:200px;                        /*宽度，可以设置百分比也可以设置绝对宽度*/
+    height: 200px;                      /*高度，只能设置绝对高度*/
+    text-align: center;                 /*水平方向居中*/
+    line-height:200px;                  /*垂直根据设置高度居中*/
+    color: darkmagenta;                 /*字体颜色*/
+    font-size: large;                   /*字体设置*/
+    font-weight: 900;                   /*字体粗细*/
+    border: 10px solid red;             /*设置边框，solid实线显示，red红色*/
+    border-radius:50%;                  /*使边框变为圆形，多用于将图片头像变圆*/ 
+    :hover                              /*当鼠标移动到指定标签上其所对应的属性才会生效，:前边为标签或者css选择器*/
+    overflow: auto	                    /*当使用position布局时内容多余窗口承载量时出现滚动条*/
+    min-width: 1000px;                  /*最小宽度*/
+
+
+
+鼠标样式：
+    div{ cursor:default }           默认正常鼠标指针
+    div{ cursor:hand }              和div{ cursor:text } 文本选择效果
+    div{ cursor:move }              移动选择效果
+    div{ cursor:pointer }           手指形状 链接选择效果
+    div{ cursor:url(url图片地址) }   设置对象为图片
+
+
+    /*css样式插件：http://fontawesome.io/ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

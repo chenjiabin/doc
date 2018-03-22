@@ -1,0 +1,119 @@
+打标签
+    Git可以给历史中的某一个提交打上标签，以示重要，人们通常使用此功能来标记发布结点(v1.0等)
+
+
+查看标签
+    git tag                         #以字母顺序列出标签
+
+    git tag -l 'v1.8.5*'            #列出已v1.8.5开头的标签
+        v1.8.5
+        v1.8.5.1
+        v1.8.5.2
+        v1.8.5.3
+        v1.8.5.4
+        v1.8.5.5
+
+创建标签
+    常用标签：轻量标签(lightweight)与附注标签(annotated)
+
+    轻量标签：很像一个不会改变的分支，它只是一个特定提交的引用
+    附注标签：是存储在Git数据库中的一个完整对象，包含打标签者的名字、邮件、日期，标签信息，并且可以使用GPG签名与验证，通常建议创建附注标签
+
+
+附注标签
+    git tag -a v1.0.0 -m 'version 1.0.0'
+    git tag
+        v1.0.0
+    
+    -m：指定一条存储在标签中的信息，如果不使用-m选项，Git会运行编辑器要求你输入信息
+      
+
+    git show v1.0.0                                 #查看标签信息和其对应的提交信息
+        tag v1.0.0
+        Tagger: huyuan <huyuan@vm.com>
+        Date:   Sun Oct 22 16:20:28 2017 +0800
+
+        version 1.0.0
+
+        commit 000b2e58dccc803407885057433cc5fc40dc1d1d
+        Author: huyuan <huyuan@vm.com>
+        Date:   Sun Oct 22 16:20:07 2017 +0800
+
+            test-gat
+
+        diff --git a/a.py b/a.py
+        index e69de29..d00491f 100644
+        --- a/a.py
+        +++ b/a.py
+        @@ -0,0 +1 @@
+        +1
+
+    输出显示了打标签者的信息、打标签的日期时间、附注信息，然后显示具体的提交信息。
+
+
+
+
+轻量标签
+    轻量标签本质上是将提交和校验和存储到一个文件中，没有保存任何其他信息
+    
+    git tag v1.0.0.5                        #创建轻量标签
+    git show v1.0.0.5                       #查看标签
+        commit 000b2e58dccc803407885057433cc5fc40dc1d1d
+        Author: huyuan <huyuan@vm.com>
+        Date:   Sun Oct 22 16:20:07 2017 +0800
+
+            a
+
+        diff --git a/a.py b/a.py
+        index e69de29..d00491f 100644
+        --- a/a.py
+        +++ b/a.py
+        @@ -0,0 +1 @@
+        +1
+
+
+对过去的提交打标签：
+    git log --pretty=oneline --abbrev-commit            #查看历史版本信息
+        b5e309e version-4
+        1008c08 version-3
+        000b2e5 versino-2
+        e4c1d11 version-1
+
+    git tag -a v1.2.0 000b2e5                             #为versino-2的提交打标签
+
+
+共享标签
+    默认情况下git push并不会传送标签到远程仓库上，在创建完标签后你必须显式地推送标签到远程仓库上 
+    git push origin v1.2.0                  #推送v1.2.0到远程仓库上
+
+    git push origin --tags                  #将所有不在远程仓库上的标签全部推送到远程仓库上
+
+
+
+Git别名
+使用git config命令为每一个命令设置一个别名
+
+git config --global alias.ci commit                 #定义别名
+git config --global alias.st status                 #alias.别名 commant
+git config --global alias.last 'log -1 HEAD'
+
+这时git commit等于git ci    git status等于git st      git last查看最后一次提交的信息
+
+
+git config --global alias.unstage 'reset HEAD --'
+
+这时git reset HEAD -- fileA 等于 git unstage fileA
+
+
+
+
+
+https://git-scm.com/book/zh/v2/Git-基础-打标签
+https://git-scm.com/book/zh/v2/Git-基础-Git-别名
+
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+proxy_cache：nginx缓存模块，用于设置nginx的缓存功能
+	nginx缓存原理：
+		nginx的缓存文件是根据key:value进行存储的，key直接存储在内存中，value指向本地文件系统目录，这个目录最多支持三级子目录
+	
+	proxy_cache_path	#用于设置nginx缓存的相关属性，只能出现在http段
+		例：proxy_cache_path  /nginx/cache1  levels=1:2 keys_zone=cache1:100m inactive=1d max_size=10g;
+			/nginx/cache1		#缓存目录，属主和属组必须是运行nginx的用户
+			levels=2:3	#设置目录个数,2表示1级子目录的名称只能用2个字符表示，3表示2级子目录的名称只能用3个字符表示
+			keys_zone=cache1:100m	#cache1表示缓存名称		100m：表示key在内存中的最大大小
+			inactive=1d		#如果一天没有人访问这个缓存，那么这个缓存将被清理
+			max_size=10g	#本地文件系统存储的最大缓存大小
+	配置完proxy_cache_path在需要缓存的地方调用
+	调用proxy_cache_path
+		proxy_cache cache1;		#调用名称为cache1的缓存配置，proxy_cache可以出现在http，server，location段
+		
+
+	nginx缓存配置实例：
+		http {
+			include       mime.types;
+			default_type  application/octet-stream;
+			sendfile        on;
+			keepalive_timeout  65;
+
+			proxy_cache_path /nginx/cache1 levels=1:2 keys_zone=cache1:100m inactive=1d max_size=10g;
+				#cache1缓存定义
+			server {
+				listen       80;
+				server_name  localhost;
+
+				location / {
+					proxy_cache cache1;					#调用cache1缓存
+					proxy_cache_valid 200 1d;			#状态码为200的页面缓存一天
+					proxy_cache_valid 301 302 10m;		#状态码为301 302的页面缓存10分钟
+					proxy_cache_valid any 1m;			#其余所有页面缓存1分钟
+					proxy_pass http://192.168.0.50/;	
+					index  index.html index.htm;
+				}
+			}
+		}
+
+	验证：
+		1、客户端访问nginx服务器
+		2、查看/nginx/cache1目录下是否生成缓存目录
+		3、更改后端服务器页面信息，用客户端访问查看页面信息是否改变(没改变则缓存搭建成功)
+		
+		
+proxy_set_header：http头设置	
+	有的时候nginx代理的后端服务器需要记录客户端的ip地址等信息，但是由于nginx代理，后端服务器记录的ip实际上是nginx的ip，如果想要后端服务器能够获得客户端的真实ip则需要proxy_set_header指令的配置
+		proxy_set_header	Host	$host;				#Host自定义名称，$host存储主机名的变量
+		proxy_set_header	real-ip	$remote_addr;		#$remote_addr存储客户端ip的变量
+
+	配置实例：
+		nginx服务器：
+			server {
+				listen       80;
+				server_name  localhost;
+
+				location / {				
+					proxy_set_header real_ip $remote_addr;	#重新封装ip地址，头部名real_ip
+					proxy_pass http://192.168.0.50/;
+					index  index.html index.htm;
+				}
+			}
+
+		后端apache服务器：
+			LogFormat "%{real_ip}i %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+				#在LogFormat中添加%{real_ip}i，real_ip是封装的头部名称
+	
+	验证：
+		1、查看后端服务器的access_log日志，记录的ip是否是客户端的真实ip
+		
+		

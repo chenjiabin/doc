@@ -1,0 +1,54 @@
+JSONP:
+    由于浏览器具有同源策略,默认阻止js请求其他域名下的资源
+
+JSONP的实现原理:
+    虽然浏览器的同源策略阻止js想其他域名发送请求,但几乎所有的标签中的src属性都不受同源策略的影响,所以我们可以借助标签的src属性进行跨站资源请求
+    使用JSONP的前提:返回的数据必须是js代码格式
+
+
+示例:
+    <input type="button" value="JSONP请求数据" onclick="getjson()">
+    <script src="../static/jquery-3.2.1.js"></script>
+    <script>
+        /*function getjson() {
+            var tag = document.createElement('script');
+            tag.src = 'http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityid=101121301';
+            document.head.appendChild(tag);
+            //document.head.removeChild(tag);
+        }
+
+        function forecast(arg) {
+            console.log(arg)
+        }                                                //原生实现
+        */
+
+
+        function getjson() {
+            $.ajax({
+                url: 'http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityid=101121301',
+                type: 'get',
+                dataType: 'jsonp',
+                jsonp: 'callBack',
+                jsonpCallback: 'forecast'
+            });
+        }
+
+        function forecast(arg) {
+            console.log(arg)
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

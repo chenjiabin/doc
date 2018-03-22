@@ -1,0 +1,19 @@
+FROM ubuntu:pylib
+
+RUN mkdir -p /dub/lib
+RUN git clone https://bitbucket.org/claydodo/metamet.git /dub/lib/metamet
+RUN ln -s /usr/include/freetype2/ft2build.h /usr/include/
+
+
+ENV LANG en_US.UTF-8
+ENV METAMET /dub/lib/metamet
+ENV PYTHONPATH /dub/lib/metamet
+
+
+EXPOSE 80 
+
+
+COPY etc/matplotlibrc /etc/
+COPY etc/matplotlibrc /etc/matplotlibrc
+COPY bashrc /root/.bashrc	
+	

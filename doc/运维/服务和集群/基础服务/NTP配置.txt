@@ -1,0 +1,40 @@
+ntp：网络时间服务器，主要用于作时间同步
+	yum -y install ntp				#安装服务端
+	yum -y install ntpdate			#安装客户端
+	
+	
+配置文件详解：/etc/ntp.conf 
+	restrict		 		#ntp控制访问策略权限
+	restrict IP mask 子网  参数		#restrict语法
+		常用参数：
+			ignore			#允许客户端访问
+			default			#表示所有地址
+			nomodify		#客户端不能更改服务端的时间参数，但客户端能通过服务器进行时间同步
+			notrust			#客户端必须通过认证才能使用ntp服务
+			noquery			#拒绝客户端的时间查询
+			restrict -6		#对IPV6地址的权限设置
+
+	配置实例：
+	vim /etc/ntp.conf 
+		driftfile /var/lib/ntp/drift		#系统时间与BIOS事件的偏差记录
+		restrict 127.0.0.1			#服务器本身对ntp服务器有完全控制权
+		restrict 192.168.0.0 mask 255.255.255.0 nomodify	#允许客户端同步时间
+		server ntp1.aliyun.com	iburst			#在能使用internet时，使用internet的服务器进行时间同步
+		server 0.centos.pool.ntp.org iburst
+		server 127.127.1.0			#当不能访问internet时使用自己的时间作为同步时间
+		fudge 127.127.1.0 stratum 8		#127.127.10代表本身
+		#keys /etc/ntp/keys			#禁用客户端认证访问
+		
+	配置服务器硬件时间同步：
+		echo "SYNC_HWCLOCK=yes" >> /etc/sysconfig/ntpd			
+	
+	验证：
+		服务端：
+			service ntpd restart		#启动服务
+			netstat -napu | grep 123	#ntp默认监听udp123端口
+			watch ntpq -p		#让配置立即生效，默认启动服务之后会先同步ntp的时间，这个过程大约需要5分钟左右
+		客户端：
+			ntpdate 192.168.0.10		#指定ntp服务器同步时间
+
+
+

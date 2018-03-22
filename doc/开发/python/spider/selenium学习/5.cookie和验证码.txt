@@ -1,0 +1,52 @@
+cookie操作：
+    get_cookies()                                   #获得所有cookie信息
+    get_cookie(name)                                #返回指定cookie信息
+    add_cookie(cookie_dict)                         #添加cookie,必须是name和value关系
+    delete_cookie(name)                             #删除指定cookie信息
+    delete_all_cookies()                            #删除所有cookie信息
+
+
+实例：
+    #coding=utf-8
+    from selenium import webdriver
+    import time
+    driver = webdriver.Firefox()
+    driver.get("http://www.youdao.com")
+    cookie= driver.get_cookies()                    #获得cookie信息
+    print cookie                                    #打印cookie的信息
+
+
+driver.add_cookie({'name':'key-aaaaaaa', 'value':'value-bbbb'})         #向cookie的name和value添加信息
+driver.delete_cookie("CookieName")                                      #删除指定cookie
+driver.delete_all_cookies()                                             #删除所有cookie
+
+
+
+
+验证码处理：
+    1、验证码识别技术:
+        如可以通过 Python-tesseract 来识别图片验证码,Python-tesseract 是光学字符识别 Tesseract OCR 引擎的 Python 封装类。能够读取任何常规的图片文件(JPG, GIF ,PNG , TIFF 等)。不过,目前市面上的验证码形式繁多,任何一种验证码识别技术,识别率都不是 100% 。
+
+    2、记录cookie
+        通过向浏览器中添加cookie可以绕过登录的验证码,我们可以在用户登录之前,通过add_cookie()方法将用户名密码写入浏览器cookie,再次访问系统登录链接将自动登录
+
+
+
+例如：访问 xxxx 网站
+    driver.get("http://www.xxxx.cn/")
+    driver.add_cookie({'name':'Login_UserNumber', 'value':'username'})          #将用户名密码写入浏览器cookie
+    driver.get("http://www.xxxx.cn/")                                           #再次访问xxxx网站,将会自动登录
+
+    通过get_cookies()获取登录的所有的cookie信息,从而进行找到用户名、密码的name，value对象
+
+
+
+
+
+
+
+
+
+
+
+

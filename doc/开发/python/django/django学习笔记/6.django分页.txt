@@ -1,0 +1,117 @@
+from django.core.paginator import Paginator
+
+objects = [0,1,2,3,4,5,6,7,8,9]
+p = Paginator(objects, 3)   #objects分页的对象,3每3条数据为一页
+p.count                     #分页对象的总长度
+p.num_pages                 #对象可分多少页
+p.page_range                #对象页的可迭代范围,xrange(1,5)(迭代4次,生成4页) 
+
+page2 = p.page(2)           #获取对象的分页对象,2代表第二页
+page2.object_list           #获取分页的数据元素列表,第一分页元的素列表[4, 5, 6]
+page2.number                #对象当前的页码
+
+
+page2.has_previous()        #判断当前分页对象是否有前一页 True或False
+page2.has_other_pages()     #判断当前分页对象是否有其它页 True或False
+
+
+page2.next_page_number()      #当前对象下一页的页码值
+page2.previous_page_number()  #当前对象上一页的页码值
+page2.start_index()           #当前对象的元素开始索引
+page2.end_index()             #当前对象的元素结束索引
+
+
+
+# -*- coding: utf-8 -*-
+from django.core.paginator import Paginator                                                 #导入django自带的分页类
+
+def Page(request):
+    if request.method == 'GET':
+        user_page_num = request.GET.get('page',1)                                           #获取用户请求第几页
+        result = [ i for i in range(1000) ]                                                 #生成测试分页的数据
+        paginator = Paginator(result, 10)                                                   #每10条数据一页
+        try:
+            result = paginator.page(user_page_num)                                          #生成用户请求的数据
+            up = result.number - 5                                                          #获取当前页的前5个页码
+            down = result.number + 6                                                        #获取当前页的后5个页码(range()生成列表的特性)
+            if up < 1:                                                                      #判断当前页-5是否小于1
+                up = 1                                                                      #如果小于1则up等于1
+                if paginator.num_pages >= 12:                                               #判断当前数据是否能够生产12页
+                    down = 11 + 1                                                           
+                else:   
+                    down = paginator.num_pages + 1                                          #如果不能生成12页则显示最大的页码
+            elif down > paginator.num_pages:                                                #判断down是否大于总页数如果大于则显示最后10页
+                up = paginator.num_pages - 10                                               
+                down = paginator.num_pages + 1                                              
+            display_page = range(up,down)                                                   #生成页码
+        except:
+            return redirect('/app01/page/')
+        return render(request,'page.html',{'data':result,'display':display_page})           #传给前端
+    else:
+        return HttpResponse('error')
+
+
+
+#使用bootstrap
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <meta charset="utf-8">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">               #导入bootstrap
+    <style>
+        #selected{
+            background-color: #9d9d9d;                              #选中当前页的样式
+        }
+    </style>
+    <title>page</title>
+</head>
+
+<body>
+{% for obj in data %}                                               #数据
+    <p>{{ obj }}</p>
+{% endfor %}
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if data.number > 1 %}                #如果当前页大于1页,则显示有上一页,否则则不显示上一页的点击按钮
+            <li><a href="/app01/page/?page={{ data.number|add:-1 }}" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+        {% endif %}
+
+        {% for page_num in  display %}                          #循环生成页码
+            {% if page_num == data.number %}                    #判断是否是当前页,如果是则加上selected样式,如果不是则不加
+                <li><a id="selected" href="/app01/page/?page={{ page_num }}">{{ page_num }}</a></li>
+            {% else %}
+                <li><a href="/app01/page/?page={{ page_num }}">{{ page_num }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if data.number < data.paginator.num_pages  %}            #如果当前页小于总页数,则显示有下一页,否则则不显示下一页的点击按钮
+            <li><a href="/app01/page/?page={{ data.number|add:1 }}" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+        {% endif %}
+    </ul>
+</nav>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

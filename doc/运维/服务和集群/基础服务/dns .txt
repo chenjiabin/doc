@@ -1,0 +1,392 @@
+DNS：域名服务（domain  nsme  service）
+作用：将域名解析成IP(正向解析)或者把IP解析成域名（反向解析）
+
+
+DNS顶级域的分类：
+组织域：.com  .net  .org .....
+国家域：.cn   .tw   .jp  .....
+反向域：将ip解析为域名
+
+
+DNS记录类型：
+A：正向解析条目
+PTR：反向解析条目
+NS：代表域内的DNS服务器
+MX：代表域内的邮件服务器
+CNAME：别名
+SOA：用于标识域内的DNS服务器
+
+注意：每添加一条NS记录，就应该为其添加一条相应的A记录
+
+
+DNS服务器的类型：
+主DNS服务器：master
+从DNS服务器：slave
+根DNS服务器：hint
+DNS缓存服务器：生活中接触最多的，一般都是作为我们的默认DNS
+
+
+默认DNS服务器：
+一般都是可以为我们进行迭代查询的DNS服务器
+在Internet中，顶级域的DNS服务器不会为我们进行迭代查询，所有一般只要DNS缓存服务器会为我们进行迭代
+
+
+DNS的查询类型：
+迭代查询（tcp：53）
+递归查询（udp：53）
+
+
+DNS的查询顺序：
+1.DNS缓存
+2.本地host文件
+3.DNS服务器
+
+
+IP和FQDN的对应关系：（FQDN：完全限定域名）
+ICANN：名称分配机构，他以及其下辖机构管理Internet上的所有域名
+一个IP可以有多个域名（http虚拟主机的实现原理之一）
+一个域名可以有多个ip（集群的负载均衡实现的原理之一）
+
+
+从DNS的作用：
+1.实现DNS的负载均衡
+2.当主服务器出现故障时可以代替主服务器的工作
+
+
+子域和委派：
+委派：当区域中子域过多时，在一台服务器上不能很好的维护，就可以将一些子域分配给指定服务器进行维护
+
+子域：解析文件存放在父域
+委派：有独立的区域文件
+
+
+智能DNS：（也叫DNS视图）
+1.智能DNS是域名频道在业界首创的智能解析服务
+2.能自动判断访问者的IP地址并解析出对应的IP地址，使不同运营商的用户会访问到对应的服务器
+例：网通用户会访问到网通服务器，电信用户会访问到电信服务器
+
+
+
+
+配置详解：在配置的时候不能少一个符号，要不然服务可能起不来
+
+
+一.检查工具（由bind-utils软件包提供）
+检查DNS服务主配置文件是否有错误：named-checkconf  配置文件路径
+检查DNS服务正反向文件是否有错误：named-checkzone  域名   与之对应的反向解析文件 
+named-checkconf的其他功能请参照man手册
+
+
+
+二.安装bind软件包
+[root@localhost~]# rpm -ivh bind-9.8.2-0.17.rc1.el6_4.6.x86_64.rpm    //DNS的主程序包
+
+
+
+三.配置文件
+/etc/named.conf：DNS的主配置文件
+/etc/named.rfc1912.zones：DNS的区域声明文件
+/var/named：此目录下存放DNS的区域数据文件
+
+修改主配置named.conf文件：
+[root@localhost~]# vim /etc/named.conf 	
+
+options {						//全局配置
+listen-on port 53 { DNS服务器的ip地址或any; };		//监听的ipv4和端口,(any:任意,53:udp53和tcp:53)
+listen-on-v6 port 53 { ::1; };						//ipv6
+directory "/var/named";								//区域数据文件的默认存放位置
+dump-file "/var/named/data/cache_dump.db";		
+statistics-file "/var/named/data/named_stats.txt";
+memstatistics-file "/var/named/data/named_mem_stats.txt"; 
+query-source port 53;
+query-source-v6 port 53;
+allow-query { any; };					//允许哪些客服机使用本DNS查询信息，可以是IP网段，或any
+allow-recursion	{ 127.0.0.0; };			//允许进行递归查询的网段(和下面的recursion二选一)
+recursion   yes	;						//允许所有客户机递归（默认）
+};
+
+
+
+四.修改/etc/named.rfc1912.zones文件
+[root@localhost~]# vim /etc/named.rfc1912.zones
+
+正向解析：
+zone "test.com" IN {				//定义一个正向域域名test.com
+type master;						//域的类型（master主域）
+file "test.com.zone";	 			//定义正向解析文件，文件名test.com.zone
+allow-update { none; };				//是否允许"从服务器"更新DNS信息（none：拒绝）
+};
+
+
+反向解析：
+zone "0.168.192.in-addr.arpa" IN { 		//定义反向域
+type master;							//域的类型（master主域）
+file "192.168.0.arpa.zone"; 			//定义反向解析文件，文件名192.168.0.arpa.zone
+allow-update { none; };					//是否允许"从服务器"更新DNS信息
+};
+
+
+
+五.配置正、反向解析文件：
+正反解文件都在相同目录下，配置正反解文件要到var/named/目录下，此目录下默认有正反项解析的模板文件。
+named.localhost：正向解析文件模板
+named.loopback：反向解析文件模板
+
+[root@localhost~]# cd /var/named/
+[root@localhost~]# cp -p named.localhost  test.com.zone		//正反向解析文件必须和上面定义的名相同
+[root@localhost~]# cp -p named.loopback   192.168.0.arpa.zone
+记得cp命令一定要加-p选项，不然很有可能启动不了named服务
+
+
+六.编辑正向解析文件：
+[root@localhost~]# vim  test.com.zone
+
+$TTL 86400										//生命周期
+@ IN SOA  ns1.test.com. www_huyuan_boke.sina.com. (	
+		//域名和DNS有故障时系统发送通知邮件的邮箱地址,@用.代替
+  
+  2016012109 ; serial 				//序列号，每一次修改都往上加，否则从DNS不同步
+  3H 		 ; refresh				//刷新时间，重新下载地址数据的间隔。    
+  15M 		 ; retry				//重试间隔时间，下载失败之后的重试间隔。
+  1W 		 ; expiry				//失效时间，超过该时间任无法下载则放弃。
+  1D     )	 ; minimum				//无法解析记录的生存期。		     
+
+
+	IN NS 	ns1.test.com.				//DNS域名 (ns，域名服务器)
+ns1	IN A 	192.168.0.10				//DNS主机的IP地址(A，正向解析条目)
+www	IN A	192.168.0.50				//www主机名，192.168.0.50主机所对应的IP地址
+
+上面是最基本的正向解析文件的配置
+
+
+编辑反向解析文件：
+[root@localhost~]# vim 192.168.0.arpa.zone
+
+$TTL 86400
+@  IN SOA  ns1.test.com.  www_huyuan_boke.sina.com. (	
+	//反向解析域名和邮箱地址，可以和正向解析不一样
+
+   2016010101   ; serial			//和正向解析一样的意义
+   1D      	    ; refresh			//;号后面都是注释
+   1H     		; retry
+   1W      		; expire
+   3H )    		; minimum
+ 
+        IN      NS      ns1.test.com.		//反向解析时显示的域名（可以和真正的域名test.com不同）
+ns1     IN      A       192.168.0.10		//反向解析服务器的IP地址
+10		IN		PTR		ns1.test.com.					//服务器自己的反向解析
+50      IN      PTR     www.test.com.		//反向解析记录,50对应192.168.0.50
+
+
+
+
+七.验证主DNS服务器
+
+1、开启服务：
+[root@localhost ~]# service named restart
+
+1.打开一台windows的客服机验证
+2.将首选DNS设置成DNS服务器的IP地址
+3.使用win+r打开运行，输入cmd
+4.在cmd里输入nslookup
+5.输入www.test.com验证，查看解析结果是否为192.168.0.50		//验证正向解析
+6.输入192.168.0.50，查看结果是否为www.test.com
+
+
+八.配置从DNS服务器
+
+1.主DNS服务器配置
+
+区域声明文件：
+zone "test.com" IN {					//定义正向域
+type master;							//服务器类型
+file "test.com.zone";					//定义正向解析文件
+allow-update { 192.168.0.100; }; 		//从DNS服务器地址
+};
+
+		
+zone "0.168.192.in-addr.arpa" IN {   	//定义反向域
+type master;							//服务器类型
+file "192.168.0.arpa.zone";				//定义反向解析文件
+allow-update { 192.168.0.100; };  		//从DNS服务器地址
+};
+
+在主DNS服务器的正反向区域解析文件中添加如下两项
+	      IN   NS   ns2.test.com				//声明从服务器
+	ns2   IN   A   从DNS服务器IP地址			//为从服务器添加ns记录
+
+注意：在每一次修改完主DNS服务器的正反向区域解析文件时必须序列号上加一，不然从DNS服务器不会更新
+
+
+2.从DNS服务器配置
+zone "test.com" IN {					//主DNS服务器正向域域名
+type slave;								//服务器类型（slave从服务器）
+file "slaves/test.com.zone";			//定义复制过来的正向解析文件存放位置
+masters { 192.168.0.10; };   			//主DNS服务器IP地址（必须是主服务器IP地址）
+};
+
+
+zone "0.168.192.in-addr.arpa" IN {  	//主DNS服务器反向域域名
+type slave;                				//服务器类型
+file "slaves/192.168.0.arpa.zone";  	//定义复制过来的反向解析文件存放位置
+masters { 192.168.0.10; };				//主DNS服务器IP地址（必须是主服务器IP地址）
+};
+
+由于是从服务器，所以只需要配置以上配置即可完成从服务器的配置，配置了从服务器后DNS解析时会采用负载均衡的方式解析
+
+
+九.子域授权
+
+1.父域服务器配置
+
+区域解析文件配置：
+
+$TTL 86400					
+@ IN SOA ns1.test.com.  www_huyuan_boke.sina.com.  (				
+		
+		......		//省略部分类容
+
+		IN NS   ns1.test.com
+ns1		IN NS	192.168.0.10	
+www		IN A	192.168.0.50
+
+caiwu		IN NS   ns1.caiwu.test.com.		//声明子域DNS域名
+ns1.caiwu	IN A	192.168.0.20			//声明子域DNSip
+
+
+
+2.子域服务器配置：
+
+区域声明文件配置：
+zone "caiwu.test.com" IN {			//为test.com域创建子域服务器caiwu
+type master;						//服务器类型
+file "caiwu.test.com.zone";			//caiwu.test.com正向解析文件的存放位置
+allow-update { none; };				//是否允许"从服务器"更新DNS信息
+};
+
+
+区域解析文件配置
+$TTL 86400					
+@ IN SOA ns1.caiwu.test.com.  www_huyuan_boke.sina.com.  (
+	        
+  2016012109 	; serial 		
+  3H 		; refresh		   
+  15M 		; retry			
+  1W 		; expiry		
+  1D )	        ; minimum		
+			
+
+	IN NS   ns1.test.com.		//子域DNS域名
+ns1	IN A	192.168.0.20		//子域DNSip
+www	IN A	192.168.0.30		//为子域www.caiwu.test.com添加解析
+
+
+十.转发器配置：
+1.在需要做转发的服务器上做转发，一般都是在子域服务去上，将他转发个父域服务器
+
+区域声明文件配置：
+1.可以在主配置文件中的全局配置中配置，在全局配置中配置的对整个DNS服务器生效
+2.在区域声明文件中声明转发域，这儿演示的第二中方法
+
+zone "test.com" IN {				//将test.com的解析请求转发给test.com
+type forward;						//服务器类型
+forward  first;						//指定转发类型
+forwarders   { 192.168.0.20; };		//转发给指定域
+};
+
+转发域类型：
+first：转发给指定域，如果指定域没有给出解析则进行迭代查询
+only：转发给指定域，如果指定域没有给出解析则返回给客户机无法解析的结果
+
+
+主配置文件：
+	全局选项修改：
+		dnssec-enable no;
+        	dnssec-validation no;
+		删除：dnssec-lookaside auto;
+
+	
+
+
+十一.ACL
+
+ACL的概念：通过将指令编写在ACL中，可以实现同样的指令重复使用，类似于函数的功能（acl一般配合智能DNS使用）
+dns默认有两个ACL：any和none
+acl的编写原则：一般都编写在文件的最前面，因为acl必须先声明，再调用的
+
+语法：
+acl  acl名  {
+	指令;
+	指令;		
+	....;
+};
+
+
+
+十二.DNS日志系统
+
+定义语法：
+
+logging {
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

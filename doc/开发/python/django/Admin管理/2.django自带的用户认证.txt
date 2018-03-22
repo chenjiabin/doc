@@ -1,0 +1,142 @@
+python manage.py createsuperuser --username=joe --email=joe@example.com         #创建超级用户,--email为可选
+
+
+>>> from django.contrib.auth.models import User
+>>> user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')            #创建普通用户
+>>> user.last_name = 'Lennon'
+>>> user.save()
+
+
+#更改密码
+>>> from django.contrib.auth.models import User
+>>> u = User.objects.get(username='john')
+>>> u.set_password('new password')
+>>> u.save()
+
+
+认证用户:
+from django.contrib.auth import authenticate
+user = authenticate(username='john', password='secret')         #用户名,密码,如果用户名和密码正确则返回用户的用户名,否则返回None
+if user is not None:
+    print '用户名或密码错误'
+else:
+    print user,'用户名密码正确'
+
+
+
+if request.user.is_authenticated:                               #判断用户是否登录
+    return .....
+else:
+    return .....
+
+
+示例:
+from django.contrib.auth import authenticate, login
+
+def my_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)                        #登录成功
+        return .....
+    else:
+        return .....                            #登录失败
+
+
+from django.contrib.auth import logout
+
+def logout_view(request):                   #登出用户
+    logout(request)
+    return .....
+
+
+完整示例:
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.shortcuts import render,redirect
+from django.http import HttpResponse
+from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.decorators import login_required
+
+def index(request):
+    if not request.user.is_authenticated:
+        return HttpResponse('请登录........')
+    return render(request,'index.html')
+
+
+@login_required     #判断用户是否登录的简便方法,如果用户没有登录默认返回到settings中LOGIN_URL定义的url中,默认为/accounts/login/,@login_required接受一个参数login_url和LOGIN_URL的作用相同
+def zhidao(request):
+    if not request.user.is_authenticated:
+        return HttpResponse('请登录........')
+    return HttpResponse('登录成功........')
+
+
+
+
+
+def Login(request):
+    if request.method == 'GET':
+        return render(request,'login.html')
+    else:
+        user = request.POST.get('user')
+        pwd = request.POST.get('pwd')
+        username = authenticate(request, username=user, password=pwd)           #验证用户名密码
+        if username is not None:
+            login(request, username)
+            return redirect('/app01/')          #登录成功后进入首页
+        else:
+            return redirect('/app01/login/')    #登录失败时返回到登录页面
+
+
+
+def Logout(request):
+    logout(request)                             #登出系统   
+    return redirect('/app01/login/')            #返回到登录页面
+
+
+login.html:
+    <body>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="user">
+            <input type="password" name="pwd">
+            <input type="submit" value="提交">
+        </form>
+    </body>
+
+
+index.html:
+    <body>
+        <h1>登录成功</h1>
+        <a href="/app01/logout/"><h2>登出</h2></a>
+    </body>
+
+
+
+
+
+http://python.usyiyi.cn/translate/Django_111/topics/auth/default.html           #官方文档
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

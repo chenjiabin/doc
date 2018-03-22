@@ -1,0 +1,145 @@
+关系型数据库设计范式：
+	第一范式：当关系模式R的每个关系属性都是不可分的数据项，那么就称R是第一范式的模式(1NF)
+		简单的说法：字段是原子性的
+	第二范式：当关系模式R是1NF，且每个非主属性完全函数依赖于候选键，那么就称R是第二范式(1NF)	
+		简单的说法：存在可用主键
+	第三范式：当关系模式R是2NF，且关系模式R(U,F)中的所有非主属性对任何候选关键字都不存在传递依赖，则称关系R是属于第三范式
+		简单的说法：任何表都不应该有依赖于其他表非主键的字段
+
+		
+数据库组件：
+	数据库，表，索引，视图，用户，权限   编程接触的组件：(触发器，存储过程，存储函数，事件调度器)
+
+		
+mysql安装完成之后的安全配置(mysql_secure_installation：一键配置脚本)
+	1、删除mysql匿名用户
+	2、为所有root用户设置密码
+	3、关闭主机名反解功能
+
+	
+SQL语句类型：
+	DDL：数据库定义语言
+		create，drop，alter
+	DML：数据操作语言
+		insert，delete，update，select
+	DCL：数据控制语言
+		grant，revoke
+
+
+常用SQL语句：
+	create：
+		CREATE DATABASE		#创建数据库
+			CREATE DATABASE db_name CHARACTER SET charset_name;		#创建数据库并设置字符编码
+		CREATE TABLE		#创建表
+			CREATE TABLE table_name(字段名,字段数据类型,约束条件)	#创建表
+				数据类型：
+					整形：int
+						tinyint			#1byte
+						smallint		#2byte
+						mediumint		#3byte
+						int				#4byte
+						bigint			#8byte
+					字符型：
+						char			#固定长度字符型(不区分大小写)
+						varchar			#可变长度字符型(不区分大小写)
+						binary			#固定长度字符型(区分大小写)
+						varbinary		#可变长度字符型(区分大小写)
+					约束条件：
+						NOT NULL		#不允许为空
+						DEFAULT			#默认值
+						
+						PRIMARY KEY		#主键
+						UNIQUE KEY		#唯一键
+						
+						unsigned		#无符号的(适用于int类型)
+						auto_increment	#自增，需要定义在一个键中(适用于int类型)				
+		CREATE INDEX	
+			#创建索引，索引是特殊的数据结构，用于搜索加速，一般定义在查找时作为查找条件的字段
+		例：create table test (id int primary key auto_increment, name varchar(50));
+			
+			
+	mycli：功能更强大的mysql客户端，使用python开发的		#mysql客户端工具
+使用实例：	
+	show global variables; #查看全局参数，有的参数能够修改并立即生效，有的需要修改配置文件
+	show session variables;		#mysql的当前会话参数
+	show character set;							#查看支持的字符集
+	show collation;								#查看支持的排序规则
+	show engines;								#查看支持的存储引擎
+	show table status like 'user'\G;			#查看表状态
+	show global variables like '%server%';		#数据库id
+	show master logs;			#查看数据库二进制日志
+	show master status;			#查看主服务器状态
+	show grants for 'dj'@'localhost';		#查看dj用户的授权信息
+	show index from mysql.user;		#查看索引
+	show databases;					#查看数据库
+	show tables;					#查看数据库的表
+	
+	
+	select 字段名 from 表名 [where	查询条件]	#查看表中的内容
+	select *  from user\G;						#查看用户的详细信息
+	select	databese();				#查看默认数据库
+	select * from test where id>2 and id<4;		#查询test表中id大于2小于4的数据
+		where条件：
+			>  <  >=  <=  ==  !=  and  or  not  
+			like：模糊查询	 	rlike：基于正则表达式的模糊查询
+	
+	drop database 数据库名;				#删除数据库
+	drop table 表名;					#删除指定表
+	drop user '用户名'@'主机';			#删除用户
+	
+	
+	update 表名 set 更改的值  where  条件匹配		#修改表中的数据
+	update test set name='huyuan' where id=2;
+	
+	
+	delete	from 表名 where 条件条件				#删除条件匹配的数据
+	delete from test where id=2;
+	
+	
+	insert into 表名(字段1,字段2) values(字段1的值,字段1的值)
+	insert into test(name) values('zhangtao');
+	
+	insert into 表名 (字段1,字段2) select语句		#插入通过select查询得到的数据
+	insert into user (user,host,passwd) select User,Host,Password from mysql.user;
+	
+	
+	grant 权限列表 on 数据库.表 to '用户名'@'授权主机' identified by '密码'	#授权用户
+	revoke drop on 数据库.表 from '用户名'@'授权主机';		#撤销授权
+	
+	
+	altar table 表名 add 字段名 字符型				#添加字段
+	alter table test ip varchar;
+	
+	altar table 表名 change 源名 修改后的名 字符型	#更改字段
+	alter table test change ip sid int;
+	
+	altar table 表名 drop 字段名					#删除字段
+	alter table test drop sid;						
+	
+	
+		
+	set global 变量名=值;				#设置全局参数
+	set session 变量名=值;				#设置当前会话参数
+	use 数据库名;						#指定默认数据库
+	create index 索引名 on 表名;		#创建索引	
+	flush privileges;					#重读授权表
+	flush logs;							#滚动二进制日志和中继日志
+
+	
+创建表的三种方式：
+	1、直接创建
+		create teble 表名 (字段名1 字段类型,字段名2 字段类型)
+	2、复制表和表中的数据
+		create teble  表名 select语句
+			例：create teble  test select User,Host,Password from mysql.user;
+	3、复制表结构
+		create teble tbl_name like 模板表
+			例：create teble test2 LIKE test
+	
+	
+	
+	
+	
+	
+	
+	

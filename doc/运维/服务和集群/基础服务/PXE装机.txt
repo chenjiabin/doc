@@ -1,0 +1,112 @@
+环境准备：
+	服务器安装：
+		tftp服务，httpd/ftp服务，dhcp服务，system-config-kickstart工具，syslinux
+	服务器IP地址：192.168.1.1/24 使用VMnet2
+
+
+	
+IP配置:
+配置文件路径：/etc/sysconfig/network-scripts/ifcfg-eth0
+
+增加：
+ONBOOT=yes							#启动服务时生效
+BOOTPROTO=static					#静态地址
+IPADDR=192.168.1.1					#IP地址，必须和下面的DHCP网关地址相同
+NETMASK=255.255.255.0				
+
+
+
+DHCP服务配置：(地址分发)
+yum -y install dhcp						#安装DHCP服务
+配置文件路径：/etc/dhcp/dhcpd.conf
+
+subnet  192.168.1.0 netmask 255.255.255.0 {				 #分发网段
+  range 192.168.1.10 192.168.1.100;						 #分发范围
+  option domain-name-servers 8.8.8.8,114.114.114.114;	 #分发DNS
+  option domain-name "test.com";						 #DNS名
+  option routers 192.168.1.1;							 #网关
+  option broadcast-address 192.168.1.255;				 #广播地址
+  default-lease-time 600;								 #最短租约时间
+  max-lease-time 7200;									 #最长租约时间
+  filename "pxelinux.0";								 #配置pxe引导文件名
+  next-server 192.168.1.1;								 #配置TFTP地址
+}
+
+
+
+
+TFTP服务配置：(简单文件传输)
+yum -y install tftp-server						#安装TFTP服务
+配置文件路径：/etc/xinetd.d/tftp
+文件存放目录：/var/lib/tftpboot
+
+service tftp
+{
+	socket_type		= dgram
+	protocol		= udp
+	wait			= yes
+	user			= root
+	server			= /usr/sbin/in.tftpd
+	server_args		= -s /var/lib/tftpboot
+	disable			= no						#更改为no
+	per_source		= 11
+	cps				= 100 2
+	flags			= IPv4
+}
+
+
+
+syslinux配置：
+yum -y install syslinux						#安装syslinux服务
+cd /usr/share/syslinux						#切换到syslinux文件存放目录
+cp pxelinux.0 /var/lib/tftpboot/			#复制pxe所需要的文件的tftp文件存放目录
+
+
+
+PXE引导文件配置：
+mount /dev/cdrom /media				#挂载光盘
+cd /media/images/pxeboot/							#进入pxe文件存放位置
+cp initrd.img vmlinuz /var/lib/tftpboot/			#将pxe关键文件放入tftp文件存放目录
+cd /media/isolinux					#切换目录
+cp boot.cat vesamenu.c32 splash.jpg /var/lib/tftpboot/
+mkdir /var/lib/tftpboot/pxelinux.cfg				#创建关键目录，必须为这个名
+touch /var/lib/tftpboot/pxelinux.cfg/default        #创建关键文件，必须为这个名
+
+
+
+网络yum源配置：
+yum -y install httpd								#安装http服务
+mkdir /var/www/html/centos6							#创建yum仓库		
+umount  /media				
+mount /dev/cdrom /var/www/html/centos6/				#挂载光盘
+
+
+生成kickstart文件：
+yum install system-config-kickstart.noarch			#安装kickstart文件生成工具
+system-config-kickstart								#图形终端中运行，保存到root目录
+cp /root/centos6.cfg /var/www/html/centos6.cfg		#将kickstart文件复制到指定位置
+chmod 777 /var/www/html/centos6.cfg			#一定要改这个权限
+
+
+修改引导文件：
+vim /var/lib/tftpboot/pxelinux.cfg/default 
+	default   auto				#默认界面显示
+    prompt 0					#等待用户选择时间
+	label auto					#选项框显示内容
+        kernel vmlinuz			#内核文件
+        append ks=http://192.168.1.1/centos6.cfg initrd=initrd.img devfs=nomount ramdisk_size=8129		
+			    #指定kickstart文件位置
+
+
+vim /var/www/html/centos6.cfg
+	url --url="http://192.168.1.1/centos6/"		#指定yum源路径,有可能生成的时候你指定了
+
+
+
+启动服务：
+service xinetd start				#开启TFTP服务(udp:69)
+service dhcpd start					#开启DHCP服务(udp:67)
+service httpd start					#开启HTTP服务(udp:80)
+
+
+

@@ -1,0 +1,251 @@
+Tomcat的架构：
+	顶级组件：位于配置层次的顶级，并且彼此间有着严格的对应关系
+	连接器：连接客户端（可以是浏览器或Web服务器）请求至Servlet容器
+	容器：包含一组其它组件
+	被嵌套的组件：位于一个容器当中，但不能包含其它组件
+
+各常见组件：
+	服务器(server)：Tomcat的一个实例，通常一个JVM只能包含一个Tomcat实例
+	服务(service)：一个服务组件通常包含一个引擎和与此引擎相关联的一个或多个连接器。给服务命名可以方便管理员在日志文件中识别不同服务产生的日志。一个server可以包含多个service组件，但通常情下只为一个service指派一个server
+
+连接器类组件：
+	连接器(connectors)：负责连接客户端请求至Servlet容器内的Web应用程序，通常指的是接收客户发来请求的位置及服务器端分配的端口。默认端口通常是HTTP协议的8080，一个引擎可以配置多个连接器，但这些连接器必须使用不同的端口。默认的连接器是基于HTTP/1.1的Coyote
+
+容器类组件：
+	引擎(Engine)：引擎是指处理请求的Servlet引擎组件，它检查每请求的HTTP首部信息以辨别请求应该发往哪个host或context，并将请求处理后的结果返回的相应的客户端
+
+	主机(Host)：主机组件类似于Apache中的虚拟主机，但在Tomcat中只支持基于FQDN的“虚拟主机”。一个引擎至少要包含一个主机
+	上下文(Context)：Context组件是最内层次的组件，它表示Web应用程序本身。配置一个Context最主要的是指定Web应用程序的根目录，以便Servlet容器能够将用户请求发往正确的位置
+
+	
+安装tomcat7：
+	yum -y install java-1.7.0-openjdk				#安装jdk
+	tar zxvf apache-tomcat-7.0.77.tar.gz -C /usr/local/
+	ln -s /usr/local/apache-tomcat-7.0.77/ /usr/local/tomcat
+	ln -s /usr/local/tomcat/bin/* /usr/local/bin/
+	
+	
+	tomcat8：
+		tar zxvf apache-tomcat-8.0.43.tar.gz -C /usr/local/		#解压tomcat
+		tar zxvf jdk-8u121-linux-x64.tar.gz -C /usr/local/		#解压JDK		
+		mv /usr/local/jdk1.8.0_121/ java						#将JDK改名为Java
+		mv /usr/local/apache-tomcat-8.0.43/ tomcat8				#改为tomcat8
+		vim /etc/profile.d/java.sh								#为Java和tomcat配置环境变量
+			添加:
+				export JAVA_HOME=/usr/local/java				#指定根目录
+				export CATALINA_HOME=/usr/local/tomcat8
+				export PATH=$JAVA_HOME/bin:$CATALINA_HOME/bin:$PATH				#Java和tomcat的可执行脚本
+		. /etc/profile.d/java.sh 						#重读配置文件
+		java -version									#验证Java是否生效
+	
+	
+
+tomcat目录结构：
+	bin：可执行脚本
+	conf：配置文件
+	lib：运行时依赖的库文件
+	logs：日志文件
+	webapps：web应用所在目录,web资源的存放目录
+	work：tomcat的工作目录
+	
+	
+conf目录：
+	server.xml: Tomcat的主配置文件，包含Service, Connector, Engine, Realm, Valve, Hosts主组件的相关配置信息
+	web.xml：遵循Servlet规范标准的配置文件，用于配置servlet，并为所有的Web应用程序提供默认配置信息
+	tomcat-user.xml：用户认证时用到的相关角色、用户和密码等信息
+	context.xml：所有host的默认配置信息
+	catalina.policy：Java相关的安全策略配置文件，在系统资源级别上提供访问控制的能力；
+	catalina.properties：Tomcat内部package的定义及访问相关的控制
+	logging.properties: 日志记录相关的配置信息
+
+	
+webapps目录：
+	docs：帮助文档
+	examples：配置示例
+	host-manager：虚拟主机管理
+	manager：tomcat管理
+	ROOT：默认访问目录
+		每个应用程序目录下都有几个同样的目录
+			WEB-INF：当前webapp的私有资源，通常存放当前webapp的web.xml文件
+			META-INF：当前webapp的私有资源，通常存放当前webapp的context.xml文件
+			classes：当前webapp的私有类
+			lib：当前webapp的私有类，打包为jar格式
+			index.jpg：当前webapp的首页
+	
+	
+webapp部署：
+	冷部署：把webapp复制的指定目录之后才启动tomcat
+	热部署：在不停止tomcat的前提下部署webapp
+		部署工具：manager
+	反部署：停止webapp并从tomcat实例拆除其部分文件和部署名
+	stop：停止webapp，不向用户提供服务
+	start：启动停止状态大webapp
+	redeploy：重新部署
+	
+
+catalina.sh					#tomcat/bin/catalina.sh命令路径
+	start					#启动tomcat
+	start -security 		#以安全方式启动tomcat
+	stop              		#停止tomcat
+	stop n            		#指定多少秒之后停止tomcat，默认为5秒
+	stop -force      		#强制停止tomcat
+	stop n -force     		#指定多少秒之后强制停止tomcat，默认为5秒
+	configtest       		#测试配置文件语法
+	version           		#查看版本信息
+
+	
+tomcat配置：
+	创建测试webapp：
+		mkdir -pv /usr/local/tomcat/webapps/myapp/{WEB-INF,META-INF,classes,lib}			#创建相关目录
+		vim /usr/local/tomcat/webapps/myapp/index.jsp				#创建测试首页
+		    <html>
+			  <body>
+				<center>
+				  Now time is: <%=new java.util.Date()%>
+				</center>
+			  </body>
+		    </html>
+	
+		http://192.168.0.10:8080/myapp/				#如果能看见当前时间则证明tomcat测试成功
+	
+	
+	配置管理后台：
+		vim /usr/local/tomcat/conf/tomcat-users.xml		
+			<tomcat-users>
+				<role rolename="manager-gui"/>		#状态管理接口
+				<role rolename="admin-gui"/>		#虚拟主机管理接口	
+				<user username="tomcat" password="123.com" roles="manager-gui,admin-gui"/>		#用户，密码，调用接口
+			</tomcat-users>
+
+			
+	虚拟主机配置：
+		<Host name="www.test.com"  unpackWARs="true" appBase="/data/webapps/" autoDeploy="false" >
+           <Context path="" docBase="/data/webapps/" reloadable="true" />
+           <Valve className="org.apache.catalina.valves.AccessLogValve" directory="/data/logs"
+                  prefix="www.tomcat.com_log." suffix=".txt"
+                  pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+        </Host>
+
+		host：name="主机名"  unpackWARs="是否自动展开WAR文档"  appBase="网站根目录"  autoDeploy="是否自动部署，建议为false"
+		context：path="访问时使用的路径" docBase="网页路径"  reloadable="是否自动重载"
+		Valve：directory="日志存放路径"  prefix="日志名和后缀名"  pattern="日志记录格式"
+	
+	
+配置实例LNAMT：
+	环境：
+		192.168.0.10	Centos6.5	Tomcat7    Apache2.2	
+		192.168.0.40	Centos6.5	Nginx1.8	(epel源)
+		192.168.0.60	Centos6.5	Mysql5.6	(epel源)
+	
+	192.168.0.40配置：
+		yum -y install nginx					#安装Nginx
+		vim /etc/nginx/conf.d/default.conf		#编辑配置文件
+		location / {									
+			proxy_pass http://192.168.0.10;
+		}
+		
+	192.168.0.10配置：
+		httpd -M | grep proxy					#查看是否装载了proxy模块	
+		vim /etc/httpd/conf/httpd.conf			#编辑httpd配置文件
+			ProxyVia On						#申明由那台服务器反代至后端
+			ProxyRequests Off				#关闭正向代理，支持正向和反向代理，但是同时只能启动一个
+			ProxyPreserveHost On			#是否支持后端服务器配置虚拟主机(在请求首部将客户端请求的主机名一同发往后端)
+			<Proxy *>
+				Order deny,allow			
+				Allow from all				#允许所有用户使用代理
+			</Proxy>
+			ProxyPass / ajp://192.168.0.10:8009/		#使用ajp协议将客户端请求发往后端
+
+		vim /usr/local/tomcat/conf/server.xml			#编辑tomcat配置文件
+			<!--<Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000" redirectPort="8443" />  -->		#如果使用ajp协议处理请求则应该关闭http连接器
+			
+			<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+				#ajp采用二进制不http使用文本传输更为高效，但只有使用apache代理时才能使用ajp协议
+	
+	
+	验证：
+		service httpd start
+		service nginx start
+		catalina.sh start
+		http://192.168.0.40/			#访问nginx是否代理tomcat
+	
+	
+
+tomcat优化建议：
+	<Connector port="9027"   
+	protocol="HTTP/1.1"  
+	maxHttpHeaderSize="8192"  
+	maxThreads="1000"  				#客户请求最大线程数 
+	minSpareThreads="100"  			#Tomcat初始化时创建的 socket 线程数 
+	maxSpareThreads="1000" 			#Tomcat连接器的最大空闲 socket 线程数 
+	minProcessors="100"  			#服务器创建时的最小处理线程数
+	maxProcessors="1000"  			#服务器同时最大处理线程数 
+	enableLookups="false"  			#关闭主机名反解(将ip通过dns解析为主机名，建议关闭)
+	URIEncoding="utf-8"  			#URL统一编码
+	acceptCount="1000"  			#监听端口队列最大数（不能小于maxSpareThreads ） 
+	redirectPort="8443"  			#在需要基于安全通道的场合，把客户请求转发到基于SSL的端口 
+	disableUploadTimeout="true"		#连接超时
+	compression="on"				#打开压缩功能 
+　　compressionMinSize="2048"		#大于2048字节的数据才进行压缩
+　　compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain"		#压缩类型 
+　　connectionTimeout="20000" /> 	#客户连接超时的时间，如果为 -1, 表示不限制建立客户连接的时间	
+	
+
+Tomcat IO优化
+	BIO：同步并阻塞，服务器实现模式为一个连接一个线程（默认的工作模式）
+	NIO：同步非阻塞（JDK1.4以上版本）
+		<Connector port=”8080″ 
+		protocol=”org.apache.coyote.http11.Http11NioProtocol” 			#使用NIO的工作模式
+		connectionTimeout=”20000″ 
+		URIEncoding=”UTF-8″ 
+		useBodyEncodingForURI=”true” 
+		enableLookups=”false” 
+		redirectPort=”8443″ />
+	
+	AIO：从操作系统级别来解决异步的IO问题，大幅度的提高性能，JDK7开始支持，并且需要提供官方的插件才能使用
+		http://tomcat.apache.org/native-doc/			#插件下载
+		yum -y install tomcat-native			#安装插件(centos6.5安装光盘中自带，也可以去官方下载最新版本)
+
+		<Connector port=”8080″ 
+		protocol="org.apache.coyote.http11.Http11AprProtocol"			#使用AIO的工作模式
+		connectionTimeout=”20000″ 
+		URIEncoding=”UTF-8″ 
+		useBodyEncodingForURI=”true” 
+		enableLookups=”false” 
+		redirectPort=”8443″ />
+	
+	
+Tomcat内存优化,启动时告诉JVM我要一块大内存(调优内存是最直接的方式)
+
+vim /usr/local/tomcat/bin/catalina.sh
+在其中加入，可以放在CLASSPATH=下面：
+	JAVA_OPTS="-Xms1024m -Xmx1024m -Xss1024K -XX:PermSize=64m -XX:MaxPermSize=128m"
+		参数详解：
+			-Xms 				#JVM初始化堆内存大小
+			-Xmx 				#JVM堆的最大内存
+			-Xss 				#线程栈大小
+			-XX:PermSize 		#JVM非堆区初始内存分配大小
+			-XX:MaxPermSize 	#JVM非堆区最大内存
+		建议和注意事项:
+			-Xms和-Xmx选项设置为相同堆内存分配，以避免在每次GC后调整堆的大小，堆内存建议占内存的60%~80%
+
+		32G内存配置如下：
+			JAVA_OPTS=”-Xms20480m -Xmx20480m -Xss1024K -XX:PermSize=512m -XX:MaxPermSize=2048m”
+
+tomcat监控：
+	jps  		#命令
+		52366 Bootstrap		#tomcat进程pid
+		52511 Jps
+	jstack 52366			#查看jvm运行时的状态信息	
+	jmap -heap 52366		#查看jvm运行时的内存信息
+	
+	
+	
+	
+	
+	
+	
+	
+
+	

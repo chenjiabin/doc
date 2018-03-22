@@ -1,0 +1,5 @@
+编辑hosts文件
+	0.0.0.0 account.jetbrains.com			#添加
+打开pycharm输入激活码(随便一个激活码就行，过期的也可以)
+
+

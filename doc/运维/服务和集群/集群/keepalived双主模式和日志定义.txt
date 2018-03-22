@@ -1,0 +1,111 @@
+自定义日志：
+	keepalived的日志默认存储在/var/log/messages，但有时我们会有需要将keepalived日志拿出来单独分析，那么这就需要我做自己去定义
+	/etc/sysconfig/keepalived			#编辑keepalived的环境配置文件
+		KEEPALIVED_OPTIONS="-D -d -S 0"		#修改内容
+			# --dump-conf -d 		导出配置数据
+			# --log-detail -D 		详细日志信息
+			# --log-facility -S 	设置本地的syslog设备，编号0-7
+			# -S 0 					表示指定为local0设备
+			
+		vim /etc/rsyslog.conf		#修改系统日志配置
+		local0.* /var/log/keepalived.log		#将keepalived产生的所有日志信息存到/var/log/keepalived.log文件中
+		*.info;mail.none;authpriv.none;cron.none;local0.none       /var/log/messages
+			#keepalived产生的文件不记录到/var/log/messages文件中
+		service rsyslog restart			#重启日志服务
+		
+双主互备：
+	在日常使用中如果keepalived工作在master/backup模式中那么只要master不出现故障backup就一直处于空闲状态极大的浪费了物理资源，而且在负载较大的情况下master的压力会比较大
+	keepalived双主互备的出现正好解决了master/backup下缺点
+	keepalived双主互备需要DNS轮询的支持
+	
+	双主互备配置实例：
+		global_defs {
+		   router_id LVS_DEVEL
+		   vrrp_skip_check_adv_addr
+		   vrrp_strict
+		}
+
+		vrrp_instance VI_1 {
+			state MASTER			
+			interface eth0
+			virtual_router_id 51
+			priority 100
+			advert_int 1
+			authentication {
+				auth_type PASS
+				auth_pass 1111
+			}
+			virtual_ipaddress {
+				192.168.0.200
+			}
+		}
+
+		virtual_server 192.168.0.200 80 {
+			delay_loop 3
+			lb_algo rr
+			lb_kind DR 
+			protocol TCP
+			
+			real_server 192.168.0.60 80 {
+				weight 1
+				TCP_CHECK {
+					connect_timeout 3
+					nb_get_retry 3
+					delay_before_retry 3
+				}
+			}
+			
+			
+			real_server 192.168.0.70 80 {
+				weight 1
+				TCP_CHECK {
+					connect_timeout 3
+					nb_get_retry 3
+					delay_before_retry 3
+				}
+			}
+		}
+
+		vrrp_instance VI_2 {
+			state BACKUP 
+			interface eth0
+			virtual_router_id 100
+			priority 99
+			advert_int 1
+			authentication {
+				auth_type PASS
+				auth_pass 1234
+			}
+			virtual_ipaddress {
+				192.168.0.201
+			}
+		}
+
+		virtual_server 192.168.0.201 80 {
+			delay_loop 3
+			lb_algo rr
+			lb_kind DR 
+			protocol TCP
+
+			real_server 192.168.0.60 80 {
+				weight 1
+				TCP_CHECK {
+					connect_timeout 3
+					nb_get_retry 3
+					delay_before_retry 3
+				}
+			}
+			
+			real_server 192.168.0.70 80 {
+				weight 1
+				TCP_CHECK {
+					connect_timeout 3
+					nb_get_retry 3
+					delay_before_retry 3
+				}
+			}
+		}
+			#另一台配置差不多，将主备更改一下，调整优先级即可
+			#客户机配置和指令的解释清参照我上一篇博文
+	
+	

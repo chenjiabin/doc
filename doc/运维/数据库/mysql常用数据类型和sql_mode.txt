@@ -1,0 +1,70 @@
+MySQL数据类型
+
+时间类型		字节数		含义
+date			3字节  		日期，格式：2014-09-18
+time			3字节  		时间，格式：08:42:30
+datetime		8字节  		日期时间，格式：2014-09-18 08:42:30
+timestamp		4字节  		时间戳
+
+
+数字类型		字节数		含义
+tinyint			1字节		范围(2的 8次方个字符)
+smallint		2字节		范围(2的16次方个字符)
+mediumint		3字节		范围(2的24次方个字符)
+int				4字节		范围(2的32次方个字符)
+bigint			8字节		范围(2的64次方个字符)
+float(m, d)		4字节		单精度浮点型，m总个数，d小数位
+double(m, d)	8字节		双精度浮点型，m总个数，d小数位
+
+
+字符串类型		字节数		含义
+char(n)			1字节		固定长度，最多255个字符		(2的 8次方个字符)
+varchar(n)		2字节		可变长度，最多65535个字符	(2的16次方个字符)
+
+
+文本类型		字节数		含义
+tinytext		1字节		可变长度，最多255个字符		(2的 8次方个字符)
+text			2字节		可变长度，最多65535个字符	(2的16次方个字符)
+mediumtext		3字节		可变长度，最多2的24次方字符
+longtext		4字节		可变长度，最多2的32次方字符
+
+
+其他类型：
+enum('x1','x2')	#枚举类型，最多包含65535个成员，取值范围为enum中定义的值(不允许重复)
+set('x1','x2')	#集合类型，最多包含64个成员，取值范围为set中定义的值(允许重复)
+
+
+
+字段修饰(限制)
+auto_increment	#自增例(只能用于整数类型，通常用于自增ID等)
+default			#默认值
+index			#索引
+not null		#不允许为空，默认为允许为空
+primary key		#主键
+unique key		#唯一键
+unsigned		#无符号的(适用于int类型)
+
+
+sql_mode：
+sql_mode是个很容易被忽视的变量，默认值是空值，在这种设置下是可以允许一些非法操作的，比如允许一些非法数据的插入。在生产环境必须将这个值设置为严格模式。
+
+常用变量：
+	STRICT_all_TABLES			#对所有表进行严格限制
+	STRICT_TRANS_TABLES			#只对支持事物的表进行严格限制
+	NO_ZERO_DATE				#不允许插入零日期
+
+设置方法：
+	mysql> show global variables like 'sql_mode';		#查看sql_mode的值
+	mysql> set global sql_mode='STRICT_all_TABLES';		#设置全局的sql_mode的值
+	mysql> set session sql_mode='STRICT_all_TABLES';	#设置当前会话的sql_mode的值
+		设置全局sql_mode之后的会话会生效，当前和以前的会话则不会生效
+		设置session之后只会对当前会话会生效
+		在命令行中更改不会永远有效如果想用久有效则需要修改配置文件
+		
+
+
+
+
+
+
+

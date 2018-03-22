@@ -1,0 +1,20 @@
+Ctrl + Alt + L     	代码格式化
+Ctrl + /    		注释或取消注释		
+Ctrl + Y    		删除选定的行	(vim dd)
+Ctrl + C			复制			(vim yy)
+Ctrl + V			粘贴			(vim p)
+Ctrl + Z			撤销操作		(vim u)
+
+F3  		 		查找			(vim #)
+Ctrl + R   			替换			(vim r)
+Shift + F10    		运行			
+Shift + Enter    	另起一行		(vim o)
+选中目标 + ATB		多行缩进		(vim 可视化操作)
+
+
+
+
+
+
+
+

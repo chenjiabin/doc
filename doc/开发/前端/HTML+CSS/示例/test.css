@@ -1,0 +1,57 @@
+.front{
+    background-color: darkgrey;
+    margin: 0 auto;
+    height: 30px;
+    width:100%;
+}
+
+.one{
+    margin: 0 auto;
+    width: 1200px;
+}
+
+.tow{
+    line-height: 30px;
+    font-size: 15px;
+    float: left;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.thrre{
+    float: right;
+    font-size: large;
+}
+
+.aa{
+    text-decoration: none;
+    padding: 0 10px;
+    background-color: red;
+}
+
+
+.aaa{
+    text-decoration: none;
+    padding: 0 10px;
+    margin: 4px;
+    background-color: blue;
+    height: 80px;
+    width: 80px;
+    text-align: center;
+    line-height: 80px;
+    display: inline-block;
+    color: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
+

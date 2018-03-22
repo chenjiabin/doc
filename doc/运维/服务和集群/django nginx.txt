@@ -1,0 +1,77 @@
+环境：
+	ubuntu 16.04
+	django 1.11.6
+	python 2.7
+	项目位置:/home/huyuan/
+	工程名称:web
+
+	
+sudo apt-get install nginx  					#安装nginx
+sudo apt-get install python-pip  				#安装pip
+sudo pip install uwsgi							#安装uwsgi
+suod pip install django							#安装django
+
+
+vim test.py										#创建test.py文件，测试uwsgi
+	def application(env, start_response):										
+		start_response('200 OK', [('Content-Type','text/html')])
+		return [b"Hello World"]
+
+		
+vim /home/huyuan/web/web/settings.py
+	ALLOWED_HOSTS = ['*']								#修改
+		
+		
+uwsgi --http :8000 --wsgi-file test.py			#测试，访问http://ip:8000，出现Hello World
+uwsgi --http :8001 --chdir /home/huyuan/web/ --wsgi-file myweb/wsgi.py --master --processes 4 --threads 2 --stats :8002
+		#测试django项目
+	
+		http 					#指定协议类型和端口号
+		processes 				#进程数量
+		workers 				#进程数量，等同于processes
+		chdir					#指定运行目录
+		wsgi-file				#加载wsgi-file
+		stats 					#在指定的地址上，开启服务
+		threads				 	#开启线程
+		master					#允许主进程存在
+		daemonize				#以守护进程方式运行
+		pidfile 				#pid文件
+		vacuum 					#关闭服务是，删除socket文件和pid文件
+
+
+cd /home/huyuan/web/			#进入工程目录
+sudo vim uwsgi.ini					#创建uwsgi配置文件
+	[uwsgi]
+	socket          = 127.0.0.1:8880					#uwsgi的监听地址和访问地址无关，用于和nginx服务器通信
+	chdir           = /home/huyuan/web					#项目位置
+	module          = web.wsgi							#等于/home/huyuan/web/web/wsgi.py
+	master          = true								
+	processes       = 4
+	max-requests	= 5000								#最大连接数
+	vacuum          = true								#以守护进程方式运行
+	daemonize       = /var/log/uwsgi.log				#日志文件
+	pidfile			= /tmp/django_project.pid			#pid文件
+	log-maxsize 	= 50000000  						#以固定的文件大小(单位KB)，切割日志文件
+
+
+
+sudo vim /etc/nginx/sites-available/default 					#修改nginx配置文件
+	server {
+
+        listen       8000;
+    	index index.html index.htm;
+
+        location / {
+	        include uwsgi_params;					#加载uwsgi模块
+	        uwsgi_pass 127.0.0.1:8880;				#127.0.0.1:8000=uwsgi.ini的socket，和uwsgi通信
+	        uwsgi_read_timeout 120;					#超时时间
+        }
+
+	}	
+
+sudo uwsgi --ini /home/huyuan/web/uwsgi.ini			#启动uwsgi
+sudo service nginx restart							#重启nginx
+
+
+
+

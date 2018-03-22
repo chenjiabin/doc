@@ -1,0 +1,85 @@
+global_defs {
+   notification_email {
+     acassen@firewall.loc			#管理员邮箱
+   }
+   notification_email_from Alexandre.Cassen@firewall.loc	#发件人
+   smtp_server 192.168.200.1			#邮箱地址
+   smtp_connect_timeout 30				#连接邮件服务器超时时间
+   router_id LVS_DEVEL
+   vrrp_skip_check_adv_addr
+   vrrp_strict
+}
+
+vrrp_instance VI_1 {				#虚拟路由组
+    state MASTER					#从改为BACKUP
+    interface eth0					#绑定网卡
+    virtual_router_id 51			#router_id
+    priority 100					#从的优先级必须低于主
+    advert_int 1
+    authentication {
+        auth_type PASS				#认证类型
+        auth_pass 1111				#认证密码
+    }
+    virtual_ipaddress {
+        192.168.0.201				#VIP
+    }
+}
+
+virtual_server 192.168.0.201 80 {	#生成LVS，监听的VIP
+    delay_loop 6					#健康检查间隔时间
+    lb_algo rr						#负载均衡算法
+    lb_kind DR						#LVS负载方式
+	net_mask 255.255.255.0			#子网掩码
+	persistence_timeout 50			#长连接超时时间(为了验证效果建议在实验时警用此配置)
+    protocol TCP					#TCP协议集群
+
+    real_server 192.168.0.40 80 {	#监听的节点和端口
+        weight 1					#位权
+        TCP_CHECK {					#检查方式
+			connect_port 80			#监听端口
+            connect_timeout 3		#连接超时时间
+            nb_get_retry 3			#重试次数
+            delay_before_retry 3	#重试间隔
+        }
+    }
+    real_server 192.168.0.60 80 {
+        weight 1
+        TCP_CHECK {
+            connect_timeout 3
+            nb_get_retry 3
+            delay_before_retry 3
+        }
+    }
+}
+
+		从keepalived和主keepalived配置差不多
+
+		
+节点服务器配置：
+192.168.0.40:配置：
+	echo '2' > /proc/sys/net/ipv4/conf/lo/arp_announce		#关闭ARP更新
+	echo '1' > /proc/sys/net/ipv4/conf/all/arp_ignore
+	echo '2' > /proc/sys/net/ipv4/conf/all/arp_announce
+	echo '1' > /proc/sys/net/ipv4/conf/lo/arp_ignore
+	cd /etc/sysconfig/network-scripts/			
+	cp ifcfg-lo ifcfg-lo:0			
+	vim ifcfg-lo:0
+		DEVICE=lo:0
+		IPADDR=192.168.0.201			#VIP
+		NETMASK=255.255.255.255			#必须为4个255
+		ONBOOT=yes
+	ifup lo:0					#启用网卡
+	route add -host 192.168.0.201 dev lo:0		#添加路由信息
+	yum -y install httpd				#安装web服务器
+	service httpd start					#启动web服务
+	echo "192.168.0.40" > /var/www/html/index.html		#创建测试网页
+	
+	192.168.0.60和192.168.0.40配置差不多
+
+
+
+
+https://xnow.me/ops/keepalived-configure.html
+
+
+

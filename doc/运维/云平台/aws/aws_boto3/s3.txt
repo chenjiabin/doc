@@ -1,0 +1,41 @@
+s3 AWS中提供的可扩展的云存储，boot3 AWS官方给python提供的API用于操作AWS的微服务
+
+aws_key = 'xxxxxxxxxx'          #注册账号时AWS给定的key
+aws_secret = 'xxxxxx'
+
+
+session = boto3.Session(
+    aws_access_key_id=aws_key,
+    aws_secret_access_key=aws_secret,
+    region_name='cn-north-1'                                    #所在地区，cn-north-1代表北京
+)
+s3 = session.resource('s3')                                     #实例化s3对象
+bucket = s3.Bucket('name')                                      #操作指定的s3存储桶
+bucket.upload_file('local_file', 's3_file')                     #上传文件
+bucket.put_object('data','s3_file')                             #上传文件
+
+
+示例：
+    aws_key = 'xxxxxxxxxx'          #注册账号时AWS给定的key
+    aws_secret = 'xxxxxx'
+
+
+    session = boto3.Session(
+        aws_access_key_id=aws_key,
+        aws_secret_access_key=aws_secret,
+        region_name='cn-north-1'                                    
+    )
+
+    s3 = session.resource('s3')                                     
+    bucket = s3.Bucket('test')                                     
+    with open('/etc/issue') as f:
+        bucket.put_object(Body=f.read(),Key='local/host/issue.txt')      #如果路径不存在则会自动创建，存储则写入数据                             
+
+
+
+http://boto3.readthedocs.io/en/latest/reference/services/s3.html        #官方文档
+
+
+
+
+

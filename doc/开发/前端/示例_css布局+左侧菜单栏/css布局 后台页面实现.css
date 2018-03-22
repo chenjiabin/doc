@@ -1,0 +1,78 @@
+.page-head{
+    background-color: blue;
+    width: 100%;
+    height: 40px;
+}
+
+.page-left{
+    background-color: green;
+    float: left;
+    position: fixed;
+    top: 40px;
+    bottom: 0;
+    width: 200px;
+    padding-left: 10px;
+}
+
+.page-content{
+    background-color: darkgrey;
+    float: right;
+    position: fixed;
+    top: 40px;
+    bottom: 0;
+    left: 201px;
+    right: 0;
+    text-align: center;
+    min-width: 1000px;
+    overflow:auto;
+
+}
+
+
+.spancontent{
+    display: block;
+    padding-left: 30px;
+}
+
+
+.hide{
+    display: none;
+}
+
+.menufont{
+    font-size: 20px;
+    font-weight: 700;
+    cursor:default
+}
+
+.menufont:hover{
+    color: #fae8fa;
+}
+
+.logo{
+    background-color: aquamarine;
+    position: fixed;
+    width: 200px;
+    height: 40px;
+}
+
+
+
+.imgs{
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin-left: 75px;
+}
+
+.logo:hover {
+   background-color: #fae8fa;
+}
+
+
+
+
+
+
+
+

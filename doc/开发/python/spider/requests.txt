@@ -1,0 +1,71 @@
+pip install requests
+
+requests.get(url) 					#GET请求
+requests.post(url,data) 			#POST请求
+requests.put() 						#PUT请求
+requests.delete() 					#DELETE请求
+requests.head() 					#HEAD请求
+requests.options() 					#OPTIONS请求
+
+
+常用参数：
+	requests.get()
+		url：url地址，header：header信息，cookies：用户cookies信息
+		
+	requests.post()
+		url：url地址，header：header信息，data：传递给服务器端的信息（如果想要模拟登录需要分析网站上传结构）
+		
+	status_code：获取http状态码，json：序列化，file：文件上传，timeout：请求超时时间，proxies：访问代理
+	
+	request.session()		#存储session信息
+		
+	
+	
+	
+	request = requests.session()
+	header = {
+		'Referer': 'http://denglu.dlzb.com/',					#用户必须从哪个地址去访问目标地址
+		'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36'										#浏览器信息
+	}
+
+	def Login():
+		data = {
+			'forward':'http://denglu.dlzb.com/',	
+			'username':'用户名',
+			'password':'密码',
+			'cookietime':1,
+			'submit':1,
+			'ajax':1,
+		}
+		login = request.post('http://denglu.dlzb.com/',headers=header,data=data)			#登录页面
+		googleUrl= 'http://www.dlzb.com/zb/kw-功率预测.html'
+        gethtml = request.get(googleUrl, cookies = login.cookies, headers = header)
+		print gethtml.content			#获取html内容
+
+
+
+http://www.cnblogs.com/wupeiqi/articles/6283017.html						#武沛齐，requests，bs4
+http://blog.csdn.net/shanzhizi/article/details/50903748						#requests
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

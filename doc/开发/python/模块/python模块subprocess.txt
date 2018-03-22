@@ -1,0 +1,64 @@
+subprocess模块提供了一种一致的方法来创建和处理附加进程,与标准库中的其它模块相比，提供了一个更高级的接口
+subprocess意在替代其他几个老的模块或者函数，比如：os.system os.spawn* os.popen* popen2.* commands.*
+
+subprocess的主类
+subprocess.Popen(
+    args,
+    bufsize=0,
+    executable=None,
+    stdin=None,
+    stdout=None,
+    stderr=None,
+    preexec_fn=None,
+    close_fds=False,
+    shell=False,
+    cwd=None,
+    env=None,
+    universal_newlines=False,
+    startupinfo=None,
+    creationflags=0
+    )
+
+参数说明：
+    args可以是字符串或者序列类型，用于指定进程的可执行文件及其参数。如果是序列类型，第一个元素通常是可执行文件的路径
+    bufsize：指定缓冲。0 无缓冲,1 行缓冲
+    stdin, stdout, stderr：分别表示程序的标准输入、输出、错误句柄，他们可以是PIPE、文件描述符或文件对象、也可以设置为None，表示从父进程继承
+    preexec_fn只在Unix平台下有效，用于指定一个可执行对象（callable object），它将在子进程运行之前被调用。
+    Close_sfs：在windows平台下，如果close_fds被设置为True，则新创建的子进程将不会继承父进程的输入、输出、错误管道
+    shell：设为true，程序将通过shell来执行
+    cwd：用于设置子进程的当前目录
+    env：是字典类型，用于指定子进程的环境变量，如果env = None，子进程的环境变量将从父进程中继承
+    Universal_newlines:如果将此参数设置为True，Python统一把换行符当作\n处理。
+    startupinfo与createionflags：只在windows下有效
+
+
+Popen方法
+    Popen.poll()：用于检查子进程是否已经结束
+    Popen.wait()：等待子进程结束
+    Popen.communicate(input=None)：与子进程进行交互。向stdin发送数据，或从stdout和stderr中读取数据
+    Popen.send_signal(signal)：向子进程发送信号
+    Popen.terminate()：停止(stop)子进程
+    Popen.kill()：杀死子进程
+    Popen.stdin：如果在创建Popen对象是，参数stdin被设置为PIPE，Popen.stdin将返回一个文件对象用于向子进程发送指令。否则返回None
+    Popen.stdout：如果在创建Popen对象是，参数stdout被设置为PIPE，Popen.stdout将返回一个文件对象用于向子进程发送指令。否则返回None
+    Popen.stderr：如果在创建Popen对象是，参数stdout被设置为PIPE，Popen.stdout将返回一个文件对象用于向子进程发送指令。否则返回None
+    Popen.pid：获取子进程的进程ID
+    Popen.returncode：获取进程的返回值。如果进程还没有结束，返回None
+    subprocess.call(*popenargs, **kwargs)：运行命令。该函数将一直等待到子进程运行结束，并返回进程的returncode
+    subprocess.check_call(*popenargs, **kwargs)：与subprocess.call(*popenargs, **kwargs)功能一样，只是如果子进程返回的returncode不为0的话，将触发CalledProcessError异常。在异常对象中，包括进程的returncode信息。
+
+
+使用示例：
+    get_name = Popen('hostname', shell=True,stdout=PIPE)    #执行命令
+    get_name.stdout.read()                  #获取命令的返回结果
+
+    subprocess.call('脚本/shell', shell=True)         #执行命令，结果直接输出到屏幕，返回值为命令的状态值
+
+    b = subprocess.Popen('ls -l', shell=True, stdout=subprocess.PIPE)       #执行命令
+    b.communicate()                     #获取命令的返回结果，以元组方式显示
+
+
+
+http://www.jb51.net/article/57208.htm           #参考
+
+

@@ -1,0 +1,52 @@
+#-*- coding:utf-8 -*-
+from __future__ import unicode_literals
+import boto3
+
+'''
+http://boto3.readthedocs.io/en/latest/reference/services/s3.html        #boto3操作s3
+http://boto3.readthedocs.io/en/latest/      #官方文档
+'''
+
+
+
+
+aws_key = 'xxxxxxxxxxxxxxx'
+aws_secret = 'xxxxxxxxxxxxxxx'
+
+session = boto3.Session(
+                aws_access_key_id=aws_key,
+                aws_secret_access_key=aws_secret,
+                region_name='cn-north-1'
+          )
+
+s3 = session.resource('s3')
+#s3.Bucket('boto-test').upload_file('/tmp/test.txt', 'test.txt')     #上传指定文件
+
+with open('/etc/issue') as f:
+    obj = f.read()
+    s3.Bucket('boto-test').put_object(Body=obj,Key='test.txt')     #上传指定文件
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

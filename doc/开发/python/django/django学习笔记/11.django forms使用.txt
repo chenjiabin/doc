@@ -1,0 +1,291 @@
+# -*- coding: utf-8 -*-
+from django import forms
+
+class fm(forms.Form):                                                       #使用forms时需要定义一个类，这个类必须继承至forms.Form
+    user = forms.CharField(                                                 #forms中的每一个字段名对应一个html中的name
+        max_length=20,
+        min_length=5,
+        error_messages={'required':'用户名不能为空',                           #自定义错误信息，key为固定的，可以在vierw中使用.as_json()查看
+                        'min_length':'用户名长度不能小于5位',
+                        'max_length':'用户名长度不能大于20位',}
+        )
+
+    pwd = forms.CharField(
+        max_length=20,
+        min_length=8,
+        error_messages={'required': '密码不能为空',
+                        'min_length':'密码长度不能小于8位',
+                        'max_length':'密码长度不能大于20位',
+                        }
+    )
+    email = forms.EmailField(
+        error_messages={'required': '邮箱地址不能为空', 'invalid': '邮箱格式错误'}
+    )
+
+
+views.py文件：
+
+from app01.tforms import fm                                     #froms文件自定义，路径自定义，类自定义，django并没有对名称进行要求
+
+def form(request):
+    if request.method == 'GET':
+        return render(request,'tforms.html')
+    else:
+        result = fm(request.POST)                                    #绑定forms
+        #print result.errors 
+        print result.errors.as_json()                                #输出错误结果
+        return render(request,'tforms.html',{'info':result})         #传递给模板
+
+
+HTML文件：
+    <form action="/form/" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="用户名" name="user">
+        <input type="password" placeholder="密码" name="pwd">
+        <input type="text" placeholder="email" name="email">
+        <input type="submit" value="提交">
+    </form>
+    {{ info.errors.user }}
+    {{ info.errors.pwd }}
+    {{ info.errors.email }}
+
+
+
+from自动生成表单：
+    views.py文件：
+        def form(request):
+            if request.method == 'GET':
+                result = fm()
+                return render(request, 'tforms.html', {'info': result})
+
+            elif request.method == 'POST':
+                result = fm(request.POST)
+                if result.is_valid():                                           #判断用户提交的数据是否有效
+                    print result.data                                           #获取用户提交的数据
+                    return HttpResponse('成功')
+                else:
+                    return render(request,'tforms.html',{'error':result})
+
+
+    html文件：
+        <form action="/form/" method="post">
+            {% csrf_token %}
+            {{ error.as_p }} {{ info.as_p }}                            #以p标签的形式在页面上展示
+            <input type="submit" value="提交">
+        </form>
+
+
+
+
+from django import forms
+
+
+class fm(forms.Form):
+    user = forms.CharField(
+        max_length=20,
+        min_length=5,
+        label='用户名',                        #在页面显示的提示
+        error_messages={'required':'用户名不能为空',
+                        'min_length':'用户名长度不能小于5位',
+                        'max_length':'用户名长度不能大于20位',}
+        )
+
+    pwd = forms.CharField(
+        max_length=20,
+        min_length=8,
+        label='密码',                        #在页面显示的提示
+        error_messages={'required': '密码不能为空',
+                        'min_length':'密码长度不能小于8位',
+                        'max_length':'密码长度不能大于20位',
+                        }
+    )
+    email = forms.EmailField(
+        error_messages={'required': '邮箱地址不能为空', 'invalid': '邮箱格式错误'}
+    )
+
+    type_radio = (
+        (0,'男'),
+        (1,'女')
+    )
+
+    types = forms.IntegerField(widget=forms.widgets.RadioSelect(choices=type_radio))            #单选框，value=0或1 
+    select = forms.IntegerField(widget=forms.widgets.Select(choices=type_radio))                #select下拉框
+    box = (
+        (0,'选择1'),
+        (1,'选择2'),
+        (2,'选择3'),
+        (3,'选择4'),
+        (4,'选择5'),
+    )
+    checkbox = forms.CharField(widget=forms.widgets.CheckboxSelectMultiple(choices=box))            #多选框
+
+    css = forms.IntegerField(widget=forms.widgets.Input(                                #定义input框
+                                            attrs = {'class': "testcss",                #定义class属性
+                                                     'type':"password",                 #定义type属性
+                                                     'placeholder':"password",          #定义默认显示内容
+                                                     },
+                                    ))
+
+    import re
+    reg = re.compile(r'^(13[0-9]|15[0-9]|17[678]|18[0-9]|14[57])[0-9]{8}$')         #定义正则表达式
+    phone = forms.RegexField(reg)                                                   #配合正则表达式进行验证
+
+    from app01.models import Host                                                   #导入models
+
+    host = forms.ChoiceField(                                                       #必须使用ChoiceField字段
+        choices = Host.objects.values_list('id','hostname'),                        #将查询的结果显示在页面上
+    )
+
+
+
+更多使用：
+    form.is_valid                             #验证用户输入的是否全部有效，返回Trle或False
+    form error.cleaned_data                   #获取正确的信息
+    form.errors                               #输出错误信息
+    form.errors.as_json()                     #输出错误信息，以字典方式显示错误内容，错误代码
+            
+
+    user = forms.CharField(auto_id=True)                    #生成id属性，属性值等于字段名，id='user'
+    user = forms.CharField(auto_id='id_for_%s')             #生成id属性，%s代表字段，id='id_for_user'
+    
+    {{ form.as_table }}     以表格的形式将它们渲染在<tr>标签中，需要自己在外层写<table></table>标签
+    {{ form.as_p }}         将它们渲染在<p>标签中
+    {{ form.as_ul }}        将它们渲染在<li>标签中
+
+
+
+def Edit(request):
+    id = request.GET.get('id')
+    data = Host.objects.get(id=id)
+    formobj = IndexEdit(instance=data)                              #将查询到的数据写入到表单,编辑时使用
+    return render(request,"index-edit.html",{'data':formobj})
+
+
+使用instance在form里,子类必须继承父类的init函数
+    def __init__(self,*args,**kwargs):
+        super(IndexEdit,self).__init__(*args,**kwargs)
+
+
+forms字段：
+    CharField()
+        默认的Widget：TextInput
+        需要提供验证max_length或min_length。否则，所有的输入都是合法的
+        错误信息的键：min_length, max_length, required
+
+
+    ChoiceField()
+        默认的Widget：Select
+        错误信息的键：required, invalid_choice
+        作用：验证给定的值在选项列表中存在。
+        例：addre = forms.ChoiceField(choices=((0,'a'),(1,'b')))
+
+
+
+
+    TypedChoiceField()
+        默认的Widget：Select
+        作用：验证给定的值在选项列表中存在并且可以被强制转换。
+        错误信息的键：required, invalid_choice
+
+
+    DateField()
+        默认的Widget：DateInput
+        作用：验证给出的值是一个datetime.date、datetime.datetime或指定日期格式的字符串
+        错误信息的键：required, invalid
+        默认的输入格式为：
+            ['%Y-%m-%d',      # '2006-10-25'
+             '%m/%d/%Y',      # '10/25/2006'
+             '%m/%d/%y']      # '10/25/06'
+
+
+
+    DateTimeField()
+        默认的Widget：DateTimeInput
+        作用：验证给出的值是一个datetime.date、datetime.datetime或指定日期格式的字符串
+        错误信息的键：required, invalid
+        默认的输入格式为：
+            ['%Y-%m-%d %H:%M:%S',    # '2006-10-25 14:30:59'
+             '%Y-%m-%d %H:%M',       # '2006-10-25 14:30'
+             '%Y-%m-%d',             # '2006-10-25'
+             '%m/%d/%Y %H:%M:%S',    # '10/25/2006 14:30:59'
+             '%m/%d/%Y %H:%M',       # '10/25/2006 14:30'
+             '%m/%d/%Y',             # '10/25/2006'
+             '%m/%d/%y %H:%M:%S',    # '10/25/06 14:30:59'
+             '%m/%d/%y %H:%M',       # '10/25/06 14:30'
+             '%m/%d/%y']             # '10/25/06'
+
+
+    TimeField()
+        默认的Widget：TextInput
+        验证给定值是datetime.time或以特定时间格式格式化的字符串。
+        错误信息的键：required, invalid
+        默认的输入格式为：
+            '%H:%M:%S',     # '14:30:59'
+            '%H:%M',        # '14:30'
+
+
+    DurationField()
+        默认的Widget：TextInput
+        作用：验证给出的值是一个字符串，而可以给转换为timedelta
+        错误信息的键：required, invalid
+
+
+
+    EmailField()
+        默认的Widget：EmailInput
+        作用：验证给出的值是一个合法的邮件地址，使用一个适度复杂的正则表达式
+        错误信息的键：required, invalid
+        具有两个可选的参数用于验证，max_length 和min_length。 如果提供，这两个参数将确保字符串的最大和最小长度
+
+
+    FileFieldd()
+        默认的Widget：ClearableFileInput
+        可以验证非空的文件数据已经绑定到表单
+        作用：错误信息的键：missing, invalid, required, empty, max_length
+        具有两个可选的参数用于验证，max_length 和 allow_empty_file。 如果提供，这两个参数确保文件名的最大长度，而且即使文件内容为空时验证也会成功
+
+
+    IntegerField()
+        默认的Widget：当Field.localize 是False 时为NumberInput，否则为TextInput
+        作用：验证给定值是一个整数。允许前后出现空格
+        错误信息的键：max_value, invalid, required, min_value
+
+
+    GenericIPAddressField()
+        默认的Widget：TextInput
+        作用：验证给定值是有效的IP地址,包含IPv4或IPv6地址的字段
+        错误信息的键：required, invalid
+
+
+    RegexField()
+        默认的Widget：TextInput
+        作用：验证给定值与某个正则表达式匹配
+        错误信息的键：required, invalid
+        参数：必须提供一个正则表达式的对象或字符串max_length，min_length与CharField一样工作
+
+
+    SlugField（)
+        默认的Widget：TextInput
+        作用：验证给定的字符串只包括字母、数字、下划线及连字符。
+        错误信息的键：required, invalid
+
+
+    URLField()
+        默认的Widget：URLInput
+        验证给定值是有效的URL
+        错误信息的键：required, invalid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

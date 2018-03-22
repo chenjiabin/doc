@@ -1,0 +1,79 @@
+示例：
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "Stmt14887900",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:DeleteObject",
+                    "s3:GetObject",
+                    "s3:PutObject"
+                ],
+                "Resource": [
+                    "arn:aws-cn:s3:::dnd-ecmwf/*"
+                ]
+            },
+            {
+                "Sid": "Stmt14887000",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:GetBucketLocation",
+                    "s3:ListBucket"
+                ],
+                "Resource": [
+                    "arn:aws-cn:s3:::dnd-ecmwf"
+                ]
+            }
+        ]
+    }
+
+
+
+Version     版本控制
+Sid         标示符
+Effect      策略允许还是拒绝访问
+Action      策略允许或拒绝的操作的列表
+Resource    作为操作目标的资源的列表
+
+
+常用元素：
+    Version元素必须在Statement之前出现，仅允许以下值：
+        2012-10-17  当前版本
+        2008-10-17  早期版本(默认)
+
+
+    Id元素指定策略的可选标识符：
+        某些AWS产品可能需要此元素并要求其具有唯一性
+
+
+    Statement元素为策略的主要元素(必填)，该元素中可包含多个元素
+        Sid是您针对策略语句提供的可选标识符。在IAM中，Sid值必须在JSON策略中是唯一的
+            在IAM中，Sid并不出现在IAM API中，您无法基于此ID检索特定声明
+            某些AWS产品可能需要此元素并要求其具有唯一性
+
+        Effect元素是必需具备的元素，用于指定声明所产生的结果是“允许”还是“显式拒绝”
+            Effect的有效值为 Allow 和 Deny(默认)
+
+
+        Action元素描述将允许或拒绝的特定操作。声明必须包含Action或NotActio元素
+            每款 AWS 服务各自拥有一套描述任务的操作
+            可使用通配符(*)来访问特定AWS产品提供的所有操作
+
+        Resource元素可指定声明涵盖的一个或多个对象。声明必须包含Resource或NotResource元素
+            可使用ARN来指定资源
+
+
+http://docs.amazonaws.cn/IAM/latest/UserGuide/reference_policies_elements_action.html       #更多元素和示例参考
+http://docs.amazonaws.cn/AmazonS3/latest/dev/using-with-s3-actions.html     #3s对象权限
+
+
+
+
+
+
+
+
+
+
+

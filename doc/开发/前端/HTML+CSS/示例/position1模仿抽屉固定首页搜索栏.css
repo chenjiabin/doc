@@ -1,0 +1,27 @@
+.onediv{
+    height: 40px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.otherdiv{
+    float: left;
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.div-div{
+    float: right;
+}
+
+
+a{
+    text-decoration: none;
+    color: darkgrey;
+}
+
+
+

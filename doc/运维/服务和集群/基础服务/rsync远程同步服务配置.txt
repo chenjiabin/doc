@@ -1,0 +1,87 @@
+rsync远程同步服务,，在同步文件的同时,可以保持原来文件的权限、时间、软硬链接等信息 
+rsync是xinetd的子服务,因此需要启动xinetd服务。
+
+配置rsync服务器
+rsync服务器主要有三个配置文件(需要自己手动创建)
+	1、rsyncd.conf
+	2、rsyncd.secrets
+	3、rsyncd.motd
+	
+mkdir /etc/rsyncd        		#创建配置目录
+cd /etc/rsyncd
+touch rsyncd.conf               #创建主配置文件
+touch rsyncd.secrets          	#创建用户密码文件
+chmod 600 rsyncd.secrets  		#修改用户密码文件权限
+touch rsyncd.motd            	#创建定义服务信息的文件
+
+
+搭建rsync服务器：
+全局配置：
+port = 873   				#监听端口 
+address = 192.168.1.1  		#监听地址 
+uid = root 					#运行用户
+gid = root					#运行组			
+use chroot = yes   						#是否限制在指定目录
+read only = yes							#是否只读
+hosts deny = *							#拒绝地址
+hosts allow = 192.168.1.0/24  			#允许地址 
+max connections = 5 					#最大连接数
+motd file = /etc/rsyncd/rsyncd.motd		#指定服务器信息文件	
+log file = /var/log/rsync.log			#日志文件
+pid file = /var/run/rsync.pid			#pid文件
+timeout = 300				#超时时间
+
+
+模块配置：
+[web] 
+path = /var/www/html 					   #备份目录
+auth users = apache						   #授权用户
+secrets file = /etc/rsyncd/rsyncd.secrets  #指定账号密码文件 
+dont compress = *.gz,*.bz2,*.zip,*.xz	   #同步时不再压缩的文件
+comment = web							   #服务器注释
+exclude = data   						   #排除目录
+
+
+编辑/etc/rsyncd/rsyncd.secrets文件：
+	格式：
+		username:password	#用户和密码最好不要和系统用户和密码一样
+		apache:123.com
+
+配置启动脚本rsync：
+service rsync {
+        disable = no
+        socket_type     = stream
+        wait            = no
+        user            = root
+        server          = /usr/bin/rsync
+        server_args     = --daemon  --config=/etc/rsyncd/rsyncd.conf   
+			#这里添加rsync的服务选项
+        log_on_failure  += USERID
+	}
+	
+service xinetd restart			#启动服务,需要安装xinetd服务
+/usr/bin/rsync --daemon --config=/etc/rsyncd/rsyncd.conf	#启动服务
+
+
+客户端同步：
+rsync -avzP apache@192.168.1.1::web /root/rsync		#同步
+#apache：用户  #web同步模块		#/root/rsync保存到本地的目录
+	#回车后输入rsyncd.secrets文件中apache对应的密码
+
+说明：
+-z:传输时压缩； 
+-P:显示传输进度； 
+-v:传输时的进度等信息
+-a:归档,相当于-rlptgoD，
+	-r:递归 
+	-l:拷贝链接文件
+	-p:保持文件原有权限
+	-t:保持文件原有时间
+	-g:保持文件原有用户组
+	-o:保持文件原有属主
+	-D:相当于块设备文件 
+
+
+
+
+

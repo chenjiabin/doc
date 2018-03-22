@@ -1,0 +1,52 @@
+pickle模块，用于实现流转换，需要导入（python私有）
+
+作用：将一个特殊的数据类型转换为可持续存储对象，特殊数据不能直接存储，必须经过流转换
+
+pickle.dump(o,f)：将特殊数据类型存储到文件中
+pickle.load(f)：将存储的特殊数据类型显示到终端上
+
+o：对象
+f：文件
+
+
+json：用于实现流转换，需要导入，可读性更好（通用）
+
+json.dump(o,f)：将特殊数据类型存储到文件中
+json.load(f)：将存储的特殊数据类型显示到终端上
+
+
+
+存储：
+In [1]: import pickle
+
+In [2]: w = open('/root/test','a+')
+
+In [3]: t=zip('abc','123')
+
+In [4]: d = dict(t)
+
+In [5]: print t
+[('a', '1'), ('b', '2'), ('c', '3')]
+
+In [6]: print d
+{'a': '1', 'c': '3', 'b': '2'}
+
+In [7]: pickle.dump(d,w)
+
+In [8]: w.close()
+
+ 
+显示：
+In [14]: r = open('/root/test','r')
+
+In [15]: pickle.load(r)
+Out[16]: {'a': '1', 'b': '2', 'c': '3'}
+
+
+
+
+
+
+
+
+

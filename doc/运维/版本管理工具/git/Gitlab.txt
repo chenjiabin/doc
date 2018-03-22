@@ -1,0 +1,8 @@
+https://about.gitlab.com/installation/#ubuntu?version=ce        #install社区版
+https://about.gitlab.com/installation/#ubuntu                   #install企业版
+
+
+https://docs.gitlab.com.cn/ce/README.html                       #中文文档        
+
+
+http://blog.csdn.net/chenjh213/article/details/50527877         #博客

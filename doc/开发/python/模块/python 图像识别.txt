@@ -1,0 +1,31 @@
+环境准备：
+	pip install pillow
+	pip install pytesser
+	Tesseract安装：
+		http://jaist.dl.sourceforge.net/project/tesseract-ocr-alt/tesseract-ocr-setup-3.02.02.exe		#下载完后默认安装
+		在windows命令行界面输入：tesseract
+		Usage:tesseract imagename outputbase [-l lang] [-psm pagesegmode] [confi] ......	#出现这些信息代表安装成功
+			在安装目录中有一个tessconfigs目录，存放tesseract能够识别的语言，如果想要支持中文需要自行下载
+			http://code.google.com/p/tesseract-ocr/downloads/list			#语言下载地址(需要翻墙)
+
+
+python调用tesseract出现WindowsError: [Error 2]：
+解决方案：
+	D:\python2.7\Lib\site-packages\pytesseract\pytesseract.py			#编辑pytesseract.py(pytesser的源代码)
+		tesseract_cmd = 'D:\\OCR\\Tesseract-OCR\\tesseract.exe'			#将tesseract_cmd修改为tesseract.exe所在路径
+		#删除D:\python2.7\Lib\site-packages\pytesseract\pytesseract.pyc文件(如果有)
+
+			
+			
+实例：		
+	from PIL import Image						
+	import pytesseract							
+
+	image = Image.open('C:\\Users\\huyuan\\Desktop\\test.png')		#打开图片
+	vcode = pytesseract.image_to_string(image)						#对图片进行处理
+	print vcode														#打印图片内容
+			
+			
+http://blog.csdn.net/wuxiaobingandbob/article/details/51751899		#图像处理		
+
+		

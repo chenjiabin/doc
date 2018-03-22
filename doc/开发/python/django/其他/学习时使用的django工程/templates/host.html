@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主机管理</title>
+</head>
+<body>
+    <form action="host" method="post">
+        {% csrf_token %}
+        主机地址：<input type="text" name="group"/>&emsp;&emsp;&emsp;&emsp;&emsp;
+        所属组：<input type="text" name="item"/><br/>
+        删除主机：<input type="text" name="delete"/><br/>
+        &nbsp;<input type="submit" value="提交"><br/><br/><br/>
+    </form>
+        {{ data }}
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

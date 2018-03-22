@@ -1,0 +1,132 @@
+#coding:utf-8
+import random
+import string
+from PIL import Image, ImageFont, ImageDraw, ImageFilter            #需要安装PIL
+
+class Code(object):
+    def __init__(self,path,storagepath):            #字体路径和验证码图片存储路径，字体推荐使用Arial.ttf
+        self.__font_path = path
+        self.__storage_path = storagepath
+
+    def __randomStr(self):                          #生成随机字符串
+        source = list(string.letters)
+        for index in range(0,10):
+            source.append(str(index))
+        num = random.randint(0, 60)
+        code = source[num]
+        return code
+
+    def __colorRandom1(self):                       #随机颜色
+        return (
+            random.randint(64, 255),
+            random.randint(64, 255),
+            random.randint(64, 255)
+        )
+
+    def __colorRandom2(self):                       #随机生长颜色
+        return (
+            random.randint(32, 127),
+            random.randint(32, 127),
+            random.randint(32, 127)
+        )
+
+    def item(self):
+        width_and_height = (60*4,60)
+        image = Image.new('RGB',width_and_height, (255, 255, 255))
+        font = ImageFont.truetype(self.__font_path, 36)         #创建字体对象
+        draw = ImageDraw.Draw(image)                            #创建draw对象
+
+        for x in range(width_and_height[0]):                    #填充字体颜色
+            for y in range(width_and_height[1]):
+                draw.point((x, y), fill=self.__colorRandom1())
+
+        code = ''
+        for t in range(4):                                      #写入文字
+            word = self.__randomStr()
+            code = code + word
+            draw.text(
+                (60 * t + 10, 10), word,
+                font=font, fill=self.__colorRandom2()
+            )
+        image = image.filter(ImageFilter.BLUR)                  #模糊
+        image.save(self.__storage_path, 'jpeg')                 #保存到文件
+        return code                                             #返回验证码的值
+
+
+obj = Code('/tmp/test/Arial.ttf','/tmp/test/code.jpg')
+code = obj.item()
+
+
+
+
+django使用验证码验证：
+URL文件：
+    urlpatterns = [
+        url(r'^admin/', admin.site.urls),
+        url(r'^code/$', csrf_exempt(views.ImgCode.as_view())),
+    ]
+
+
+viesw文件：
+class ImgCode(View):
+    info = ''                                                                   #存储生成的验证码的值
+
+    def vcode(self):
+        from app01.other.code import Code                                       #调用生成验证码的类
+        code = Code('/tmp/test/Arial.ttf', 'static/imgs/code.jpg')              #存储验证码图片，在生产环境中建议使用io.BytesIO直接使用内存空间，减少io操作，也可以使用缓存
+        value = code.item() 
+        return value    
+
+    def get(self,request):
+        global info                                                             #声明全局变量
+        info = self.vcode()                                                     #存储验证码的值                                    
+        with open('static/imgs/code.jpg','rb') as returndata:                   #打开文件读取验证码
+            data = returndata.read()                                            
+        return render(request,'code.html',content_type="image",)                #将验证码图片返回给用户
+
+
+    def post(self,request):
+        code = str(request.POST.get('code')).lower()                            #获取用户输入的验证码并全部转换为小写
+        value = info.lower()                                                    #将生成的验证码全部转换为小写
+        if code == value:                                                       #判断验证码是否正确
+            return HttpResponse('验证码正确')
+        else:
+            return HttpResponse('验证码错误')
+
+
+
+html文件：
+    <form action="/code/" method="post">
+        {% csrf_token %}
+        <input type="text" name="code"><i>请输入验证码</i>
+        <input type="submit" value="提交">
+    </form>
+    <img src="/static/imgs/code.jpg">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

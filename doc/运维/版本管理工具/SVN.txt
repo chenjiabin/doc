@@ -1,0 +1,109 @@
+一. SVN 简介
+	Subversion是一个开源的版本控制系統, 也就是说Subversion管理着随时间改变的数据。这些数据放置在repository中 这个repository很像一个普通的文件服务器, 但它会记住每一次文件的变动。这样你就可以把档案恢复到旧的版本, 或是浏览文件的变动历史
+
+	SVN的基本概念：
+		repository(源代码库)：源代码统一存放的地方
+		Checkout(提取)：当你手上没有源代码的时候，你需要从repository checkout一份
+		Commit(提交)：当你已经修改了代码，你就需要Commit到repository
+		Update(更新)：当你已经Checkout了一份源代码，Update一下你就可以和Repository上的源代码同步，你手上的代码就会有最新的变更 
+		
+		如果两个程序员同时修改了同一个文件,SVN可以合并这两个程序员的改动，实际上SVN管理源代码是以行为单位的，就是说两个程序员只要不是修改了同一行程序，SVN都会自动合并两种修改。如果是同一行，SVN会提示文件Confict, 冲突，需要手动确认。
+
+
+
+SVN的主要功能：
+	目录版本控制
+		SVN实现了一个 “虚拟” 的版本控管文件系统, 能够依时间跟踪整个目录的变动。目录和文件都能进行版本控制
+
+	一致的数据处理方式
+		SVN使用二进制差异算法来表示文件的差异, 它对文本与二进制文件一视同仁，这两类的文件都同样地以压缩形式储存在档案库中
+
+
+		
+搭建SVN环境：
+	yum -y install subversion			#安装SVN
+	mkdir /svn							
+	svnadmin create /svn				#创建源代码库
+		hooks目录：放置hook脚本文件的目录
+		locks目录：用来放置SVN的db锁文件和db_logs锁文件的目录，用来追踪存取文件库的客户端
+		format文件：是一个文本文件，里面只放了一个整数，表示当前文件库配置的版本号
+		DB目录：数据存放目录
+		conf目录：是这个仓库的配置文件
+			authz				#权限控制文件
+			passwd				#帐号密码文件
+			svnserve.conf 		#SVN服务配置文件
+		
+	vim /svn/conf/passwd
+		test=123.com			#添加测试用户
+		
+		
+	vim /svn/conf/svnserve.conf   		#编辑仓库配置文件
+		[general]   
+		anon-access = none								#禁止匿名用户登录  
+		auth-access = write   							#授权用户拥有写权限
+		password-db = /svn/conf/passwd   				#指定用户和密码存放目录
+		authz-db = /svn/conf/authz   					#指定权限目录
+		realm = /data/www 								#认证空间名，版本库所在目录
+
+			
+	vim /svn/conf/authz
+		[/]						#表示/svn
+		test = rw				#test拥有读写
+		* =						#其他用户没有任何权限
+		
+	格式说明：
+		[<版本库>:/项目/目录]
+		@组名 = 权限
+		用户名 = 权限
+		/ 表示对根目录（即/svn目录）下的所有子目录范围设置权限；
+		[/abc] 表示对资料库中abc项目设置权限；
+		*=表示除了上面设置的权限用户组以外，其他所有用户都设置空权限，空权限表示禁止访问本目录，这很重要一定要加上
+		注意：对权限配置文件的修改立即生效，不必重启svn。	
+	
+	验证：使用windows下客户端软件：TortoiseSVN测试	
+		
+
+SVN+Apache：
+	yum install httpd subversion mod_dav_svn  			#安装svn服务和httpd模块
+	mkdir -p /var/www/svn  									#创建仓库目录 
+	svnadmin create /var/www/svn/test						#创建svn仓库 
+	
+	vim /var/www/svn/test/conf/svnserve.conf  			#编辑仓库配置文件
+		anon-access = none  						#禁用匿名用户并开启验证用户权限  
+
+	vim /etc/httpd/conf.d/subversion.conf			#apache配置文件
+		LoadModule dav_svn_module     modules/mod_dav_svn.so  
+		LoadModule authz_svn_module   modules/mod_authz_svn.so  
+		<Location /test>  
+			DAV svn  
+			SVNPath /var/www/svn/test/                  
+			AuthType Basic  
+			AuthName "svn"   
+			AuthUserFile /etc/httpd/conf.d/passwd
+			Require valid-user  
+		</Location>  
+
+	chown apache.apache /var/www/svn -R  
+	chmod 777 /var/www/svn -R 
+	htpasswd -cm /etc/httpd/conf.d/passwd test		#创建svn用户，如果不是第一次创建用户则不用加-c选项
+	
+	vim /var/www/svn/test/conf/authz				#编辑svn权限配置文件
+		[/]
+		test=rw
+		*=
+
+	svnserve -d -r /var/www/svn/test        #启动svn服务，svn默认监听3690端口 
+	service httpd start						#启动httpd服务
+	http://192.168.0.10/test/				#验证
+	
+
+
+
+
+
+	
+	
+	
+	
+	
+	

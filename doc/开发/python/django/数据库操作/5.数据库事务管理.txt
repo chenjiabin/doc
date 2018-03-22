@@ -1,0 +1,56 @@
+Django默认是运行在自动提交模式下。任何一个查询都立即被提交到数据库中，除非激活一个事务
+Django用事务或者保存点去自动的保证复杂ORM各种查询操作的统一性
+
+
+将事务绑定到HTTP请求：
+    在web上一种简单处理事务的方式是把每个请求用事务包装起来。如果你想启用这种行为，请在数据库的配置中设置ATOMIC_REQUESTS=True
+
+    工作流程：在调用一个view里面的方法之前，django开始一个事务。如果发出的响应没有问题，Django就会提交这个事务。如果在view产生了异常，Django就会回滚这次事务。在视图结束时，更改全部都将被提交或全部都不提交
+
+    缺点：当流量增长时它会表现出较差的效率。每个视图开启一个事务是有所耗费的。其对性能的影响依赖于应用程序对数据库的查询语句效率和数据库当前的锁竞争情况
+
+
+当ATOMIC_REQUESTS启用后，可以使用non_atomic_requests(using=None)这个装饰器来阻止视图运行事务操作
+实例：
+    from django.db import transaction
+
+    @transaction.non_atomic_requests
+    def my_view(request):
+        do_stuff()              #do_stuff为对数据的操作指令
+
+
+明确控制事务
+    atomic(using=None, savepoint=True)，atomic接受一个using参数，它必须是数据库的名字。Django默认使用"default"数据库
+
+    atomic允许我们在执行代码块时，在数据库层面提供原子性保证。如果代码块成功完成，相应的操作会被提交到数据库进行commit；如果执行期间遇到异常，则会将该段代码所涉及的所有更改回滚
+
+@transaction.atomic                 #被装饰的视图对数据库的所有操作在一个事务中执行
+def test():
+    with connection.cursor() as cursor:                         #打开数据库
+    cursor.execute('insert into app01_blog(name,tagline) values(888,888)') #写入，如果两条insert语句都执行成功则执行提交操作
+    cursor.execute('insert into app01_blog(name,tagline) values(999,999)') #如果有任意一条语句执行失败则执行回滚操作
+
+
+第二种明确控制事务操作的方式：
+from django.db import transaction
+def viewfunc(request):
+    #下面的代码在自动提交模式下执行（Django的默认模式）
+    do_stuff()
+
+    with transaction.atomic():
+        #下面的代码在一个事务中执行
+        do_more_stuff()
+
+性能考虑
+    所有打开的事务会对数据库带来性能成本。要最小化这种开销，保持你的事务尽可能短。
+
+
+
+
+
+
+
+
+
+
+

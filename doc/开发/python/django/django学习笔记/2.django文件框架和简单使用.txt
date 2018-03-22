@@ -1,0 +1,107 @@
+django项目目录结构：    
+    web01/
+    ├── app01
+    │   ├── admin.py                    #web管理页面配置文件
+    │   ├── apps.py                     #app配置文件
+    │   ├── __init__.py
+    │   ├── migrations                  #orm框架，记录修改数据库表结构的操作
+    │   │   ├── __init__.py
+    │   ├── models.py                   #数据库配置文件
+    │   ├── tests.py                    #测试文件
+    │   └── views.py                    #对应URL的地址，执行相应的业务逻辑处理生成执行后的html文件
+    ├── db.sqlite3                      
+    ├── manage.py                       #项目的管理文件
+    ├── templates                       #存放模板文件的目录
+    └── web01                           #项目的配置文件目录
+        ├── __init__.py 
+        ├── settings.py                 #项目的配置文件
+        ├── urls.py                     #项目的url映射文件
+        ├── wsgi.py                     #wsgi配置文件(将django部署在服务器时才会用的到配置文件)
+
+
+
+编写一个简单登录页面实例：
+
+settings.py
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'app01',                                #注册app
+]   
+
+
+
+urls.py
+
+from django.conf.urls import url
+from django.contrib import admin
+from app01.views import *                   #导入app01里的views.py文件
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^login/', login),                 #url映射关系，当用户访问login时将这个请求交给views.py里的login函数处理
+]
+
+
+views.py
+
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.shortcuts import render
+from django.shortcuts import HttpResponse
+
+def login(request):
+    if request.method == 'GET':
+        return render(request,'login.html')
+    elif request.method == 'POST':
+        return HttpResponse('登录成功')
+    else:
+        return HttpResponse('无效的请求方式')
+
+
+
+
+在templates目录创建login.html:
+
+login.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test login</title>
+</head>
+
+<body>
+    <form method="post" action="login.html">
+        {% csrf_token %}
+        用户名：<input name="user" type="text"> <br/>
+        密码：<input name="passwd" type="password"><br/>
+        <input type="submit" value="登录">
+    </form>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

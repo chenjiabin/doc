@@ -1,0 +1,39 @@
+Linux系统上/proc目录一个特殊的目录,也是一个虚拟文件系统,存储的是当前内核运行状态的一系列特殊文件,用户可以通过查看这些文件获取当前的状态,甚至可以通过更改其中某些文件来改变内核的运行参数
+
+/proc/[0-9]+				#运行程序的信息,以PID 为目录名
+/proc/meminfo				#内存信息
+/proc/cpuinfo				#CPU信息
+/proc/modules 				#系统以加载的模块
+/proc/mounts				#文件系统信息
+/proc/swaps					#swap信息
+/proc/partitions			#系统分区信息
+/proc/version				#内核版本
+/proc/devices				#可用设备列表
+/proc/net/tcp				#TCP连接信息
+/proc/net/udp				#UDP连接信息
+/proc/net/arp				#arp信息
+/proc/net/dev				#网卡流量
+/proc/net/route				#路由表信息
+/proc/sys/net/core/somaxconn  	#每个端口最大监听队列长度
+
+
+/proc/sys目录下的文件可被读写,存了大多数内核参数,可以修改改变内核行为
+四个主要的目录：
+	fs：文件系统各方面信息，包括配额、文件句柄、inode 和目录项
+	kernel：内核行为的信息
+	net：网络配置信息，包括以太网、ipv4和ipv6
+	vm：Linux内核的虚拟内存子系统，通常称为交换空间
+
+/proc/sys/fs/file-max			#所有进程最大打开文件句柄数量		
+/proc/sys/fs/file-nr			#分配的文件句柄数,分配没有使用文件句柄数,文件句柄最大数
+/proc/sys/kernel/exec-shield	#配置内核执行保护功能，防止某类型缓冲区溢出攻击,0禁用,1开启
+/proc/sys/kernel/hostname  		#系统主机名	
+/proc/sys/kernel/osrelease  	#内核版本号
+/proc/sys/kernel/ostype		  	#系统类型
+/proc/sys/kernel/threads-max  	#最大线程数
+/proc/sys/kernel/pid_max  		#最大pid数
+
+/proc/sys/vm/swappiness		#swap使用百分比,值越小越不考虑使用,0为尽可能不使用
+	
+	
+	

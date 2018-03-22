@@ -1,0 +1,79 @@
+selenium grid是用来分布式执行爬虫脚本的工具，如果需要下载的数据较多单台服务器性能有限是可以使用Selenium grid将请求分配到各个服务器，每一个服务器只完成一部分工作。
+
+
+部署selenium grid环境：
+    1、http://selenium-release.storage.googleapis.com/3.6/selenium-server-standalone-3.6.0.jar            #下载selenium-server
+    2、sudo apt install  default-jre gcj-5-jre-headless openjdk-8-jre-headless gcj-4.8-jre-headless       #安装java运行环境
+    3、java -jar selenium-server-standalone-3.6.0.jar -port 5555             #启动selenium-server默认端口为4444可以使用-port指定
+    4、java -jar selenium-server-standalone-3.6.0.jar                        #启动第二个selenium-server
+    5、https://github.com/mozilla/geckodriver/releases                       #firefox驱动下载
+    6、sudo tar zxvf firefox-v0.19.0-linux64.tar.gz -C /usr/local/bin/       #linux下安装firefox驱动 
+    
+    在生产环境中一般不会有firefox等界面浏览器，这时我们就需要安装无页面浏览器
+    selenium支持的无界面浏览器有PHANTOMJS，HTMLUNIT，HTMLUNITWITHJS,其中PHANTOMJS需要下载程序安装，其余两个则直接实例化即可
+
+
+#注：直接使用Java -jar包启动的情况一般都是在测试环境中，如果在生产环境中建议将selenium-server部署在tomcat等web服务器上
+    tomcat安装和使用：http://hongchen99.blog.51cto.com/12534281/1914314           #将selenium-server放在tomcat的webapps目录中重启tomcat即可
+    
+
+
+
+
+
+
+分布式爬虫实例：
+    #!/usr/bin/env python
+    #coding:utf-8
+
+    from selenium import webdriver
+    from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+    from threading import Thread
+    import time
+
+    class test(Thread):
+        def __init__(self,url,where):
+            super(test,self).__init__()
+            self.url = url
+            self.where = where
+
+        def run(self):
+            driver = webdriver.Remote(
+                command_executor=self.url,
+                desired_capabilities=DesiredCapabilities.FIREFOX            #使用firefox浏览器
+            )
+
+            driver.get(self.where)
+            time.sleep(10)
+            driver.close()
+
+
+    def pool():
+        proxy = {
+            'http://127.0.0.1:4444/wd/hub':'http://www.baidu.com',
+            'http://127.0.0.1:5555/wd/hub':'http://www.jd.com'
+        }
+        return proxy
+
+    for url, where in pool().items():
+        spider = test(url,where)
+        spider.start()
+        time.sleep(2)
+
+
+
+DesiredCapabilities.FIREFOX本身是对一个字典对象
+    {'acceptInsecureCerts': True, 'browserName': 'firefox', 'marionette': True}         #内容，browserName指定使用的浏览器
+    FIREFOX为desired_capabilities.py中的一个属性
+
+
+
+
+
+
+
+
+
+
+
+

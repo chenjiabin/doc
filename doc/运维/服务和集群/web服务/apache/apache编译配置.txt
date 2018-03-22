@@ -1,0 +1,47 @@
+1、解包
+tar zxvf /root/python/httpd-2.2.17.tar.gz  -C /usr/src/
+cd /usr/src/
+
+
+2、配置apache编译参数和安装
+./configure --prefix=/usr/local/httpd --enable-so --enable-rewrite --enable-cgi --enable--charset-lite
+make && make install		//编译 && 安装
+
+--prefix=/usr/local/httpd：指定安装目录
+--enable-so：编译动态加载模块，因此升级和增加模块时只需编译相关的模块即可
+--enable-rewrite：支持URL重写（URL重写，首先获得一个URL请求然后把它重新写成网站可以处理的另一个URL的过程）
+--enable--charset-lite：启用字符集转换（常用字符集：ASCII，Unicode，UTF-8，GBK，GB2312）
+--enable-cgi：编译CGI版本的PHP（CGI将Web的一组简单的静态文档变成一个完整的新的交互式媒体,动态网站协议）
+
+
+3、路径优化
+ln -s /usr/local/httpd/bin/* /usr/local/bin		//将apache的命令软链接到PATH环境变量目录中
+
+cp -p apachectl /etc/init.d/httpd			//将apache的启动脚本复制到service能操作的目录中去
+vim /etc/init.d/httpd					//编辑apache启动脚本
+    # chkconfig: 2345 98 1				//配置运行级别，启动优先级和关闭优先级
+    # description: apache httpd 			//apache的说明
+
+chkconfig --add httpd 					//将apache添加为系统服务
+
+
+4、验证
+chkconfig httpd --list			
+chkconfig httpd on
+service httpd restart
+
+
+
+5、apache的常用命令
+apachectl -t			//检查主配置文件是否有语法错误
+apachectl -v			//查看apache的版本
+
+
+
+
+
+
+
+
+
+

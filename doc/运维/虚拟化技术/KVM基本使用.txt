@@ -1,0 +1,163 @@
+安装KVM
+	1、cpu必须开启虚拟化功能
+	2、egrep "(vmx|svm)" --color /proc/cpuinfo				#查看cpu是否支持虚拟化
+	3、modprobe kvm					#加载kvm模块
+	4、lsmod | grep "kvm"			#验证模块是否被加载
+	5、ls /dev/ | grep "kvm"		#验证dev下是否生成kvm文件
+
+	
+命令行界面安装KVM：
+	管理工具配置：
+		virt-install：命令行下完成虚拟机安装		virtsh：命令行管理工具
+
+		yum -y install  python-virtinst libvirt qemu-kvm				#安装相关管理工具
+
+		vim /etc/libvirt/libvirtd.conf					#配置libvirtd服务
+			listen_tcp = 1						#使用TCP连接方式
+			tcp_port = "16509"					#监听端口
+			listen_addr = "192.168.0.10"		#监听地址
+			max_clients = 1024					#最大的客户端并发访问量				
+			min_workers = 100					#启动的最小线程数
+			max_workers = 200					#启动的最大线程数
+			max_requests = 200					#至少和max_workers一样大			
+			max_client_requests = 5 			#一个客户端的最大并发访问量
+
+		
+	配置桥接网络模型：
+		vim /etc/sysconfig/network-scripts/ifcfg-br0			#配置网桥
+			DEVICE=br0
+			TYPE=Bridge						#指定网卡类型
+			ONBOOT=yes
+			NM_CONTROLLED=yes
+			BOOTPROTO=static
+			IPADDR=192.168.0.10
+			NETMASK=255.255.255.0
+			GATEWAY=192.168.0.1
+			DNS1=192.168.0.1
+
+		vim /etc/sysconfig/network-scripts/ifcfg-eth0			#物理网卡
+			DEVICE=eth0
+			HWADDR=00:0C:29:A8:7E:BB
+			TYPE=Ethernet
+			ONBOOT=yes
+			NM_CONTROLLED=yes
+			BOOTPROTO=static
+			BRIDGE=br0					#关联到br0上
+
+		
+		service libvirtd start			#启动libvirt服务
+		service network restart			#重启网络服务
+
+	
+	安装虚拟机：
+		virt-install --name test5 --ram 512 --vcpus=1 --location=/tmp/CentOS-6.5-x86_64-bin-DVD1.iso --cpu=host  \
+		--disk path=/kvm/test5.img,size=10,bus=virtio --network bridge=br0,model=virtio  --extra-args='console=ttyS0' --force
+			安装参数说明：
+				--name				#指定虚拟机名称
+				--ram				#指定虚拟机内存大小
+				--vcpus				#指定cup核心数，当前运行的虚拟机核心数相加不能大于物理核心数否则将影响性能
+				--cpu				#指定虚拟cpu类型，host保持和物理cpu类型相同
+				--disk				#指定虚拟机磁盘文件参数
+					path=：磁盘文件路径	  size=：磁盘文件大小 bus=virtio：使用半虚拟化，建议使用   format=；指定磁盘格式 sparse=yes：使用format指定磁盘格式时必须使用
+					
+				----location		#指定系统镜像文件，可以指定使用FTP、HTTP等进行安装
+				--network			#指定虚拟机网络参数
+					bridge=br0：桥接网卡  model=virtio：使用半虚拟化，建议使用  mac：指定mac地址，默认为52:54:00:随机数
+					
+				--extra-args		#指定使用本地接口管理
+				--force				#禁止进入交互模式
+		
+			virt-install常用参数：
+				--pxe				#使用pxe进行安装
+				--os-type			#指定系统类型，如Linux、Unix、Windows等
+				--os-variant		#指定发行版本，如Centos6、Centos7、RHEL6等
+				-x	ks=path			#指定基于KickStart完成自动化安装，path可以是http,ftp等
+				--print-xml			#只生成xml配置文件，不进行系统安装
+				--import			#导入已经存在的磁盘映象文件
+				--dry-run			#测试映象文件是否可用，不会正真启动虚拟机，一般用于在导入其他映象文件时使用
+				
+		/etc/libvirt/qemu		#保存每个虚拟机的配置文件目录，文件名为"虚拟机名.xml"
+		
+	
+	
+管理虚拟机：
+	virsh --help			#获取帮助信息
+	virsh help 子命令		#获取子命令帮助信息
+	
+	
+	virsh undefine 虚拟机名 		#删除虚拟机，不会删除映象文件
+		--remove-all-storage		#删除虚拟机时删除映象文件
+	
+	qemu-img create -f qcow2 /kvm/test5_add.img 10G 			#创建磁盘映向文件
+	chmod 755 /kvm/test.img										#修改权限
+	qemu-img info /kvm/test_add.img								#查看磁盘映向文件信息
+	qemu-img convert -f raw -O qcow2 /kvm/test5.img /kvm/test5.qcow2	#更改虚拟机的磁盘格式，不能处于活跃状态（生成新的qcow2磁盘文件）
+	
+	
+	virsh attach-disk test5 /dev/sdb1 vdb			#添加磁盘设备（临时有效）
+		test5：虚拟机名  /dev/sdb1：磁盘文件位置，可以是分区或者整快磁盘，也可以是qemu-img创建的磁盘   vdb：在虚拟机中表现为/dev/vdb
+	
+
+	virsh detach-disk test5 vdb						#重虚拟机中拆除磁盘，前提：没有被分区和使用的磁盘
+		test5：虚拟机名     vdb：拆除虚拟机的/dev/vdb磁盘
+		
+		
+	virsh attach-interface test5 bridge br0								#添加网卡并桥接到br0（临时有效）
+	virsh detach-interface test5 bridge --mac 52:54:00:39:8B:7F			#拆除指定网卡，如果有多个网卡需要指定mac
+		
+			
+	virsh list                            			#显示本地活动虚拟机
+	virsh list --all                      			#显示本地所有的虚拟机(活动的+非活动的)
+	virsh start 虚拟机名							#启动一个非活的动虚拟机
+	virsh create 虚拟机名.xml               		#基于xml配置文件创建虚拟机
+	virsh suspend 虚拟机名                  		#暂停虚拟机，运行状态保存在内存中
+	virsh resume 虚拟机名                   		#启动suspend暂停的虚拟机
+	virsh destroy 虚拟机名                  		#关闭虚拟机
+	virsh reboot 虚拟机名                   		#重启虚拟机
+	virsh dominfo 虚拟机名                  		#显示虚拟机的基本信息
+	virsh --file save 指定文件 虚拟机名            	#暂停虚拟机，运行状态保存到一个文件，类似于vmware的挂起
+	virsh --file restore 指定文件 					#启动save挂起的虚拟机
+	virsh autostart  虚拟机名      					#开机自启动
+	virsh console 虚拟机名         					#连接到虚拟机
+	virsh setvcpus 虚拟机名 cpu个数         		#给非活动虚拟机设置cpu个数		
+	virsh dumpxml 虚拟机名							#查看当前虚拟机配置，多用于更改了当前配置之后将他保存在配置文件中，永久生效
+	
+	
+	
+快照和克隆：
+	克隆：
+		virt-clone -o test5 -n test6 -f /kvm/test6.img		#克隆虚拟机
+			-o：指定源虚拟机    -n：指定克隆后的名字   -f：指定磁盘映向文件
+		virsh list --all			#查看是否克隆成功
+		virsh start test6			#启动克隆的虚拟机
+		
+	
+	快照：
+		virsh edit test5			#编辑配置文件
+			<disk type='file' device='disk'>
+			  <driver name='qemu' type='qcow2' cache='none'/>			#指定磁盘格式
+			  <source file='/kvm/test5.qcow2'/>				#指定磁盘映影响文件，qcow2的，如果没有需要自己用qemu-img修改
+			</disk>
+
+	virsh snapshot-create test5 /etc/libvirt/qemu/test5.xml		#更具xml文件为test5	创建快照
+	virsh snapshot-list test5						#查看test5的所有快照
+	virsh snapshot-dumpxml test5 test501			#查看快照的详细信息
+	
+	virsh snapshot-revert test5 test501				#恢复快照
+	virsh snapshot-delete test5 test501				#删除指定快照
+	
+
+	
+ovirt				#基于web的kvm管理工具	
+		
+
+
+
+
+
+
+
+
+
+
+		

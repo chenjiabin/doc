@@ -1,0 +1,107 @@
+安装keepalived：
+	ntpdate ntp1.aliyun.com			#时间同步
+	tar zxvf keepalived-1.2.20.tar.gz -C /usr/src/
+	cd /usr/src/keepalived-1.2.20/
+	./configure --prefix=/usr/local/keepalived
+	make && make install
+
+调整keepalived：
+	cd /usr/local/keepalived		#工作目录
+	mkdir /etc/keepalived			
+	cp etc/keepalived/keepalived.conf  /etc/keepalived/keepalived.conf		#创建主配置文件
+	cp -p etc/rc.d/init.d/keepalived  /etc/init.d/			#创建启动脚本
+	cp etc/sysconfig/keepalived  /etc/sysconfig/		
+	cp -p sbin/keepalived /usr/sbin/		#创建管理命令,不能能放在/usr/local/sbin/中
+	chkconfig keepalived on		  #开机自启
+	
+
+keepalived配置(master)：
+	vim /etc/keepalived/keepalived.conf
+		global_defs {					
+			notification_email {		#当vip发生切换时发送警告信息给指定邮箱
+				acassen@firewall.loc
+			}
+			notification_email_from Alexandre.Cassen@firewall.loc	#指定发件人
+			smtp_server 192.168.200.1		#smtp服务器地址
+			smtp_connect_timeout 30			#smtp连接超时时间
+			router_id LVS_DEVEL				#keepalived标示
+			vrrp_skip_check_adv_addr
+			vrrp_strict
+		}
+
+	
+	vrrp_instance VI_1 {			#keepalived的实例
+		state MASTER				#服务器的类型,MASTER标示主服务器
+		interface eth0				#绑定的网卡
+		virtual_router_id 51		#虚拟路由器的ID号,同一组备份路由器的ID号必须相同
+		priority 100				#优先级,一般主比从高
+		advert_int 1				#心跳检测(秒)
+		
+		authentication {
+			auth_type PASS			#认证类型
+			auth_pass 1111			#认证密码,备份组密码必须相同
+		}	
+		
+		virtual_ipaddress {
+			192.168.0.201			#虚拟ip地址
+		}
+		notify_master "/etc/keepalived/a.sh master" 	#切换到Master状态时执行的脚本
+		notify_backup "/etc/keepalived/b.sh backup" 	#切换到Backup状态时执行的脚本
+		notify_fault "/etc/keepalived/c.sh fault" 		#切换状态出错时执行的脚本
+			#脚本必须具有执行权限，能够独立执行
+	}
+	#ifconfig eth0				#会在eth0网卡中自动生成了192.168.0.201这个虚拟ip
+	
+	
+keepalived配置(master)：	
+	global_defs {
+		notification_email {
+			acassen@firewall.loc
+		}
+		notification_email_from Alexandre.Cassen@firewall.loc
+		smtp_server 192.168.200.1
+		smtp_connect_timeout 30
+		router_id 192.168.0.10:backup
+		vrrp_skip_check_adv_addr
+		vrrp_strict
+	}
+
+	vrrp_instance VI_1 {
+		state BACKUP			#备份
+		interface eth0
+		virtual_router_id 10
+		priority 90
+		advert_int 1
+		
+		authentication {
+			auth_type PASS
+			auth_pass 12345		#备份组密码必须相同
+		}
+		virtual_ipaddress {
+			192.168.0.201
+		}
+	}
+	ifconfig eth0				#由于主服务器在线所以不会生成虚拟ip
+	
+验证：
+	master：
+		ping 192.168.0.201		#测试是否能通
+		ifdown eth0				#关闭网卡
+	backup：
+		ifconfig eth0			#查看是否生成虚拟ip
+		ping 192.168.0.201		#测试是否能通
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

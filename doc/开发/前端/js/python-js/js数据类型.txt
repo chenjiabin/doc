@@ -1,0 +1,88 @@
+null是JavaScript语言的关键字，它表示一个特殊值，常用来描述“空值”
+undefined是一个特殊值，表示变量未定义
+
+JavaScript中不区分整数值和浮点数值，JavaScript中所有数字均用浮点数值表示。
+转换：
+    parseInt(..)        将某值转换成数字，不成功则NaN
+    parseFloat(..)      将某值转换成浮点数，不成功则NaN
+
+特殊值：
+    NaN，非数字。可使用 isNaN(num)来判断。
+    Infinity，无穷大。可使用 isFinite(num)来判断。
+
+数值运算：
+    Math.max(n1,n2)      返回两个数中较大的一个
+    Math.min(n1,n2)      返回两个数中较小的一个
+    Math.random()        生成一个随机数
+
+
+字符串操作：
+    obj = 'values'                       定义字符串
+    obj.length                           长度
+    obj.trim()                           移除两边的空白
+    obj.trimLeft()                       移除左边的空白
+    obj.trimRight)                       移除右边的空白
+    obj.charAt(n)                        返回字符串中的第n个字符
+    obj.concat(value, ...)               拼接
+    obj.slice(start, end)                切片
+    obj.split(delimiter, limit)          分割
+    obj.toLowerCase()                    大写
+    obj.toUpperCase()                    小写
+    obj.search(regexp)                   从头开始匹配，返回匹配成功的第一个位置(g无效)
+    obj.match(regexp)                    全局搜索，如果正则中有g表示找到全部，否则只找到第一个
+    obj.indexOf(substring,start)         子序列位置
+    obj.lastIndexOf(substring,start)     子序列位置
+    obj.substring(from, to)              根据索引获取子序列
+    obj.replace(regexp, replacement)     替换，支持正则表达式
+
+
+布尔类型：
+    true，false 
+    ==          比较值相等
+    !=          不等于
+    ===         比较值和类型相等
+    !===        不等于
+    ||          或
+    &&          且 
+
+
+数组类似与python的列表：
+    l1 = [1,2,3,4,5]           定义列表
+
+    obj.length          数组的大小
+    obj.push(ele)       尾部追加元素
+    obj.pop()           尾部获取一个元素
+    obj.unshift(ele)    头部插入元素
+    obj.shift()         头部移除元素
+    obj.splice(start, deleteCount, value, ...)  插入、删除或替换数组的元素
+                        obj.splice(n,0,val) 指定位置插入元素(n:所在位置，0代表删除个数，val代表插入或者替换指定位置的值)
+                        obj.splice(n,1,val) 指定位置替换元素
+                        obj.splice(n,1)     指定位置删除元素
+    obj.slice()         切片
+    obj.reverse()       反转
+    obj.join(sep)       将数组元素连接起来以构建一个字符串
+    obj.concat(val,..)  连接数组
+    obj.sort()          对数组元素进行排序
+
+
+字典：       
+d1 = {'k1':'v1','k2':'v2','k3':'v3'}                #定义字典
+d1['k2']                获取k2对应的值
+d1['k5']='v5'           插入新值
+
+
+
+JSON.stringify(obj)     序列化
+JSON.parse(str)         反序列化
+
+
+
+
+
+
+
+
+
+
+
+

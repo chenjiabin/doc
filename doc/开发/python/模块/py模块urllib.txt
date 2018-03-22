@@ -1,0 +1,68 @@
+urllib：py爬虫模块，多用于抓取网页内容，目前有两个版本
+
+urllib和urllib2的区别：
+urllib2可以接受Request来设置URL请求的headers，伪装User Agent字符串
+urllib仅可以接受URL，但urllib提供urlencode方法用来GET查询字符串的产生，而urllib2没有
+目前的大部分http请求都是urllib2完成的
+
+
+常用方法和属性：
+urlopen(url)：打开指定网页的网页源代码
+getcode：返回服务器的状态代码，200正常，404服务器端错误
+geturl()：显示请求的url
+info()：查看服务器发送的包信息
+urlretrieve(url,保存位置)：下载url定位到的文件
+
+
+
+例子：
+#!/usr/bin/python  
+# -*- coding:utf-8 -*-  
+  
+import urllib                                                     #导入urllib模块  
+import urllib2                                                    #导入urllib2模块  
+import re                                                         #导入正则表达式模块：re模块  
+  
+def getPDFFromNet(inputURL):					  #定义函数，接受一个参数  
+        req = urllib2.Request(inputURL)				  #封装URL  
+        f = urllib2.urlopen(req)                                  #打开网页  
+        localDir = 'E:\downloadPDF\\'                             #下载PDF文件需要存储在本地的文件夹  
+        urlList = []                                              #用来存储提取的PDF下载的url的列表  
+        for i in f:                                               #遍历网页的每一行  
+                line = i.strip()                           	  #去除行首位的空格
+                if re.match('.*PDF.*',line):                      #去匹配含有“PDF”字符串的行，只有这些行才有PDF下载地址  
+                        wordList = line.split('\"')               #以"为分隔符，将该行分开，这样就将url地址单独分开了  
+                        for word in wordList:                     #遍历每个字符串  
+                                if re.match('.*\.pdf$', word):    #匹配含有“.pdf”的字符串，只有url中才有  
+                                        urlList.append(word)      #将提取的url存入列表
+  
+        for everyURL in urlList:                                  #遍历列表的每一项，即每一个PDF的url  
+                wordItems = everyURL.split('/')                   #将url以/为界进行划分，为了提取该PDF文件名  
+                for item in wordItems:                            #遍历每个字符串  
+                        if re.match('.*\.pdf$', item):            #查找PDF的文件名  
+                                PDFName = item                    #查找到PDF文件名  
+                localPDF = localDir + PDFName                     #将本地存储目录和需要提取的PDF文件名进行连接  
+                try:                                               
+                        urllib.urlretrieve(everyURL, localPDF)    #按照url进行下载，并以其文件名存储到本地目录  
+                except Exception,e:  
+                        continue  
+
+
+urllib2设置user-agent：
+目的：为防止网站禁止抓取网页内容
+
+import urllib2						#导入模块
+
+url="http://www.baidu.com"				#定义url
+request = urllib2.Request(url）			 	#封装url
+request.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 (FoxPlus) Firefox/2.0.0.14')			#添加伪装，键，值（值为浏览器user-agent的头，百度上有详细介绍）
+k = urllib2.urlopen(request)		#链接经过封装的url	
+print k.read()				#读取网页文件
+
+
+
+
+
+
+
+

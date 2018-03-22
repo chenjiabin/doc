@@ -1,0 +1,64 @@
+--prefix=/usr/local/apache2   	//指定安装位置
+--enable-so   			//编译动态加载模块，使得Apache升级和增加模块时只需编译相关的模块即可
+--enable-expires		//支持 HTTP 控制
+--enable-rewrite		//支持 URL 重写
+--enable-cgi			//编译 CGI版本的PHP
+--enable-cache 			//支持缓存
+--enable-file-cache 		//支持文件缓存
+--enable-mem-cache 		//支持记忆缓存
+--enable-disk-cache 		//支持磁盘缓存
+--enable-static-support   	//支持静态连接(默认为动态连接)
+--enable-static-rotatelogs   	//使用静态连接编译 rotatelogs – 滚动 Apache 日志的管道日志程序
+--enable-static-logresolve   	//使用静态连接编译 logresolve – 解析 Apache 日志中的IP地址为主机名
+--enable-static-htdbm   		//使用静态连接编译 htdbm – 操作 DBM 密码数据库
+--enable-static-ab   		//使用静态连接编译 ab – Apache HTTP 服务器性能测试工具
+--enable-static-checkgid   	//使用静态连接编译 checkgid
+--disable-cgid   		//禁止用一个外部 CGI 守护进程执行CGI脚本
+--disable-cgi   			//禁止编译 CGI 版本的 PHP
+--disable-userdir   		//禁止用户从自己的主目录中提供页面
+--with-mpm=worker 		//让apache以worker方式运行
+--enable-authn-dbm=shared 	//对动态数据库进行操作。Rewrite时需要
+
+
+--enable-experimental-libtool  	//启用试验性质的自定义libtool
+--disable-libtool-lock		//取消锁定(可能导致并行编译崩溃)
+--enable-debug			//启用调试编译，仅供开发人员使用
+--enable-maintainer-mode	//打开调试和编译时警告，仅供开发人员使用
+--enable-profile		//打开编译profiling(GCC)
+--disable-lfs			//在32-bit平台上禁用大文件支持
+--enable-threads		//启用线程支持，在线程型的MPM上必须打开它
+--disable-threads		//禁用线程支持，如果不使用线程化的MPM ，可以关闭它以减少系统开销
+--disable-dso			//禁用DSO支持
+--enable-other-child		//启用可靠子进程支持
+--disable-ipv6			//禁用IPv6支持
+--with-gnu-ld			//指定C编译器使用GNU ld
+--with-pic			//只使用 PIC/non-PIC 对象[默认为两者都使用]
+--with-installbuilddir		//指定APR编译文件的存放位置(默认值为：’${datadir}/build’)
+--without-libtool		//禁止使用libtool连接库文件
+--with-efence[=DIR]		//指定Electric Fence的安装目录
+--with-sendfile			//强制使用sendfile(译者注：Linux2.4/2.6内核都支持)
+--with-egd[=DIR]		//使用EDG兼容的socket
+--with-devrandom[=DEV]		//指定随机设备[默认为：/dev/random]
+
+
+--with-ldap-lib=PATH		//ldap库文件路径
+--with-ldap=library		//使用的ldap库
+--with-gdbm			//指定GDBM的位置
+--with-ndbm			//指定NDBM的位置
+--with-berkeley-db		//指定Berkeley DB的位置
+--with-pgsql			//指定PostgreSQL的位置
+--with-mysql			//参看INSTALL.MySQL文件的内容
+--with-sqlite3			//指定sqlite3的位置
+--with-sqlite2			//指定sqlite2的位置
+
+
+
+
+
+
+
+
+
+
+
+

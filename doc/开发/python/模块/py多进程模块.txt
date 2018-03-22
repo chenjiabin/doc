@@ -1,0 +1,35 @@
+multiprocessing：python多进程模块
+
+创建进程：
+p = Process(target=func,args=arg)	//创建进程(基本和多线程一样)
+p.start()							//启动进程
+
+
+创建进程池：	
+Pool								//创建进程池
+	
+进程池的运用：
+#!/usr/bin/py
+#-*- coding: utf-8 -*-
+import multiprocessing
+import time
+
+def a(x):
+    time.sleep(2)
+    print x
+    return x * x
+
+t = [1,2,3,4,5,6,7,8,9]				//t必须是列表或元组
+
+pool = multiprocessing.Pool(2)		//创建线程池,每次执行两个进程
+y = pool.map(a,t)
+print y
+
+
+
+
+
+
+
+
+

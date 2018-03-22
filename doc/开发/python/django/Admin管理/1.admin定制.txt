@@ -1,0 +1,84 @@
+models:
+    class host(models.Model):
+        hostname = models.CharField('主机名',max_length=250)                   #主机名，字段在django admin中显示的信息
+        addr = models.GenericIPAddressField('主机地址',unique=True)
+        system = models.CharField('系统信息',max_length=250)
+        kernel = models.CharField('内核信息',max_length=250)
+        cpuinfo = models.CharField('cpu详细信息',max_length=250)
+        cpunumber = models.IntegerField('物理cpu数量')
+        cpuprocess = models.IntegerField('逻辑cpu数量')
+        memory_size = models.IntegerField('内存大小')
+        disknumber = models.IntegerField('硬盘数量')
+        disksize = models.IntegerField('存储空间')
+
+        class Meta:
+            verbose_name_plural = "主机列表"                                    #表在django admin中显示的信息
+
+        def __str__(self):
+            return "%s %s" %(self.hostname,self.addr)                         #需要显示的字段
+
+
+    class group(models.Model):
+        groupname = models.CharField('组名',max_length=250,unique=True)
+        groupinfo = models.TextField('描述信息')
+        hostinfo = models.ManyToManyField(host)
+
+        class Meta:
+            verbose_name_plural = "主机组列表"
+
+        def __str__(self):
+            return '%s' %(self.groupname)
+
+
+
+admin：
+    class AdminHost(admin.ModelAdmin):
+        list_display = ('hostname','addr','system','cpunumber','memory_size','disksize')
+        #list_display_links = ('hostname','addr',)
+        list_filter = ('hostname','addr',)
+        search_fields = ('hostname','addr',)
+        #list_per_page = 2
+        list_editable = ('addr','system',)
+
+
+
+    class AdminGroup(admin.ModelAdmin):
+        list_display = ('groupname','groupinfo')
+
+
+
+    admin.site.register(models.host,AdminHost)
+    admin.site.register(models.group,AdminGroup)
+
+
+    list_display = ()                           #定义显示的字段
+    list_display_links = ()                     #可点击的字段
+    list_filter = ()                            #过滤
+    list_per_page = 100                         #每页显示多少条数据
+    list_editable = ()                          #定义可直接编辑的字段
+    search_fields = ()                          #定义搜索框和可搜索的字段
+
+
+
+
+
+http://python.usyiyi.cn/translate/Django_111/ref/contrib/admin/actions.html         #自定义动作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

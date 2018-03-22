@@ -1,0 +1,51 @@
+yum -y install git			#安装git
+mkdir /git					#创建git仓库
+cd /git						#进入git仓库
+git init			#初始化git仓库(必须初始化，初始化完成后会在当前目录下生成.git目录，不要手动修改.git目录里面的内容)
+
+git常用命令：
+	git init								#初始化git仓库
+	git add  <file>							#添加需要提交的文件(添加到暂存区)
+	git add -A								#添加所有文件到暂存区
+	git commit -m '说明'					#将需要提交的文件提交到git仓库中(提交到版本库)
+	git status								#查看git当前状态
+	git log									#查看git日志(可以查看commit id)
+	git show <commit id>					#查看某次提交的内容变化
+	git reset --hard  <commit id>			#回到指定的历史版本
+	git reflog								#查看git提交的版本历史
+	git rm  <file>							#删除指定文件(删除之后需要commit)
+	git branch 								#查看所有分支
+	git branch <name>						#创建指定分支
+	git checkout  <name>					#切换指定分支 							
+	git config --global user.name 			#查看当前git用户
+	git config --global user.name 'huyuan'	#设置当前git用户(--global当前用户，--system系统用户)
+	git config --global user.email 			#查看当前git用户的邮箱地址
+	git config --global user.email 'huyuan@dxwind.com'		#设置当前用户的邮箱地址
+	
+https://git-scm.com/book/zh/v2
+
+
+
+http://blog.jobbole.com/25775/
+
+
+https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
+
+
+
+
+
+
+
+
+
+12345678.com
+
+
+
+
+
+
+
+
+

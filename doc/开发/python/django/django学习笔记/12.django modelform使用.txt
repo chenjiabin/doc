@@ -1,0 +1,198 @@
+models:
+    class Host(models.Model):
+        hostname = models.CharField(max_length=50)
+        ipaddress = models.GenericIPAddressField()
+
+
+    class HostGroup(models.Model):
+        groupname = models.CharField(max_length=50)
+        host_to_group = models.ManyToManyField(Host)
+
+
+modelform:
+    from django import forms
+    from app01.models import Host
+
+
+    class Test(forms.ModelForm):
+        class Meta:
+            model = Host                                #和Host关联
+            #fields = "__all__"                         #显示Host的所有字段
+            #fields = ['hostname']                      #显示指定字段
+            exclude = ['hostname']                      #排除指定字段
+
+
+views：
+    class ModelForm(View):
+        def get(self,request):
+            data = Test()
+            return render(request,'test.html',{'data':data})
+
+        def post(self,request):
+            obj = Test(request.POST)
+            if obj.is_valid():
+                return HttpResponse('ok')
+            else:
+                return render(request,'test.html',{'error':obj})
+
+
+html：
+    <form action="/modelform/" method="post">
+        {% csrf_token %}
+        {{ error.as_p }}
+        {{ data.as_p }}
+        <input type="submit" value="提交">
+    </form>
+
+
+modelform字段：modelform和form字段的使用基本一样，因为他们都继承至一个类
+    class Test(forms.ModelForm):
+        class Meta:
+            model = Host                              #和Host关联
+            fields = "__all__"                        #显示Host的所有字段
+            #fields = ['hostname']                    #显示指定字段
+            #exclude = ['hostname']                   #排除指定字段
+            
+            labels = {
+                        'hostname':'主机名',           #在input框前面显示的提示
+                        'ipaddress':'IP地址'
+                    }
+
+            help_texts = {
+                'hostname':'请输入主机名',              #在input框后面显示的提示
+                'ipaddress':'请输入IP地址',
+                }
+            widgets = {                               #自定义插件
+                'hostname':forms.Textarea() 
+                }
+
+
+            error_messages = {                        #自定义错误信息
+                'hostname':{
+                    'required':'请输入内容'
+                    }
+                }
+
+            localized_fields = ('hostname',)          #时区本地化
+                在settings中设置时区
+                    TIME_ZONE = 'Asia/Shanghai'
+                    USE_TZ = True
+
+
+
+modelform save()对象：
+    class ModelForm(View):
+        def get(self,request):
+            data = Test()
+            return render(request,'test.html',{'data':data})
+
+        def post(self,request):
+            obj = Test(request.POST)
+            if obj.is_valid():
+                obj.save()                                          #验证成功直接将用户输入的值写入到数据库中，包括m2m和ForeignKey对象
+                return HttpResponse('ok')
+            else:
+                print obj.errors.as_json()
+                return render(request,'test.html',{'error':obj})
+
+
+
+modelform 更新数据：
+def Edit(request):
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        data = Host.objects.get(id=id)
+        formobj = IndexEdit(instance=data)
+        return render(request,"index-edit.html",{'data':formobj})
+
+    elif request.method == 'POST':
+        hostname = request.POST.get('host_name')                        
+        user_obj = Host.objects.get(host_name=hostname)                 #获取数据
+        update = IndexEdit(request.POST,instance=user_obj)              #将修改后的数据传入modelform匹配
+        if update.is_valid():                                           
+            update.save()                                               #执行数据库更新操作
+            return redirect('/')
+        else:
+            return HttpResponse('error')
+
+
+
+
+
+modelform使用实例：
+
+urls文件：
+    urlpatterns = [
+        url(r'^admin/', admin.site.urls),
+        url(r'^test/$', csrf_exempt(views.Test.as_view())),
+    ]
+
+
+models文件：
+    class Host(models.Model):
+        hostname = models.CharField(max_length=50)
+        ipaddress = models.GenericIPAddressField()
+        def __str__(self):
+            return  self.hostname               #显示hostname字段
+
+    class HostGroup(models.Model):
+        groupname = models.CharField(max_length=50)
+        host_to_group = models.ManyToManyField(Host)
+
+
+ModelForm文件：
+    class Test2(forms.ModelForm):
+        class Meta:
+            model = HostGroup
+            fields = ["groupname","host_to_group"]
+            labels = {
+                'groupname':'组名',
+                'host_to_group':'主机联系'
+            }
+
+
+views文件：
+    class Test(View):
+        def get(self,request):
+            data = Test2()
+            return render(request,'test2.html',{'data':data})
+
+        def post(self,request):
+            obj = Test2(request.POST)
+            if obj.is_valid():
+                obj.save()
+                return HttpResponse('ok')
+            else:
+                return render(request,'test2.html',{'error':obj})
+
+
+html文件：
+    <form action="/test/" method="post">
+        {{ error.as_p }}
+        {{ data.as_p }}
+        <input type="submit" value="提交">
+    </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS</title>
+    <style>
+        #idselector{                            /*id选择器*/
+            background-color: red;              /*背景色*/
+            width:200px;                        /*宽度，可以设置百分比也可以设置绝对宽度*/
+            height: 200px;                      /*高度，只能设置绝对高度*/
+            text-align: center;                 /*水平方向居中*/
+            line-height:200px;                  /*垂直根据设置高度居中*/
+            color: darkmagenta;                 /*字体颜色*/
+            font-size: large;                   /*字体设置*/
+            font-weight: 900;                   /*字体粗细*/
+            float: right;                       /*右浮动*/
+            /*float: left;*/                    /*左浮动*/
+            /*float注意事项：当子标签浮动起来时将不受父标签的限制，需要在父标签的最后标签中加上
+            <div style="clear: both;"></div>使父标签重新约束子标签*/
+            margin: 50px;                       /*外边距*/
+            /*margin: 0 auto;*/                 /*外边距，上下间距为0，左右自动*/
+            padding: 5px;
+        }
+
+
+        .test{
+            display: inline;                    /*将标签转换为行内标签*/
+            /*display: block;*/                 /*将标签转换为块级标签*/
+            /*display: inline-block;*/          /*使标签具有行内标签和块级标签的属性*/
+            /*display: none;*/                  /*让标签消失*/
+
+            /*行内标签：无法设置高度、宽度、padding，margin*/
+            /*块级标签：e可以设置高度、宽度、padding，margin*/
+        }
+
+
+        .cssselector{                           /*class选择器*/
+            width: 100px;
+            height:100px;
+
+        }
+
+        div div{                                    /*标签选择器*/
+            border: 10px solid red;                 /*设置边框，solid实线显示，red红色*/
+            background-color: aqua;
+            width: 300px;
+            height: 300px;
+        }
+
+        span a{                                 /*层级选择器*/
+            color: brown;
+        }
+
+        input[test='test']{                     /*属性选择器*/
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+        }
+    </style>
+
+</head>
+<body>
+    <div>
+        <div>https://www.jd.com</div>
+    </div>  <br/>
+
+    <span class="cssselector">
+        超链接
+        <a href="https://www.baidu.com">百度</a>
+    </span> <br/><br/><br/>
+
+    用户名：<input test="test" type="text" name="pwd">
+    <div id="idselector">
+        居中看字体，我是div
+    </div>
+
+</body>
+</html>

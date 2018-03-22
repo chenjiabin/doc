@@ -1,0 +1,95 @@
+HttpRequest详解：每个函数的request参数都继承至HttpRequest
+	path		    #请求页面的完整路径,不包括域名
+	method		    #请求的方法，用大写表示
+	GET			    #包含所有GET的参数，字典对象
+	POST		    #包含所有POST的参数，字典对象
+	COOKIES		    #包含所有cookies的标准，字典对象，Keys和values都是字符串
+	META		    #包含所有可用HTTP头部信息的字典
+	user		    #代表当前登录的用户属性,request.user.is_authenticated判断用户是否登录
+	scheme          #请求方式(http或者https)
+    body            #请求的内容
+    encoding        #提交的数据的编码方式(如果为None则表示使用DEFAULT_CHARSET设置),DEFAULT_CHARSET默认为utf-8
+    COOKIES         #包含所有Cookie的字典
+    FILES           #类似于字典的对象，包含所有的上传文件，FILES中的每个键为<input type="file" name=""> 中的name
+    session         #一个可读写的，类似字典的对象，表示当前会话
+    is_secure()     #如果请求安全，则返回True也就是说，如果它是用HTTPS
+    META            #包含所有可用HTTP标头的字典。具体的头部信息取决于客户端和服务器
+
+HttpRequest.META    #包含所有可用HTTP标头的字典。
+    CONTENT_LENGTH                  #请求的正文的长度
+    CONTENT_TYPE                    #请求的正文的MIME 类型
+    HTTP_ACCEPT                     #响应可接收的Content-Type
+    HTTP_ACCEPT_ENCODING            #响应可接收的编码
+    HTTP_ACCEPT_LANGUAGE            #响应可接收的语言
+    HTTP_HOST                       #客服端发送的HTTP Host头部
+    HTTP_REFERER                    #Referring页面
+    HTTP_USER_AGENT                 #客户端的user-agent字符串
+    QUERY_STRING                    #单个字符串形式的查询字符串
+    REMOTE_ADDR                     #客户端的IP地址
+    REMOTE_HOST                     #客户端的主机名
+    REMOTE_USER                     #服务器认证后的用户
+    SERVER_NAME                     #服务器的主机名
+    SERVER_PORT                     #服务器的端口
+
+
+实例：
+def test(request):
+    print request.encoding
+    print request.META.get('REMOTE_ADDR')
+    print request.path
+    print request.scheme
+    return HttpResponse('hello')
+
+
+
+HttpResponse详解：
+Django包含了一系列的HttpResponse子类，用来处理不同类型的HTTP响应, 这些子类存在于django.http模块中
+ 
+HttpResponseRedirect(UTL)：						#重定向的地址，URL表示跳转的地址，302的HTTP状态码
+HttpResponsePermanentRedirect(URL)				#永久重定向，301的HTTP状态码
+HttpResponseBadRequest(返回值)					#表示一个错误的请求，400的HTTP状态码
+HttpResponseNotFound(返回值)					    #表示资源没有找到，404的HTTP状态码
+HttpResponseForbidden(返回值)					    #表示用户无权访问，403的HTTP状态码
+HttpResponseNotAllowed(['请求类型'],返回值)		#不允许的请求方法，405的HTTP状态码
+HttpResponseServerError(返回值)					#表示服务器内部错误，500的HTTP状态码
+
+
+
+
+
+实例：
+	from django.shortcuts import render
+	from django.http import HttpRequest
+	from django.http import HttpResponse
+	from django.http import HttpResponseNotFound
+	from django.http import HttpResponseRedirect
+	from django.http import HttpResponseNotAllowed
+	from django.http import HttpResponseServerError
+
+	def index(request):
+		return HttpResponse('<h1>welcome use django</h1>')
+
+	def app_index(request):              #request是HttpRequest的一个对象
+		if request.method == 'GET':
+			#return HttpResponseNotAllowed(['GET',],'不允许GET方法其请求')
+			#return HttpResponse('欢迎使用GET方法')
+			#return HttpResponseNotFound('404')
+			#return HttpResponseRedirect('http://www.jd.com')
+			return HttpResponseServerError('服务器故障')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,52 @@
+Python中的ftplib模块
+Python中默认安装的ftplib模块定义了FTP类，其中函数有限，可用来实现简单的ftp客户端，用于上传或下载文件
+
+ftp登陆连接
+    from ftplib import FTP 
+    ftp=FTP()
+    ftp.connect('hostname',port)            #连接FTP服务器
+    ftp.login('username','password')        #登录
+    ftp.quit()                              #退出FTP服务器 
+    ftp.set_debuglevel(2)                   #打开调试级别2，显示详细信息
+    bufsize=1024                            #设置的缓冲区大小
+
+
+ftp相关命令操作
+    ftp.cwd(pathname)                       #切换当前FTP的工作目录
+    ftp.dir()                               #显示目录下文件信息
+    ftp.nlst()                              #获取目录列表
+    ftp.mkd(pathname)                       #新建远程目录
+    ftp.pwd()                               #返回当前所在位置
+    ftp.rmd(dirname)                        #删除远程目录
+    ftp.delete(filename)                    #删除远程文件
+    ftp.rename(fromname, toname)            #将fromname修改名称为toname。
+    ftp.storbinaly("STOR filename.txt",file_handel,bufsize)         #上传目标文件,bufsize可选
+    ftp.retrbinary("RETR filename.txt",file_handel,bufsize)         #下载FTP文件,bufsize可选
+
+
+示例：
+    def Ftpserver():
+        ftp.connect('ftpprd.ncep.noaa.gov')         #连接FTP服务器
+        ftp.login('anonymous','')                   #登录,(anonymous匿名用户)
+
+
+更多内容请查看官方文档：
+    https://docs.python.org/2.7/library/ftplib.html             python2.7
+    https://docs.python.org/3.6/library/ftplib.html             python3.6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

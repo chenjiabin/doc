@@ -1,0 +1,71 @@
+pip安装模块
+pip install pymysql
+
+
+pymysql：
+	pymsql是Python中操作MySQL的模块，其使用方法和MySQLdb几乎相同。但pymysql支持python3而后者不支持python3
+
+
+pymysql基本操作：
+	conn = pymysql.connecthost='主机地址',[user='用户'],[passwd='密码'],[db='数据库'], [charset='字符类型'])	#连接方法
+	cursor = conn.cursor()												#创建游标
+	cursor = connect.cursor(cursor=pymysql.cursors.DictCursor)			#创建游标，以字典方式返回数据(默认以元组方式返回)
+	data1= cursor.execute("show databases;")			#执行SQL，并返回收影响行数 
+	
+	data2 = cursor.fetchone()							#每次获取一行数据(多用于查询大量数据时)
+	
+	data3 = cursor.fetchmany(3)							#每次获取n行数据
+	
+	data4 = cursor.fetchall()							#获取剩余结果所有数据
+	
+	参数化查询，在执行execute时必须使用参数化查询，避免SQL注入
+	user='root'									#定义参数
+	passwd=''
+	row = cursor.execute("select user,password from mysql.user where user=%s and password=%s",(user,passwd))	#参数化查询
+	data_all = cursor.fetchall()				#获取查找到的所有数据
+	
+	
+	conn.commit()			#提交，不然无法保存新建或者修改的数据
+	cursor.close()			#关闭游标
+	conn.close()			#断开连接
+
+	
+
+pip安装模块
+pip install MySQL-python
+
+
+2、mysql数据操作
+
+必须有的步骤：
+contact = MySQLdb.connect(host='主机地址',[user='用户'],[passwd='密码'],[db='数据库'])		//连接数据库
+open_database = contact.cursor(cursorclass=mysql.cursors.DictCursor)			//打开数据库,以字典方式返回
+
+查看数据：
+show = open_database.execute('SQL语句')			//查询到多少条数据
+show_data = open_database.fetchall()			//返回查询到的所有数据
+												//fetchone()每一次执行只返回一条数据
+
+
+增、删、改：
+SQL = 'insert into www(id,name) values(%s,%s)'		//SQL语句，%s为站位符，必须是%s
+sql = (1,'lisi')									//%s对应的值
+insert_data = open_database.execute(SQL,sql)		//执行SQL操作
+
+
+
+必须有的步骤：
+contact.commit()						//向数据库提交操作
+open_database.close()					//关闭数据库
+contact.close()							//断开和数据库的连接
+
+
+
+
+
+
+
+
+
+
+

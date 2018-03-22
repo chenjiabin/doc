@@ -1,0 +1,19 @@
+centos6
+[epel]
+nama=epel package
+baseurl=http://mirrors.aliyun.com/epel/6/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=http://mirrors.aliyun.com/epel/RPM-GPG-KEY-EPEL-6
+
+
+centos7
+[epel]
+nama=epel package
+baseurl=http://mirrors.aliyun.com/epel/7/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=http://mirrors.aliyun.com/epel/RPM-GPG-KEY-EPEL-7
+
+
+lrzsz			#传输工具

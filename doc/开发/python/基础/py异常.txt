@@ -1,0 +1,108 @@
+异常：python运行时产生的错误称为异常
+
+异常分类：
+1、语法错误：语法构造上存在错误，导致解释器不能解释或者编译器无法通过
+2、逻辑错误：由不完整的输入或逻辑无法生成计算无法执行
+
+
+异常的处理：
+1、默认情况下，python产生错误将触发一个异常，当异常被触发时解释器终止的代码执行
+2、人为的去捕获异常，当程序触发异常时运行指定的代码
+
+
+异常的作用：
+1、错误处理：py默认终止程序
+2、事件通知：用于发射错误信号
+3、流程控制：使用try语句控制程序流
+
+
+try语句：异常处理语句
+格式：
+try:
+    执行的代码				
+    except   异常类型,变量:		//一个try支持多个except，用于捕捉错误，如果没有定义异常类型那么将捕捉所有异常
+        产生异常时的处理代码		//变量，用于存储错误通告，但是只要在定义了异常类型才会通告才产生
+    else:				//只能有一个else，else必须写在finally前面
+        程序执行正常时运行的代码
+    finally:				//不捕捉错误，通常负责异常产生后的收尾工作
+        一定会执行的代码
+
+
+raise：自定义异常
+格式：
+raise   异常类型, '输出通知'		//通常需要和if语句一起使用
+
+
+assert：简化版的raise语句
+格式：
+assert  判断式, '输出通知'		//通常用于短小的自定义异常
+
+
+常见异常类型：
+1、NameError：尝试访问一个未申明的变量
+2、SyntaxError：语法错误
+3、IndexError：索引超出范围
+4、IOError：输入输出错误
+5、ValueError：数值错误
+6、TypeError：类型错误
+7、KeyboardInterrupt：用户中断执行，通常由ctrl+c发出
+8、BaseExceptiona：代表所有异常
+
+with是一种上下文的管理协议，用于简化try…except…finally的处理流程，当with执行完后with会自动释放对象
+例：
+
+with open('/etc/passwd','r') as pafile
+    pafile.read
+
+例1：
+try:
+    print 'aa'
+except:
+    print 'of'
+else:
+    print 'not'
+finally:
+   print 'in'
+   
+aa
+not
+in
+
+
+例2：
+try:
+    print aa
+except NameError,e:
+    print e
+else:
+    print 'not'
+finally:
+    print 'in'
+   
+name 'aa' is not defined
+in
+
+
+
+例3：
+if 1 == 1:
+    raise NameError,'Error'
+
+NameError: Error
+
+
+例4：
+assert 1 == 0,'Error'
+
+AssertionError: Error
+
+
+
+
+
+
+
+
+
+
+

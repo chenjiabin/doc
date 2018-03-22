@@ -1,0 +1,137 @@
+适用于所有序列的操作和方法
+
+s[i]：索引运算
+>>> w = 'www.test.com'
+>>> w
+'www.test.com'
+>>> w[1]
+'w'
+>>> w[5]
+'e'
+>>> 
+
+
+s[i:j]：切片运算
+>>>w = www.test.com
+>>> w[3:7]
+'.tes'
+
+
+min()：取最小值
+>>>w = 'abcdef'
+>>>min(w)
+'a'
+
+
+max()：取最大值
+>>>w = 'abcdef'
+>>> max(w)
+'f'
+
+sum()：计算列表中各项的和
+>>> w = [1,2,3,4,5]
+>>> sum(w)
+15
+
+
+适用于字符串的操作和方法
+
+s.join(t)：使用s作为分隔符，连接t中的字符串
+>>> w = 'www.test.com'
+>>> w = list(w)
+>>> print w
+['w', 'w', 'w', '.', 't', 'e', 's', 't', '.', 'c', 'o', 'm']
+>>> ''.join(w)
+'www.test.com'
+>>> print w
+['w', 'w', 'w', '.', 't', 'e', 's', 't', '.', 'c', 'o', 'm']
+>>> w = ''.join(w)
+>>> print w
+www.test.com
+
+
+s.split(t)：使用t为分隔符，对s进行划分
+>>> w = 'www.test.com'
+>>> w.split('.')
+['www', 'test', 'com']
+
+s.upper()：将一个字符转换成大写
+>>> w = 'www.test.com'
+>>> w.upper()
+'WWW.TEST.COM'
+
+s.lower()：将一个字符转换成小写
+>>> w = w.upper()
+>>> print w
+WWW.TEST.COM
+>>> w.lower()
+'www.test.com'
+
+
+s.endswith：判断字符串是否已指定的字符串结尾，是则为真
+>>> s = 'mother.log'
+>>> w = 'mother'
+>>> s.endswith('.log')
+True
+>>> w.endswith('.log')
+False
+
+s.strip()：去除前后的空格
+>>> url = '   www.baidu.com    '
+>>> print url
+   www.baidu.com    
+>>> data = url.strip()
+>>> print data
+www.baidu.com
+
+
+s.startswith：判断字符串是否已指定的字符串开头，是则为真
+w.startswith('www')
+True
+w.startswith('t')
+False
+ 
+s.replace：替换指定字符
+s = '1111122222333334444455555' 
+s.replace('1','a')
+'aaaaa22222333334444455555'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

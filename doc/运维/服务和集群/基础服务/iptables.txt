@@ -1,0 +1,145 @@
+1.防火墙工作在主机边缘:对于进出本网络或者本主机的数据报文，根据事先设定好的检查规则对其检查，对形迹可疑的报文一律按照事先定义好的处理机制做出相应处理
+
+2、linux的tcp/ip协议栈是在内核当中，意味着报文的处理是在内核中处理的，也就是说防火墙必须在工作在内核中，防火墙必须在内核中完成tcp/ip报文所流进的位置，用规则去检查，才真正能工作起来
+
+3、在linux中真正实现防火墙功能的是netfilter，因为netfilter工作在内核空间用户无法直接操作所有linux上诞生了一个netfilter的管理软件，可以让用户在这个软件上进行一系列操作从而达到控制netfilter的目的，这个软件就是iptables
+
+
+iptables配置：
+
+表和表能够使用的链
+nat：用于修改数据包的ip和端口等信息(地址转换)
+     PREROUTING ，OUTPUT ，POSTROUTING
+
+raw：对数据包进行状态跟踪
+     OUTPUT,PREROUTING
+
+filter：最常用(默认),用来进行数据包过滤
+        INPUT ，FORWARD ，OUTPUT
+
+mangle：用来修改数据包的属性
+        PREROUTING，INPUT，FORWARD，OUTPUT，POSTROUTING
+
+表的应用优先级：raw→mang→nat→filter
+
+链：
+INPUT：匹配入站数据包
+OUTPUT：匹配出站数据包
+FORWARD：数据包转发
+PREROUTING：路由前匹配
+POSTROUTING：路由后匹配
+
+链的应用优先级：入站→转发→出站
+
+规则
+
+规则语法：iptables [-t table] COMMAND chain CRETIRIA -j ACTION
+例子：iptables -t filter -A INPUT -p tcp --dport 21 -j ACCEPT
+
+	 iptables：关键字
+	 -t table：操作的表
+	 COMMAND ：对规则的管理
+	 chain   ：指定链
+	 CRETIRIA：指定匹配标准
+	-j ACTION：指定如何进行处理
+
+规则的匹配顺序：一条一条依次匹配，匹配到则停止，LOG条件除外
+
+COMMAND详解
+
+1、链命令管理
+-F：清空规则链
+-N：新建规则链
+-X：删除用户自定义的空链,如果链不为空需要清空之后才能删除
+-E：重命名自定义链,使用格式和mv重命名相同
+-Z：清空链和规则计数器
+
+
+2、规则管理命令
+-A：追加规则链
+-I：插入规则链
+-R：修改规则链
+-D：删除规则链
+-P：修改默认规则
+
+3、查看规则链(-L)
+   -L的子命令：
+        -n：以数字方式显示
+        -v：显示详细
+        -vv：更详细
+        -x：计数器不做单位换算
+        --line-numbers：显示规则行号
+
+4、匹配标准：
+-s：匹配源地址(默认为所有地址)
+-d：匹配目标地址(默认为所有地址)
+-p：匹配协议(tcp | udp | icmp)
+-i：匹配指定网卡流入的数据
+-o：匹配指定网卡流出的数据
+--dport：指定目标端口
+-m multiport -dport 端口列表
+-m iprange --src-range ip范围
+
+
+处理规则(ACTION)：
+DROP：丢弃
+ACCEPT：允许
+REJECT：拒绝并给出回应
+LOG：日志
+
+规则的匹配条件
+1、通用匹配
+2、隐含匹配
+3、显示匹配
+
+
+DNAT和SNAT的应用：
+vim /etc/sysctl.conf 				#内核参数文件
+	net.ipv4.ip_forward = 1			#将0修改为1，开启路由转发
+sysctl -p							#通知内核重读配置文件
+
+SNAT配置：
+iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth0 -j SNAT --to-source 1.1.1.1 
+	#将内网中的192.168.1.0/24网段的地址转换为eth0网卡上的1.1.1.1地址，nat地址转换
+	
+DNAT：
+iptables -t nat -A PREROUTING -i eth0 -d 1.1.1.1 -p tcp --dport 80 -j DNAT --to-destination 192.168.1.1
+	#将eth0网卡上的1.1.1.1:80转换到192.168.1.1，主要用于实现服务器发布
+
+
+
+iptables规则持久化和备份：
+	持久化：
+		service iptables save   #将规则写入到/etc/sysconfig/iptables文件
+
+备份和还原：
+	备份：
+		iptables-save > /root/iptables.bak		#将iptables的规则备份到/root/iptables.bak文件
+	还原：
+		iptables-restore < /root/iptables.bak	#还原iptables规则
+
+	
+例子：
+iptables -P INPUT DROP						//设置filter表的INPUT链的默认动作为DROP
+iptables -F									//清空防火墙规则
+iptables -L -nv --line-numbers							//查看
+iptables -t filter -A INPUT -p tcp --dport 80 -j ACCEPT				//追加防火墙规则
+iptables -t filter -I INPUT 1 -s 1.1.1.1 -p tcp --dport 80 -j ACCEPT		//插入防火墙规则
+iptables -t filter -R INPUT 1 -s 2.2.2.2 -p tcp --dport 80 -j ACCEPT		//修改防火墙规则
+iptables -t filter -D INPUT 1							//删除防火墙规则
+iptables -A INPUT -p tcp -m --multiport --dport 21,22,80,443 -j ACCEPT	//运行访问服务器的21,22,80,443端口
+iptables -A FORWARD -p tcp -m iprange --src-range 1.1.1.1-1.2.2.2 -j ACCEPT //运行转发1.1.1.1到1.2.2.2之间的ip地址
+
+
+
+
+参考博客：http://blog.chinaunix.net/uid-22780578-id-3346350.html
+
+
+
+
+
+
+
+
+

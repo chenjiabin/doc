@@ -1,0 +1,73 @@
+ansible是python开发的一款自动化运维工具，集合了众多运维工具（puppet、cfengine、chef、func、fabric）的优点，实现了批量配置系统、批量部署程序、批量运行命令等功能。
+ansible是基于模块工作的，本身没有批量操作系统的能力。真正去安装批量工作的是ansible所运行的模块，ansible只是提供了一种框架。
+主要包括：
+    (1)、连接插件connection plugins：负责和被监控端实现通信
+    (2)、host inventory：指定操作的主机，是一个配置文件里面定义监控的主机
+    (3)、各种模块核心模块、command模块、自定义模块
+    (4)、借助于插件完成记录日志邮件等功能
+    (5)、playbook：剧本执行多个任务时，非必需可以让节点一次性运行多个任务
+
+
+ansible的模块分为核心模块和自定义模块：
+	核心模块：实现了大多数的批量工作
+	自定义模块：更具用户自身的需求自行开发模块，ansible支持任何语言开发的模块，但都必须遵循ansible的调用规则
+
+ansible的连接是基于ssh的，需要在客户端上运行ssh服务，而不需要在客户端安装agent
+
+
+ansible主组成：
+	ansible本身复制调用各个模块进行协同工作，ansible默认情况下一次控制5台节点
+	主要组件：
+		Host Inventory：定义ansible能够管理的主机
+		Connection Plugins：用于连接ansible的插件
+		playbooks：需要执行的命令
+		core model：核心模块
+		custom model：自定义模块
+		plugins：通过插件进行日志记录
+
+
+工作过程:ansible读取Inventory获取列表，Connection Plugins连接主机，并且借助模块，读取playbooks获得需要执行的操作，向主机发送指令，运行指令，并返回结果	
+ansible的缺点：
+    1、无法管理大规模主机
+    2、速度较慢
+    3、相对与有agent的自动化管理工具来说安全性较弱
+
+
+基于包管理器的安装ansible：
+    pip install ansible             #使用python的包管理器安装，可以直接在python脚本中调用ansible的API完成批量操作
+    yum install ansible             #centos系列linux主机，需要配置好相关yum源
+    sudo install ansible            #ubuntu系列主机
+
+
+源代码安装：
+    $ git clone git://github.com/ansible/ansible.git --recursive
+    $ cd ./ansible
+    $ source ./hacking/env-setup
+    $ ./hacking/env-setup.fish
+    $ source ./hacking/env-setup -q
+    $ sudo easy_install pip                                         #安装python包管理工具
+    $ sudo pip install paramiko PyYAML Jinja2 httplib2 six          #安装依赖的python
+    $ git pull --rebase
+    $ git submodule update --init --recursive
+    $ echo "127.0.0.1" > ~/ansible_hosts
+    $ export ANSIBLE_HOSTS=~/ansible_hosts
+    $ ansible all -m ping --ask-pass
+
+
+配置管理组机：
+    $ ssh-keygen          #生成秘钥对
+    $ ssh-copy-id -i /root/.ssh/id_rsa.pub root@192.168.0.10        #将公钥拷贝到接受管理的主机的root用户下
+
+
+
+
+
+
+
+
+
+
+
+
+
+

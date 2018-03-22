@@ -1,0 +1,27 @@
+FROM ubuntu:16.04
+
+WORKDIR /dub
+
+COPY etc/apt/sources.list /etc/apt/
+
+RUN apt-get update && apt-get install -y \
+	apt-utils \
+	python-software-properties \
+	language-pack-en-base \
+	vim-nox \
+	bash \
+	curl \
+	axel \
+	git \
+	build-essential \
+	gfortran \
+	libopenblas-dev \
+	liblapack-dev \
+	libhdf5-dev \
+	libnetcdf-dev netcdf-bin \
+	libagg-dev \
+	bvi \
+	fonts-wqy-microhei \
+	cmake 
+
+CMD ["/bin/bash"]

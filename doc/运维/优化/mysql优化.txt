@@ -1,0 +1,30 @@
+innodb_buffer_pool_size = 1G		#InnoDB用来保存索引和原始数据的大小（重点优化参数，可以使用物理内存的80%）
+innodb_log_file_size=8M				#redo日志的大小，太大恢复时间慢，太小性能比较差
+max_connections=500					#最大连接数
+innodb_file_per_table=1				#使用单独表空间文件
+skip_name_resolve=1					#关闭主机名反解
+query_cache_size=0					#关闭查询缓存
+read_buffer_size = 2M				#mysql读入缓冲区大小，每个连接独占内存（建议更改，可提升性能）
+thread_cache_size = 8				#可以重新利用保存在缓存中线程的数量（建议更改，可提升性能）
+key_buffer_size = 4M				#指定用于索引的缓冲区大小（并不是越大越好，重点优化参数）
+transaction_isolation = REPEATABLE-READ			#指定事务隔离级别
+binlog_format = mixed				#指定二进制日志格式
+autocommit=0						#关闭事务自动提交（建议关闭）
+skip-locking = 1 					#避免mysql外部锁定，减少出错几率增强稳定性。
+table_cache = 512					#指定表缓存的大小，当mysql访问一个表时，将此表放入缓存区，可以提高性能（并不是越大越好）
+innodb_flush_log_at_trx_commit = 0-2		#日志刷写频率	
+	0：每秒会将重做日志缓冲写入磁盘的重做日志文件中，不论事务是否已经提交（数据可靠性最低，性能最高）
+	1：每次提交事务时，将日志刷写到磁盘（数据最可靠，性能最差）
+	2：每次提交事务都会写入日志，但并不会执行刷的操作。每秒会定时刷入到日志文件（数据安全性一般，性能一般）
+
+
+
+
+
+
+
+http://www.jb51.net/article/47419.htm
+
+
+
+

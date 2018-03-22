@@ -1,0 +1,17 @@
+print：打印对象
+if/elif/else：条件判断语句
+for/else：遍历式循环
+while/else：普通循环
+pass：占位符
+break：提前退出循环
+continue：提前进入下一轮循环
+def：定义函数
+global：命名空间
+raise：触发异常
+import：导入模块
+from：模块属性访问
+class：类
+try/except/finally：捕捉异常
+del：删除
+assert：调试检查
+with/as：环境管理

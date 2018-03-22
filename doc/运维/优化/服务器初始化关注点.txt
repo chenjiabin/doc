@@ -1,0 +1,16 @@
+我的博客已迁移到xdoujiang.com请去那边和我交流
+1、安装系统时+选包(最小化安装+ssh-server)
+2、配置国内源或公司内部源
+3、禁用开机不需要启动的服务(chkconfig或sysv-rc-conf)
+4、根据项目情况修改系统内核参数/etc/sysctl.conf
+5、根据项目情况修改系统文件描述符、堆栈等配置
+6、禁止root远程登录、修改ssh端口为特殊端口、禁止dns、空密码(修改/etc/ssh/sshd_config)
+7、有外网ip的机器根据情况配置iptables等防火墙、selinux关闭
+8、配置服务器和公司内部时间服务器同步
+9、配置sudo对普通用户权限精细控制
+10、添加运维专用账户
+11、添加路由
+12、配置监控客户端(zabbix agent)
+13、配置cfengine客户端(puppet或ansible或salt)
+14、最后根据项目情况安装包
+15、配置ipmi

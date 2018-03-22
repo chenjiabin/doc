@@ -1,0 +1,105 @@
+当抓取网页时，最常见的任务是从HTML源码中提取数据。
+
+常见库：
+	BeautifulSoup：是非常流行的网页分析库，它基于HTML代码的结构来构造一个Python对象。	
+	lxml：是一个基于 ElementTree (不是Python标准库的一部分)的python化的XML解析库(也可以解析HTML)。
+
+	Scrapy提取数据有自己的一套机制。它们被称作选择器(seletors)，因为他们通过特定的XPath或者CSS表达式来“选择” HTML文件中的某个部分。
+		Scrapy选择器构建于 lxml 库之上。
+		XPath是一门用来在XML文件中选择节点的语言，也可以用在HTML上。
+		SS是一门将HTML文档样式化的语言。
+
+
+示例1：
+	scrapy shell https://www.cnblogs.com/						#在终端中运行，这里ipython演示
+	
+	In [24]: t1 = response.selector.xpath('//head/title/text()').extract()				#获取网站的title
+	.extract()：提取真实数据			.extract_first()：提取第一个获取的数据，以字符串形式返回
+	
+	
+	In [25]: print t1
+	[u'\u535a\u5ba2\u56ed - \u5f00\u53d1\u8005\u7684\u7f51\u4e0a\u5bb6\u56ed']			#.extract()以一个列表方式返回数据
+
+	In [26]: print t1.pop()	
+	博客园 - 开发者的网上家园															#打印获取到的数据
+		
+
+示例2：
+	In [37]: t2 = response.selector.xpath('//a/@href').extract_first()			#提取页面中所有a标签的href属性，提取第一个值
+	In [37]: print t2
+	In [38]: https://www.cnblogs.com/
+
+	In [39]: t3 = response.selector.xpath('//a/@href').extract()				#提取页面中所有a标签的href属性
+	In [340]: print t3															#输出结果(由于输出结果太多....)
+	
+	
+示例3：		
+	In [55]: t2 = response.selector.xpath('//a/text()').re('^\d+.*')			#h和正则结合
+	.re_first() 			#获取匹配到的第一条数据
+	
+	In [56]: print t2
+	[u'32\u4f4d\u6c47\u7f16\u7b2c\u4e94\u8bb2,\u9006\u5411\u5b9e\u6218\u5e72\u8d27']			#匹配到的数据
+		
+	In [57]: print t2.pop()													#打印获取到的数据
+	32位汇编第五讲,逆向实战干货,(OD)快速定位扫雷内存.
+		
+	
+
+xpath基础使用：
+	路径：
+	绝对路径以/表示，相对路径以//表示，当xpath的路径以/开头时，表示让Xpath解析引擎从文档的根节点开始解析。
+	当xpath路径以//开头时，则表示让xpath引擎从文档的任意符合的元素节点开始进行解析。
+	当/出现在xpath路径中时，则表示寻找父节点的直接子节点，当//出现在xpath路径中时，表示寻找父节点下任意符合条件的子节点，不管嵌套了多少层级。
+
+    '@'				#选取属性
+    '*'				#匹配任何元素
+    '@*'			#匹配任何属性
+	'.'				#表示从当前位置开始查找
+	
+	
+xpath实例：
+	查找页面根元素：//
+	查找页面上所有的input元素：//input
+	查找页面上第一个form元素内的直接子input元素(即只包括form元素的下一级input元素，使用绝对路径表示，单/号)：//form[1]/input
+	查找页面上第一个form元素内的所有子input元素(只要在form元素内的input都算，使用相对路径表示，双//号)：//form[1]//input
+	查找页面上第一个form元素：//form[1]
+	查找页面上id为loginForm的form元素：//form[@id='loginForm']
+	查找页面上具有name属性为username的input元素：//input[@name='username']
+	查找页面上id为loginForm的form元素下的第一个input元素：//form[@id='loginForm']/input[1]
+	查找页面具有name属性为contiune并且type属性为button的input元素：//input[@name='continue'][@type='button']
+	查找页面上id为loginForm的form元素下第4个input元素：//form[@id='loginForm']/input[4]
+	查找页面上所以id为test的标签：*代表任意，可以在任意地方使用，//*[@id='test']
+
+	模糊匹配
+		//a[contains(@href, 'logout')]
+			contains：关键字，代表使用模糊查询    href：属性名    logout：关键字(只要href中包含即可)   
+		
+		//a[starts-with(@rel, 'nofo')]
+			starts-with：关键字，代表使用模糊查询   rel：属性名   nofo：表示查找rel属性并且值为以nofo开头的所以标签
+
+		//*[text()='贴吧']					查找页面中所有文本为'贴吧'的标签
+
+		//a[contains(text(), '提交')]		查找a标签的文本内容为提交的a标签
+	
+
+http://www.w3school.com.cn/xpath/index.asp				#更多相关使用	
+		
+		
+	
+http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/selectors.html				#selector中文文档
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

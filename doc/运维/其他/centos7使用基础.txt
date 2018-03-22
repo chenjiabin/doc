@@ -1,0 +1,13 @@
+1、centos使用systemctl命令对程序进行管理，/usr/lib/systemd/system里存放程序的启动文件
+2、centos使用firewall作为默认防火墙
+
+systemctl命令是系统服务管理器指令，它实际上将 service 和 chkconfig 这组合到了一起
+	systemctl start crond.service		#启动
+	systemctl stop crond.service		#停止
+	systemctl restart crond.service		#重启
+	systemctl status crond.service		#查看状态
+	systemctl enable crond.service		#开机自启动
+	systemctl disable crond.service		#禁止开机自启动
+	systemctl is-enabled crond.service	#查看服务是否开机自启动
+	systemctl list-unit-files --type=service	#查看服务列表
+
