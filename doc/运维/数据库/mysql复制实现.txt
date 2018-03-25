@@ -1,101 +1,101 @@
-Ò»¡¢×¼±¸(Ö÷´Ó¶¼ÐèÒªÅäÖÃ)£º
-	yum -y install mysql mysql-server		#°²×°mysql
-	yum -y install ntpdate					#°²×°Ê±¼äÍ¬²½
-	echo '*/1 * * * * /usr/sbin/ntpdate ntp1.aliyun.com &>/dev/null' >>/var/spool/cron/root	#ÅäÖÃÍøÂçÊ±¼äÍ¬²½
-	service mysqld start			#Æô¶¯·þÎñ
-	chkconfig --add mysqld			#Ìí¼ÓÎªÏµÍ³·þÎñ
-	chkconfig  mysqld on			#¿ªÆôÄ¬ÈÏÔËÐÐ¼¶±ð
+ä¸€ã€å‡†å¤‡(ä¸»ä»Žéƒ½éœ€è¦é…ç½®)ï¼š
+	yum -y install mysql mysql-server		#å®‰è£…mysql
+	yum -y install ntpdate					#å®‰è£…æ—¶é—´åŒæ­¥
+	echo '*/1 * * * * /usr/sbin/ntpdate ntp1.aliyun.com &>/dev/null' >>/var/spool/cron/root	#é…ç½®ç½‘ç»œæ—¶é—´åŒæ­¥
+	service mysqld start			#å¯åŠ¨æœåŠ¡
+	chkconfig --add mysqld			#æ·»åŠ ä¸ºç³»ç»ŸæœåŠ¡
+	chkconfig  mysqld on			#å¼€å¯é»˜è®¤è¿è¡Œçº§åˆ«
 	
 	
 
-¶þ¡¢Ö÷·þÎñÆ÷ÅäÖÃ£ºÖ÷ÅäÖÃÎÄ¼þÄ¬ÈÏÎª:/etc/my.cnf
+äºŒã€ä¸»æœåŠ¡å™¨é…ç½®ï¼šä¸»é…ç½®æ–‡ä»¶é»˜è®¤ä¸º:/etc/my.cnf
 	[mysqld]
 		datadir=/var/lib/mysql
 		socket=/var/lib/mysql/mysql.sock
 		user=mysql
 		symbolic-links=0
-		log-bin=master-bin				#¿ªÆô¶þ½øÖÆÈÕÖ¾ÎÄ¼þ
-		server-id=1						#ÉèÖÃ·þÎñÆ÷id,±£Ö¤È«¾ÖÎ¨Ò»
+		log-bin=master-bin				#å¼€å¯äºŒè¿›åˆ¶æ—¥å¿—æ–‡ä»¶
+		server-id=1						#è®¾ç½®æœåŠ¡å™¨id,ä¿è¯å…¨å±€å”¯ä¸€
 		sync-binlog=1
 		innodb-flush-logs-at-trx-commit=1
 		innodb-support-xa=1
 		
 
-	service mysqld restart			#ÖØÆô¶¯·þÎñ
-	mysqladmin -u root password 123.com		#ÉèÖÃÊý¾Ý¿â¹ÜÀíÔ±ÃÜÂë
+	service mysqld restart			#é‡å¯åŠ¨æœåŠ¡
+	mysqladmin -u root password 123.com		#è®¾ç½®æ•°æ®åº“ç®¡ç†å‘˜å¯†ç 
 	
-	mysql -u root -p			#µÇÂ¼Êý¾Ý¿â
-		show global variables like '%server%';		#Êý¾Ý¿âid
-		show master logs;		#²é¿´Êý¾Ý¿â¶þ½øÖÆÈÕÖ¾
-		show master status;		#²é¿´Ö÷·þÎñÆ÷×´Ì¬£¬¼Ç×¡¶þ½øÖÆÈÕÖ¾Ãû,ÅäÖÃ´Ó·þÎñÆ÷»áÓÃ
+	mysql -u root -p			#ç™»å½•æ•°æ®åº“
+		show global variables like '%server%';		#æ•°æ®åº“id
+		show master logs;		#æŸ¥çœ‹æ•°æ®åº“äºŒè¿›åˆ¶æ—¥å¿—
+		show master status;		#æŸ¥çœ‹ä¸»æœåŠ¡å™¨çŠ¶æ€ï¼Œè®°ä½äºŒè¿›åˆ¶æ—¥å¿—å,é…ç½®ä»ŽæœåŠ¡å™¨ä¼šç”¨
 		grant replication slave,replication client on *.* to  'copy'@'192.168.0.50' identified by '123.com';
-				#ÊÚÈ¨192.168.0.50Ö÷»úÉÏµÄcopyÓÃ»§¶ÔËùÓÐ¿âÓÐ¸´ÖÆÈ¨ÏÞ
-		select Host,User,Password from mysql.user;		#²é¿´ÓÃ»§
+				#æŽˆæƒ192.168.0.50ä¸»æœºä¸Šçš„copyç”¨æˆ·å¯¹æ‰€æœ‰åº“æœ‰å¤åˆ¶æƒé™
+		select Host,User,Password from mysql.user;		#æŸ¥çœ‹ç”¨æˆ·
 		
 	
 	
-Èý¡¢´Ó·þÎñÆ÷ÅäÖÃ£º
+ä¸‰ã€ä»ŽæœåŠ¡å™¨é…ç½®ï¼š
 	[mysqld]
 		datadir=/var/lib/mysql
 		socket=/var/lib/mysql/mysql.sock
 		user=mysql
 		symbolic-links=0
-		relay-log=slave-log		#ÆôÓÃÖÐ¼ÌÈÕÖ¾
-		server-id=10			#·þÎñÆ÷id,È«¾ÖÎ¨Ò»
-		read-only=1				#½«·þÎñÆ÷ÉèÖÃÎªÖ»¶ÁÄ£Ê½(¶ÔÓµÓÐrootÈ¨ÏÞµÄÓÃ»§ÎÞÐ§)
+		relay-log=slave-log		#å¯ç”¨ä¸­ç»§æ—¥å¿—
+		server-id=10			#æœåŠ¡å™¨id,å…¨å±€å”¯ä¸€
+		read-only=1				#å°†æœåŠ¡å™¨è®¾ç½®ä¸ºåªè¯»æ¨¡å¼(å¯¹æ‹¥æœ‰rootæƒé™çš„ç”¨æˆ·æ— æ•ˆ)
 		
-	service mysqld restart			#ÖØÆô¶¯·þÎñ
-	mysqladmin -u root password 123.com		#ÉèÖÃÊý¾Ý¿â¹ÜÀíÔ±ÃÜÂë
+	service mysqld restart			#é‡å¯åŠ¨æœåŠ¡
+	mysqladmin -u root password 123.com		#è®¾ç½®æ•°æ®åº“ç®¡ç†å‘˜å¯†ç 
 	
-	mysql -u root -p			#µÇÂ¼Êý¾Ý¿â
+	mysql -u root -p			#ç™»å½•æ•°æ®åº“
 		change master to master_host='192.168.0.10',master_user='copy',master_password='123.com',master_log_file='master-bin.000001',master_log_pos=590;
-			master_host£ºÖ÷·þÎñÆ÷µØÖ·
-			master_user£ºÓµÓÐ¸´ÖÆÈ¨ÏÞµÄÓÃ»§
-			master_password£ºÃÜÂë
-			master_log_file£º´ÓÄÄ¸ö¶þ½øÖÆÈÕÖ¾¿ªÊ¼¸´ÖÆ
-			master_log_pos£º´Ó¶þ½øÖÆÈÕÖ¾µÄÊ²Ã´Î»ÖÃ¿ªÊ¼¸´ÖÆ
+			master_hostï¼šä¸»æœåŠ¡å™¨åœ°å€
+			master_userï¼šæ‹¥æœ‰å¤åˆ¶æƒé™çš„ç”¨æˆ·
+			master_passwordï¼šå¯†ç 
+			master_log_fileï¼šä»Žå“ªä¸ªäºŒè¿›åˆ¶æ—¥å¿—å¼€å§‹å¤åˆ¶
+			master_log_posï¼šä»ŽäºŒè¿›åˆ¶æ—¥å¿—çš„ä»€ä¹ˆä½ç½®å¼€å§‹å¤åˆ¶
 			
-		start slave;				#¿ªÆô´Ó·þÎñÆ÷
-		show slave status\G;		#²é¿´´Ó·þÎñÆ÷×´Ì¬
+		start slave;				#å¼€å¯ä»ŽæœåŠ¡å™¨
+		show slave status\G;		#æŸ¥çœ‹ä»ŽæœåŠ¡å™¨çŠ¶æ€
 	
 	
-ËÄ¡¢ÑéÖ¤Ö÷´Ó£º
-	Ö÷·þÎñÆ÷£º
+å››ã€éªŒè¯ä¸»ä»Žï¼š
+	ä¸»æœåŠ¡å™¨ï¼š
 		mysql -u root -p
-			create database db_test;		#´´½¨Êý¾Ý¿â
+			create database db_test;		#åˆ›å»ºæ•°æ®åº“
 		
-	´Ó·þÎñÆ÷£º
+	ä»ŽæœåŠ¡å™¨ï¼š
 		mysql -u root -p
-			show databases;			#²é¿´·þÎñÆ÷ÊÇ·ñÍ¬²½
-			create database mage;	#SQLÖ´ÐÐÊ§°ÜÎª´Ó·þÎñÆ÷ÅäÖÃÖ»¶Á³É¹¦
+			show databases;			#æŸ¥çœ‹æœåŠ¡å™¨æ˜¯å¦åŒæ­¥
+			create database mage;	#SQLæ‰§è¡Œå¤±è´¥ä¸ºä»ŽæœåŠ¡å™¨é…ç½®åªè¯»æˆåŠŸ
 	
 
 	
-Îå¡¢Ö÷Ö÷¸´ÖÆ
-	·þÎñÆ÷A£º
-		[mysqld]				#Ìí¼ÓÄÚÈÝ
-			log-bin=master-bin			#ÆôÓÃ¶þ½øÖÆÈÕÖ¾
-			relay-log=slave-log			#ÆôÓÃÖÐ¼ÌÈÕÖ¾
-			server-id=1					#·þÎñÆ÷id,È«¾ÖÎ¨Ò»
-			auto-increment-offset=1			#×ÔÔöÁÐÆðÊ¼
-			auto-increment-increment=2		#×ÔÔöÁÐÒ»´Î²½½ø(Àý£º1,3,5,7,9...)
+äº”ã€ä¸»ä¸»å¤åˆ¶
+	æœåŠ¡å™¨Aï¼š
+		[mysqld]				#æ·»åŠ å†…å®¹
+			log-bin=master-bin			#å¯ç”¨äºŒè¿›åˆ¶æ—¥å¿—
+			relay-log=slave-log			#å¯ç”¨ä¸­ç»§æ—¥å¿—
+			server-id=1					#æœåŠ¡å™¨id,å…¨å±€å”¯ä¸€
+			auto-increment-offset=1			#è‡ªå¢žåˆ—èµ·å§‹
+			auto-increment-increment=2		#è‡ªå¢žåˆ—ä¸€æ¬¡æ­¥è¿›(ä¾‹ï¼š1,3,5,7,9...)
 			
-		mysql -uroot -p			#½øÈëÊý¾Ý¿â
+		mysql -uroot -p			#è¿›å…¥æ•°æ®åº“
 			grant replication slave,replication client on *.* to  'copy'@'192.168.0.50' identified by '123.com';
 			change master to master_host='192.168.0.50',master_user='copy',master_password='123.com',master_log_file='master-bin.000001',master_log_pos=106;
 			start slave;	
 			show slave status\G;	
 				
 			
-	·þÎñÆ÷B£º				
-		[mysqld]				#Ìí¼ÓÄÚÈÝ
+	æœåŠ¡å™¨Bï¼š				
+		[mysqld]				#æ·»åŠ å†…å®¹
 			log-bin=master-bin
 			relay-log=slave-log
 			server-id=10
-			auto-increment-offset=2			#×ÔÔöÁÐÆðÊ¼
-			auto-increment-increment=2		#×ÔÔöÁÐÒ»´Î²½½ø(Àý£º2,4,6,8,10...)
+			auto-increment-offset=2			#è‡ªå¢žåˆ—èµ·å§‹
+			auto-increment-increment=2		#è‡ªå¢žåˆ—ä¸€æ¬¡æ­¥è¿›(ä¾‹ï¼š2,4,6,8,10...)
 
-	mysql -uroot -p			#½øÈëÊý¾Ý¿â
+	mysql -uroot -p			#è¿›å…¥æ•°æ®åº“
 		grant replication slave,replication client on *.* to  'copy'@'192.168.0.10' identified by '123.com';	
 		change master to master_host='192.168.0.10',master_user='copy',master_password='123.com',master_log_file='master-bin.000003',master_log_pos=106;
 		start slave;	
@@ -104,43 +104,43 @@
 	
 	
 	
-Áù¡¢°ëÍ¬²½¸´ÖÆ
+å…­ã€åŠåŒæ­¥å¤åˆ¶
 
-	ÒªÏëÊ¹ÓÃ°ëÍ¬²½¸´ÖÆ£¬±ØÐëÂú×ãÒÔÏÂ¼¸¸öÌõ¼þ£º
-		1. MySQL 5.5¼°ÒÔÉÏ°æ±¾
-		2. ±äÁ¿have_dynamic_loadingÎªYES
-		3. Òì²½¸´ÖÆÒÑ¾­´æÔÚ
+	è¦æƒ³ä½¿ç”¨åŠåŒæ­¥å¤åˆ¶ï¼Œå¿…é¡»æ»¡è¶³ä»¥ä¸‹å‡ ä¸ªæ¡ä»¶ï¼š
+		1. MySQL 5.5åŠä»¥ä¸Šç‰ˆæœ¬
+		2. å˜é‡have_dynamic_loadingä¸ºYES
+		3. å¼‚æ­¥å¤åˆ¶å·²ç»å­˜åœ¨
 		
-	Ö÷£º
-		mysql> INSTALL PLUGIN rpl_semi_sync_master SONAME 'semisync_master.so';		#°²×°²å¼þ
-		mysql> show plugins;			#²é¿´²å¼þÊÇ·ñ°²×°³É¹¦
-		mysql> SET GLOBAL rpl_semi_sync_master_enabled = 1;			#ÆôÓÃ°ëÍ¬²½
-		mysql> show status like 'Rpl_semi_sync_master_status';		#²é¿´ÊÇ·ñÔÚÔËÐÐ
+	ä¸»ï¼š
+		mysql> INSTALL PLUGIN rpl_semi_sync_master SONAME 'semisync_master.so';		#å®‰è£…æ’ä»¶
+		mysql> show plugins;			#æŸ¥çœ‹æ’ä»¶æ˜¯å¦å®‰è£…æˆåŠŸ
+		mysql> SET GLOBAL rpl_semi_sync_master_enabled = 1;			#å¯ç”¨åŠåŒæ­¥
+		mysql> show status like 'Rpl_semi_sync_master_status';		#æŸ¥çœ‹æ˜¯å¦åœ¨è¿è¡Œ
 		
-	´Ó£º
-		mysql> INSTALL PLUGIN rpl_semi_sync_slave SONAME 'semisync_slave.so';		#°²×°²å¼þ
+	ä»Žï¼š
+		mysql> INSTALL PLUGIN rpl_semi_sync_slave SONAME 'semisync_slave.so';		#å®‰è£…æ’ä»¶
 		mysql> show plugins;
-		mysql> SET GLOBAL rpl_semi_sync_slave_enabled = 1;		#ÆôÓÃ°ëÍ¬²½
-		mysql> STOP SLAVE			#¹Ø±Õ¸´ÖÆÏß³Ì
-		mysql> START SLAVE 			#¿ªÆô¸´ÖÆÏß³Ì
-		mysql> show status like 'Rpl_semi_sync_slave_status';		#²é¿´ÊÇ·ñÔÚÔËÐÐ
+		mysql> SET GLOBAL rpl_semi_sync_slave_enabled = 1;		#å¯ç”¨åŠåŒæ­¥
+		mysql> STOP SLAVE			#å…³é—­å¤åˆ¶çº¿ç¨‹
+		mysql> START SLAVE 			#å¼€å¯å¤åˆ¶çº¿ç¨‹
+		mysql> show status like 'Rpl_semi_sync_slave_status';		#æŸ¥çœ‹æ˜¯å¦åœ¨è¿è¡Œ
 	
 	
-	mysql> show variables like '%Rpl%';		#²é¿´ºÍ°ëÍ¬²½Ïà¹ØµÄ·þÎñÆ÷±äÁ¿
-		rpl_semi_sync_master_enabled		#ÊÇ·ñÆôÓÃ°ëÍ¬²½
-		rpl_semi_sync_master_timeout		#µÈ´ý³¬Ê±Ê±¼ä
-		rpl_semi_sync_master_wait_for_slave_count		#ÐèÒªµÈ´ý¶àÉÙ¸öslaveÓ¦´ð£¬²ÅÄÜ·µ»Ø¸ø¿Í»§¶Ë
+	mysql> show variables like '%Rpl%';		#æŸ¥çœ‹å’ŒåŠåŒæ­¥ç›¸å…³çš„æœåŠ¡å™¨å˜é‡
+		rpl_semi_sync_master_enabled		#æ˜¯å¦å¯ç”¨åŠåŒæ­¥
+		rpl_semi_sync_master_timeout		#ç­‰å¾…è¶…æ—¶æ—¶é—´
+		rpl_semi_sync_master_wait_for_slave_count		#éœ€è¦ç­‰å¾…å¤šå°‘ä¸ªslaveåº”ç­”ï¼Œæ‰èƒ½è¿”å›žç»™å®¢æˆ·ç«¯
 	
 	
-	mysql> show status like '%Rpl_semi%';		#°ëÍ¬²½×´Ì¬
-		Rpl_semi_sync_master_clients			#µ±Ç°°ëÍ¬²½¸´ÖÆ´ÓµÄ¸öÊý
+	mysql> show status like '%Rpl_semi%';		#åŠåŒæ­¥çŠ¶æ€
+		Rpl_semi_sync_master_clients			#å½“å‰åŠåŒæ­¥å¤åˆ¶ä»Žçš„ä¸ªæ•°
 	
 	
 	
-Æß¡¢ºÍ¸´ÖÆÏà¹ØµÄÎÄ¼þ
-	´Ó½Úµã£º
-		master.info£ºÓÃÓÚ±£´æslaveÁ¬½ÓÖÁmasterÊ±µÄÏà¹ØÐÅÏ¢(ÕËºÅ£¬ÃÜÂë£¬·þÎñÆ÷µØÖ·£¬¸´ÖÆµÄ¶þ½øÖÆÎÄ¼þµÈ)
-		relay-log.info£º±£´æµ±Ç°slave½ÚµãÉÏÒÑ¾­¸´ÖÆµ½µÄ¶þ½øÖÆÎÄ¼þÎ»ÖÃ£¬ºÍrelay-logµÄÎ»ÖÃ
+ä¸ƒã€å’Œå¤åˆ¶ç›¸å…³çš„æ–‡ä»¶
+	ä»ŽèŠ‚ç‚¹ï¼š
+		master.infoï¼šç”¨äºŽä¿å­˜slaveè¿žæŽ¥è‡³masteræ—¶çš„ç›¸å…³ä¿¡æ¯(è´¦å·ï¼Œå¯†ç ï¼ŒæœåŠ¡å™¨åœ°å€ï¼Œå¤åˆ¶çš„äºŒè¿›åˆ¶æ–‡ä»¶ç­‰)
+		relay-log.infoï¼šä¿å­˜å½“å‰slaveèŠ‚ç‚¹ä¸Šå·²ç»å¤åˆ¶åˆ°çš„äºŒè¿›åˆ¶æ–‡ä»¶ä½ç½®ï¼Œå’Œrelay-logçš„ä½ç½®
 	
 
 	

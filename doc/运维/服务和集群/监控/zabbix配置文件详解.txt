@@ -1,71 +1,71 @@
-zabbix-server.cnfÅäÖÃÎÄ¼ş£º
-	ListenPort=10051			#·şÎñÆ÷¶Ë¼àÌı¶Ë¿Ú
-	SourceIP= 					#ÔËĞĞÁ¬½Ó·şÎñÆ÷µÄip£¬Ä¬ÈÏÔËĞĞËùÓĞ
-	LogFile=PATH				#ÈÕÖ¾ÎÄ¼şµÄ´æ·ÅÎ»ÖÃ
-	LogFileSize=0 				#ÈÕÖ¾ÎÄ¼şµÄ´óĞ¡£¬µ¥Î»ÎªMB£¬µ±ÉèÖÃÎª0Ê±£¬±íÊ¾²»½øĞĞÈÕÖ¾ÂÖÑ¯	
-	DebugLevel=3				#ÈÕÖ¾¼¶±ğ£¬Ä¬ÈÏÎª3
-	PidFile=PATH				#PIDÎÄ¼şµÄ´æ·ÅÎ»ÖÃ
+zabbix-server.cnfé…ç½®æ–‡ä»¶ï¼š
+	ListenPort=10051			#æœåŠ¡å™¨ç«¯ç›‘å¬ç«¯å£
+	SourceIP= 					#è¿è¡Œè¿æ¥æœåŠ¡å™¨çš„ipï¼Œé»˜è®¤è¿è¡Œæ‰€æœ‰
+	LogFile=PATH				#æ—¥å¿—æ–‡ä»¶çš„å­˜æ”¾ä½ç½®
+	LogFileSize=0 				#æ—¥å¿—æ–‡ä»¶çš„å¤§å°ï¼Œå•ä½ä¸ºMBï¼Œå½“è®¾ç½®ä¸º0æ—¶ï¼Œè¡¨ç¤ºä¸è¿›è¡Œæ—¥å¿—è½®è¯¢	
+	DebugLevel=3				#æ—¥å¿—çº§åˆ«ï¼Œé»˜è®¤ä¸º3
+	PidFile=PATH				#PIDæ–‡ä»¶çš„å­˜æ”¾ä½ç½®
 
 
-	DBHost=localhost			#Á¬½ÓµÄÊı¾İ¿âµØÖ·
-	DBName=zabbix				#Ê¹ÓÃµÄÊı¾İ¿âÃû
-	DBUser=zabbix				#Á¬½ÓÊı¾İ¿âµÄÓÃ»§
-	DBPassword=					#Á¬½ÓÊı¾İ¿âÓÃ»§µÄÃÜÂë
-	DBSocket=/tmp/mysql.sock	#»ùÓÚ±¾µØÁ¬½ÓÊ±sockÎÄ¼şÎ»ÖÃ
-	DBPort=3306					#mysql¶Ë¿Ú
+	DBHost=localhost			#è¿æ¥çš„æ•°æ®åº“åœ°å€
+	DBName=zabbix				#ä½¿ç”¨çš„æ•°æ®åº“å
+	DBUser=zabbix				#è¿æ¥æ•°æ®åº“çš„ç”¨æˆ·
+	DBPassword=					#è¿æ¥æ•°æ®åº“ç”¨æˆ·çš„å¯†ç 
+	DBSocket=/tmp/mysql.sock	#åŸºäºæœ¬åœ°è¿æ¥æ—¶sockæ–‡ä»¶ä½ç½®
+	DBPort=3306					#mysqlç«¯å£
 
 
-	StartPollers=30				#¿ªÆôµÄÏß³ÌÊı£¬Ò»°ã²»Òª³¬¹ı30¸ö
-	StartPollersUnreachable=1	#ÓÃÓÚµ¥¶À¼à¿ØÎŞ·¨Á¬½ÓµÄÖ÷»ú
-	StartTrappers=8				#trapperÏß³ÌÊı
-	StartDiscoverers=1			#×Ô¶¯·¢ÏÖµÄÏß³ÌÊı£¨½¨ÒéĞŞ¸ÄÎª0£¬²»ÆôÓÃ´ËÏî¹¦ÄÜ£©
-	CacheUpdateFrequency=300	#»º´æ¸üĞÂµÄÆµÂÊ
+	StartPollers=30				#å¼€å¯çš„çº¿ç¨‹æ•°ï¼Œä¸€èˆ¬ä¸è¦è¶…è¿‡30ä¸ª
+	StartPollersUnreachable=1	#ç”¨äºå•ç‹¬ç›‘æ§æ— æ³•è¿æ¥çš„ä¸»æœº
+	StartTrappers=8				#trapperçº¿ç¨‹æ•°
+	StartDiscoverers=1			#è‡ªåŠ¨å‘ç°çš„çº¿ç¨‹æ•°ï¼ˆå»ºè®®ä¿®æ”¹ä¸º0ï¼Œä¸å¯ç”¨æ­¤é¡¹åŠŸèƒ½ï¼‰
+	CacheUpdateFrequency=300	#ç¼“å­˜æ›´æ–°çš„é¢‘ç‡
 
 
-	SNMPTrapperFile=/tmp/zabbix_traps.tmp		#SNMP·¢ËÍµ½serverµÄÊı¾İÁÙÊ±´æ·ÅÎÄ¼ş
-	StartSNMPTrapper=0 							#Èç¹ûÉèÖÃÎª1ÔòÆôÓÃ»ùÓÚSNMP¼à¿Ø
-	ListenIP=0.0.0.0							#¼àÌıµØÖ·
-	AlertScriptsPath=/usr/lib/zabbix/scripts	#±¨¾¯´æ·Å½Å±¾Ä¿Â¼
-	AllowRoot=0					#ÊÇ·ñÔÊĞíÊ¹ÓÃrootÆô¶¯£¬0:²»ÔÊĞí£¬1:ÔÊĞí
-	User=zabbix					#ÒÔzabbixÓÃ»§ÔËĞĞzabbix·şÎñ
-	CacheSize=8M				#»º´æ´óĞ¡£¬ÓÃÓÚ´æ´¢host£¬itemµÈÊı¾İ
-	ExternalScripts=/usr/lib/zabbix/webscripts	#web½Å±¾´æ·ÅÎ»ÖÃ
-	HistoryCacheSize=8M			#ÀúÊ·¼ÇÂ¼»º´æ´óĞ¡£¬ÓÃÓÚ´æ´¢ÀúÊ·¼ÇÂ¼
-	HistoryTextCacheSize=16M	#ÎÄ±¾ÀàĞÍÀúÊ·¼ÇÂ¼µÄ»º´æ´óĞ¡£¬´æ´¢text¡¢logÀúÊ·¼ÇÂ¼
-	Include=PATH						#µ¼ÈëÆäËûÅäÖÃÎÄ¼ş
-	LoadModulePath=/var/lib/modules		#Ä£¿é´æ·ÅÄ¿Â¼
-	LoadModule=modename					#¼ÓÔØµÄÄ£¿éÃû
-	MaxHousekeeperDelete=500 			#Ã¿´Î×î¶àÉ¾³ıÀúÊ·Êı¾İµÄĞĞ 
+	SNMPTrapperFile=/tmp/zabbix_traps.tmp		#SNMPå‘é€åˆ°serverçš„æ•°æ®ä¸´æ—¶å­˜æ”¾æ–‡ä»¶
+	StartSNMPTrapper=0 							#å¦‚æœè®¾ç½®ä¸º1åˆ™å¯ç”¨åŸºäºSNMPç›‘æ§
+	ListenIP=0.0.0.0							#ç›‘å¬åœ°å€
+	AlertScriptsPath=/usr/lib/zabbix/scripts	#æŠ¥è­¦å­˜æ”¾è„šæœ¬ç›®å½•
+	AllowRoot=0					#æ˜¯å¦å…è®¸ä½¿ç”¨rootå¯åŠ¨ï¼Œ0:ä¸å…è®¸ï¼Œ1:å…è®¸
+	User=zabbix					#ä»¥zabbixç”¨æˆ·è¿è¡ŒzabbixæœåŠ¡
+	CacheSize=8M				#ç¼“å­˜å¤§å°ï¼Œç”¨äºå­˜å‚¨hostï¼Œitemç­‰æ•°æ®
+	ExternalScripts=/usr/lib/zabbix/webscripts	#webè„šæœ¬å­˜æ”¾ä½ç½®
+	HistoryCacheSize=8M			#å†å²è®°å½•ç¼“å­˜å¤§å°ï¼Œç”¨äºå­˜å‚¨å†å²è®°å½•
+	HistoryTextCacheSize=16M	#æ–‡æœ¬ç±»å‹å†å²è®°å½•çš„ç¼“å­˜å¤§å°ï¼Œå­˜å‚¨textã€logå†å²è®°å½•
+	Include=PATH						#å¯¼å…¥å…¶ä»–é…ç½®æ–‡ä»¶
+	LoadModulePath=/var/lib/modules		#æ¨¡å—å­˜æ”¾ç›®å½•
+	LoadModule=modename					#åŠ è½½çš„æ¨¡å—å
+	MaxHousekeeperDelete=500 			#æ¯æ¬¡æœ€å¤šåˆ é™¤å†å²æ•°æ®çš„è¡Œ 
 
-	SenderFrequency=30			#±¨¾¯¼ä¸ô£¬Ä¬ÈÏµ¥Î»Ãë
-	SSHKeyLocation				#SSHÃØÔ¿Â·¾¶		 
-	SSLCertLocation				#SSLÖ¤ÊéÄ¿Â¼£¬ÓÃÓÚweb¼à¿Ø
-	SSLKeyLocation				#SSLÈÏÖ¤Ë½Ô¿Â·¾¶¡¢ÓÃÓÚweb¼à¿Ø
-	Timeout=3					#agent£¬snmp£¬external checkµÄ³¬Ê±Ê±¼ä£¬µ¥Î»ÎªÃë
+	SenderFrequency=30			#æŠ¥è­¦é—´éš”ï¼Œé»˜è®¤å•ä½ç§’
+	SSHKeyLocation				#SSHç§˜é’¥è·¯å¾„		 
+	SSLCertLocation				#SSLè¯ä¹¦ç›®å½•ï¼Œç”¨äºwebç›‘æ§
+	SSLKeyLocation				#SSLè®¤è¯ç§é’¥è·¯å¾„ã€ç”¨äºwebç›‘æ§
+	Timeout=3					#agentï¼Œsnmpï¼Œexternal checkçš„è¶…æ—¶æ—¶é—´ï¼Œå•ä½ä¸ºç§’
 
-	UnavailableDelay=60			#¼ä¸ô¶àÉÙÃëÔÙ´Î¼ì²âÖ÷»úÊÇ·ñ¿ÉÓÃ
-	UnreachableDelay=15			#¼ä¸ô¶àÉÙÃëÔÙ´Î¼ì²âÖ÷»úÊÇ·ñ¿É´ï
-	UnreachablePeriod=45		#¼ì²âµ½Ö÷»ú²»¿ÉÓÃ£¬¶à¾Ã½«ËüÖÃÎª²»¿É´ï
+	UnavailableDelay=60			#é—´éš”å¤šå°‘ç§’å†æ¬¡æ£€æµ‹ä¸»æœºæ˜¯å¦å¯ç”¨
+	UnreachableDelay=15			#é—´éš”å¤šå°‘ç§’å†æ¬¡æ£€æµ‹ä¸»æœºæ˜¯å¦å¯è¾¾
+	UnreachablePeriod=45		#æ£€æµ‹åˆ°ä¸»æœºä¸å¯ç”¨ï¼Œå¤šä¹…å°†å®ƒç½®ä¸ºä¸å¯è¾¾
 
 
 
-zabbix-agent.cnfÅäÖÃÎÄ¼ş£º
-	PidFile=/tmp/zabbix_agentd.pid 			#pidÎÄ¼şµÄ´æ·ÅÎ»ÖÃ 
-	LogFile=/tmp/zabbix_agentd.log 			#ÈÕÖ¾ÎÄ¼şµÄÎ»ÖÃ 
-	LogFileSize=0 							#µ±ÈÕÖ¾ÎÄ¼ş´ïµ½¶à´óÊ±½øĞĞÂÖÑ¯²Ù×÷£¬0Îª²»½øĞĞ
-	DebugLevel=3 							#ÈÕÖ¾¼¶±ğ 
-	SourceIP= 								#Á¬½ÓµÄÔ´ipµØÖ·£¬Ä¬ÈÏ¼´¿É
-	Server=127.0.0.1 						#ÔÊĞí»ñÈ¡Êı¾İµÄzabbix serverµØÖ·
-	ListenPort=10050 						#zabbix agent¼àÌıµÄ¶Ë¿Ú 
-	ListenIP=0.0.0.0 						#zabbix agent¼àÌıµÄipµØÖ· 
-	StartAgents=3 							#zabbix agent¿ªÆô½ø³ÌÊı 
-	ServerActive=127.0.0.1 					#¿ªÆôÖ÷¶¯Ä£Ê½£¬Ö¸¶¨zabbix serverµØÖ· 
-	Hostname=Zabbix server					#È«¾ÖÎ¨Ò»Ö÷»úÃû,Èç¹ûÊÇ¼à¿Øzabbix server,Ö÷»úÃû±ØĞëºÍwebÉèÖÃµÄÒ»Ñù
-	RefreshActiveChecks=120 				#Ö÷¶¯¼ì²éË¢ĞÂµÄÊ±¼ä£¬µ¥Î»Ãë 
-	BufferSend=5 							#Êı¾İ»º³åµÄÊ±¼ä 
-	BufferSize=100 							#Êı¾İ»º³åÇøµÄ´óĞ¡£¬µ±´ïµ½¸ÃÖµ±ã»á·¢ËÍÊı¾İµ½zabbix server 
-	MaxLinesPerSecond=100 					#zabbix agent·¢ËÍ¸øzabbix server×î´óµÄÊı¾İĞĞ 
-	Timeout=3 								#´¦Àí³¬Ê±µÄÊ±¼ä 
+zabbix-agent.cnfé…ç½®æ–‡ä»¶ï¼š
+	PidFile=/tmp/zabbix_agentd.pid 			#pidæ–‡ä»¶çš„å­˜æ”¾ä½ç½® 
+	LogFile=/tmp/zabbix_agentd.log 			#æ—¥å¿—æ–‡ä»¶çš„ä½ç½® 
+	LogFileSize=0 							#å½“æ—¥å¿—æ–‡ä»¶è¾¾åˆ°å¤šå¤§æ—¶è¿›è¡Œè½®è¯¢æ“ä½œï¼Œ0ä¸ºä¸è¿›è¡Œ
+	DebugLevel=3 							#æ—¥å¿—çº§åˆ« 
+	SourceIP= 								#è¿æ¥çš„æºipåœ°å€ï¼Œé»˜è®¤å³å¯
+	Server=127.0.0.1 						#å…è®¸è·å–æ•°æ®çš„zabbix serveråœ°å€
+	ListenPort=10050 						#zabbix agentç›‘å¬çš„ç«¯å£ 
+	ListenIP=0.0.0.0 						#zabbix agentç›‘å¬çš„ipåœ°å€ 
+	StartAgents=3 							#zabbix agentå¼€å¯è¿›ç¨‹æ•° 
+	ServerActive=127.0.0.1 					#å¼€å¯ä¸»åŠ¨æ¨¡å¼ï¼ŒæŒ‡å®šzabbix serveråœ°å€ 
+	Hostname=Zabbix server					#å…¨å±€å”¯ä¸€ä¸»æœºå,å¦‚æœæ˜¯ç›‘æ§zabbix server,ä¸»æœºåå¿…é¡»å’Œwebè®¾ç½®çš„ä¸€æ ·
+	RefreshActiveChecks=120 				#ä¸»åŠ¨æ£€æŸ¥åˆ·æ–°çš„æ—¶é—´ï¼Œå•ä½ç§’ 
+	BufferSend=5 							#æ•°æ®ç¼“å†²çš„æ—¶é—´ 
+	BufferSize=100 							#æ•°æ®ç¼“å†²åŒºçš„å¤§å°ï¼Œå½“è¾¾åˆ°è¯¥å€¼ä¾¿ä¼šå‘é€æ•°æ®åˆ°zabbix server 
+	MaxLinesPerSecond=100 					#zabbix agentå‘é€ç»™zabbix serveræœ€å¤§çš„æ•°æ®è¡Œ 
+	Timeout=3 								#å¤„ç†è¶…æ—¶çš„æ—¶é—´ 
 
 
 

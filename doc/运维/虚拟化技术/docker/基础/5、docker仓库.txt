@@ -1,0 +1,40 @@
+什么是仓库：
+  集中存放镜像的地方，仓库分为公开仓库(Public)和私有仓库(Private)两种形式。
+  世界上最大的公开仓库是Docker Hub，国内的公开仓库Docker Pool等
+
+  用户可以在本地网络内创建一个私有仓库
+  用户创建的镜像可以push到公有或者私有仓库，如果需要在另外一台机器上使用这个镜像时候，只需要从仓库上pull下来就可以了
+
+
+注册服务器：
+    注册服务器是仓库的具体服务器，每隔服务器上可以有多个仓库，每个仓库里存放多个镜像
+
+
+公有仓库：
+    Docker Hub：是docker官方维护的一个公有仓库，大部分的需求可以从Docker Hub直接下载(https://hub.docker.com/)
+    Docker Pool：是国内专业的docker社区，提供docker官方镜像下载服务(http://dockerpool.com/)
+
+    公有仓库操作：
+        docker login                  #登录Docker Hub(用户名和密码去Docker Hub注册)
+        docker search IMAGE_NAME      #搜索指定镜像(无需登录)
+        docker pull IMAGE_NAME        #下载指定镜像(无需登录)
+
+    上传镜像到公有仓库：
+        docker tag centos huyuan/centos     #更改tag，格式为Docker Hub用户名/镜像名
+        docker login                        #登录Docker Hub
+        docker push huyuan/centos           #上传镜像
+
+
+私有仓库：
+    创建私有仓库：
+        安装docker后可以通过官方提供的registry镜像来简单的构建一个私有仓库
+        例：docker run -d -p 8888:5000 registry    #启动一个镜像，端口映射关系为宿主机8888端口，容器5000(registry默认端口)
+
+        默认情况下会将私有仓库创建在容器的/var/lib/registry/目录下，可以使用-v选项将镜像存储在本地的指定目录下
+        例：docker run -d -p 8800:5000 -v /usr/local/image:/var/lib/registry/ registry
+
+    管理私有仓库：
+        docker tag centos 192.168.1.2:8800/centos   #更改镜像tag，192.168.1.2是docker宿主机IP
+        docker push 192.168.1.2:8800/centos         #上传镜像
+        curl http://127.0.0.1:8800/v2/_catalog      #查看私有仓库的所以镜像
+        docker pull 192.168.1.2:8800/centos         #下载镜像

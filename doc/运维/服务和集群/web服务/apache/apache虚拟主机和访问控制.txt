@@ -1,97 +1,97 @@
-ÔÚÅäÖÃapacheÊ±×îºÃÉ¾³ý£º/etc/httpd/conf.d/welcome.conf
+åœ¨é…ç½®apacheæ—¶æœ€å¥½åˆ é™¤ï¼š/etc/httpd/conf.d/welcome.conf
 
 
-ÐéÄâÖ÷»úÅäÖÃ
+è™šæ‹Ÿä¸»æœºé…ç½®
 
-Ê¹ÓÃÐéÄâÖ÷»ú£¬±ØÐëÒª½ûÓÃÖÐÐÄÖ÷»ú
-½ûÓÃÖÐÐÄÖ÷»úµÄ·½·¨£ºÔÚÖ÷ÅäÖÃÎÄ¼þÖÐ×¢ÊÍDocumentRoot
+ä½¿ç”¨è™šæ‹Ÿä¸»æœºï¼Œå¿…é¡»è¦ç¦ç”¨ä¸­å¿ƒä¸»æœº
+ç¦ç”¨ä¸­å¿ƒä¸»æœºçš„æ–¹æ³•ï¼šåœ¨ä¸»é…ç½®æ–‡ä»¶ä¸­æ³¨é‡ŠDocumentRoot
 
-ÐéÄâÖ÷»úµÄ¶¨Òå
-<VirtualHost>		#¶¨ÒÔÐéÄâÖ÷»úµÄ·¶Î§
-     Ö¸Áî		#¶¨ÒÔÕâ¸öÐéÄâÖ÷»úµÄÊôÐÔ£¬ÖÐÐÄÖ÷»úµÄ¾ø´ó¶àÊýÖ¸ÁîÐéÄâÖ÷»ú¶¼¿ÉÒÔÊ¹ÓÃ
+è™šæ‹Ÿä¸»æœºçš„å®šä¹‰
+<VirtualHost>		#å®šä»¥è™šæ‹Ÿä¸»æœºçš„èŒƒå›´
+     æŒ‡ä»¤		#å®šä»¥è¿™ä¸ªè™šæ‹Ÿä¸»æœºçš„å±žæ€§ï¼Œä¸­å¿ƒä¸»æœºçš„ç»å¤§å¤šæ•°æŒ‡ä»¤è™šæ‹Ÿä¸»æœºéƒ½å¯ä»¥ä½¿ç”¨
 </VirtualHost>
 
 
 
-»ùÓÚipµÄÐéÄâÖ÷»ú
+åŸºäºŽipçš„è™šæ‹Ÿä¸»æœº
 
-×î»ù±¾ÅäÖÃ£ºÐéÄâÖ÷»ú¿ÉÒÔ¹¤×÷
-<VirtualHost 192.168.0.10:80>			#ÐéÄâÖ÷»úµÄipºÍ¼àÌýµÄ¶Ë¿Ú
-   ServerName  www.jd.com			#ÐéÄâÖ÷»úµÄÓòÃû
-   DocumentRoot  "/var/www/www.jd.com"		#ÐéÄâÖ÷»úµÄÍøÒ³ÎÄ¼þ´æ·ÅÎ»ÖÃ
+æœ€åŸºæœ¬é…ç½®ï¼šè™šæ‹Ÿä¸»æœºå¯ä»¥å·¥ä½œ
+<VirtualHost 192.168.0.10:80>			#è™šæ‹Ÿä¸»æœºçš„ipå’Œç›‘å¬çš„ç«¯å£
+   ServerName  www.jd.com			#è™šæ‹Ÿä¸»æœºçš„åŸŸå
+   DocumentRoot  "/var/www/www.jd.com"		#è™šæ‹Ÿä¸»æœºçš„ç½‘é¡µæ–‡ä»¶å­˜æ”¾ä½ç½®
 </VirtualHost>
 
 
 
-»ùÓÚ¶Ë¿ÚµÄÐéÄâÖ÷»ú
+åŸºäºŽç«¯å£çš„è™šæ‹Ÿä¸»æœº
 
-ÔÚÖ÷ÅäÖÃÎÄ¼þÖÐÌí¼Ó£ºListen 8080			#¶¨Òåapache¼àÌý8080¶Ë¿Ú
-<VirtualHost 192.168.0.10:8080>			#ÐéÄâÖ÷»úµÄipºÍ¼àÌýµÄ¶Ë¿Ú
-   ServerName  www.taobao.com			#ÐéÄâÖ÷»úµÄÓòÃû
-   DocumentRoot  "/var/www/www.taobao.com"	#ÐéÄâÖ÷»úµÄÍøÒ³ÎÄ¼þ´æ·ÅÎ»ÖÃ
+åœ¨ä¸»é…ç½®æ–‡ä»¶ä¸­æ·»åŠ ï¼šListen 8080			#å®šä¹‰apacheç›‘å¬8080ç«¯å£
+<VirtualHost 192.168.0.10:8080>			#è™šæ‹Ÿä¸»æœºçš„ipå’Œç›‘å¬çš„ç«¯å£
+   ServerName  www.taobao.com			#è™šæ‹Ÿä¸»æœºçš„åŸŸå
+   DocumentRoot  "/var/www/www.taobao.com"	#è™šæ‹Ÿä¸»æœºçš„ç½‘é¡µæ–‡ä»¶å­˜æ”¾ä½ç½®
 </VirtualHost>
 
 
 
-»ùÓÚÖ÷»úÃûµÄÐéÄâÖ÷»ú				#±ØÐëÒªÓÐdns¼ÇÂ¼£¬»òÕß±¾µØhostsÎÄ¼þÓÐ¼ÇÂ¼
-ÔÚÖ÷ÅäÖÃÎÄ¼þÖÐÌí¼Ó£ºNameVietualHost  192.168.0.10:80	#¶¨ÒåÄÇÐ©ipµØÖ·Ê¹ÓÃÁË»ùÓÚÖ÷»úÃûµÄÐéÄâÖ÷»ú
-<VirtualHost 192.168.0.10:80>				#ÐéÄâÖ÷»úµÄipºÍ¼àÌýµÄ¶Ë¿Ú
-   ServerName  www.bat.com				#ÐéÄâÖ÷»úµÄÓòÃû
-   DocumentRoot  "/var/www/www.bat.com"			#ÐéÄâÖ÷»úµÄÍøÒ³ÎÄ¼þ´æ·ÅÎ»ÖÃ
-</VirtualHost>
-
-
-
-
-Ä¬ÈÏÐéÄâÖ÷»ú£ºµ±ÓÃ»§·ÃÎÊÒ»¸ö²»´æÔÚµÄÐéÄâÖ÷»úÊ±£¬·µ»Ø¸øÓÃ»§µÄÕ¾µã
-Ä¬ÈÏÐéÄâÖ÷»ú±ØÐë¶¨ÒåÔÚËùÓÐÐéÄâÖ÷»úÖ®Ç°
-<VirtualHost _default_:80>			#ÐéÄâÖ÷»úµÄipºÍ¼àÌýµÄ¶Ë¿Ú
-   ServerName  www.baidu.com			#ÐéÄâÖ÷»úµÄÓòÃû
-   DocumentRoot  "/var/www/www.baidu.com"	#ÐéÄâÖ÷»úµÄÍøÒ³ÎÄ¼þ´æ·ÅÎ»ÖÃ
+åŸºäºŽä¸»æœºåçš„è™šæ‹Ÿä¸»æœº				#å¿…é¡»è¦æœ‰dnsè®°å½•ï¼Œæˆ–è€…æœ¬åœ°hostsæ–‡ä»¶æœ‰è®°å½•
+åœ¨ä¸»é…ç½®æ–‡ä»¶ä¸­æ·»åŠ ï¼šNameVietualHost  192.168.0.10:80	#å®šä¹‰é‚£äº›ipåœ°å€ä½¿ç”¨äº†åŸºäºŽä¸»æœºåçš„è™šæ‹Ÿä¸»æœº
+<VirtualHost 192.168.0.10:80>				#è™šæ‹Ÿä¸»æœºçš„ipå’Œç›‘å¬çš„ç«¯å£
+   ServerName  www.bat.com				#è™šæ‹Ÿä¸»æœºçš„åŸŸå
+   DocumentRoot  "/var/www/www.bat.com"			#è™šæ‹Ÿä¸»æœºçš„ç½‘é¡µæ–‡ä»¶å­˜æ”¾ä½ç½®
 </VirtualHost>
 
 
 
 
+é»˜è®¤è™šæ‹Ÿä¸»æœºï¼šå½“ç”¨æˆ·è®¿é—®ä¸€ä¸ªä¸å­˜åœ¨çš„è™šæ‹Ÿä¸»æœºæ—¶ï¼Œè¿”å›žç»™ç”¨æˆ·çš„ç«™ç‚¹
+é»˜è®¤è™šæ‹Ÿä¸»æœºå¿…é¡»å®šä¹‰åœ¨æ‰€æœ‰è™šæ‹Ÿä¸»æœºä¹‹å‰
+<VirtualHost _default_:80>			#è™šæ‹Ÿä¸»æœºçš„ipå’Œç›‘å¬çš„ç«¯å£
+   ServerName  www.baidu.com			#è™šæ‹Ÿä¸»æœºçš„åŸŸå
+   DocumentRoot  "/var/www/www.baidu.com"	#è™šæ‹Ÿä¸»æœºçš„ç½‘é¡µæ–‡ä»¶å­˜æ”¾ä½ç½®
+</VirtualHost>
 
-·ÃÎÊ¿ØÖÆÊµÀý£º
 
-<Directory "/var/www/html">		#¶Ô/var/www/htmlÉúÐ§
-	Options   None			#²»ÆôÓÃËùÓÐÑ¡Ïî
-	Order  deny,allow		#Ä¬ÈÏÔÊÐíËùÓÐ¿Í»§¶Ë·ÃÎÊ
-	Deny form  192.168.1.0/24	#¾Ü½Ó192.168.1.0Íø¶Î·ÃÎÊ/var/www/html
+
+
+
+è®¿é—®æŽ§åˆ¶å®žä¾‹ï¼š
+
+<Directory "/var/www/html">		#å¯¹/var/www/htmlç”Ÿæ•ˆ
+	Options   None			#ä¸å¯ç”¨æ‰€æœ‰é€‰é¡¹
+	Order  deny,allow		#é»˜è®¤å…è®¸æ‰€æœ‰å®¢æˆ·ç«¯è®¿é—®
+	Deny form  192.168.1.0/24	#æ‹’æŽ¥192.168.1.0ç½‘æ®µè®¿é—®/var/www/html
 </Directory>
 
 
-<Directory />				#¶Ô/var/wwwÏÂµÄËùÓÐÄ¿Â¼ºÍÎÄ¼þÉúÐ§
-	Options   None			#²»ÆôÓÃËùÓÐÑ¡Ïî
-	Order  allow,deny		#Ä¬ÈÏ¾Ü½ÓËùÓÐ¿Í»§¶Ë·ÃÎÊ
-	Allow form  192.168.1.0/24	#ÔÊÐí192.168.1.0Íø¶Î·ÃÎÊ·þÎñÆ÷
+<Directory />				#å¯¹/var/wwwä¸‹çš„æ‰€æœ‰ç›®å½•å’Œæ–‡ä»¶ç”Ÿæ•ˆ
+	Options   None			#ä¸å¯ç”¨æ‰€æœ‰é€‰é¡¹
+	Order  allow,deny		#é»˜è®¤æ‹’æŽ¥æ‰€æœ‰å®¢æˆ·ç«¯è®¿é—®
+	Allow form  192.168.1.0/24	#å…è®¸192.168.1.0ç½‘æ®µè®¿é—®æœåŠ¡å™¨
 </Directory>
 
 
 
 
 
-ÓÃ»§ÈÏÖ¤ÊµÀý£º
-htpasswd£ºÉú³ÉÓÃ»§ÈÏÖ¤ÎÄ¼þÃüÁî
--c£º´´½¨ÈÏÖ¤ÎÄ¼þÎÄ¼þ£¨Èç¹ûÓÃ»§ÎÄ¼þÒÑ¾­´æÔÚÔò²»ÄÜÊ¹ÓÃ£¬·ñÔò½«Çå¿ÕÓÃ»§ÈÏÖ¤ÎÄ¼þ£©
--m£ºÖ¸¶¨md5µÄ¼ÓÃÜ·½·¨
+ç”¨æˆ·è®¤è¯å®žä¾‹ï¼š
+htpasswdï¼šç”Ÿæˆç”¨æˆ·è®¤è¯æ–‡ä»¶å‘½ä»¤
+-cï¼šåˆ›å»ºè®¤è¯æ–‡ä»¶æ–‡ä»¶ï¼ˆå¦‚æžœç”¨æˆ·æ–‡ä»¶å·²ç»å­˜åœ¨åˆ™ä¸èƒ½ä½¿ç”¨ï¼Œå¦åˆ™å°†æ¸…ç©ºç”¨æˆ·è®¤è¯æ–‡ä»¶ï¼‰
+-mï¼šæŒ‡å®šmd5çš„åŠ å¯†æ–¹æ³•
 
-Óï·¨¸ñÊ½£º
-htpasswd -c -m  /etc/httpd/conf   root   #´´½¨ÓÃ»§ÈÏÖ¤ÎÄ¼þ£¬²¢Ìí¼ÓrootÓÃ»§£¨×¢Òâ£ºÕâ¶ùµÄrootÓÃ»§µÄÏµÍ³ÎÞ¹Ø£©
-htpasswd -m  /etc/httpd/conf   mysql	#ÏòÓÃ»§ÈÏÖ¤ÎÄ¼þÖÐÌí¼ÓmysqlÓÃ»§
+è¯­æ³•æ ¼å¼ï¼š
+htpasswd -c -m  /etc/httpd/conf   root   #åˆ›å»ºç”¨æˆ·è®¤è¯æ–‡ä»¶ï¼Œå¹¶æ·»åŠ rootç”¨æˆ·ï¼ˆæ³¨æ„ï¼šè¿™å„¿çš„rootç”¨æˆ·çš„ç³»ç»Ÿæ— å…³ï¼‰
+htpasswd -m  /etc/httpd/conf   mysql	#å‘ç”¨æˆ·è®¤è¯æ–‡ä»¶ä¸­æ·»åŠ mysqlç”¨æˆ·
 
 
-<Directory "/var/www/html">		#·ÃÎÊ/var/www/htmlÊ±ÐèÒªÑéÖ¤£¨ºÍÉÏÃæÒ»ÑùÍ¬ÑùÓÐÈ«¾ÖÅäÖÃ£©
-	Options   None					#²»ÆôÓÃËµÓÐÑ¡Ïî
-	Order  allow,deny				#Ä¬ÈÏ¾Ü½ÓËùÓÐ¿Í»§¶Ë·ÃÎÊ
-	Allow form  all     			#ÔÊÐíËùÓÐÓÃ»§·ÃÎÊ·þÎñÆ÷
-	AllowOverride  AuthConfig		#ÆôÓÃÓÃ»§ÈÏÖ¤·ÃÎÊ
-	AuthType  basic   				#ÑéÖ¤ÀàÐÍ£¬»ù±¾
-	AuthName  "µÇÂ¼¿òµÄËµÃ÷"		#¶¨ÒåËµÃ÷
-	AuthUserFile  "ÓÃ»§ÈÏÖ¤ÎÄ¼þ"	#¶¨ÒåÈÏÖ¤ÎÄ¼þ£¨ÈÏÖ¤ÎÄ¼þ±ØÐë·ÅÔÚapacheÓÐ¶ÁÈ¡È¨ÏÞµÄµØ·½£©
-	Require	valid-user				#ÔÊÐíÓÃ»§ÈÏÖ¤ÎÄ¼þÖÐµÄËùÓÐÓÃ»§·ÃÎÊ
+<Directory "/var/www/html">		#è®¿é—®/var/www/htmlæ—¶éœ€è¦éªŒè¯ï¼ˆå’Œä¸Šé¢ä¸€æ ·åŒæ ·æœ‰å…¨å±€é…ç½®ï¼‰
+	Options   None					#ä¸å¯ç”¨è¯´æœ‰é€‰é¡¹
+	Order  allow,deny				#é»˜è®¤æ‹’æŽ¥æ‰€æœ‰å®¢æˆ·ç«¯è®¿é—®
+	Allow form  all     			#å…è®¸æ‰€æœ‰ç”¨æˆ·è®¿é—®æœåŠ¡å™¨
+	AllowOverride  AuthConfig		#å¯ç”¨ç”¨æˆ·è®¤è¯è®¿é—®
+	AuthType  basic   				#éªŒè¯ç±»åž‹ï¼ŒåŸºæœ¬
+	AuthName  "ç™»å½•æ¡†çš„è¯´æ˜Ž"		#å®šä¹‰è¯´æ˜Ž
+	AuthUserFile  "ç”¨æˆ·è®¤è¯æ–‡ä»¶"	#å®šä¹‰è®¤è¯æ–‡ä»¶ï¼ˆè®¤è¯æ–‡ä»¶å¿…é¡»æ”¾åœ¨apacheæœ‰è¯»å–æƒé™çš„åœ°æ–¹ï¼‰
+	Require	valid-user				#å…è®¸ç”¨æˆ·è®¤è¯æ–‡ä»¶ä¸­çš„æ‰€æœ‰ç”¨æˆ·è®¿é—®
 </Directory>
 
 

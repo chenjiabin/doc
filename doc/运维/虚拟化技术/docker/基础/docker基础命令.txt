@@ -1,0 +1,50 @@
+docker基本使用：
+	docker -h															#获取帮助信息
+	docker info														#查看docker的详细信息
+	docker version												#查看docker版本
+	docker search img_name 								#查找指定镜像
+	docker pull img_name									#下载指定镜像
+	docker images -a											#列出本地所有镜像
+	docker rmi image_name  								#删除指定镜像
+	docker history image_name							#显示指定镜像的镜像历史
+	docker run -i -t image_name /bin/bash	#运行容器并进入交互式shell中(exit退出，容器处于停止状态)
+	docker create image_name							#创建容器，状态为create
+	docker ps  														#列出当前正在运行的容器
+	docker ps -a 													#列出所有的容器
+	docker ps -l  												#查看最近一次启动的容器
+	docker attach NAMES										#连接到指定容器
+	docker commit NAMES container_name:TAG		#创建本地镜像
+	docker export -o TAR_NAME NAMES						#将容器的文件系统打包为tar格式
+	docker import TAR_NAME [REPOSITORY[:TAG]]	#启动由export导出的容器
+	docker push container_name:TAG						#将本地镜像上传到docker hub中
+	docker cp NAMES:FILE PATH									#将指定容器中的文件复制的宿主机中的指定位置
+	docker cp FILE NAMES:PATH									#将宿主机中的文件复制到指定容器中的指定位置
+	docker diff NAMES													#查看容器内发生改变的文件
+	docker exec NAMES  COMMAND								#给容器传递一个命令
+	docker stats NAMES												#查看容器状态
+	docker inspect NAMES											#查看指定容器的详细信息
+	docker rename container_name new_name			#重命令容器
+	docker rm NAMES														#删除处于停止状态的容器
+	docker tag image_name[:TAG] new_img_name[:TAG]	#重命名镜像
+	docker stop NAMES													#停止指定容器
+	docker start NAMES												#启动处于停止状态的容器(使用docker ps -a查看容器的NAMES)
+	docker restart NAMES											#重启指定容器
+	docker kill NAMES													#强制停止指定容器
+	docker build -t="TAG" /test/							#使用dockerfile创建docker镜像，test为dockerfile存放目录
+	docker save -o FILE_NAME IMAGE_NAME				#将镜像导出为本地文件
+	docker load --input FILE_NAME							#将本地文件导入到镜像仓库
+	docker inspect NAMES											#查看指定容器的详细信息
+  docker login                              #从命令行登录docker Hub
+	docker port imagename 宿主机端口            #查看端口映射情况
+  docker logs -f NAMES                      #查看指定容器的日志信息，-f和tail的-f相同
+  docker top NAMES                          #查看容器内运行的进程
+
+docker load和docker import的区别
+导入一个容器快照到本地镜像库。这两者的区别在于容器快照文件将丢弃所有的历史记录和元数据信息，即仅保存容器当时的快照状态
+而镜像存储文件将保存完整记录，体积也要大。此外，从容器快照文件导入时可以重新指定标签等元数据信息
+
+
+
+https://hub.docker.com/													#docker镜像下载
+https://docs.docker.com/												#docker官方文档
+http://www.docker.org.cn												#docker中文官网

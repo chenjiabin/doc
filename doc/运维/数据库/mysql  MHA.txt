@@ -1,43 +1,43 @@
-¼ò½é£º
-	1¡¢MHAÄ¿Ç°ÔÚMySQL¸ß¿ÉÓÃ·½ÃæÊÇÒ»¸öÏà¶Ô³ÉÊìµÄ½â¾ö·½°¸£¬ÊÇMySQL¸ß¿ÉÓÃ»·¾³ÏÂ¹ÊÕÏÇĞ»»ºÍÖ÷´ÓÌáÉıµÄ¸ß¿ÉÓÃÈí¼ş
-	2¡¢MHAÄÜÔÚ¶ÌÊ±¼äÄÚÍê³É¹ÊÕÏÇĞ»»£¬²¢ÇÒÔÚ×î´ó³Ì¶ÈÉÏ±£Ö¤Êı¾İµÄÒ»ÖÂĞÔ£¬ÒÔ´ïµ½ÕæÕıÒâÒåÉÏµÄ¸ß¿ÉÓÃ
-	3¡¢MHA»ùÓÚmysqlĞ­Òé£¬Í¨¹ımysqlÖ÷´Ó»òÖ÷Ö÷½øĞĞ¸´ÖÆ
-	4¡¢MHA¹ÙÍø£ºhttps://code.google.com/p/mysql-master-ha/
+ç®€ä»‹ï¼š
+	1ã€MHAç›®å‰åœ¨MySQLé«˜å¯ç”¨æ–¹é¢æ˜¯ä¸€ä¸ªç›¸å¯¹æˆç†Ÿçš„è§£å†³æ–¹æ¡ˆï¼Œæ˜¯MySQLé«˜å¯ç”¨ç¯å¢ƒä¸‹æ•…éšœåˆ‡æ¢å’Œä¸»ä»æå‡çš„é«˜å¯ç”¨è½¯ä»¶
+	2ã€MHAèƒ½åœ¨çŸ­æ—¶é—´å†…å®Œæˆæ•…éšœåˆ‡æ¢ï¼Œå¹¶ä¸”åœ¨æœ€å¤§ç¨‹åº¦ä¸Šä¿è¯æ•°æ®çš„ä¸€è‡´æ€§ï¼Œä»¥è¾¾åˆ°çœŸæ­£æ„ä¹‰ä¸Šçš„é«˜å¯ç”¨
+	3ã€MHAåŸºäºmysqlåè®®ï¼Œé€šè¿‡mysqlä¸»ä»æˆ–ä¸»ä¸»è¿›è¡Œå¤åˆ¶
+	4ã€MHAå®˜ç½‘ï¼šhttps://code.google.com/p/mysql-master-ha/
 	
-Èí¼şÓÉÁ½²¿·Ö×é³É£ºMHA Manager(¹ØÀí½Úµã)ºÍMHA Node(Êı¾İ½Úµã)
-	1¡¢MHA Manager¿ÉÒÔµ¥¶À²¿ÊğÔÚÒ»Ì¨¶ÀÁ¢µÄ»úÆ÷ÉÏ¹ÜÀí¶à¸ömaster-slave¼¯Èº£¬Ò²¿ÉÒÔ²¿ÊğÔÚÒ»Ì¨slave½ÚµãÉÏ
-	2¡¢MHA NodeÔËĞĞÔÚÃ¿Ì¨MySQL·şÎñÆ÷ÉÏ		3¡¢MHA_Manager»á¶¨Ê±Ì½²â¼¯ÈºÖĞµÄmaster½Úµã£¬µ±master³öÏÖ¹ÊÕÏÊ±£¬Ëü¿ÉÒÔ×Ô¶¯½«×îĞÂÊı¾İµÄslaveÌáÉıÎªĞÂµÄmaster£¬È»ºó½«ËùÓĞÆäËûµÄslaveÖØĞÂÖ¸ÏòĞÂµÄmaster
-	4¡¢MHAÅäºÏ°ëÍ¬²½¸´ÖÆÊ¹ÓÃ¿ÉÒÔ×î´óÏŞ¶ÈµÄ±£Ö¤Êı¾İ°²È«ĞÔ
+è½¯ä»¶ç”±ä¸¤éƒ¨åˆ†ç»„æˆï¼šMHA Manager(å…³ç†èŠ‚ç‚¹)å’ŒMHA Node(æ•°æ®èŠ‚ç‚¹)
+	1ã€MHA Managerå¯ä»¥å•ç‹¬éƒ¨ç½²åœ¨ä¸€å°ç‹¬ç«‹çš„æœºå™¨ä¸Šç®¡ç†å¤šä¸ªmaster-slaveé›†ç¾¤ï¼Œä¹Ÿå¯ä»¥éƒ¨ç½²åœ¨ä¸€å°slaveèŠ‚ç‚¹ä¸Š
+	2ã€MHA Nodeè¿è¡Œåœ¨æ¯å°MySQLæœåŠ¡å™¨ä¸Š		3ã€MHA_Managerä¼šå®šæ—¶æ¢æµ‹é›†ç¾¤ä¸­çš„masterèŠ‚ç‚¹ï¼Œå½“masterå‡ºç°æ•…éšœæ—¶ï¼Œå®ƒå¯ä»¥è‡ªåŠ¨å°†æœ€æ–°æ•°æ®çš„slaveæå‡ä¸ºæ–°çš„masterï¼Œç„¶åå°†æ‰€æœ‰å…¶ä»–çš„slaveé‡æ–°æŒ‡å‘æ–°çš„master
+	4ã€MHAé…åˆåŠåŒæ­¥å¤åˆ¶ä½¿ç”¨å¯ä»¥æœ€å¤§é™åº¦çš„ä¿è¯æ•°æ®å®‰å…¨æ€§
 	
-¹¤×÷Ô­Àí£º
-	1¡¢´Óå´»ú±ÀÀ£µÄmaster±£´æ¶ş½øÖÆÈÕÖ¾ÊÂ¼ş(binlog events)
-	2¡¢Ê¶±ğº¬ÓĞ×îĞÂ¸üĞÂµÄslave
-	3¡¢Ó¦ÓÃ²îÒìµÄÖĞ¼ÌÈÕÖ¾(relay log)µ½ÆäËûµÄslave
-	4¡¢Ó¦ÓÃ´Ómaster±£´æµÄ¶ş½øÖÆÈÕÖ¾ÊÂ¼ş(binlog events)
-	5¡¢ÌáÉıÒ»¸öslaveÎªĞÂµÄmaster
-	6¡¢Ê¹ÆäËûµÄslaveÁ¬½ÓĞÂµÄmaster½øĞĞ¸´ÖÆ
+å·¥ä½œåŸç†ï¼š
+	1ã€ä»å®•æœºå´©æºƒçš„masterä¿å­˜äºŒè¿›åˆ¶æ—¥å¿—äº‹ä»¶(binlog events)
+	2ã€è¯†åˆ«å«æœ‰æœ€æ–°æ›´æ–°çš„slave
+	3ã€åº”ç”¨å·®å¼‚çš„ä¸­ç»§æ—¥å¿—(relay log)åˆ°å…¶ä»–çš„slave
+	4ã€åº”ç”¨ä»masterä¿å­˜çš„äºŒè¿›åˆ¶æ—¥å¿—äº‹ä»¶(binlog events)
+	5ã€æå‡ä¸€ä¸ªslaveä¸ºæ–°çš„master
+	6ã€ä½¿å…¶ä»–çš„slaveè¿æ¥æ–°çš„masterè¿›è¡Œå¤åˆ¶
 	
-MHA¹¤¾ß£º
-	Manager¹¤¾ß°ü£º
-		masterha_check_ssh              #¼ì²éMHAµÄSSHÅäÖÃ×´¿ö£¬MHAÇ¿ÁÒÒÀÀµsshÃØÔ¿ÑéÖ¤
-		masterha_check_repl             #¼ì²éMySQL¸´ÖÆ×´¿ö
-		masterha_manager                #MHAÖ÷³ÌĞò
-		masterha_check_status           #¼ì²âµ±Ç°MHAÔËĞĞ×´Ì¬
-		masterha_master_monitor         #¼ì²âmasterÊÇ·ñå´»ú
-		masterha_master_switch          #ÊÖ¶¯¿ØÖÆ¹ÊÕÏ×ªÒÆ
-		masterha_conf_host              #Ìí¼Ó»òÉ¾³ıÅäÖÃµÄserverĞÅÏ¢
-		masterha_stop					#MHA¹Ø±Õ¹¤¾ß
+MHAå·¥å…·ï¼š
+	Managerå·¥å…·åŒ…ï¼š
+		masterha_check_ssh              #æ£€æŸ¥MHAçš„SSHé…ç½®çŠ¶å†µï¼ŒMHAå¼ºçƒˆä¾èµ–sshç§˜é’¥éªŒè¯
+		masterha_check_repl             #æ£€æŸ¥MySQLå¤åˆ¶çŠ¶å†µ
+		masterha_manager                #MHAä¸»ç¨‹åº
+		masterha_check_status           #æ£€æµ‹å½“å‰MHAè¿è¡ŒçŠ¶æ€
+		masterha_master_monitor         #æ£€æµ‹masteræ˜¯å¦å®•æœº
+		masterha_master_switch          #æ‰‹åŠ¨æ§åˆ¶æ•…éšœè½¬ç§»
+		masterha_conf_host              #æ·»åŠ æˆ–åˆ é™¤é…ç½®çš„serverä¿¡æ¯
+		masterha_stop					#MHAå…³é—­å·¥å…·
 	
-	Node¹¤¾ß°ü£º
-		save_binary_logs                #±£´æºÍ¸´ÖÆmasterµÄ¶ş½øÖÆÈÕÖ¾
-		apply_diff_relay_logs           #Ê¶±ğ²îÒìµÄÖĞ¼ÌÈÕÖ¾ÊÂ¼ş²¢½«Æä²îÒìµÄÊÂ¼şÓ¦ÓÃÓÚÆäËûµÄslave
-		filter_mysqlbinlog              #È¥³ı²»±ØÒªµÄROLLBACKÊÂ¼ş(MHAÒÑ²»ÔÙÊ¹ÓÃÕâ¸ö¹¤¾ß)
-		purge_relay_logs                #Çå³ıÖĞ¼ÌÈÕÖ¾(²»»á×èÈûSQLÏß³Ì)
+	Nodeå·¥å…·åŒ…ï¼š
+		save_binary_logs                #ä¿å­˜å’Œå¤åˆ¶masterçš„äºŒè¿›åˆ¶æ—¥å¿—
+		apply_diff_relay_logs           #è¯†åˆ«å·®å¼‚çš„ä¸­ç»§æ—¥å¿—äº‹ä»¶å¹¶å°†å…¶å·®å¼‚çš„äº‹ä»¶åº”ç”¨äºå…¶ä»–çš„slave
+		filter_mysqlbinlog              #å»é™¤ä¸å¿…è¦çš„ROLLBACKäº‹ä»¶(MHAå·²ä¸å†ä½¿ç”¨è¿™ä¸ªå·¥å…·)
+		purge_relay_logs                #æ¸…é™¤ä¸­ç»§æ—¥å¿—(ä¸ä¼šé˜»å¡SQLçº¿ç¨‹)
 
 	
 
-ÊµÑé»·¾³£º
-	½ÇÉ«                    ipµØÖ·        
+å®éªŒç¯å¢ƒï¼š
+	è§’è‰²                    ipåœ°å€        
 	MHA_manager				192.168.0.70
 	Master                  192.168.0.40
 	Slave 			        192.168.0.60
@@ -45,121 +45,121 @@ MHA¹¤¾ß£º
 
 
 	
-°²×°MHA£º
-	1¡¢ÅäÖÃelpeºÍbaseyumÔ´
-	2¡¢ÏÂÔØMHAÈí¼ş£¬²¢ÉÏ´«ÖÁµ±Ç°Ä¿Â¼£ºhttps://code.google.com/p/mysql-master-ha/		#ĞèÒª·­Ç½
-	3¡¢yum -y localinstall mha4mysql-manager-0.55-0.el6.noarch.rpm mha4mysql-node-0.54-0.el6.noarch.rpm
-			#·Ç¹ÜÀí½Úµã²»ÓÃ°²×°mha4mysql-manager-0.55-0.el6.noarch.rpm
-	4¡¢ÅäÖÃsshÃØÔ¿ÑéÖ¤
-		ssh-keygen							#Éú³ÉÃØÔ¿£¬Ò»Ö±»Ø³µ¾ÍĞĞ
-		cat id_rsa.pub >> authorized_keys	#½«authorized_keys  id_rsa  id_rsa.pub¿½±´µ½ËùÓĞ½ÚµãµÄ~/.sshÄ¿Â¼ÏÂ
-		×¢Òâ£º²»ÄÜ½ûÖ¹passwordµÇÂ½£¬·ñÔò»á³öÏÖ´íÎó	
+å®‰è£…MHAï¼š
+	1ã€é…ç½®elpeå’Œbaseyumæº
+	2ã€ä¸‹è½½MHAè½¯ä»¶ï¼Œå¹¶ä¸Šä¼ è‡³å½“å‰ç›®å½•ï¼šhttps://code.google.com/p/mysql-master-ha/		#éœ€è¦ç¿»å¢™
+	3ã€yum -y localinstall mha4mysql-manager-0.55-0.el6.noarch.rpm mha4mysql-node-0.54-0.el6.noarch.rpm
+			#éç®¡ç†èŠ‚ç‚¹ä¸ç”¨å®‰è£…mha4mysql-manager-0.55-0.el6.noarch.rpm
+	4ã€é…ç½®sshç§˜é’¥éªŒè¯
+		ssh-keygen							#ç”Ÿæˆç§˜é’¥ï¼Œä¸€ç›´å›è½¦å°±è¡Œ
+		cat id_rsa.pub >> authorized_keys	#å°†authorized_keys  id_rsa  id_rsa.pubæ‹·è´åˆ°æ‰€æœ‰èŠ‚ç‚¹çš„~/.sshç›®å½•ä¸‹
+		æ³¨æ„ï¼šä¸èƒ½ç¦æ­¢passwordç™»é™†ï¼Œå¦åˆ™ä¼šå‡ºç°é”™è¯¯	
 
 		
-ÅäÖÃmysqlÖ÷´Ó(½¨ÒéÊ¹ÓÃmysql5.5°æ±¾ÒÔÉÏ)£º
-	masterÅäÖÃ£º
-		vim /etc/my.cnf					#ĞŞ¸ÄÅäÖÃÎÄ¼ş£¬Ìí¼ÓÈçÏÂÄÚÈİ
-			[mysqld]						#ÕÒµ½mysqldÅäÖÃ¶Î
-			log-bin=mysql-bin				#¿ªÆô¶ş½øÖÆÈÕÖ¾
-			relay-log=relay-bin				#¿ªÆôÖĞ¼ÌÈÕÖ¾
-			binlog_format=mixed				#Ê¹ÓÃ»ìºÏÄ£Ê½µÄ¶ş½øÖÆÈÕÖ¾
-			server-id= 1					#È«¾ÖÎ¨Ò»µÄserver-id
-			innodb-file-per-table=1			#Ê¹ÓÃµ¥¶À±í¿Õ¼äÎÄ¼ş
-			default-storage-engine=InnoDB	#Ê¹ÓÃInnoDB´æ´¢ÒıÇæ
-			autocommit=0					#¹Ø±ÕÊÂÎñ×Ô¶¯Ìá½»
-			skip-name-resolve=1				#¹Ø±ÕÖ÷»úÃû·´½â
-			relay-log-purge=0				#²»ÔÊĞí×Ô¶¯ÇåÀíÖĞ¼ÌÈÕÖ¾£¬ÒòÎªMHA»áÒÀ¿¿ÖĞ¼ÌÈÕÖ¾»Ö¸´Êı¾İ
+é…ç½®mysqlä¸»ä»(å»ºè®®ä½¿ç”¨mysql5.5ç‰ˆæœ¬ä»¥ä¸Š)ï¼š
+	masteré…ç½®ï¼š
+		vim /etc/my.cnf					#ä¿®æ”¹é…ç½®æ–‡ä»¶ï¼Œæ·»åŠ å¦‚ä¸‹å†…å®¹
+			[mysqld]						#æ‰¾åˆ°mysqldé…ç½®æ®µ
+			log-bin=mysql-bin				#å¼€å¯äºŒè¿›åˆ¶æ—¥å¿—
+			relay-log=relay-bin				#å¼€å¯ä¸­ç»§æ—¥å¿—
+			binlog_format=mixed				#ä½¿ç”¨æ··åˆæ¨¡å¼çš„äºŒè¿›åˆ¶æ—¥å¿—
+			server-id= 1					#å…¨å±€å”¯ä¸€çš„server-id
+			innodb-file-per-table=1			#ä½¿ç”¨å•ç‹¬è¡¨ç©ºé—´æ–‡ä»¶
+			default-storage-engine=InnoDB	#ä½¿ç”¨InnoDBå­˜å‚¨å¼•æ“
+			autocommit=0					#å…³é—­äº‹åŠ¡è‡ªåŠ¨æäº¤
+			skip-name-resolve=1				#å…³é—­ä¸»æœºååè§£
+			relay-log-purge=0				#ä¸å…è®¸è‡ªåŠ¨æ¸…ç†ä¸­ç»§æ—¥å¿—ï¼Œå› ä¸ºMHAä¼šä¾é ä¸­ç»§æ—¥å¿—æ¢å¤æ•°æ®
 			
-		service mysqld restart			#ÖØÆômysql
-		mysql> SHOW MASTER STATUS;		#²é¿´µ±Ç°¶ş½øÖÆÈÕÖ¾Î»ÖÃ
+		service mysqld restart			#é‡å¯mysql
+		mysql> SHOW MASTER STATUS;		#æŸ¥çœ‹å½“å‰äºŒè¿›åˆ¶æ—¥å¿—ä½ç½®
 			+------------------+----------+
 			| File             | Position |
 			+------------------+----------+
-			| mysql-bin.000004 |      360 |			#¼Ç×¡µ±Ç°Öµ
+			| mysql-bin.000004 |      360 |			#è®°ä½å½“å‰å€¼
 			+------------------+----------+
 		mysql> GRANT REPLICATION SLAVE,REPLICATION CLIENT ON *.* TO 'mha'@'192.168.0.%' IDENTIFIED BY 'mha';
-		mysql> GRANT ALL ON *.* TO 'mymha'@'192.168.0.%' IDENTIFIED BY 'mymha';			#´´½¨MHA¼à¿ØÓÃ»§
+		mysql> GRANT ALL ON *.* TO 'mymha'@'192.168.0.%' IDENTIFIED BY 'mymha';			#åˆ›å»ºMHAç›‘æ§ç”¨æˆ·
 		mysql> FLUSH PRIVILEGES;
 
 		
-	slaveÅäÖÃ£º
-		vim /etc/my.cnf					#ĞŞ¸ÄÅäÖÃÎÄ¼ş£¬Ìí¼ÓÈçÏÂÄÚÈİ
-			[mysqld]						#ÕÒµ½mysqldÅäÖÃ¶Î
-			log-bin=mysql-bin				#¿ªÆô¶ş½øÖÆÈÕÖ¾
-			relay-log=relay-bin				#¿ªÆôÖĞ¼ÌÈÕÖ¾
-			binlog_format=mixed				#Ê¹ÓÃ»ìºÏÄ£Ê½µÄ¶ş½øÖÆÈÕÖ¾
-			server-id= 2					#È«¾ÖÎ¨Ò»µÄserver-id
-			innodb-file-per-table=1			#Ê¹ÓÃµ¥¶À±í¿Õ¼äÎÄ¼ş
-			default-storage-engine=InnoDB	#Ê¹ÓÃInnoDB´æ´¢ÒıÇæ
-			autocommit=0					#¹Ø±ÕÊÂÎñ×Ô¶¯Ìá½»
-			skip-name-resolve=1				#¹Ø±ÕÖ÷»úÃû·´½â
-			read-only=1						#Ö»¶Á£¬¶ÔrootÓÃ»§ÎŞĞ§(slave½Úµã±ØĞëÉèÖÃ)
-			relay-log-purge=0				#²»ÔÊĞí×Ô¶¯ÇåÀíÖĞ¼ÌÈÕÖ¾£¬ÒòÎªMHA»áÒÀ¿¿ÖĞ¼ÌÈÕÖ¾»Ö¸´Êı¾İ
+	slaveé…ç½®ï¼š
+		vim /etc/my.cnf					#ä¿®æ”¹é…ç½®æ–‡ä»¶ï¼Œæ·»åŠ å¦‚ä¸‹å†…å®¹
+			[mysqld]						#æ‰¾åˆ°mysqldé…ç½®æ®µ
+			log-bin=mysql-bin				#å¼€å¯äºŒè¿›åˆ¶æ—¥å¿—
+			relay-log=relay-bin				#å¼€å¯ä¸­ç»§æ—¥å¿—
+			binlog_format=mixed				#ä½¿ç”¨æ··åˆæ¨¡å¼çš„äºŒè¿›åˆ¶æ—¥å¿—
+			server-id= 2					#å…¨å±€å”¯ä¸€çš„server-id
+			innodb-file-per-table=1			#ä½¿ç”¨å•ç‹¬è¡¨ç©ºé—´æ–‡ä»¶
+			default-storage-engine=InnoDB	#ä½¿ç”¨InnoDBå­˜å‚¨å¼•æ“
+			autocommit=0					#å…³é—­äº‹åŠ¡è‡ªåŠ¨æäº¤
+			skip-name-resolve=1				#å…³é—­ä¸»æœºååè§£
+			read-only=1						#åªè¯»ï¼Œå¯¹rootç”¨æˆ·æ— æ•ˆ(slaveèŠ‚ç‚¹å¿…é¡»è®¾ç½®)
+			relay-log-purge=0				#ä¸å…è®¸è‡ªåŠ¨æ¸…ç†ä¸­ç»§æ—¥å¿—ï¼Œå› ä¸ºMHAä¼šä¾é ä¸­ç»§æ—¥å¿—æ¢å¤æ•°æ®
 	
-		mysql> CHANGE MASTER TO MASTER_HOST='192.168.0.10',MASTER_USER='mha',MASTER_PASSWORD='mha',MASTER_LOG_FILE='mysql-bin.000004',MASTER_LOG_POS=360,MASTER_PORT=3306;			#Ö¸¶¨Ö÷·şÎñÆ÷
-		mysql> START SLAVE;					#Æô¶¯¸´ÖÆÏß³Ì
-		mysql> SHOW SLAVE STATUS\G;			#²é¿´´Ó·şÎñÆ÷×´Ì¬
-		        Slave_IO_Running: Yes		#±ØĞë¶¼Îªyes
+		mysql> CHANGE MASTER TO MASTER_HOST='192.168.0.10',MASTER_USER='mha',MASTER_PASSWORD='mha',MASTER_LOG_FILE='mysql-bin.000004',MASTER_LOG_POS=360,MASTER_PORT=3306;			#æŒ‡å®šä¸»æœåŠ¡å™¨
+		mysql> START SLAVE;					#å¯åŠ¨å¤åˆ¶çº¿ç¨‹
+		mysql> SHOW SLAVE STATUS\G;			#æŸ¥çœ‹ä»æœåŠ¡å™¨çŠ¶æ€
+		        Slave_IO_Running: Yes		#å¿…é¡»éƒ½ä¸ºyes
 				Slave_SQL_Running: Yes
-		mysql> SELECT USER,PASSWORD,HOST FROM mysql.user;			#²é¿´mhaÊÇ·ñÍ¬²½³É¹¦
+		mysql> SELECT USER,PASSWORD,HOST FROM mysql.user;			#æŸ¥çœ‹mhaæ˜¯å¦åŒæ­¥æˆåŠŸ
 		
 		
-MHAÅäÖÃ£º
+MHAé…ç½®ï¼š
 	mkdir /etc/mha	
 	mkdir /var/log/mha_app1
 	
 	vim /etc/mha/app1.cnf		
-		[server default]							#MHA¹¤×÷ÊôĞÔ¶¨Òå(ÅäÖÃÊ±²»ÄÜÓĞ×¢ÊÍ)
-		manager_workdir=/masterha/app1				            #MHAµÄ¹¤×÷Ä¿Â¼
-		manager_log=/var/log/mha_app1/manager.log          #MHAµÄÈÕÖ¾ÎÄ¼ş
-		password=mymha         				#ÉèÖÃMHA¼à¿ØÓÃ»§µÄÃÜÂë
-		user=mymha               			#ÉèÖÃ¼à¿ØÓÃ»§
-		ping_interval=1         			#ÉèÖÃ¼à¿ØÖ÷¿â£¬½¡¿µ¼ì²éÊ±¼ä
-		remote_workdir=/masterha/app1     	#ÉèÖÃÔ¶¶ËmysqlÔÚ·¢ÉúÇĞ»»Ê±binlogµÄ±£´æÎ»ÖÃ
-		repl_password=mha    				#ÉèÖÃ¸´ÖÆÓÃ»§µÄÃÜÂë
-		repl_user=mha          				#ÉèÖÃ¸´ÖÆ»·¾³ÖĞµÄ¸´ÖÆÓÃ»§Ãû
-		ssh_user=root           			#ÉèÖÃsshµÄµÇÂ¼ÓÃ»§Ãû
-		master_binlog_dir=/usr/local/mysql/data/				#¶ş½øÖÆÈÕÖ¾ÎÄ¼ş´æ·ÅÂ·¾¶	
+		[server default]							#MHAå·¥ä½œå±æ€§å®šä¹‰(é…ç½®æ—¶ä¸èƒ½æœ‰æ³¨é‡Š)
+		manager_workdir=/masterha/app1				            #MHAçš„å·¥ä½œç›®å½•
+		manager_log=/var/log/mha_app1/manager.log          #MHAçš„æ—¥å¿—æ–‡ä»¶
+		password=mymha         				#è®¾ç½®MHAç›‘æ§ç”¨æˆ·çš„å¯†ç 
+		user=mymha               			#è®¾ç½®ç›‘æ§ç”¨æˆ·
+		ping_interval=1         			#è®¾ç½®ç›‘æ§ä¸»åº“ï¼Œå¥åº·æ£€æŸ¥æ—¶é—´
+		remote_workdir=/masterha/app1     	#è®¾ç½®è¿œç«¯mysqlåœ¨å‘ç”Ÿåˆ‡æ¢æ—¶binlogçš„ä¿å­˜ä½ç½®
+		repl_password=mha    				#è®¾ç½®å¤åˆ¶ç”¨æˆ·çš„å¯†ç 
+		repl_user=mha          				#è®¾ç½®å¤åˆ¶ç¯å¢ƒä¸­çš„å¤åˆ¶ç”¨æˆ·å
+		ssh_user=root           			#è®¾ç½®sshçš„ç™»å½•ç”¨æˆ·å
+		master_binlog_dir=/usr/local/mysql/data/				#äºŒè¿›åˆ¶æ—¥å¿—æ–‡ä»¶å­˜æ”¾è·¯å¾„	
 
-		¿ÉÑ¡²ÎÊı£¬½Å±¾¶¼ĞèÒª×Ô¼ºĞ´£º
-			shutdown_script=/masterha/scripts/shutdown.sh     #¹ÊÕÏ·¢Éúºó¹Ø±Õ¹ÊÕÏÖ÷»ú½Å±¾(ÓÃÓÚ·ÀÖ¹ÄÔÁÑ)
-			master_ip_failover_script=/masterha/scripts/automatic.sh		#ÉèÖÃ×Ô¶¯¹ÊÕÏ×ªÒÆÊ±Ö´ĞĞµÄ½Å±¾	
-			master_ip_online_change_script=/masterha/scripts/manual.sh 		#ÉèÖÃÊÖ¶¯¹ÊÕÏ×ªÒÆÊ±Ö´ĞĞµÄ½Å±¾	
-			report_script=/masterha/scripts/twili.py   						#ÉèÖÃ·¢ÉúÇĞ»»ºó·¢ËÍµÄ±¨¾¯½Å±¾
+		å¯é€‰å‚æ•°ï¼Œè„šæœ¬éƒ½éœ€è¦è‡ªå·±å†™ï¼š
+			shutdown_script=/masterha/scripts/shutdown.sh     #æ•…éšœå‘ç”Ÿåå…³é—­æ•…éšœä¸»æœºè„šæœ¬(ç”¨äºé˜²æ­¢è„‘è£‚)
+			master_ip_failover_script=/masterha/scripts/automatic.sh		#è®¾ç½®è‡ªåŠ¨æ•…éšœè½¬ç§»æ—¶æ‰§è¡Œçš„è„šæœ¬	
+			master_ip_online_change_script=/masterha/scripts/manual.sh 		#è®¾ç½®æ‰‹åŠ¨æ•…éšœè½¬ç§»æ—¶æ‰§è¡Œçš„è„šæœ¬	
+			report_script=/masterha/scripts/twili.py   						#è®¾ç½®å‘ç”Ÿåˆ‡æ¢åå‘é€çš„æŠ¥è­¦è„šæœ¬
 				
 			
 		[server1]						
 		hostname=192.168.0.40			
 		port=3306						
 	
-		[server2]						#½ÚµãÉèÖÃ
-		hostname=192.168.0.60			#Ö÷»úµØÖ·
-		port=3306						#¶Ë¿Ú
-		check_repl_delay=0 				#ÓÃ·ÀÖ¹master¹ÊÕÏÊ±£¬ÇĞ»»Ê±slaveÓĞÑÓ³Ù
+		[server2]						#èŠ‚ç‚¹è®¾ç½®
+		hostname=192.168.0.60			#ä¸»æœºåœ°å€
+		port=3306						#ç«¯å£
+		check_repl_delay=0 				#ç”¨é˜²æ­¢masteræ•…éšœæ—¶ï¼Œåˆ‡æ¢æ—¶slaveæœ‰å»¶è¿Ÿ
 		candidate_master=1 
-		#ÉèÖÃÎªºòÑ¡master£¬Èç¹ûÃ»ÓĞÉèÖÃÔòÔÚslaveÖĞÑ¡ÔñÊı¾İ×îĞÂµÄ³ÉÎªmaster£¬Èç¹ûÉèÖÃÁË½¨Òé×îºÃÖ¸Ïò°ëÍ¬²½½Úµã
+		#è®¾ç½®ä¸ºå€™é€‰masterï¼Œå¦‚æœæ²¡æœ‰è®¾ç½®åˆ™åœ¨slaveä¸­é€‰æ‹©æ•°æ®æœ€æ–°çš„æˆä¸ºmasterï¼Œå¦‚æœè®¾ç½®äº†å»ºè®®æœ€å¥½æŒ‡å‘åŠåŒæ­¥èŠ‚ç‚¹
 
 		[server3]						
 		hostname=192.168.0.10			
 		port=3306
 	
 	
-MHAÊ¹ÓÃ£º
-	chmod 600 /etc/mha/app1.cnf				#ÉèÖÃÎªÖ»ÓĞrootÓÃ»§¶Ô´ËÎÄ¼şÓĞÈ¨ÏŞ
-	masterha_check_ssh --conf=/etc/mha/app1.cnf				#¼ì²ésshÃØÔ¿ÈÏÖ¤ÊÇ·ñ³É¹¦
-		--conf£ºÖ¸¶¨ÅäÖÃÎÄ¼ş
+MHAä½¿ç”¨ï¼š
+	chmod 600 /etc/mha/app1.cnf				#è®¾ç½®ä¸ºåªæœ‰rootç”¨æˆ·å¯¹æ­¤æ–‡ä»¶æœ‰æƒé™
+	masterha_check_ssh --conf=/etc/mha/app1.cnf				#æ£€æŸ¥sshç§˜é’¥è®¤è¯æ˜¯å¦æˆåŠŸ
+		--confï¼šæŒ‡å®šé…ç½®æ–‡ä»¶
 
-	masterha_check_repl --conf=/etc/mha/app1.cnf			#¼ì²émysql¸´ÖÆ»·¾³³É¹¦
-	masterha_check_status --conf=/etc/mha/app1.cnf			#¼ì²éMHAÔËĞĞ×´Ì¬
-	masterha_manager --conf=/etc/mha/app1.cnf				#Æô¶¯MHA
+	masterha_check_repl --conf=/etc/mha/app1.cnf			#æ£€æŸ¥mysqlå¤åˆ¶ç¯å¢ƒæˆåŠŸ
+	masterha_check_status --conf=/etc/mha/app1.cnf			#æ£€æŸ¥MHAè¿è¡ŒçŠ¶æ€
+	masterha_manager --conf=/etc/mha/app1.cnf				#å¯åŠ¨MHA
 	
 	
 	
 	
-	http://www.cnblogs.com/gomysql/p/3675429.html			#¸ü¶àÅäÖÃ
+	http://www.cnblogs.com/gomysql/p/3675429.html			#æ›´å¤šé…ç½®
 	http://www.linuxidc.com/Linux/2014-11/109460.htm
 	
-	galera cluster				#¸üºÃµÄmysql¼¯Èº¹¤¾ß£¬µ«ĞèÒªÊ¹ÓÃÌØ±ğ±àÒëµÄmysql°æ±¾	
+	galera cluster				#æ›´å¥½çš„mysqlé›†ç¾¤å·¥å…·ï¼Œä½†éœ€è¦ä½¿ç”¨ç‰¹åˆ«ç¼–è¯‘çš„mysqlç‰ˆæœ¬	
 	
 	
 

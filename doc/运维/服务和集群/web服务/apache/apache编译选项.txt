@@ -1,55 +1,55 @@
---prefix=/usr/local/apache2   	//Ö¸¶¨°²×°Î»ÖÃ
---enable-so   			//±àÒë¶¯Ì¬¼ÓÔØÄ£¿é£¬Ê¹µÃApacheÉı¼¶ºÍÔö¼ÓÄ£¿éÊ±Ö»Ğè±àÒëÏà¹ØµÄÄ£¿é¼´¿É
---enable-expires		//Ö§³Ö HTTP ¿ØÖÆ
---enable-rewrite		//Ö§³Ö URL ÖØĞ´
---enable-cgi			//±àÒë CGI°æ±¾µÄPHP
---enable-cache 			//Ö§³Ö»º´æ
---enable-file-cache 		//Ö§³ÖÎÄ¼ş»º´æ
---enable-mem-cache 		//Ö§³Ö¼ÇÒä»º´æ
---enable-disk-cache 		//Ö§³Ö´ÅÅÌ»º´æ
---enable-static-support   	//Ö§³Ö¾²Ì¬Á¬½Ó(Ä¬ÈÏÎª¶¯Ì¬Á¬½Ó)
---enable-static-rotatelogs   	//Ê¹ÓÃ¾²Ì¬Á¬½Ó±àÒë rotatelogs ¨C ¹ö¶¯ Apache ÈÕÖ¾µÄ¹ÜµÀÈÕÖ¾³ÌĞò
---enable-static-logresolve   	//Ê¹ÓÃ¾²Ì¬Á¬½Ó±àÒë logresolve ¨C ½âÎö Apache ÈÕÖ¾ÖĞµÄIPµØÖ·ÎªÖ÷»úÃû
---enable-static-htdbm   		//Ê¹ÓÃ¾²Ì¬Á¬½Ó±àÒë htdbm ¨C ²Ù×÷ DBM ÃÜÂëÊı¾İ¿â
---enable-static-ab   		//Ê¹ÓÃ¾²Ì¬Á¬½Ó±àÒë ab ¨C Apache HTTP ·şÎñÆ÷ĞÔÄÜ²âÊÔ¹¤¾ß
---enable-static-checkgid   	//Ê¹ÓÃ¾²Ì¬Á¬½Ó±àÒë checkgid
---disable-cgid   		//½ûÖ¹ÓÃÒ»¸öÍâ²¿ CGI ÊØ»¤½ø³ÌÖ´ĞĞCGI½Å±¾
---disable-cgi   			//½ûÖ¹±àÒë CGI °æ±¾µÄ PHP
---disable-userdir   		//½ûÖ¹ÓÃ»§´Ó×Ô¼ºµÄÖ÷Ä¿Â¼ÖĞÌá¹©Ò³Ãæ
---with-mpm=worker 		//ÈÃapacheÒÔworker·½Ê½ÔËĞĞ
---enable-authn-dbm=shared 	//¶Ô¶¯Ì¬Êı¾İ¿â½øĞĞ²Ù×÷¡£RewriteÊ±ĞèÒª
+--prefix=/usr/local/apache2   	//æŒ‡å®šå®‰è£…ä½ç½®
+--enable-so   			//ç¼–è¯‘åŠ¨æ€åŠ è½½æ¨¡å—ï¼Œä½¿å¾—Apacheå‡çº§å’Œå¢åŠ æ¨¡å—æ—¶åªéœ€ç¼–è¯‘ç›¸å…³çš„æ¨¡å—å³å¯
+--enable-expires		//æ”¯æŒ HTTP æ§åˆ¶
+--enable-rewrite		//æ”¯æŒ URL é‡å†™
+--enable-cgi			//ç¼–è¯‘ CGIç‰ˆæœ¬çš„PHP
+--enable-cache 			//æ”¯æŒç¼“å­˜
+--enable-file-cache 		//æ”¯æŒæ–‡ä»¶ç¼“å­˜
+--enable-mem-cache 		//æ”¯æŒè®°å¿†ç¼“å­˜
+--enable-disk-cache 		//æ”¯æŒç£ç›˜ç¼“å­˜
+--enable-static-support   	//æ”¯æŒé™æ€è¿æ¥(é»˜è®¤ä¸ºåŠ¨æ€è¿æ¥)
+--enable-static-rotatelogs   	//ä½¿ç”¨é™æ€è¿æ¥ç¼–è¯‘ rotatelogs â€“ æ»šåŠ¨ Apache æ—¥å¿—çš„ç®¡é“æ—¥å¿—ç¨‹åº
+--enable-static-logresolve   	//ä½¿ç”¨é™æ€è¿æ¥ç¼–è¯‘ logresolve â€“ è§£æ Apache æ—¥å¿—ä¸­çš„IPåœ°å€ä¸ºä¸»æœºå
+--enable-static-htdbm   		//ä½¿ç”¨é™æ€è¿æ¥ç¼–è¯‘ htdbm â€“ æ“ä½œ DBM å¯†ç æ•°æ®åº“
+--enable-static-ab   		//ä½¿ç”¨é™æ€è¿æ¥ç¼–è¯‘ ab â€“ Apache HTTP æœåŠ¡å™¨æ€§èƒ½æµ‹è¯•å·¥å…·
+--enable-static-checkgid   	//ä½¿ç”¨é™æ€è¿æ¥ç¼–è¯‘ checkgid
+--disable-cgid   		//ç¦æ­¢ç”¨ä¸€ä¸ªå¤–éƒ¨ CGI å®ˆæŠ¤è¿›ç¨‹æ‰§è¡ŒCGIè„šæœ¬
+--disable-cgi   			//ç¦æ­¢ç¼–è¯‘ CGI ç‰ˆæœ¬çš„ PHP
+--disable-userdir   		//ç¦æ­¢ç”¨æˆ·ä»è‡ªå·±çš„ä¸»ç›®å½•ä¸­æä¾›é¡µé¢
+--with-mpm=worker 		//è®©apacheä»¥workeræ–¹å¼è¿è¡Œ
+--enable-authn-dbm=shared 	//å¯¹åŠ¨æ€æ•°æ®åº“è¿›è¡Œæ“ä½œã€‚Rewriteæ—¶éœ€è¦
 
 
---enable-experimental-libtool  	//ÆôÓÃÊÔÑéĞÔÖÊµÄ×Ô¶¨Òålibtool
---disable-libtool-lock		//È¡ÏûËø¶¨(¿ÉÄÜµ¼ÖÂ²¢ĞĞ±àÒë±ÀÀ£)
---enable-debug			//ÆôÓÃµ÷ÊÔ±àÒë£¬½ö¹©¿ª·¢ÈËÔ±Ê¹ÓÃ
---enable-maintainer-mode	//´ò¿ªµ÷ÊÔºÍ±àÒëÊ±¾¯¸æ£¬½ö¹©¿ª·¢ÈËÔ±Ê¹ÓÃ
---enable-profile		//´ò¿ª±àÒëprofiling(GCC)
---disable-lfs			//ÔÚ32-bitÆ½Ì¨ÉÏ½ûÓÃ´óÎÄ¼şÖ§³Ö
---enable-threads		//ÆôÓÃÏß³ÌÖ§³Ö£¬ÔÚÏß³ÌĞÍµÄMPMÉÏ±ØĞë´ò¿ªËü
---disable-threads		//½ûÓÃÏß³ÌÖ§³Ö£¬Èç¹û²»Ê¹ÓÃÏß³Ì»¯µÄMPM £¬¿ÉÒÔ¹Ø±ÕËüÒÔ¼õÉÙÏµÍ³¿ªÏú
---disable-dso			//½ûÓÃDSOÖ§³Ö
---enable-other-child		//ÆôÓÃ¿É¿¿×Ó½ø³ÌÖ§³Ö
---disable-ipv6			//½ûÓÃIPv6Ö§³Ö
---with-gnu-ld			//Ö¸¶¨C±àÒëÆ÷Ê¹ÓÃGNU ld
---with-pic			//Ö»Ê¹ÓÃ PIC/non-PIC ¶ÔÏó[Ä¬ÈÏÎªÁ½Õß¶¼Ê¹ÓÃ]
---with-installbuilddir		//Ö¸¶¨APR±àÒëÎÄ¼şµÄ´æ·ÅÎ»ÖÃ(Ä¬ÈÏÖµÎª£º¡¯${datadir}/build¡¯)
---without-libtool		//½ûÖ¹Ê¹ÓÃlibtoolÁ¬½Ó¿âÎÄ¼ş
---with-efence[=DIR]		//Ö¸¶¨Electric FenceµÄ°²×°Ä¿Â¼
---with-sendfile			//Ç¿ÖÆÊ¹ÓÃsendfile(ÒëÕß×¢£ºLinux2.4/2.6ÄÚºË¶¼Ö§³Ö)
---with-egd[=DIR]		//Ê¹ÓÃEDG¼æÈİµÄsocket
---with-devrandom[=DEV]		//Ö¸¶¨Ëæ»úÉè±¸[Ä¬ÈÏÎª£º/dev/random]
+--enable-experimental-libtool  	//å¯ç”¨è¯•éªŒæ€§è´¨çš„è‡ªå®šä¹‰libtool
+--disable-libtool-lock		//å–æ¶ˆé”å®š(å¯èƒ½å¯¼è‡´å¹¶è¡Œç¼–è¯‘å´©æºƒ)
+--enable-debug			//å¯ç”¨è°ƒè¯•ç¼–è¯‘ï¼Œä»…ä¾›å¼€å‘äººå‘˜ä½¿ç”¨
+--enable-maintainer-mode	//æ‰“å¼€è°ƒè¯•å’Œç¼–è¯‘æ—¶è­¦å‘Šï¼Œä»…ä¾›å¼€å‘äººå‘˜ä½¿ç”¨
+--enable-profile		//æ‰“å¼€ç¼–è¯‘profiling(GCC)
+--disable-lfs			//åœ¨32-bitå¹³å°ä¸Šç¦ç”¨å¤§æ–‡ä»¶æ”¯æŒ
+--enable-threads		//å¯ç”¨çº¿ç¨‹æ”¯æŒï¼Œåœ¨çº¿ç¨‹å‹çš„MPMä¸Šå¿…é¡»æ‰“å¼€å®ƒ
+--disable-threads		//ç¦ç”¨çº¿ç¨‹æ”¯æŒï¼Œå¦‚æœä¸ä½¿ç”¨çº¿ç¨‹åŒ–çš„MPM ï¼Œå¯ä»¥å…³é—­å®ƒä»¥å‡å°‘ç³»ç»Ÿå¼€é”€
+--disable-dso			//ç¦ç”¨DSOæ”¯æŒ
+--enable-other-child		//å¯ç”¨å¯é å­è¿›ç¨‹æ”¯æŒ
+--disable-ipv6			//ç¦ç”¨IPv6æ”¯æŒ
+--with-gnu-ld			//æŒ‡å®šCç¼–è¯‘å™¨ä½¿ç”¨GNU ld
+--with-pic			//åªä½¿ç”¨ PIC/non-PIC å¯¹è±¡[é»˜è®¤ä¸ºä¸¤è€…éƒ½ä½¿ç”¨]
+--with-installbuilddir		//æŒ‡å®šAPRç¼–è¯‘æ–‡ä»¶çš„å­˜æ”¾ä½ç½®(é»˜è®¤å€¼ä¸ºï¼šâ€™${datadir}/buildâ€™)
+--without-libtool		//ç¦æ­¢ä½¿ç”¨libtoolè¿æ¥åº“æ–‡ä»¶
+--with-efence[=DIR]		//æŒ‡å®šElectric Fenceçš„å®‰è£…ç›®å½•
+--with-sendfile			//å¼ºåˆ¶ä½¿ç”¨sendfile(è¯‘è€…æ³¨ï¼šLinux2.4/2.6å†…æ ¸éƒ½æ”¯æŒ)
+--with-egd[=DIR]		//ä½¿ç”¨EDGå…¼å®¹çš„socket
+--with-devrandom[=DEV]		//æŒ‡å®šéšæœºè®¾å¤‡[é»˜è®¤ä¸ºï¼š/dev/random]
 
 
---with-ldap-lib=PATH		//ldap¿âÎÄ¼şÂ·¾¶
---with-ldap=library		//Ê¹ÓÃµÄldap¿â
---with-gdbm			//Ö¸¶¨GDBMµÄÎ»ÖÃ
---with-ndbm			//Ö¸¶¨NDBMµÄÎ»ÖÃ
---with-berkeley-db		//Ö¸¶¨Berkeley DBµÄÎ»ÖÃ
---with-pgsql			//Ö¸¶¨PostgreSQLµÄÎ»ÖÃ
---with-mysql			//²Î¿´INSTALL.MySQLÎÄ¼şµÄÄÚÈİ
---with-sqlite3			//Ö¸¶¨sqlite3µÄÎ»ÖÃ
---with-sqlite2			//Ö¸¶¨sqlite2µÄÎ»ÖÃ
+--with-ldap-lib=PATH		//ldapåº“æ–‡ä»¶è·¯å¾„
+--with-ldap=library		//ä½¿ç”¨çš„ldapåº“
+--with-gdbm			//æŒ‡å®šGDBMçš„ä½ç½®
+--with-ndbm			//æŒ‡å®šNDBMçš„ä½ç½®
+--with-berkeley-db		//æŒ‡å®šBerkeley DBçš„ä½ç½®
+--with-pgsql			//æŒ‡å®šPostgreSQLçš„ä½ç½®
+--with-mysql			//å‚çœ‹INSTALL.MySQLæ–‡ä»¶çš„å†…å®¹
+--with-sqlite3			//æŒ‡å®šsqlite3çš„ä½ç½®
+--with-sqlite2			//æŒ‡å®šsqlite2çš„ä½ç½®
 
 
 

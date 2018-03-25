@@ -1,50 +1,50 @@
-»ùÓÚopensslµÄssh
+åŸºäºopensslçš„ssh
 
-ssh£º¿Í»§¶Ë³ÌĞò
-sshd£º·şÎñ¶ËÈí¼ş
+sshï¼šå®¢æˆ·ç«¯ç¨‹åº
+sshdï¼šæœåŠ¡ç«¯è½¯ä»¶
 
-sshd£ºcentosÄ¬ÈÏ°²×°²¢ÔËĞĞÁË
+sshdï¼šcentosé»˜è®¤å®‰è£…å¹¶è¿è¡Œäº†
 
-sshĞ­Òé£ºssh  v1   ssh  v2	v1ÏÖÔÚ»ù±¾¼û²»µ½
+sshåè®®ï¼šssh  v1   ssh  v2	v1ç°åœ¨åŸºæœ¬è§ä¸åˆ°
 
-sshÈÏÖ¤£º
-	1¡¢»ùÓÚ¿ÚÁîµÄÈÏÖ¤£¨Ä¬ÈÏÈÏÖ¤·½·¨£©
-	2¡¢»ùÓÚÃÜÔ¿µÄÈÏÖ¤£¨¸ü°²È«µÄÈÏÖ¤·½·¨£©
+sshè®¤è¯ï¼š
+	1ã€åŸºäºå£ä»¤çš„è®¤è¯ï¼ˆé»˜è®¤è®¤è¯æ–¹æ³•ï¼‰
+	2ã€åŸºäºå¯†é’¥çš„è®¤è¯ï¼ˆæ›´å®‰å…¨çš„è®¤è¯æ–¹æ³•ï¼‰
 
-sshdµÄÖ÷ÅäÖÃÎÄ¼ş£º
+sshdçš„ä¸»é…ç½®æ–‡ä»¶ï¼š
 /etc/ssh/sshd_config
 
-Ö÷ÒªÖ¸Áî£º
+ä¸»è¦æŒ‡ä»¤ï¼š
 
-Port  22						//¼àÌı¶Ë¿Ú£¬Ä¬ÈÏ22£¬½¨ÒéĞŞ¸ÄÄ¬ÈÏ¶Ë¿Ú
-ListenAddress  0.0.0.0			//ÔÊĞí´Ó±¾»úµÄÄÇ¸öipµØÖ·Ô¶³Ì£¬Ä¬ÈÏ±¾»úµÄËùÓĞip
-Protocol   2					//ÆôÓÃ°æ±¾2
-PenmitRootLogin	  yes			//ÊÇ·ñÔÊĞí¹ÜÀíÔ±Ö±½ÓµÇÂ¼£¬Ä¬ÈÏÎªÔÊĞí£¬½¨ÒéĞŞ¸Ä
-AllowUsers	redhat				//ÔÊĞíredhatµÇÂ¼£¬¾Ü¾øÆäËûËùÓĞÓÃ»§µÇÂ¼°üÀ¨¹ÜÀíÔ±ÓÃ»§
-AllowGroups	centos				//ÔÊĞícentos×éµÄ³ÉÔ±µÇÂ¼
-DenyUsers  centos				//½ö¾Ü¾øcentosÓÃ»§µÇÂ¼
-DenyGroups redhat				//¾Ü¾øredhead×é³ÉÔ±µÇÂ¼£¬¾Ü¾øÓÅÏÈ
-KeyRegenerationInterval 1h		//ÖØĞÂÉú³ÉÃÜÔ¿µÄÊ±¼ä
-ServerKeyBits 1024				//ÃÜÔ¿³¤¶È
-PubkeyAuthentication yes		//ÆôÓÃÃØÔ¿ÈÏÖ¤
-AuthorizedKeysFile  .ssh/authorized_keys	//Ö¸¶¨ÃØÔ¿ÎÄ¼ş´æ·ÅÎ»ÖÃ
-Compression	 delayed			//ÊÇ·ñ¶ÔÍ¨ĞÅÊı¾İ¼ÓÃÜ
-PermitRootLogin yes				//ÊÇ·ñÔÊĞírootÓÃ»§Ö±½ÓµÇÂ¼
-UseDns  on						//½ûÖ¹dns·½Ïò½âÎö
-MaxAuthTries  2					//ÃÜÂë×î´óÖØÊÔ´ÎÊı
-PermitEmptyPasswords no			//½ûÖ¹¿ÕÃÜÂëµÇÂ¼
+Port  22						//ç›‘å¬ç«¯å£ï¼Œé»˜è®¤22ï¼Œå»ºè®®ä¿®æ”¹é»˜è®¤ç«¯å£
+ListenAddress  0.0.0.0			//å…è®¸ä»æœ¬æœºçš„é‚£ä¸ªipåœ°å€è¿œç¨‹ï¼Œé»˜è®¤æœ¬æœºçš„æ‰€æœ‰ip
+Protocol   2					//å¯ç”¨ç‰ˆæœ¬2
+PenmitRootLogin	  yes			//æ˜¯å¦å…è®¸ç®¡ç†å‘˜ç›´æ¥ç™»å½•ï¼Œé»˜è®¤ä¸ºå…è®¸ï¼Œå»ºè®®ä¿®æ”¹
+AllowUsers	redhat				//å…è®¸redhatç™»å½•ï¼Œæ‹’ç»å…¶ä»–æ‰€æœ‰ç”¨æˆ·ç™»å½•åŒ…æ‹¬ç®¡ç†å‘˜ç”¨æˆ·
+AllowGroups	centos				//å…è®¸centosç»„çš„æˆå‘˜ç™»å½•
+DenyUsers  centos				//ä»…æ‹’ç»centosç”¨æˆ·ç™»å½•
+DenyGroups redhat				//æ‹’ç»redheadç»„æˆå‘˜ç™»å½•ï¼Œæ‹’ç»ä¼˜å…ˆ
+KeyRegenerationInterval 1h		//é‡æ–°ç”Ÿæˆå¯†é’¥çš„æ—¶é—´
+ServerKeyBits 1024				//å¯†é’¥é•¿åº¦
+PubkeyAuthentication yes		//å¯ç”¨ç§˜é’¥è®¤è¯
+AuthorizedKeysFile  .ssh/authorized_keys	//æŒ‡å®šç§˜é’¥æ–‡ä»¶å­˜æ”¾ä½ç½®
+Compression	 delayed			//æ˜¯å¦å¯¹é€šä¿¡æ•°æ®åŠ å¯†
+PermitRootLogin yes				//æ˜¯å¦å…è®¸rootç”¨æˆ·ç›´æ¥ç™»å½•
+UseDns  on						//ç¦æ­¢dnsæ–¹å‘è§£æ
+MaxAuthTries  2					//å¯†ç æœ€å¤§é‡è¯•æ¬¡æ•°
+PermitEmptyPasswords no			//ç¦æ­¢ç©ºå¯†ç ç™»å½•
 
 
-»ùÓÚÃÜÔ¿µÄÈÏÖ¤£º
-·şÎñÆ÷¶Ë£º
-ÔÚsshd_configÎÄ¼şÖĞÆôÓÃ£º
+åŸºäºå¯†é’¥çš„è®¤è¯ï¼š
+æœåŠ¡å™¨ç«¯ï¼š
+åœ¨sshd_configæ–‡ä»¶ä¸­å¯ç”¨ï¼š
 	  PubkeyAuthentication yes
 	  AuthorizedKeysFile  .ssh/authorized_keys
 
-¿Í»§¶Ë£º
-ssh-keygen			//Éú³ÉÃÜÂë¶Ô£¬Ä¬ÈÏ´æ·ÅÎ»ÖÃ~/.ssh/
+å®¢æˆ·ç«¯ï¼š
+ssh-keygen			//ç”Ÿæˆå¯†ç å¯¹ï¼Œé»˜è®¤å­˜æ”¾ä½ç½®~/.ssh/
 ssh-copy-id -i /root/.ssh/id_rsa.pub root@192.168.0.10
-//½«id_rsa.pubÎÄ¼ş¿½±´µ½192.168.0.10Ö÷»úµÄ/root/.ssh²¢¸ÄÃûÎªauthorized_keys
+//å°†id_rsa.pubæ–‡ä»¶æ‹·è´åˆ°192.168.0.10ä¸»æœºçš„/root/.sshå¹¶æ”¹åä¸ºauthorized_keys
 
 
 

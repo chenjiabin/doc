@@ -1,131 +1,131 @@
-´úÀíµÄ×÷ÓÃ£ºweb»º´æ¡¢ÄÚÈİÂ·ÓÉ£¨Èç ±ÈÈç¶¯¾²·ÖÀë£©
-»º´æµÄ×÷ÓÃ£º
-	1¡¢¼õÉÙÈßÓàÄÚÈİ´«Êä
-	2¡¢½ÚÊ¡´ø¿í¡¢»º½âÍøÂçÆ¿¾±
-	3¡¢½µµÍ·şÎñÆ÷Ñ¹Á¦¡¢¼õÉÙ´«ÊäÑÓ³Ù
+ä»£ç†çš„ä½œç”¨ï¼šwebç¼“å­˜ã€å†…å®¹è·¯ç”±ï¼ˆå¦‚ æ¯”å¦‚åŠ¨é™åˆ†ç¦»ï¼‰
+ç¼“å­˜çš„ä½œç”¨ï¼š
+	1ã€å‡å°‘å†—ä½™å†…å®¹ä¼ è¾“
+	2ã€èŠ‚çœå¸¦å®½ã€ç¼“è§£ç½‘ç»œç“¶é¢ˆ
+	3ã€é™ä½æœåŠ¡å™¨å‹åŠ›ã€å‡å°‘ä¼ è¾“å»¶è¿Ÿ
 
-haproxy£ºÌá¹©http²ãµÄ·´Ïò´úÀí£¬Ìá¹©tcp²ãµÄ¸ºÔØ¾ùºâ
-	haproxyÄ¬ÈÏ»ùÓÚµ¥½ø³Ì£¬ÊÂ¼şÇı¶¯Ä£ĞÍ¹¤×÷£¬´ó´ó¼õÉÙÁËÉÏÏÂÎÄÇĞ»»µÄ¿ªÏú¼°ÄÚĞÄÕ¼ÓÃ
+haproxyï¼šæä¾›httpå±‚çš„åå‘ä»£ç†ï¼Œæä¾›tcpå±‚çš„è´Ÿè½½å‡è¡¡
+	haproxyé»˜è®¤åŸºäºå•è¿›ç¨‹ï¼Œäº‹ä»¶é©±åŠ¨æ¨¡å‹å·¥ä½œï¼Œå¤§å¤§å‡å°‘äº†ä¸Šä¸‹æ–‡åˆ‡æ¢çš„å¼€é”€åŠå†…å¿ƒå ç”¨
 
-¸´ÖÆ¾ùºâÆ÷µÄĞÔÄÜÆÀ¹À£º
-	»á»°ÂÊ£º´´½¨»á»°ÏûºÄµÄÊ±¼ä
-	»á»°²¢·¢ÄÜÁ¦£ºÖ§³ÖµÄ×î´ó²¢·¢·ÃÎÊÁ¿
-	Êı¾İÂÊ£ºÊı¾İ´«ÊäÊıÂÊ
+å¤åˆ¶å‡è¡¡å™¨çš„æ€§èƒ½è¯„ä¼°ï¼š
+	ä¼šè¯ç‡ï¼šåˆ›å»ºä¼šè¯æ¶ˆè€—çš„æ—¶é—´
+	ä¼šè¯å¹¶å‘èƒ½åŠ›ï¼šæ”¯æŒçš„æœ€å¤§å¹¶å‘è®¿é—®é‡
+	æ•°æ®ç‡ï¼šæ•°æ®ä¼ è¾“æ•°ç‡
 
 
-haproxyÃüÁî£º 
-	-f ÅäÖÃÎÄ¼ş			#Ö¸¶¨ÅäÖÃÎÄ¼ş£¬²»¼Ó×ÓÑ¡ÏîÄ¬ÈÏÆô¶¯·şÎñ
-		-d		#Ç°Ì¨£¬debugÄ£Ê½
-		-D 		#ºóÌ¨£¬daemonÄ£Ê½Æô¶¯
-		-q 		#°²¾²Ä£Ê½,²»Êä³öĞÅÏ¢
-		-V 		#ÏêÏ¸Ä£Ê½
-		-c		#¶ÔÅäÖÃÎÄ¼ş½øĞĞÓï·¨¼ì²é
-		-s 		#ÏÔÊ¾Í³¼ÆÊı¾İ
-		-l 		#ÏÔÊ¾ÏêÏ¸Í³¼ÆÊı¾İ
-		-de 	#²»Ê¹ÓÃepoll
-		-dp 	#²»Ê¹ÓÃpoll
-		-db 	#½ûÓÃºóÌ¨Ä£Ê½£¬³ÌĞòÔËĞĞÔÚÇ°Ì¨£¬ÒÔ·ÇÊØ»¤½ø³Ì·½Ê½ÔËĞĞ
-		-st 	#ÏòpidÎÄ¼ş·¢ËÍTERMINATEĞÅºÅ£¬ÖØÆô
+haproxyå‘½ä»¤ï¼š 
+	-f é…ç½®æ–‡ä»¶			#æŒ‡å®šé…ç½®æ–‡ä»¶ï¼Œä¸åŠ å­é€‰é¡¹é»˜è®¤å¯åŠ¨æœåŠ¡
+		-d		#å‰å°ï¼Œdebugæ¨¡å¼
+		-D 		#åå°ï¼Œdaemonæ¨¡å¼å¯åŠ¨
+		-q 		#å®‰é™æ¨¡å¼,ä¸è¾“å‡ºä¿¡æ¯
+		-V 		#è¯¦ç»†æ¨¡å¼
+		-c		#å¯¹é…ç½®æ–‡ä»¶è¿›è¡Œè¯­æ³•æ£€æŸ¥
+		-s 		#æ˜¾ç¤ºç»Ÿè®¡æ•°æ®
+		-l 		#æ˜¾ç¤ºè¯¦ç»†ç»Ÿè®¡æ•°æ®
+		-de 	#ä¸ä½¿ç”¨epoll
+		-dp 	#ä¸ä½¿ç”¨poll
+		-db 	#ç¦ç”¨åå°æ¨¡å¼ï¼Œç¨‹åºè¿è¡Œåœ¨å‰å°ï¼Œä»¥éå®ˆæŠ¤è¿›ç¨‹æ–¹å¼è¿è¡Œ
+		-st 	#å‘pidæ–‡ä»¶å‘é€TERMINATEä¿¡å·ï¼Œé‡å¯
 		
 
-HAProxyµÄ¸ºÔØ¾ùºâËã·¨£º
-	1. roundrobin		#ÂÖÑ¯£¬×î´óÖ§³Ö4128¸öÁ¬½Ó
-	2. static-rr		#¼ÓÈ¨ÂÖÑ¯
-	3. leastconn		#×îÉÙÁ¬½ÓÊı£¬¸ü¾ßºó¶Ë·şÎñÆ÷¸ºÔØÇé¿ö½øĞĞµ÷¶È£¬½öÊÊÓÃÓÚ³¤Á¬½Ó»á»°
-	4. source			#Ïàµ±ÓÚnginxµÄip_hash£¬Ô­µØÖ·°ó¶¨
+HAProxyçš„è´Ÿè½½å‡è¡¡ç®—æ³•ï¼š
+	1. roundrobin		#è½®è¯¢ï¼Œæœ€å¤§æ”¯æŒ4128ä¸ªè¿æ¥
+	2. static-rr		#åŠ æƒè½®è¯¢
+	3. leastconn		#æœ€å°‘è¿æ¥æ•°ï¼Œæ›´å…·åç«¯æœåŠ¡å™¨è´Ÿè½½æƒ…å†µè¿›è¡Œè°ƒåº¦ï¼Œä»…é€‚ç”¨äºé•¿è¿æ¥ä¼šè¯
+	4. source			#ç›¸å½“äºnginxçš„ip_hashï¼ŒåŸåœ°å€ç»‘å®š
 		hash-type:
-			map-based			#È¡Ä£¼ÆËã
-			consistent			#Ò»ÖÂĞÔ¹şÏ£
+			map-based			#å–æ¨¡è®¡ç®—
+			consistent			#ä¸€è‡´æ€§å“ˆå¸Œ
 	
-	5. hdr(name)		#ä¯ÀÀÆ÷agent°ó¶¨
+	5. hdr(name)		#æµè§ˆå™¨agentç»‘å®š
 		hash-type:
-			map-based			#È¡Ä£¼ÆËã
-			consistent			#Ò»ÖÂĞÔ¹şÏ£
+			map-based			#å–æ¨¡è®¡ç®—
+			consistent			#ä¸€è‡´æ€§å“ˆå¸Œ
 			
-	6. uri				#¸ù¾İÇëÇóµÄURI£¬½«Í¬Ò»¸öurlÊ¼ÖÕ·Ö·¢µ½Ò»¸ö·şÎñÆ÷ÉÏ
+	6. uri				#æ ¹æ®è¯·æ±‚çš„URIï¼Œå°†åŒä¸€ä¸ªurlå§‹ç»ˆåˆ†å‘åˆ°ä¸€ä¸ªæœåŠ¡å™¨ä¸Š
 		hash-type:
-			map-based			#È¡Ä£¼ÆËã
-			consistent			#Ò»ÖÂĞÔ¹şÏ£
+			map-based			#å–æ¨¡è®¡ç®—
+			consistent			#ä¸€è‡´æ€§å“ˆå¸Œ
 			
-	7. url_param		#¸ù¾İÇëÇóµÄURl²ÎÊı
+	7. url_param		#æ ¹æ®è¯·æ±‚çš„URlå‚æ•°
 		hash-type:
-			map-based			#È¡Ä£¼ÆËã
-			consistent			#Ò»ÖÂĞÔ¹şÏ£
+			map-based			#å–æ¨¡è®¡ç®—
+			consistent			#ä¸€è‡´æ€§å“ˆå¸Œ
 
-	È¡ÃşºÍÒ»ÖÂĞÔ¹şÏ£µÄÇø±ğ£º		
-		È¡Ãş£ºÊ¹ÓÃkeyµÄÖµ½øĞĞhash¼ÆËã³ıÒÔserverµÄ×ÜÊıÀ´¶¨Î»server£¬ÕâÖÖËã·¨·Ç³£¼òµ¥¶øÇÒ¾ßÓĞºÜ¸ßµÄËæ»ú·Ö²¼ĞÔ£¬µ«ÊÇµ±·şÎñ×ÜÊı·¢ËÍ¸Ä±äÊ±£¬ËùÓĞµÄ»º´æ¶¼»áÊ§Ğ§£¬±ØĞëÖØĞÂ¹¹½¨»º´æ
-		Ò»ÖÂĞÔ¹şÏ££ºÏà±ÈÓÚÈ¡Ä££¬Ò»ÖÂĞÔ¹şÏ£²»½ö¶Ôkey½øĞĞhashÔËËã£¬¶ÔÃ¿¸öserverÒ²½øĞĞhashÔËËã£¬½«hash¼ÆËãµÄ½á¹ûÓ³Éäµ½Ò»¸öÓĞ2^32¸ö½ÚµãµÄ»·ÉÏ£¬Í¨¹ıÑ°ÕÒhashÖµ´óÓÚkeyµÄ×îĞ¡serverÀ´¶¨Î»server
+	å–æ‘¸å’Œä¸€è‡´æ€§å“ˆå¸Œçš„åŒºåˆ«ï¼š		
+		å–æ‘¸ï¼šä½¿ç”¨keyçš„å€¼è¿›è¡Œhashè®¡ç®—é™¤ä»¥serverçš„æ€»æ•°æ¥å®šä½serverï¼Œè¿™ç§ç®—æ³•éå¸¸ç®€å•è€Œä¸”å…·æœ‰å¾ˆé«˜çš„éšæœºåˆ†å¸ƒæ€§ï¼Œä½†æ˜¯å½“æœåŠ¡æ€»æ•°å‘é€æ”¹å˜æ—¶ï¼Œæ‰€æœ‰çš„ç¼“å­˜éƒ½ä¼šå¤±æ•ˆï¼Œå¿…é¡»é‡æ–°æ„å»ºç¼“å­˜
+		ä¸€è‡´æ€§å“ˆå¸Œï¼šç›¸æ¯”äºå–æ¨¡ï¼Œä¸€è‡´æ€§å“ˆå¸Œä¸ä»…å¯¹keyè¿›è¡Œhashè¿ç®—ï¼Œå¯¹æ¯ä¸ªserverä¹Ÿè¿›è¡Œhashè¿ç®—ï¼Œå°†hashè®¡ç®—çš„ç»“æœæ˜ å°„åˆ°ä¸€ä¸ªæœ‰2^32ä¸ªèŠ‚ç‚¹çš„ç¯ä¸Šï¼Œé€šè¿‡å¯»æ‰¾hashå€¼å¤§äºkeyçš„æœ€å°serveræ¥å®šä½server
 		
-			ĞéÄâ½Úµã£ºÊ¹ÓÃÒ»ÖÂĞÔ¹şÏ£ÊÇÔÚºó¶Ë·şÎñÆ÷½ĞÉÙµÄÊ±ºò¿ÉÄÜ»á³öÏÖ·Ö²¼²»¾ùµÄÇé¿ö£¬ĞéÄâ½Úµã¾ÍÊÇ½«»·ÉÏµÄËùÓĞ½ÚµãĞéÄâ³ö¶à·İ£¬½«ÕâĞ©ĞéÄâ½ÚµãºÍÕæÊµ½Úµã¾ùÔÈµÄ·Ö²¼ÔÚ»·ÉÏ
+			è™šæ‹ŸèŠ‚ç‚¹ï¼šä½¿ç”¨ä¸€è‡´æ€§å“ˆå¸Œæ˜¯åœ¨åç«¯æœåŠ¡å™¨å«å°‘çš„æ—¶å€™å¯èƒ½ä¼šå‡ºç°åˆ†å¸ƒä¸å‡çš„æƒ…å†µï¼Œè™šæ‹ŸèŠ‚ç‚¹å°±æ˜¯å°†ç¯ä¸Šçš„æ‰€æœ‰èŠ‚ç‚¹è™šæ‹Ÿå‡ºå¤šä»½ï¼Œå°†è¿™äº›è™šæ‹ŸèŠ‚ç‚¹å’ŒçœŸå®èŠ‚ç‚¹å‡åŒ€çš„åˆ†å¸ƒåœ¨ç¯ä¸Š
 	
 
 
-°²×°haproxy£º
-	ntpdate ntp1.aliyun.com							#Í¬²½Ê±¼ä
-	tar zxvf haproxy-1.6.12.tar.gz -C /usr/src/		#½âÑ¹
+å®‰è£…haproxyï¼š
+	ntpdate ntp1.aliyun.com							#åŒæ­¥æ—¶é—´
+	tar zxvf haproxy-1.6.12.tar.gz -C /usr/src/		#è§£å‹
 	cd /usr/src/haproxy-1.6.12/						
-	make TARGET=linux26 PREFIX=/usr/local/haproxy	#°²×°£¬linux26ÄÚºË°æ±¾2.6
-	make install PREFIX=/usr/local/haproxy			#°²×°Â·¾¶
+	make TARGET=linux26 PREFIX=/usr/local/haproxy	#å®‰è£…ï¼Œlinux26å†…æ ¸ç‰ˆæœ¬2.6
+	make install PREFIX=/usr/local/haproxy			#å®‰è£…è·¯å¾„
 	
 	
-»·¾³ÅäÖÃ£º
-	mkdir /usr/local/haproxy/{etc,logs,run}		#´´½¨ÅäÖÃÎÄ¼ş£¬ÈÕÖ¾ÎÄ¼ş£¬ÔËĞĞÎÄ¼şÄ¿Â¼
+ç¯å¢ƒé…ç½®ï¼š
+	mkdir /usr/local/haproxy/{etc,logs,run}		#åˆ›å»ºé…ç½®æ–‡ä»¶ï¼Œæ—¥å¿—æ–‡ä»¶ï¼Œè¿è¡Œæ–‡ä»¶ç›®å½•
 	cd examples/
-	cp haproxy.init /etc/init.d/haproxy		#´´½¨Æô¶¯½Å±¾
-	chmod 700 /etc/init.d/haproxy 		#Ö»ÓĞrootÓÃ»§¶ÔÆô¶¯Æô¶¯½Å±¾ÓĞ¿ØÖÆÈ¨ÏŞ
-	cp -p /usr/local/haproxy/sbin/haproxy /usr/local/sbin/	#´´½¨¹ÜÀíÃüÁî
-	chkconfig  --add haproxy	#¼ÓÈëÏµÍ³·şÎñ
-	chkconfig  haproxy on		#¿ªÆôÔËĞĞ¼¶±ğ
-	useradd -M -s /sbin/nologin haproxy		#´´½¨³ÌĞòÓÃ»§
+	cp haproxy.init /etc/init.d/haproxy		#åˆ›å»ºå¯åŠ¨è„šæœ¬
+	chmod 700 /etc/init.d/haproxy 		#åªæœ‰rootç”¨æˆ·å¯¹å¯åŠ¨å¯åŠ¨è„šæœ¬æœ‰æ§åˆ¶æƒé™
+	cp -p /usr/local/haproxy/sbin/haproxy /usr/local/sbin/	#åˆ›å»ºç®¡ç†å‘½ä»¤
+	chkconfig  --add haproxy	#åŠ å…¥ç³»ç»ŸæœåŠ¡
+	chkconfig  haproxy on		#å¼€å¯è¿è¡Œçº§åˆ«
+	useradd -M -s /sbin/nologin haproxy		#åˆ›å»ºç¨‹åºç”¨æˆ·
 	cd /usr/local/haproxy/
-	touch etc/haproxy.cfg			#´´½¨ÅäÖÃÎÄ¼ş
+	touch etc/haproxy.cfg			#åˆ›å»ºé…ç½®æ–‡ä»¶
 
 	
-haproxyÅäÖÃÏê½â£º
-	ÅäÖÃÎÄ¼ş¸ñ¾Ö£º
-		È«¾ÖÅäÖÃ£º¶¨ÒåºÍhaproxyĞÔÄÜÏà¹ØµÄÑ¡Ïî
-		´úÀíÅäÖÃ£º¶¨ÒåºÍ´úÀíÏà¹ØµÄÑ¡Ïî
-			Ä¬ÈÏÅäÖÃ£ºÃ»ÓĞ¶¨ÒåµÄ²ÎÊı½«ÖØÄ¬ÈÏ¶¨ÒåÖĞ¼Ì³Ğ
-			Ç°¶ËÅäÖÃ£º½ÓÊÕÇëÇóµÄÇ°¶ËĞéÄâ½Úµã
-			ºó¶ËÅäÖÃ£ººó¶Ë¼¯Èº·şÎñÅäÖÃ
-			Í³¼ÆÒ³ÃæÅäÖÃ£ºhaproxy¹ÜÀí½çÃæÅäÖÃ
+haproxyé…ç½®è¯¦è§£ï¼š
+	é…ç½®æ–‡ä»¶æ ¼å±€ï¼š
+		å…¨å±€é…ç½®ï¼šå®šä¹‰å’Œhaproxyæ€§èƒ½ç›¸å…³çš„é€‰é¡¹
+		ä»£ç†é…ç½®ï¼šå®šä¹‰å’Œä»£ç†ç›¸å…³çš„é€‰é¡¹
+			é»˜è®¤é…ç½®ï¼šæ²¡æœ‰å®šä¹‰çš„å‚æ•°å°†é‡é»˜è®¤å®šä¹‰ä¸­ç»§æ‰¿
+			å‰ç«¯é…ç½®ï¼šæ¥æ”¶è¯·æ±‚çš„å‰ç«¯è™šæ‹ŸèŠ‚ç‚¹
+			åç«¯é…ç½®ï¼šåç«¯é›†ç¾¤æœåŠ¡é…ç½®
+			ç»Ÿè®¡é¡µé¢é…ç½®ï¼šhaproxyç®¡ç†ç•Œé¢é…ç½®
 			
 				
-	global					#È«¾ÖÅäÖÃ
-		local2.*                       /var/log/haproxy.log			#½«ÈÕÖ¾·¢ËÍµ½rsyslogÖĞ£¬ĞèÒªÅäÖÃrsyslog
-		log         127.0.0.1 local2				#·¢ËÍÎ»ÖÃ
+	global					#å…¨å±€é…ç½®
+		local2.*                       /var/log/haproxy.log			#å°†æ—¥å¿—å‘é€åˆ°rsyslogä¸­ï¼Œéœ€è¦é…ç½®rsyslog
+		log         127.0.0.1 local2				#å‘é€ä½ç½®
 
-		chroot      /var/lib/haproxy				#ĞéÄâ¸ùÄ¿Â¼
-		pidfile     /var/run/haproxy.pid			#pidÎÄ¼şÎ»ÖÃ
-		maxconn     4000							#×î´óÁ¬½ÓÊı
-		user        haproxy							#ÔËĞĞÓÃ»§
-		group       haproxy							#ÔËĞĞ×é
-		daemon										#ÒÔÊØ»¤½ø³Ì·½Ê½ÔËĞĞ
+		chroot      /var/lib/haproxy				#è™šæ‹Ÿæ ¹ç›®å½•
+		pidfile     /var/run/haproxy.pid			#pidæ–‡ä»¶ä½ç½®
+		maxconn     4000							#æœ€å¤§è¿æ¥æ•°
+		user        haproxy							#è¿è¡Œç”¨æˆ·
+		group       haproxy							#è¿è¡Œç»„
+		daemon										#ä»¥å®ˆæŠ¤è¿›ç¨‹æ–¹å¼è¿è¡Œ
 		
-		ÆäËûµÄ²ÎÊı£º
-			ulimit-n ÎÄ¼şÊıÁ¿ 		#ulimitµÄÊıÁ¿ÏŞÖÆ£¬haproxy»á×Ô¶¯¼ÆËã£¬²»½¨Òé¶¨Òå
-			nbproc ½ø³ÌÊı 			#ÉèÖÃ½ø³ÌÊıÁ¿£¬¸ù¾İcpu½øĞĞÅäÖÃ£¬Ä¬ÈÏÇé¿öÊ¹ÓÃµ¥½ø³Ì+ÊÂ¼şÇı¶¯Ä£ĞÍ
+		å…¶ä»–çš„å‚æ•°ï¼š
+			ulimit-n æ–‡ä»¶æ•°é‡ 		#ulimitçš„æ•°é‡é™åˆ¶ï¼Œhaproxyä¼šè‡ªåŠ¨è®¡ç®—ï¼Œä¸å»ºè®®å®šä¹‰
+			nbproc è¿›ç¨‹æ•° 			#è®¾ç½®è¿›ç¨‹æ•°é‡ï¼Œæ ¹æ®cpuè¿›è¡Œé…ç½®ï¼Œé»˜è®¤æƒ…å†µä½¿ç”¨å•è¿›ç¨‹+äº‹ä»¶é©±åŠ¨æ¨¡å‹
 			
 			
 			
-	defaults			#Ä¬ÈÏÅäÖÃ
-		mode                    http						#Ä¬ÈÏµÄÄ£Ê½mode{tcp|http|health}	
-		log                     global						#¼ÇÂ¼µ½È«¾Ö¶¨ÒåµÄlogÎÄ¼şÖĞ	
-		option                  httplog						#ÈÕÖ¾Àà±ğ,²ÉÓÃhttplog
-		option                  dontlognull					#²»¼ÇÂ¼½¡¿µ¼ì²éÈÕÖ¾ĞÅÏ¢
-		option http-server-close							#Ã¿´ÎÇëÇóÍê±ÏºóÖ÷¶¯¹Ø±ÕhttpÍ¨µÀ
-		option forwardfor   except 192.168.0.0/8  #½«¿Í»§¶ËÕæÊµip·¢Íùºó¶Ë·şÎñÆ÷£¬ĞèÒªÔÚºó¶Ë·şÎñÆ÷ÈÕÖ¾ÖĞÌí¼Ó"X-Forwarded-For"Ê×²¿
-		option                  redispatch					#serverId¶ÔÓ¦µÄ·şÎñÆ÷¹Òµôºó,Ç¿ÖÆ¶¨Ïòµ½ÆäËû½¡¿µµÄ·şÎñÆ÷
-		retries                 3							#3´ÎÁ¬½ÓÊ§°Ü¾ÍÈÏÎª·şÎñ²»¿ÉÓÃ
-		timeout http-request    10s							#httpÇëÇó³¬Ê±Ê±¼ä
-		timeout queue           1m							#Ä¬ÈÏ¶ÓÁĞ³¬Ê±Ê±¼ä
-		timeout connect         10s							#Á¬½Ó³¬Ê±Ê±¼ä
-		timeout client          1m							#¿Í»§¶ËÁ¬½Ó³¬Ê±Ê±¼ä
-		timeout server          1m							#·şÎñ¶ËÁ¬½Ó³¬Ê±Ê±¼ä
-		timeout http-keep-alive 120s						#³¤Á¬½Ó³¬Ê±Ê±¼ä
-		timeout check           10s							#»º´æ³¬Ê±Ê±¼ä
-		maxconn                 4096						#×î´óÁ¬½ÓÊı
-						#´íÎóÒ³ÃæÅäÖÃ£¬°²×°Ä¿Â¼ÖĞÌá¹©ÓĞÄ£°åÎÄ¼ş
+	defaults			#é»˜è®¤é…ç½®
+		mode                    http						#é»˜è®¤çš„æ¨¡å¼mode{tcp|http|health}	
+		log                     global						#è®°å½•åˆ°å…¨å±€å®šä¹‰çš„logæ–‡ä»¶ä¸­	
+		option                  httplog						#æ—¥å¿—ç±»åˆ«,é‡‡ç”¨httplog
+		option                  dontlognull					#ä¸è®°å½•å¥åº·æ£€æŸ¥æ—¥å¿—ä¿¡æ¯
+		option http-server-close							#æ¯æ¬¡è¯·æ±‚å®Œæ¯•åä¸»åŠ¨å…³é—­httpé€šé“
+		option forwardfor   except 192.168.0.0/8  #å°†å®¢æˆ·ç«¯çœŸå®ipå‘å¾€åç«¯æœåŠ¡å™¨ï¼Œéœ€è¦åœ¨åç«¯æœåŠ¡å™¨æ—¥å¿—ä¸­æ·»åŠ "X-Forwarded-For"é¦–éƒ¨
+		option                  redispatch					#serverIdå¯¹åº”çš„æœåŠ¡å™¨æŒ‚æ‰å,å¼ºåˆ¶å®šå‘åˆ°å…¶ä»–å¥åº·çš„æœåŠ¡å™¨
+		retries                 3							#3æ¬¡è¿æ¥å¤±è´¥å°±è®¤ä¸ºæœåŠ¡ä¸å¯ç”¨
+		timeout http-request    10s							#httpè¯·æ±‚è¶…æ—¶æ—¶é—´
+		timeout queue           1m							#é»˜è®¤é˜Ÿåˆ—è¶…æ—¶æ—¶é—´
+		timeout connect         10s							#è¿æ¥è¶…æ—¶æ—¶é—´
+		timeout client          1m							#å®¢æˆ·ç«¯è¿æ¥è¶…æ—¶æ—¶é—´
+		timeout server          1m							#æœåŠ¡ç«¯è¿æ¥è¶…æ—¶æ—¶é—´
+		timeout http-keep-alive 120s						#é•¿è¿æ¥è¶…æ—¶æ—¶é—´
+		timeout check           10s							#ç¼“å­˜è¶…æ—¶æ—¶é—´
+		maxconn                 4096						#æœ€å¤§è¿æ¥æ•°
+						#é”™è¯¯é¡µé¢é…ç½®ï¼Œå®‰è£…ç›®å½•ä¸­æä¾›æœ‰æ¨¡æ¿æ–‡ä»¶
 		errorfile 403 /usr/src/haproxy-1.6.12/examples/errorfiles/403.http
 		errorfile 500 /usr/src/haproxy-1.6.12/examples/errorfiles/500.http
 		errorfile 502 /usr/src/haproxy-1.6.12/examples/errorfiles/502.http
@@ -142,29 +142,29 @@ haproxyÅäÖÃÏê½â£º
 		default_backend             app
 
 	
-	frontend main		#Ç°¶ËÅäÖÃ£¬×Ô¶¨ÒåÃû³Æ
+	frontend main		#å‰ç«¯é…ç½®ï¼Œè‡ªå®šä¹‰åç§°
 		mode http
-		log 127.0.0.1 local0 err				#ÈÕÖ¾¼¶±ğ	
-		bind *:80 								#¼àÌıµØÖ·
-		acl web hdr(host) -i www.abc.com  		#webÊÇ¹æÔòÃû³Æ£¬-iÎªºöÂÔ´óĞ¡Ğ´£¬ºóÃæÊÇ·ÃÎÊµÄÓòÃû£¬Ö§³ÖÕıÔò±í´ïÊ½
-		acl img hdr(host) -i img.abc.com  		#Èç¹û·ÃÎÊimg.abc.comÕâ¸öÓòÃû£¬¾Í´¥·¢img¹æÔò
-		#acl static path_end -i .jpg .png .jpeg		#Èç¹û·ÃÎÊµÄurlÒÔÕâĞ©ºó×ºÃû½áÎ²¾Í³ı·Çstatic¹æÔò  
-		use_backend webserver if web  	  		#Èç¹ûÉÏÃæ¶¨ÒåµÄweb¹æÔò±»´¥·¢£¬¼´·ÃÎÊwww.abc.com£¬¾Í½«ÇëÇó·Ö·¢µ½webserver
+		log 127.0.0.1 local0 err				#æ—¥å¿—çº§åˆ«	
+		bind *:80 								#ç›‘å¬åœ°å€
+		acl web hdr(host) -i www.abc.com  		#webæ˜¯è§„åˆ™åç§°ï¼Œ-iä¸ºå¿½ç•¥å¤§å°å†™ï¼Œåé¢æ˜¯è®¿é—®çš„åŸŸåï¼Œæ”¯æŒæ­£åˆ™è¡¨è¾¾å¼
+		acl img hdr(host) -i img.abc.com  		#å¦‚æœè®¿é—®img.abc.comè¿™ä¸ªåŸŸåï¼Œå°±è§¦å‘imgè§„åˆ™
+		#acl static path_end -i .jpg .png .jpeg		#å¦‚æœè®¿é—®çš„urlä»¥è¿™äº›åç¼€åç»“å°¾å°±é™¤éstaticè§„åˆ™  
+		use_backend webserver if web  	  		#å¦‚æœä¸Šé¢å®šä¹‰çš„webè§„åˆ™è¢«è§¦å‘ï¼Œå³è®¿é—®www.abc.comï¼Œå°±å°†è¯·æ±‚åˆ†å‘åˆ°webserver
 		use_backend imgserver if img
 		#use_backend imgserver if static
-		default_backend def		 				#Èç¹ûÃ»ÓĞÆ¥Åäµ½
+		default_backend def		 				#å¦‚æœæ²¡æœ‰åŒ¹é…åˆ°
 	
 	
-	backend webserver 			#ºó¶ËÅäÖÃ£¬webserver×÷ÓÃÓò
+	backend webserver 			#åç«¯é…ç½®ï¼Œwebserverä½œç”¨åŸŸ
 		mode http
-		balance roundrobin 					#Ê¹ÓÃÂÖÑ¯Ëã·¨
-		#hash-type consistent				#hashÀàĞÍ
-		option httpchk /index.html 			#url½¡¿µ¼ì²é£¬Ö»ÄÜÔÚÊ¹ÓÃhttpÄ£Ê½Ê±Ê¹ÓÃ
-		#cookie ck insert nocache		#Ê¹ÓÃcookie°ó¶¨·şÎñÆ÷£¬²»½èÖúÓÚµ÷¶ÈËã·¨£¬±ØÒªÊ±¿ÉÒÔÆôÓÃ£¬ck£ºÃû£¬²åÈë£¬²»»º´æ 
+		balance roundrobin 					#ä½¿ç”¨è½®è¯¢ç®—æ³•
+		#hash-type consistent				#hashç±»å‹
+		option httpchk /index.html 			#urlå¥åº·æ£€æŸ¥ï¼Œåªèƒ½åœ¨ä½¿ç”¨httpæ¨¡å¼æ—¶ä½¿ç”¨
+		#cookie ck insert nocache		#ä½¿ç”¨cookieç»‘å®šæœåŠ¡å™¨ï¼Œä¸å€ŸåŠ©äºè°ƒåº¦ç®—æ³•ï¼Œå¿…è¦æ—¶å¯ä»¥å¯ç”¨ï¼Œckï¼šåï¼Œæ’å…¥ï¼Œä¸ç¼“å­˜ 
 		server web1 192.168.0.40:80 cookie 1 weight 5 check inter 2000 rise 2 fall 3
 		server web2 192.168.0.60:80 cookie 2 weight 3 check inter 2000 rise 2 fall 3
-			#cookie 1±íÊ¾server_idÎª1£¬check inter 1500 ÊÇ¼ì²âĞÄÌøÆµÂÊ 
-			#rise 3ÊÇ3´ÎÕıÈ·ÈÏÎª·şÎñÆ÷¿ÉÓÃ£¬fall 3ÊÇ3´ÎÊ§°ÜÈÏÎª·şÎñÆ÷²»¿ÉÓÃ£¬weight´ú±íÈ¨ÖØ
+			#cookie 1è¡¨ç¤ºserver_idä¸º1ï¼Œcheck inter 1500 æ˜¯æ£€æµ‹å¿ƒè·³é¢‘ç‡ 
+			#rise 3æ˜¯3æ¬¡æ­£ç¡®è®¤ä¸ºæœåŠ¡å™¨å¯ç”¨ï¼Œfall 3æ˜¯3æ¬¡å¤±è´¥è®¤ä¸ºæœåŠ¡å™¨ä¸å¯ç”¨ï¼Œweightä»£è¡¨æƒé‡
 
 	backend imgserver
 		mode http
@@ -179,32 +179,32 @@ haproxyÅäÖÃÏê½â£º
 		server test 192.168.0.254:80 cookie 1 weight 5 check inter 2000 rise 2 fall 3
 
 		
-	listen stats								#¶¨Òåhaproxy¼à¿ØÒ³Ãæ£¬backendºÍfrontendµÄ¼¯ºÏ
-		bind *:9000								#¼àÌıµØÖ·
-		stats enable							#ÆôÓÃhaproxyµÄ¼à¿ØÒ³Ãæ
-		stats hide-version						#Òş²ØhaproxyµÄ°æ±¾
-		stats uri /haproxy/stats/admin			#haproxy¼à¿ØÒ³ÃæµÄ·ÃÎÊÂ·¾¶
-		stats realm 'login'						#ÈÏÖ¤µÇÂ¼Ê±µÄÌáĞÑ
-		stats auth root:123456					#ÆôÓÃ ÓÃ»§ºÍÃÜÂë
-		stats admin if TRUE						#ÈÏÖ¤³É¹¦ºó¸øÓè¹ÜÀíhaproxyµÄÈ¨ÏŞ
+	listen stats								#å®šä¹‰haproxyç›‘æ§é¡µé¢ï¼Œbackendå’Œfrontendçš„é›†åˆ
+		bind *:9000								#ç›‘å¬åœ°å€
+		stats enable							#å¯ç”¨haproxyçš„ç›‘æ§é¡µé¢
+		stats hide-version						#éšè—haproxyçš„ç‰ˆæœ¬
+		stats uri /haproxy/stats/admin			#haproxyç›‘æ§é¡µé¢çš„è®¿é—®è·¯å¾„
+		stats realm 'login'						#è®¤è¯ç™»å½•æ—¶çš„æé†’
+		stats auth root:123456					#å¯ç”¨ ç”¨æˆ·å’Œå¯†ç 
+		stats admin if TRUE						#è®¤è¯æˆåŠŸåç»™äºˆç®¡ç†haproxyçš„æƒé™
 	 
 		
 
 	
 	
 	
-¶¨ÒåÈÕÖ¾£º
-	vim /etc/rsyslog.conf		#ĞŞ¸ÄÏµÍ³ÈÕÖ¾ÅäÖÃ
+å®šä¹‰æ—¥å¿—ï¼š
+	vim /etc/rsyslog.conf		#ä¿®æ”¹ç³»ç»Ÿæ—¥å¿—é…ç½®
 		local0.* /usr/local/haproxy/logs/haproxy.log		
-			#½«haproxy²úÉúµÄËùÓĞÈÕÖ¾ĞÅÏ¢´æµ½haproxy.logÎÄ¼şÖĞ
+			#å°†haproxyäº§ç”Ÿçš„æ‰€æœ‰æ—¥å¿—ä¿¡æ¯å­˜åˆ°haproxy.logæ–‡ä»¶ä¸­
 		*.info;mail.none;authpriv.none;cron.none;local0.none       /var/log/messages
-			#haproxy²úÉúµÄÎÄ¼ş²»¼ÇÂ¼µ½/var/log/messagesÎÄ¼şÖĞ
-		service rsyslog restart			#ÖØÆôÈÕÖ¾·şÎñ
+			#haproxyäº§ç”Ÿçš„æ–‡ä»¶ä¸è®°å½•åˆ°/var/log/messagesæ–‡ä»¶ä¸­
+		service rsyslog restart			#é‡å¯æ—¥å¿—æœåŠ¡
 
 	
 		
 	
-²Î¿¼²©¿Í£º
+å‚è€ƒåšå®¢ï¼š
 	http://blog.sina.com.cn/s/blog_67fe9ee60102wssq.html
 	http://www.cnblogs.com/xibei666/p/5877548.html
 	http://www.cnblogs.com/MacoLee/p/5853413.html

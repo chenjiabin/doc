@@ -1,0 +1,86 @@
+DockerUI优点：
+	1、支持container批量操作
+	2、支持image管理
+
+DockerUI缺点：
+	3、不支持多主机
+
+DockerUI部署：
+	docker pull uifd/ui-for-docker  				#下载镜像
+	docker run -it -d --name docker-web -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock docker.io/uifd/ui-for-docke
+		#启动dockerUI
+	http://ip:9000				#关闭iptables和selinux访问
+
+
+
+shipyard
+	优点：
+		支持多主机；
+		支持container及engine资源限制及图形展示；
+		支持container实例横向扩展；
+		支持批量创建；
+		支持创建时自动调度。
+
+	缺点：
+		不支持image管理；
+		不支持container批量操作。
+
+
+
+engine
+	一个shipyard管理的docker集群可以包含一个或多个engine，一个engine就是监听tcp端口的docker daemon。
+	shipyard管理docker daemon、images、containers完全基于Docker API，不需要做其他的修改。
+	shipyard可以对每个engine做资源限制，包括CPU和内存。
+	支持通过SSL证书与docker后台进程安全通信。
+
+rethinkdb
+	RethinkDB是一个shipyard项目的一个docker镜像，用来存放账号(account)、引擎(engine)、服务密钥(service key)、
+	扩展元数据(extension metadata)等信息，但不会存储任何有关容器或镜像的内容。
+
+
+shipyard生态系统构成
+
+RethinkDB
+	deploy首先启动的就是RethinkDB容器，shipyard采用RethinkDB作为数据库来保存用户等信息
+
+Discovery
+	为了使用Swarm，我们需要一个外部的密钥值存储群容器，shipyard默认是采用了etcd。
+
+shipyard_certs
+	证书管理容器，实现证书验证功能
+
+Proxy
+	默认情况下，Docker引擎只监听Socket，可以重新配置引擎使用TLS或者使用一个代理容器，转发请求从TCP到Docker监听的UNIX Socket
+
+Swarm Manager
+	Swarm管理器
+
+Swarm Agent
+	Swarm代理，运行在每个节点上。
+
+Controller
+	shipyard控制器，Remote API的实现和web的实现。
+
+
+部署shipyard
+	docker pull shipyard/shipyard										#下载shipyard镜像
+	curl -s https://shipyard-project.com/deploy | bash -s				#安装shipyard
+		shipyard默认登录用户名：admin，密码：shipyard
+
+
+添加node节点
+	curl -sSL https://shipyard-project.com/deploy | ACTION=node DISCOVERY=etcd://部署机ip:4001 bash -s
+
+
+删除shipyard(在节点机上执行，就会将节点从shipyard管理里踢出)
+	curl -sSL https://shipyard-project.com/deploy | ACTION=remove bash -s
+
+
+停止shipyard
+	docker stop shipyard-proxy shipyard-certs shipyard-discovery shipyard-rethinkdb shipyard-swarm-agent shipyard-swarm-manager shipyard-controller
+
+
+启动shipyard
+	docker start shipyard-proxy shipyard-certs shipyard-discovery shipyard-rethinkdb shipyard-swarm-agent shipyard-swarm-manager shipyard-controller
+
+		

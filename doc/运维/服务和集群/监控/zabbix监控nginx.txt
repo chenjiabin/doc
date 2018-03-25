@@ -1,17 +1,17 @@
-²½Öè£º
-	1¡¢ÔÚĞèÒª¼à¿ØµÄserverÖĞÌí¼ÓÈçÏÂÄÚÈİ£º
-		location /nginx_status {			#ÆôÓÃnginx×´Ì¬¼ì²âÄ£¿é
+æ­¥éª¤ï¼š
+	1ã€åœ¨éœ€è¦ç›‘æ§çš„serverä¸­æ·»åŠ å¦‚ä¸‹å†…å®¹ï¼š
+		location /nginx_status {			#å¯ç”¨nginxçŠ¶æ€æ£€æµ‹æ¨¡å—
             stub_status on;
             access_log off;
         }
-	nginx -s reload							#ÖØ¶ÁÅäÖÃÎÄ¼ş
-	curl http://127.0.0.1/nginx_status			#²âÊÔÅäÖÃÊÇ·ñÉúĞ§£¬³öÏÖÈçÏÂÄÚÈİÔòÅäÖÃÉúĞ§
+	nginx -s reload							#é‡è¯»é…ç½®æ–‡ä»¶
+	curl http://127.0.0.1/nginx_status			#æµ‹è¯•é…ç½®æ˜¯å¦ç”Ÿæ•ˆï¼Œå‡ºç°å¦‚ä¸‹å†…å®¹åˆ™é…ç½®ç”Ÿæ•ˆ
 		Active connections: 2 
 		server accepts handled requests
 		21 21 184 
 		Reading: 0 Writing: 1 Waiting: 1 
 	
-	2¡¢±àĞ´¼à¿Ø½Å±¾£¬·ÅÈëagent¶Ë
+	2ã€ç¼–å†™ç›‘æ§è„šæœ¬ï¼Œæ”¾å…¥agentç«¯
 	vim nginx.sh
 		#!/bin/bash
 		HOST="127.0.0.1"
@@ -43,12 +43,12 @@
 		}
 		$1
 
-	3¡¢vim /etc/zabbix/zabbix_agentd.conf		#±à¼­zabbix-agent¶ËÅäÖÃÎÄ¼ş
+	3ã€vim /etc/zabbix/zabbix_agentd.conf		#ç¼–è¾‘zabbix-agentç«¯é…ç½®æ–‡ä»¶
 		mkdir /etc/zabbix/scripts
-		UserParameter=nginx.status[*],/etc/zabbix/scripts/nginx.sh $1	#Ìí¼Ónginx½Å±¾´æ·ÅÎ»ÖÃ
+		UserParameter=nginx.status[*],/etc/zabbix/scripts/nginx.sh $1	#æ·»åŠ nginxè„šæœ¬å­˜æ”¾ä½ç½®
 
-	4¡¢web¶Ëµ¼ÈëÄ£°å
+	4ã€webç«¯å¯¼å…¥æ¨¡æ¿
 		http://www.ttlsa.com/wp-content/uploads/2015/10/zabbix_monitor_nginx_template_ttlsa_com.zip
-				#Ä£°åÏÂÔØÎ»ÖÃ
+				#æ¨¡æ¿ä¸‹è½½ä½ç½®
 
 

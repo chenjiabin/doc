@@ -1,0 +1,58 @@
+什么是容器：
+    镜像是docker的三大核心之一
+    是一个实例化的镜像，在只读层上增加了一层可写层，容器可以启动，停止，删除和修改每个容器都是相互隔离的
+
+
+容器管理：
+    docker create -it centos              #创建一个容器(处于暂停状态)
+    docker ps -a                          #查看所以容器(包括处于暂停状态的容器)
+    docker start ID|NAMES                 #启动处于暂停状态的容器
+    docker run centos /bin/echo "Hello"   #创建并运行一个容器，输出Hello后退出容器(处于暂停状态)
+    docker run -it centos /bin/bash       #运行容器并打开一个终端镜像交互
+        -t：分配一个伪终端并绑定到容器    -i：容器的标准输出默认打开
+
+    当利用docker run来创建容器时，Docker在后台运行的标准操作包括：
+    	1、检查本地是否存在指定的镜像，不存在则从公有仓库下载
+    	2、利用镜像创建并启动一个容器
+    	3、分配一个文件系统，并在只读的镜像层外面挂载一层可读写层
+    	4、从宿主机配置的网桥接口中桥接一个虚拟接口到容器中去
+    	5、从地址池分配一个 ip 地址给容器
+    	6、执行用户指定的应用程序
+    	7、执行完毕后容器终止
+
+
+守护态运行：
+    docker run -d centos /bin/sh -c "while true; do echo abc; sleep 1; done"    #在后台一直运行
+    docker logs a8e1bf7fa2e2        #查看容器的输出
+
+
+终止容器：
+    docker stop命令用来终止容器，命令格式docker stop [OPTIONS] CONTAINER [CONTAINER...]
+        主要选项-t, --time=[10]     #默认为10s后停止容器
+    当docker中指定的应用终结时，docker容器也会自动退出，例如启动一个伪终端exit之后容器就会自动退出
+
+
+启动容器：
+    docker ps -a                   #查看所以容器(STATUS为Exited的代表容器已经退出)
+    docker start ID|NAMES          #启动容器
+    docker restart ID|NAMES        #重启容器
+
+
+进入容器：
+    docker attach  ID|NAMES         #进入指定的容器
+        attach命令的缺陷：所有窗口执行的操作都是同步的，当一个命令阻塞时其他窗口也会阻塞，不能进行多窗口操作
+    docker exec ID|NAMES            #在指定容器中执行命令
+        例：docker exec -it a1eb9b25f70f /bin/bash    #在容器中打开一个伪终端，进行交互
+
+
+删除容器：
+    docker rm删除处于暂停状态的容器，命令格式docker rm [OPTIONS] CONTAINER [CONTAINER...]
+        主要选项：
+            -f, --force           #强制删除
+            -l, --link            #删除容器的链接但保留容器
+            -v, --volumes         #删除容器挂载的数据卷
+
+
+导入和导出容器(迁移容器使用)：
+    docker export a8e1bf7fa2e2 > centos_export.tar                  #导出容器
+    cat centos_export.tar | docker import - centos:import           #导入为镜像

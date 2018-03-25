@@ -1,109 +1,109 @@
-±àÒë°²×°squid£º
-	tar xvf squid-3.5.25-20170408-r14154.tar.gz -C /usr/src/		#½âÑ¹
+ç¼–è¯‘å®‰è£…squidï¼š
+	tar xvf squid-3.5.25-20170408-r14154.tar.gz -C /usr/src/		#è§£å‹
 	cd /usr/src/
 	./configure --prefix=/usr/local/squid --enable-async-io=160
 	--enable-epoll --enable-linux-netfilter --enable-stacktraces 
 	--enable-gunregex --enable-linux-tproxy --enable-underscore 
-	--enable-arp-acl --enable-err-languages="Simplify_Chinese" 		#ÅäÖÃ
-	make && make install			#±àÒë   °²×°
+	--enable-arp-acl --enable-err-languages="Simplify_Chinese" 		#é…ç½®
+	make && make install			#ç¼–è¯‘   å®‰è£…
 
 
-±àÒë²ÎÊı£º
---prefix						#°²×°Î»ÖÃ
---enable-kill-parent-hack		#ÆôÓÃ¹Øµôsquid½ø³ÌÊ±Á¬Í¬¸¸½ø³ÌÒ²Ò»Æğ¹Øµô
---enable-large-cache-files=		#Ö§³Ö´óµÄ»º´æÎÄ¼ş
---enable-snmp					#ÆôÓÃSNMP,ÊÇ¼àÊÓÍøÂçÉè±¸ºÍ·şÎñÆ÷µÄÁ÷ĞĞ·½·¨
---enable-async-io=160			#ÆôÓÃÍ¬²½I/O¼¼Êõ,ÓÃÒÔÌáÉı´æ´¢ĞÔÄÜ
---enable-storeio=ufs,aufs,diskd #Ö§³Ö²»Í¬´æ´¢Ä£¿é
---enable-epoll					#Ö§³ÖepollµÄIOÄ£Ê½,ÄÚºË26.ÒÔÉÏ²ÅÖ§³Ö,±Èpoll¸ü¸ßĞ§
---enable-poll					#Ö§³ÖpollµÄIOÄ£Ê½
---enable-linux-netfilter 		#ÆôÓÃÄÚºË¹ıÂË
---enable-stacktraces			#Èç¹ûsquid±ÀÀ££¬Êı¾İ×·×ÙĞÅÏ¢±»Ğ´µ½cache.logÎÄ¼ş
---enable-referer-log			#¼¤»îÀ´×Ô¿Í»§ÇëÇóµÄHTTP refererÈÕÖ¾
---enable-useragent-log			#¼¤»îÀ´×Ô¿Í»§ÇëÇóµÄHTTPÓÃ»§´úÀíÍ·ÈÕÖ¾
---enable-err-languages="Simplify_Chinese" 	#Ö¸¶¨´íÎóÈÕÖ¾ÏÔÊ¾ÓïÑÔ
---enable-gunregex				#ÆôÓÃGUNÕıÔò±í´ïÊ½
---enable-linux-tproxy			#Ö§³ÖÍ¸Ã÷Ä£Ê½
---enable-underscore				#Ö§³ÖURLÖĞ°üº¬ÏÂ»®Ïß(__)
---enable-arp-acl				#Ö§³ÖARP,»òÕßÒÔÌ«µØÖ··ÃÎÊ¿ØÖÆÁĞ±í
---enable-htcp					#HTCPÊÇ³¬ÎÄ±¾»º´æĞ­Òé,ÀàËÆÓÚICPµÄÄÚ²¿»º´æĞ­Òé
---with-large-files=				#Ö§³Ö´óµÄÎÄ¼ş
---with-maxfd=					#¸²¸ÇµÄ×î´óÊıÁ¿µÄÎÄ¼şÃèÊö·û
---sysconfdir=/etc				#Ö¸¶¨ÅäÖÃÎÄ¼şÄ¿Â¼
+ç¼–è¯‘å‚æ•°ï¼š
+--prefix						#å®‰è£…ä½ç½®
+--enable-kill-parent-hack		#å¯ç”¨å…³æ‰squidè¿›ç¨‹æ—¶è¿åŒçˆ¶è¿›ç¨‹ä¹Ÿä¸€èµ·å…³æ‰
+--enable-large-cache-files=		#æ”¯æŒå¤§çš„ç¼“å­˜æ–‡ä»¶
+--enable-snmp					#å¯ç”¨SNMP,æ˜¯ç›‘è§†ç½‘ç»œè®¾å¤‡å’ŒæœåŠ¡å™¨çš„æµè¡Œæ–¹æ³•
+--enable-async-io=160			#å¯ç”¨åŒæ­¥I/OæŠ€æœ¯,ç”¨ä»¥æå‡å­˜å‚¨æ€§èƒ½
+--enable-storeio=ufs,aufs,diskd #æ”¯æŒä¸åŒå­˜å‚¨æ¨¡å—
+--enable-epoll					#æ”¯æŒepollçš„IOæ¨¡å¼,å†…æ ¸26.ä»¥ä¸Šæ‰æ”¯æŒ,æ¯”pollæ›´é«˜æ•ˆ
+--enable-poll					#æ”¯æŒpollçš„IOæ¨¡å¼
+--enable-linux-netfilter 		#å¯ç”¨å†…æ ¸è¿‡æ»¤
+--enable-stacktraces			#å¦‚æœsquidå´©æºƒï¼Œæ•°æ®è¿½è¸ªä¿¡æ¯è¢«å†™åˆ°cache.logæ–‡ä»¶
+--enable-referer-log			#æ¿€æ´»æ¥è‡ªå®¢æˆ·è¯·æ±‚çš„HTTP refereræ—¥å¿—
+--enable-useragent-log			#æ¿€æ´»æ¥è‡ªå®¢æˆ·è¯·æ±‚çš„HTTPç”¨æˆ·ä»£ç†å¤´æ—¥å¿—
+--enable-err-languages="Simplify_Chinese" 	#æŒ‡å®šé”™è¯¯æ—¥å¿—æ˜¾ç¤ºè¯­è¨€
+--enable-gunregex				#å¯ç”¨GUNæ­£åˆ™è¡¨è¾¾å¼
+--enable-linux-tproxy			#æ”¯æŒé€æ˜æ¨¡å¼
+--enable-underscore				#æ”¯æŒURLä¸­åŒ…å«ä¸‹åˆ’çº¿(__)
+--enable-arp-acl				#æ”¯æŒARP,æˆ–è€…ä»¥å¤ªåœ°å€è®¿é—®æ§åˆ¶åˆ—è¡¨
+--enable-htcp					#HTCPæ˜¯è¶…æ–‡æœ¬ç¼“å­˜åè®®,ç±»ä¼¼äºICPçš„å†…éƒ¨ç¼“å­˜åè®®
+--with-large-files=				#æ”¯æŒå¤§çš„æ–‡ä»¶
+--with-maxfd=					#è¦†ç›–çš„æœ€å¤§æ•°é‡çš„æ–‡ä»¶æè¿°ç¬¦
+--sysconfdir=/etc				#æŒ‡å®šé…ç½®æ–‡ä»¶ç›®å½•
 
 
 
-³õÊ¼»¯£º
-	useradd -M -s /sbin/nologin squid			#´´½¨³ÌĞòÓÃ»§
-	chown -R squid#squid /usr/local/squid/var		#ĞŞ¸ÄÈ¨ÏŞ
-	ln -s /usr/local/squid/sbin/* /usr/local/sbin	#Á´½ÓÃüÁîµ½»·¾³±äÁ¿
-	squid -z					#³õÊ¼»¯»º´æÄ¿Â¼
-	chmod -R 777 /usr/local/squid/var/			#¸³Óè»º´æÄ¿Â¼È¨ÏŞ
+åˆå§‹åŒ–ï¼š
+	useradd -M -s /sbin/nologin squid			#åˆ›å»ºç¨‹åºç”¨æˆ·
+	chown -R squid#squid /usr/local/squid/var		#ä¿®æ”¹æƒé™
+	ln -s /usr/local/squid/sbin/* /usr/local/sbin	#é“¾æ¥å‘½ä»¤åˆ°ç¯å¢ƒå˜é‡
+	squid -z					#åˆå§‹åŒ–ç¼“å­˜ç›®å½•
+	chmod -R 777 /usr/local/squid/var/			#èµ‹äºˆç¼“å­˜ç›®å½•æƒé™
 	
 	
-squidÃüÁî£º
-	squid -z			#³õÊ¼»¯»º´æÄ¿Â¼
-	squid				#Æô¶¯·şÎñ(Ä¬ÈÏ¶Ë¿Ú#3128)
-	squid -k parse		#¼ì²éÖ÷ÅäÖÃÎÄ¼şÓï·¨
-	squid -k shutdown	#°²È«Í£Ö¹squid·şÎñ
-	squid -k reconfigure -f /usr/local/squid/etc/squid.conf		#ÖØĞÂ¼ÓÔØÅäÖÃÎÄ¼ş
-	squid -k kill		#Ç¿ÖÆ¹Ø±Õ·şÎñ
+squidå‘½ä»¤ï¼š
+	squid -z			#åˆå§‹åŒ–ç¼“å­˜ç›®å½•
+	squid				#å¯åŠ¨æœåŠ¡(é»˜è®¤ç«¯å£#3128)
+	squid -k parse		#æ£€æŸ¥ä¸»é…ç½®æ–‡ä»¶è¯­æ³•
+	squid -k shutdown	#å®‰å…¨åœæ­¢squidæœåŠ¡
+	squid -k reconfigure -f /usr/local/squid/etc/squid.conf		#é‡æ–°åŠ è½½é…ç½®æ–‡ä»¶
+	squid -k kill		#å¼ºåˆ¶å…³é—­æœåŠ¡
 	
 
-squid»ù±¾ÅäÖÃ£º
-Ö÷ÅäÖÃÎÄ¼ş£º/usr/local/squid/etc/squid.conf
-ÅäÖÃ²Î¿¼ÊÖ²á£º/usr/local/squid/etc/squid.conf.documented
-±¸·İÖ÷ÅäÖÃÎÄ¼ş£ºcp -p /usr/local/squid/etc/squid.conf /usr/local/squid/etc/squid.conf.bak
+squidåŸºæœ¬é…ç½®ï¼š
+ä¸»é…ç½®æ–‡ä»¶ï¼š/usr/local/squid/etc/squid.conf
+é…ç½®å‚è€ƒæ‰‹å†Œï¼š/usr/local/squid/etc/squid.conf.documented
+å¤‡ä»½ä¸»é…ç½®æ–‡ä»¶ï¼šcp -p /usr/local/squid/etc/squid.conf /usr/local/squid/etc/squid.conf.bak
 
-squid.confÎÄ¼şÏê½â
-	cache_effective_user   squid		#³ÌĞòÓÃ»§		
-	cache_effective_group  squid		#³ÌĞò×é
-	acl localnet src 192.168.0.0/24¡¡ ¡¡#¶¨Òå±¾µØÍø¶Î
-	http_port¡¡3128¡¡¡¡¡¡¡¡¡¡¡¡			#¼àÌıµÄIPºÍ¶Ë¿Ú
-	cache_mem 64 MB¡¡  #¶îÍâÌá¹©¸øsquidÊ¹ÓÃµÄÄÚ´æ,×ÜÄÚ´æ´óĞ¡ (cacheÄ¿Â¼´óĞ¡)*10+15+(cache_mem)
-	maximum_object_size 4 MB ¡¡¡¡#ÉèÖÃsquid´ÅÅÌ»º´æ×î´óÎÄ¼ş,³¬¹ı4MµÄÎÄ¼ş²»±£´æµ½Ó²ÅÌ
-	minimum_object_size 10 KB ¡¡ #ÉèÖÃsquid´ÅÅÌ»º´æ×îĞ¡ÎÄ¼ş
-	cache_swap_high 95¡¡¡¡		#cacheÄ¿Â¼Ê¹ÓÃÁ¿´óÓÚ95%Ê±£¬¿ªÊ¼ÇåÀí¾ÉµÄcache
-	cache_swap_low 70¡¡¡¡ 		#cacheÄ¿Â¼ÇåÀíµ½70%Ê±Í£Ö¹
-	reply_body_max_size 5 MB	#ÔÊĞíÏÂÔØµÄ×î´óÎÄ¼ş´óĞ¡
-	visible_hostname localhost	#Ö÷»úÃû
-	cache_mgr 123456789@.com	#¹ÜÀíÔ±ÓÊÏä
-	http_access allow all¡¡¡¡	#ÔÊĞíËùÓĞ
-	http_access deny all¡¡¡¡	#¾Ü¾øËùÓĞ(Ä¬ÈÏ¾Ü¾ø)
+squid.confæ–‡ä»¶è¯¦è§£
+	cache_effective_user   squid		#ç¨‹åºç”¨æˆ·		
+	cache_effective_group  squid		#ç¨‹åºç»„
+	acl localnet src 192.168.0.0/24ã€€ ã€€#å®šä¹‰æœ¬åœ°ç½‘æ®µ
+	http_portã€€3128ã€€ã€€ã€€ã€€ã€€ã€€			#ç›‘å¬çš„IPå’Œç«¯å£
+	cache_mem 64 MBã€€  #é¢å¤–æä¾›ç»™squidä½¿ç”¨çš„å†…å­˜,æ€»å†…å­˜å¤§å° (cacheç›®å½•å¤§å°)*10+15+(cache_mem)
+	maximum_object_size 4 MB ã€€ã€€#è®¾ç½®squidç£ç›˜ç¼“å­˜æœ€å¤§æ–‡ä»¶,è¶…è¿‡4Mçš„æ–‡ä»¶ä¸ä¿å­˜åˆ°ç¡¬ç›˜
+	minimum_object_size 10 KB ã€€ #è®¾ç½®squidç£ç›˜ç¼“å­˜æœ€å°æ–‡ä»¶
+	cache_swap_high 95ã€€ã€€		#cacheç›®å½•ä½¿ç”¨é‡å¤§äº95%æ—¶ï¼Œå¼€å§‹æ¸…ç†æ—§çš„cache
+	cache_swap_low 70ã€€ã€€ 		#cacheç›®å½•æ¸…ç†åˆ°70%æ—¶åœæ­¢
+	reply_body_max_size 5 MB	#å…è®¸ä¸‹è½½çš„æœ€å¤§æ–‡ä»¶å¤§å°
+	visible_hostname localhost	#ä¸»æœºå
+	cache_mgr 123456789@.com	#ç®¡ç†å‘˜é‚®ç®±
+	http_access allow allã€€ã€€	#å…è®¸æ‰€æœ‰
+	http_access deny allã€€ã€€	#æ‹’ç»æ‰€æœ‰(é»˜è®¤æ‹’ç»)
 
 		
-squidÅäÖÃÊµÀı£º
-	ÆÕÍ¨´úÀí£º
-		vim squid.conf			#ĞŞ¸ÄÅäÖÃÎÄ¼ş
+squidé…ç½®å®ä¾‹ï¼š
+	æ™®é€šä»£ç†ï¼š
+		vim squid.conf			#ä¿®æ”¹é…ç½®æ–‡ä»¶
 			visible_hostname  www.test.com
 			cache_mgr 2803660215@qq.com
 			http_access allow all
 			http_access deny all
 			reply_body_max_size 5 MB
 			
-		squid -k parse		#¼ì²éÓï·¨		
-		squid				#¿ªÆô·şÎñ
-		netstat -napt | grep 3128	#²é¿´·şÎñÊÇ·ñ¿ªÆô
+		squid -k parse		#æ£€æŸ¥è¯­æ³•		
+		squid				#å¼€å¯æœåŠ¡
+		netstat -napt | grep 3128	#æŸ¥çœ‹æœåŠ¡æ˜¯å¦å¼€å¯
 		
-		ÑéÖ¤£ºÔÚ¿Í»§¶Ëä¯ÀÀÆ÷ÉÏÉèÖÃ´úÀí,½«´úÀí·şÎñÆ÷µÄipÖ¸Ïòsquid·şÎñÆ÷
-		tail -f /usr/local/squid/var/logs/access.log	#²é¿´ÈÕÖ¾±ä»¯
+		éªŒè¯ï¼šåœ¨å®¢æˆ·ç«¯æµè§ˆå™¨ä¸Šè®¾ç½®ä»£ç†,å°†ä»£ç†æœåŠ¡å™¨çš„ipæŒ‡å‘squidæœåŠ¡å™¨
+		tail -f /usr/local/squid/var/logs/access.log	#æŸ¥çœ‹æ—¥å¿—å˜åŒ–
 	
 	
-	Í¸Ã÷´úÀí£º
-		vim squid.conf			#ĞŞ¸ÄÅäÖÃÎÄ¼ş
+	é€æ˜ä»£ç†ï¼š
+		vim squid.conf			#ä¿®æ”¹é…ç½®æ–‡ä»¶
 			visible_hostname  www.test.com
 			cache_mgr 2803660215@qq.com
-			http_port 0.0.0.0:3128 transparent		#ÅäÖÃÍ¸Ã÷´úÀí
+			http_port 0.0.0.0:3128 transparent		#é…ç½®é€æ˜ä»£ç†
 			http_access deny all
 			reply_body_max_size 5 MB
 		iptables -t nat -I PREROUTING -i eth0 -p tcp --dport 80  -j REDIRECT --to-port 3128
 		iptables -t nat -I PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 3128
-			#iptablesÖØ¶¨Ïò,½«ÖØeth0½øÈëµÄÁ÷Á¿²¢ÇÒÊÇ·ÃÎÊ80»ò443µÄÊı¾İÖØ¶¨Ïòµ½squid·şÎñÆ÷
+			#iptablesé‡å®šå‘,å°†é‡eth0è¿›å…¥çš„æµé‡å¹¶ä¸”æ˜¯è®¿é—®80æˆ–443çš„æ•°æ®é‡å®šå‘åˆ°squidæœåŠ¡å™¨
 			
-		ÑéÖ¤£º
-			1¡¢Çå¿ÕÁ÷Á¿Æ÷ÉÏµÄËùÓĞ´úÀíÉèÖÃ
-			2¡¢½«¿Í»§¶ËµÄÍø¹ØÖ¸Ïòeth0Íø¿¨ÉÏµÄipµØÖ·
-			3¡¢²é¿´squidµÄ·ÃÎÊÈÕÖ¾ÊÇ·ñ·¢Éú±ä»¯
+		éªŒè¯ï¼š
+			1ã€æ¸…ç©ºæµé‡å™¨ä¸Šçš„æ‰€æœ‰ä»£ç†è®¾ç½®
+			2ã€å°†å®¢æˆ·ç«¯çš„ç½‘å…³æŒ‡å‘eth0ç½‘å¡ä¸Šçš„ipåœ°å€
+			3ã€æŸ¥çœ‹squidçš„è®¿é—®æ—¥å¿—æ˜¯å¦å‘ç”Ÿå˜åŒ–
 
 
 

@@ -1,0 +1,41 @@
+ubuntu 16.04系统：
+	升级source列表并保证https和ca证书成功安装
+		sudo apt-get update
+		sudo apt-get install apt-transport-https ca-certificates
+
+	增加新的GPG密钥
+		sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+	新增或编辑source列表里的docker.list文件
+		sudo vim /etc/apt/sources.list.d/docker.list 
+			deb https://apt.dockerproject.org/repo ubuntu-xenial main		#添加内容
+
+	安装linux-image-extra(额外的内核模块)
+		sudo apt-get install linux-image-extra-$(uname -r)
+
+	安装docker
+		sudo apt-get update
+		sudo apt-get install docker-engine
+		sudo service docker start
+
+		
+
+centos 7系统：
+	https://download.docker.com/linux/centos/7/x86_64/stable/Packages/			#docker RPM包下载路径
+	yum -y localinstall docker-ce-selinux-17.03.0.ce-1.el7.centos.noarch.rpm docker-ce-17.03.0.ce-1.el7.centos.x86_64.rpm
+	curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://8ad7943c.m.daocloud.io	#进行镜像下载加速
+	systemctl start docker				#启动docker
+	systemctl status docker				#查看docker状态
+
+
+
+
+
+
+
+
+
+
+
+
+

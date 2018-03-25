@@ -1,44 +1,44 @@
-»·¾³×¼±¸£º
-	·şÎñÆ÷°²×°£º
-		tftp·şÎñ£¬httpd/ftp·şÎñ£¬dhcp·şÎñ£¬system-config-kickstart¹¤¾ß£¬syslinux
-	·şÎñÆ÷IPµØÖ·£º192.168.1.1/24 Ê¹ÓÃVMnet2
+ç¯å¢ƒå‡†å¤‡ï¼š
+	æœåŠ¡å™¨å®‰è£…ï¼š
+		tftpæœåŠ¡ï¼Œhttpd/ftpæœåŠ¡ï¼ŒdhcpæœåŠ¡ï¼Œsystem-config-kickstartå·¥å…·ï¼Œsyslinux
+	æœåŠ¡å™¨IPåœ°å€ï¼š192.168.1.1/24 ä½¿ç”¨VMnet2
 
 
 	
-IPÅäÖÃ:
-ÅäÖÃÎÄ¼şÂ·¾¶£º/etc/sysconfig/network-scripts/ifcfg-eth0
+IPé…ç½®:
+é…ç½®æ–‡ä»¶è·¯å¾„ï¼š/etc/sysconfig/network-scripts/ifcfg-eth0
 
-Ôö¼Ó£º
-ONBOOT=yes							#Æô¶¯·şÎñÊ±ÉúĞ§
-BOOTPROTO=static					#¾²Ì¬µØÖ·
-IPADDR=192.168.1.1					#IPµØÖ·£¬±ØĞëºÍÏÂÃæµÄDHCPÍø¹ØµØÖ·ÏàÍ¬
+å¢åŠ ï¼š
+ONBOOT=yes							#å¯åŠ¨æœåŠ¡æ—¶ç”Ÿæ•ˆ
+BOOTPROTO=static					#é™æ€åœ°å€
+IPADDR=192.168.1.1					#IPåœ°å€ï¼Œå¿…é¡»å’Œä¸‹é¢çš„DHCPç½‘å…³åœ°å€ç›¸åŒ
 NETMASK=255.255.255.0				
 
 
 
-DHCP·şÎñÅäÖÃ£º(µØÖ··Ö·¢)
-yum -y install dhcp						#°²×°DHCP·şÎñ
-ÅäÖÃÎÄ¼şÂ·¾¶£º/etc/dhcp/dhcpd.conf
+DHCPæœåŠ¡é…ç½®ï¼š(åœ°å€åˆ†å‘)
+yum -y install dhcp						#å®‰è£…DHCPæœåŠ¡
+é…ç½®æ–‡ä»¶è·¯å¾„ï¼š/etc/dhcp/dhcpd.conf
 
-subnet  192.168.1.0 netmask 255.255.255.0 {				 #·Ö·¢Íø¶Î
-  range 192.168.1.10 192.168.1.100;						 #·Ö·¢·¶Î§
-  option domain-name-servers 8.8.8.8,114.114.114.114;	 #·Ö·¢DNS
-  option domain-name "test.com";						 #DNSÃû
-  option routers 192.168.1.1;							 #Íø¹Ø
-  option broadcast-address 192.168.1.255;				 #¹ã²¥µØÖ·
-  default-lease-time 600;								 #×î¶Ì×âÔ¼Ê±¼ä
-  max-lease-time 7200;									 #×î³¤×âÔ¼Ê±¼ä
-  filename "pxelinux.0";								 #ÅäÖÃpxeÒıµ¼ÎÄ¼şÃû
-  next-server 192.168.1.1;								 #ÅäÖÃTFTPµØÖ·
+subnet  192.168.1.0 netmask 255.255.255.0 {				 #åˆ†å‘ç½‘æ®µ
+  range 192.168.1.10 192.168.1.100;						 #åˆ†å‘èŒƒå›´
+  option domain-name-servers 8.8.8.8,114.114.114.114;	 #åˆ†å‘DNS
+  option domain-name "test.com";						 #DNSå
+  option routers 192.168.1.1;							 #ç½‘å…³
+  option broadcast-address 192.168.1.255;				 #å¹¿æ’­åœ°å€
+  default-lease-time 600;								 #æœ€çŸ­ç§Ÿçº¦æ—¶é—´
+  max-lease-time 7200;									 #æœ€é•¿ç§Ÿçº¦æ—¶é—´
+  filename "pxelinux.0";								 #é…ç½®pxeå¼•å¯¼æ–‡ä»¶å
+  next-server 192.168.1.1;								 #é…ç½®TFTPåœ°å€
 }
 
 
 
 
-TFTP·şÎñÅäÖÃ£º(¼òµ¥ÎÄ¼ş´«Êä)
-yum -y install tftp-server						#°²×°TFTP·şÎñ
-ÅäÖÃÎÄ¼şÂ·¾¶£º/etc/xinetd.d/tftp
-ÎÄ¼ş´æ·ÅÄ¿Â¼£º/var/lib/tftpboot
+TFTPæœåŠ¡é…ç½®ï¼š(ç®€å•æ–‡ä»¶ä¼ è¾“)
+yum -y install tftp-server						#å®‰è£…TFTPæœåŠ¡
+é…ç½®æ–‡ä»¶è·¯å¾„ï¼š/etc/xinetd.d/tftp
+æ–‡ä»¶å­˜æ”¾ç›®å½•ï¼š/var/lib/tftpboot
 
 service tftp
 {
@@ -48,7 +48,7 @@ service tftp
 	user			= root
 	server			= /usr/sbin/in.tftpd
 	server_args		= -s /var/lib/tftpboot
-	disable			= no						#¸ü¸ÄÎªno
+	disable			= no						#æ›´æ”¹ä¸ºno
 	per_source		= 11
 	cps				= 100 2
 	flags			= IPv4
@@ -56,57 +56,57 @@ service tftp
 
 
 
-syslinuxÅäÖÃ£º
-yum -y install syslinux						#°²×°syslinux·şÎñ
-cd /usr/share/syslinux						#ÇĞ»»µ½syslinuxÎÄ¼ş´æ·ÅÄ¿Â¼
-cp pxelinux.0 /var/lib/tftpboot/			#¸´ÖÆpxeËùĞèÒªµÄÎÄ¼şµÄtftpÎÄ¼ş´æ·ÅÄ¿Â¼
+syslinuxé…ç½®ï¼š
+yum -y install syslinux						#å®‰è£…syslinuxæœåŠ¡
+cd /usr/share/syslinux						#åˆ‡æ¢åˆ°syslinuxæ–‡ä»¶å­˜æ”¾ç›®å½•
+cp pxelinux.0 /var/lib/tftpboot/			#å¤åˆ¶pxeæ‰€éœ€è¦çš„æ–‡ä»¶çš„tftpæ–‡ä»¶å­˜æ”¾ç›®å½•
 
 
 
-PXEÒıµ¼ÎÄ¼şÅäÖÃ£º
-mount /dev/cdrom /media				#¹ÒÔØ¹âÅÌ
-cd /media/images/pxeboot/							#½øÈëpxeÎÄ¼ş´æ·ÅÎ»ÖÃ
-cp initrd.img vmlinuz /var/lib/tftpboot/			#½«pxe¹Ø¼üÎÄ¼ş·ÅÈëtftpÎÄ¼ş´æ·ÅÄ¿Â¼
-cd /media/isolinux					#ÇĞ»»Ä¿Â¼
+PXEå¼•å¯¼æ–‡ä»¶é…ç½®ï¼š
+mount /dev/cdrom /media				#æŒ‚è½½å…‰ç›˜
+cd /media/images/pxeboot/							#è¿›å…¥pxeæ–‡ä»¶å­˜æ”¾ä½ç½®
+cp initrd.img vmlinuz /var/lib/tftpboot/			#å°†pxeå…³é”®æ–‡ä»¶æ”¾å…¥tftpæ–‡ä»¶å­˜æ”¾ç›®å½•
+cd /media/isolinux					#åˆ‡æ¢ç›®å½•
 cp boot.cat vesamenu.c32 splash.jpg /var/lib/tftpboot/
-mkdir /var/lib/tftpboot/pxelinux.cfg				#´´½¨¹Ø¼üÄ¿Â¼£¬±ØĞëÎªÕâ¸öÃû
-touch /var/lib/tftpboot/pxelinux.cfg/default        #´´½¨¹Ø¼üÎÄ¼ş£¬±ØĞëÎªÕâ¸öÃû
+mkdir /var/lib/tftpboot/pxelinux.cfg				#åˆ›å»ºå…³é”®ç›®å½•ï¼Œå¿…é¡»ä¸ºè¿™ä¸ªå
+touch /var/lib/tftpboot/pxelinux.cfg/default        #åˆ›å»ºå…³é”®æ–‡ä»¶ï¼Œå¿…é¡»ä¸ºè¿™ä¸ªå
 
 
 
-ÍøÂçyumÔ´ÅäÖÃ£º
-yum -y install httpd								#°²×°http·şÎñ
-mkdir /var/www/html/centos6							#´´½¨yum²Ö¿â		
+ç½‘ç»œyumæºé…ç½®ï¼š
+yum -y install httpd								#å®‰è£…httpæœåŠ¡
+mkdir /var/www/html/centos6							#åˆ›å»ºyumä»“åº“		
 umount  /media				
-mount /dev/cdrom /var/www/html/centos6/				#¹ÒÔØ¹âÅÌ
+mount /dev/cdrom /var/www/html/centos6/				#æŒ‚è½½å…‰ç›˜
 
 
-Éú³ÉkickstartÎÄ¼ş£º
-yum install system-config-kickstart.noarch			#°²×°kickstartÎÄ¼şÉú³É¹¤¾ß
-system-config-kickstart								#Í¼ĞÎÖÕ¶ËÖĞÔËĞĞ£¬±£´æµ½rootÄ¿Â¼
-cp /root/centos6.cfg /var/www/html/centos6.cfg		#½«kickstartÎÄ¼ş¸´ÖÆµ½Ö¸¶¨Î»ÖÃ
-chmod 777 /var/www/html/centos6.cfg			#Ò»¶¨Òª¸ÄÕâ¸öÈ¨ÏŞ
+ç”Ÿæˆkickstartæ–‡ä»¶ï¼š
+yum install system-config-kickstart.noarch			#å®‰è£…kickstartæ–‡ä»¶ç”Ÿæˆå·¥å…·
+system-config-kickstart								#å›¾å½¢ç»ˆç«¯ä¸­è¿è¡Œï¼Œä¿å­˜åˆ°rootç›®å½•
+cp /root/centos6.cfg /var/www/html/centos6.cfg		#å°†kickstartæ–‡ä»¶å¤åˆ¶åˆ°æŒ‡å®šä½ç½®
+chmod 777 /var/www/html/centos6.cfg			#ä¸€å®šè¦æ”¹è¿™ä¸ªæƒé™
 
 
-ĞŞ¸ÄÒıµ¼ÎÄ¼ş£º
+ä¿®æ”¹å¼•å¯¼æ–‡ä»¶ï¼š
 vim /var/lib/tftpboot/pxelinux.cfg/default 
-	default   auto				#Ä¬ÈÏ½çÃæÏÔÊ¾
-    prompt 0					#µÈ´ıÓÃ»§Ñ¡ÔñÊ±¼ä
-	label auto					#Ñ¡Ïî¿òÏÔÊ¾ÄÚÈİ
-        kernel vmlinuz			#ÄÚºËÎÄ¼ş
+	default   auto				#é»˜è®¤ç•Œé¢æ˜¾ç¤º
+    prompt 0					#ç­‰å¾…ç”¨æˆ·é€‰æ‹©æ—¶é—´
+	label auto					#é€‰é¡¹æ¡†æ˜¾ç¤ºå†…å®¹
+        kernel vmlinuz			#å†…æ ¸æ–‡ä»¶
         append ks=http://192.168.1.1/centos6.cfg initrd=initrd.img devfs=nomount ramdisk_size=8129		
-			    #Ö¸¶¨kickstartÎÄ¼şÎ»ÖÃ
+			    #æŒ‡å®škickstartæ–‡ä»¶ä½ç½®
 
 
 vim /var/www/html/centos6.cfg
-	url --url="http://192.168.1.1/centos6/"		#Ö¸¶¨yumÔ´Â·¾¶,ÓĞ¿ÉÄÜÉú³ÉµÄÊ±ºòÄãÖ¸¶¨ÁË
+	url --url="http://192.168.1.1/centos6/"		#æŒ‡å®šyumæºè·¯å¾„,æœ‰å¯èƒ½ç”Ÿæˆçš„æ—¶å€™ä½ æŒ‡å®šäº†
 
 
 
-Æô¶¯·şÎñ£º
-service xinetd start				#¿ªÆôTFTP·şÎñ(udp:69)
-service dhcpd start					#¿ªÆôDHCP·şÎñ(udp:67)
-service httpd start					#¿ªÆôHTTP·şÎñ(udp:80)
+å¯åŠ¨æœåŠ¡ï¼š
+service xinetd start				#å¼€å¯TFTPæœåŠ¡(udp:69)
+service dhcpd start					#å¼€å¯DHCPæœåŠ¡(udp:67)
+service httpd start					#å¼€å¯HTTPæœåŠ¡(udp:80)
 
 
 

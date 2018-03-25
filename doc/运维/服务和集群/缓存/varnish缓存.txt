@@ -1,98 +1,98 @@
-varnishiÓÉmanagement(Ö÷½ø³Ì)ºÍ(child/cache)×Ó½ø³Ì×é³É
-	managementµÄ¹¤×÷£º
-		1¡¢Ìá¹©ÃüÁîĞĞ½Ó¿Ú
-		2¡¢¼à¿ØºÍ¹ÜÀí×Ó½ø³Ì£¬³õÊ¼»¯varnish
-		3¡¢½«default.vcl±àÒëÎª¶ş½øÖÆÉú³ÉĞÂµÄÅäÖÃÎÄ¼ş
+varnishiç”±management(ä¸»è¿›ç¨‹)å’Œ(child/cache)å­è¿›ç¨‹ç»„æˆ
+	managementçš„å·¥ä½œï¼š
+		1ã€æä¾›å‘½ä»¤è¡Œæ¥å£
+		2ã€ç›‘æ§å’Œç®¡ç†å­è¿›ç¨‹ï¼Œåˆå§‹åŒ–varnish
+		3ã€å°†default.vclç¼–è¯‘ä¸ºäºŒè¿›åˆ¶ç”Ÿæˆæ–°çš„é…ç½®æ–‡ä»¶
 		
-	child/cacheµÄ¹¤×÷£º
-		1¡¢½ÓÊÕÁ¬½ÓÇëÇó
-		2¡¢´¦ÀíÓÃ»§ÇëÇó
-		3¡¢Çå³ı»º´æÖĞµÄ¹ıÆÚ¶ÔÏó
-		4¡¢¼ÇÂ¼ÈÕÖ¾
-		5¡¢¸ù¾İdefault.vclÉú³É»º´æ²ßÂÔ
+	child/cacheçš„å·¥ä½œï¼š
+		1ã€æ¥æ”¶è¿æ¥è¯·æ±‚
+		2ã€å¤„ç†ç”¨æˆ·è¯·æ±‚
+		3ã€æ¸…é™¤ç¼“å­˜ä¸­çš„è¿‡æœŸå¯¹è±¡
+		4ã€è®°å½•æ—¥å¿—
+		5ã€æ ¹æ®default.vclç”Ÿæˆç¼“å­˜ç­–ç•¥
 
 			
-	VCL£º
-		1¡¢»º´æ²ßÂÔÅäÖÃ½Ó¿Ú
-		2¡¢»ùÓÚ"Óò"µÄÅäÖÃ
+	VCLï¼š
+		1ã€ç¼“å­˜ç­–ç•¥é…ç½®æ¥å£
+		2ã€åŸºäº"åŸŸ"çš„é…ç½®
 	
-	´æ´¢»º´æ¶ÔÏó£º
-		flie£ºµ¥¸öÎÄ¼ş½øĞĞ´æ´¢£¬²»Ö§³Ö³Ö¾Ã»¯£¬»á²úÉú´óÁ¿´ÅÅÌi/o¶ÔĞÔÄÜÓĞÒ»¶¨Ó°Ïì
-		malloc£ºÄÚ´æ´æ´¢£¬ĞÔÄÜ½Ï¸ß£¬´ú¼Û¸ü¸ß(ÄÚ´æ±È´ÅÅÌ¹ó)£¬³¤Ê±¼äÊ¹ÓÃ»á²úÉúÄÚ´æËéÆ¬
-		persistent£ºµ¥¸öÎÄ¼ş½øĞĞ´æ´¢£¬Ö§³Ö³Ö¾Ã»¯£¬Ä¿Ç°×÷Îª²âÊÔÊ¹ÓÃ
+	å­˜å‚¨ç¼“å­˜å¯¹è±¡ï¼š
+		flieï¼šå•ä¸ªæ–‡ä»¶è¿›è¡Œå­˜å‚¨ï¼Œä¸æ”¯æŒæŒä¹…åŒ–ï¼Œä¼šäº§ç”Ÿå¤§é‡ç£ç›˜i/oå¯¹æ€§èƒ½æœ‰ä¸€å®šå½±å“
+		mallocï¼šå†…å­˜å­˜å‚¨ï¼Œæ€§èƒ½è¾ƒé«˜ï¼Œä»£ä»·æ›´é«˜(å†…å­˜æ¯”ç£ç›˜è´µ)ï¼Œé•¿æ—¶é—´ä½¿ç”¨ä¼šäº§ç”Ÿå†…å­˜ç¢ç‰‡
+		persistentï¼šå•ä¸ªæ–‡ä»¶è¿›è¡Œå­˜å‚¨ï¼Œæ”¯æŒæŒä¹…åŒ–ï¼Œç›®å‰ä½œä¸ºæµ‹è¯•ä½¿ç”¨
 	
-	varnish°²×°£ºcentos7»·¾³
-		1¡¢ÅäÖÃepelÔ´
-		2¡¢yum -y install varnish
+	varnishå®‰è£…ï¼šcentos7ç¯å¢ƒ
+		1ã€é…ç½®epelæº
+		2ã€yum -y install varnish
 
 	
-	varnishÅäÖÃ£º
-		/etc/varnish/default.vcl			#vclÅäÖÃÎÄ¼ş
-		/etc/varnish/varnish.params			#ÃüÁîĞĞ²ÎÊıÅäÖÃÎÄ¼ş
-		/etc/varnish/secret					#Á¬½ÓÃüÁîĞĞÈÏÖ¤ÎÄ¼ş
+	varnishé…ç½®ï¼š
+		/etc/varnish/default.vcl			#vclé…ç½®æ–‡ä»¶
+		/etc/varnish/varnish.params			#å‘½ä»¤è¡Œå‚æ•°é…ç½®æ–‡ä»¶
+		/etc/varnish/secret					#è¿æ¥å‘½ä»¤è¡Œè®¤è¯æ–‡ä»¶
 		
 	
-	varnish¹ÜÀí¹¤¾ß£º
-		systemctl start varnish.service		#Æô¶¯varnish
-		varnishÄ¬ÈÏ¼àÌı*:6081ºÍ127.0.0.1:6082£¬6081Ìá¹©·şÎñ£¬6082Ìá¹©¹ÜÀí
+	varnishç®¡ç†å·¥å…·ï¼š
+		systemctl start varnish.service		#å¯åŠ¨varnish
+		varnishé»˜è®¤ç›‘å¬*:6081å’Œ127.0.0.1:6082ï¼Œ6081æä¾›æœåŠ¡ï¼Œ6082æä¾›ç®¡ç†
 		
-		varnishadm			#½»»¥Ê½ÃüÁîĞĞ¹ÜÀí¹¤¾ß
-		varnishlog			#½»»¥Ê½»ñÈ¡ÈÕÖ¾¹¤¾ß
-		varnishncsa			#½»»¥Ê½»ñÈ¡ÈÕÖ¾¹¤¾ß(apache¸ñÊ½)
-		varnishstat			#ÏÔÊ¾×´Ì¬
-		varnishtop			#ÅÅĞò
+		varnishadm			#äº¤äº’å¼å‘½ä»¤è¡Œç®¡ç†å·¥å…·
+		varnishlog			#äº¤äº’å¼è·å–æ—¥å¿—å·¥å…·
+		varnishncsa			#äº¤äº’å¼è·å–æ—¥å¿—å·¥å…·(apacheæ ¼å¼)
+		varnishstat			#æ˜¾ç¤ºçŠ¶æ€
+		varnishtop			#æ’åº
 
 
-	varnish.paramsÏê½â£º
-		VARNISH_VCL_CONF=/etc/varnish/default.vcl			#Ö¸¶¨vclÎÄ¼şÎ»ÖÃ
-		VARNISH_LISTEN_PORT=6081					#Ö¸¶¨·şÎñ¶Ë¿Ú£¬Ä¬ÈÏ¼àÌıËùÓĞµØÖ·
-		VARNISH_ADMIN_LISTEN_ADDRESS=127.0.0.1		#¹ÜÀíip
-		VARNISH_ADMIN_LISTEN_PORT=6082				#¼àÌı¶Ë¿Ú
-		VARNISH_SECRET_FILE=/etc/varnish/secret		#ÈÏÖ¤ÎÄ¼ş
-		VARNISH_STORAGE="file,/var/lib/varnish/varnish_storage.bin,1G" #»º´æ·½Ê½(µ¥¸öÎÄ¼ş»º´æ)		
-		#VARNISH_STORAGE="malloc,256M"				#»º´æ·½Ê½(ÄÚ´æ»º´æ)£¬²»ÄÜÍ¬Ê±Æô¶¯
-		VARNISH_USER=varnish			#³ÌĞòÓÃ»§
-		VARNISH_GROUP=varnish			#³ÌĞò×é
-		#DAEMON_OPTS="-p thread_pool_min=5 -p thread_pool_max=500 -p thread_pool_timeout=300"	#½ø³Ì³ØÅäÖÃ
+	varnish.paramsè¯¦è§£ï¼š
+		VARNISH_VCL_CONF=/etc/varnish/default.vcl			#æŒ‡å®švclæ–‡ä»¶ä½ç½®
+		VARNISH_LISTEN_PORT=6081					#æŒ‡å®šæœåŠ¡ç«¯å£ï¼Œé»˜è®¤ç›‘å¬æ‰€æœ‰åœ°å€
+		VARNISH_ADMIN_LISTEN_ADDRESS=127.0.0.1		#ç®¡ç†ip
+		VARNISH_ADMIN_LISTEN_PORT=6082				#ç›‘å¬ç«¯å£
+		VARNISH_SECRET_FILE=/etc/varnish/secret		#è®¤è¯æ–‡ä»¶
+		VARNISH_STORAGE="file,/var/lib/varnish/varnish_storage.bin,1G" #ç¼“å­˜æ–¹å¼(å•ä¸ªæ–‡ä»¶ç¼“å­˜)		
+		#VARNISH_STORAGE="malloc,256M"				#ç¼“å­˜æ–¹å¼(å†…å­˜ç¼“å­˜)ï¼Œä¸èƒ½åŒæ—¶å¯åŠ¨
+		VARNISH_USER=varnish			#ç¨‹åºç”¨æˆ·
+		VARNISH_GROUP=varnish			#ç¨‹åºç»„
+		#DAEMON_OPTS="-p thread_pool_min=5 -p thread_pool_max=500 -p thread_pool_timeout=300"	#è¿›ç¨‹æ± é…ç½®
 		
 		
-	varnish×´Ì¬ÒıÇæÏê½â£º×´Ì¬ÒıÇæÓÃÓÚ¶Ô¿Í»§¶ËÇëÇó½øĞĞÅĞ¶Ï²¢×÷³öÏàÓ¦´¦Àí
-		vcl_recv£º½ÓÊÕÓÃ»§ÇëÇó£¬ÅĞ¶ÏÈçºÎ´¦Àí
-			vcl_pass: ÈÆ¹ı»º´æ£¬²»´Ó»º´æÖĞ²éÑ¯ÄÚÈİ£¬½«ÇëÇóÖ±½Ó´«µİ¸øºó¶ËÖ÷»ú
-			vcl_pipe£ºÎŞ·¨½âÎöÇëÇóÀàĞÍ£¬Ö±½Ó½»¸øºó¶Ë´¦Àí
+	varnishçŠ¶æ€å¼•æ“è¯¦è§£ï¼šçŠ¶æ€å¼•æ“ç”¨äºå¯¹å®¢æˆ·ç«¯è¯·æ±‚è¿›è¡Œåˆ¤æ–­å¹¶ä½œå‡ºç›¸åº”å¤„ç†
+		vcl_recvï¼šæ¥æ”¶ç”¨æˆ·è¯·æ±‚ï¼Œåˆ¤æ–­å¦‚ä½•å¤„ç†
+			vcl_pass: ç»•è¿‡ç¼“å­˜ï¼Œä¸ä»ç¼“å­˜ä¸­æŸ¥è¯¢å†…å®¹ï¼Œå°†è¯·æ±‚ç›´æ¥ä¼ é€’ç»™åç«¯ä¸»æœº
+			vcl_pipeï¼šæ— æ³•è§£æè¯·æ±‚ç±»å‹ï¼Œç›´æ¥äº¤ç»™åç«¯å¤„ç†
 		
-			vcl_hash£º¿É»º´æÊı¾İ£¬Í¨¹ıhash½øĞĞ´¦Àí
-				vcl_hit£º»º´æÃüÖĞ    
-					vcl_deliver£º½«»º´æÊı¾İ·µ»Ø¸ø¿Í»§¶Ë
+			vcl_hashï¼šå¯ç¼“å­˜æ•°æ®ï¼Œé€šè¿‡hashè¿›è¡Œå¤„ç†
+				vcl_hitï¼šç¼“å­˜å‘½ä¸­    
+					vcl_deliverï¼šå°†ç¼“å­˜æ•°æ®è¿”å›ç»™å®¢æˆ·ç«¯
 					
-				vcl_miss£º»º´æÎ´ÃüÖĞ          
-					vcl_fetch£º´Óºó¶ËÖ÷»ú»ñÈ¡ÄÚÈİ£¬Í¨¹ıÅĞ¶Ï½«ÄÚÈİ·ÅÈë»º´æ»òÖ±½Ó·µ»Ø¸ø¿Í»§¶Ë
+				vcl_missï¼šç¼“å­˜æœªå‘½ä¸­          
+					vcl_fetchï¼šä»åç«¯ä¸»æœºè·å–å†…å®¹ï¼Œé€šè¿‡åˆ¤æ–­å°†å†…å®¹æ”¾å…¥ç¼“å­˜æˆ–ç›´æ¥è¿”å›ç»™å®¢æˆ·ç«¯
 			
-			vcl_error£ºÈç¹ûÇëÇó³öÏÖ´íÎó£¬ÓÉvarnishi¹¹½¨´íÎóÒ³·µ»Ø¸ø¿Í»§¶Ë
+			vcl_errorï¼šå¦‚æœè¯·æ±‚å‡ºç°é”™è¯¯ï¼Œç”±varnishiæ„å»ºé”™è¯¯é¡µè¿”å›ç»™å®¢æˆ·ç«¯
 
 		
-	varnish¸ºÔØ¾ùºâ¼¯ÈºËã·¨£º		
-		random         	#Ëæ»ú
-		round-robin    	#ÂÖÑ¯
-		fallback		#±¸·İ
-		hash			#¹Ì¶¨ºó¶Ë
+	varnishè´Ÿè½½å‡è¡¡é›†ç¾¤ç®—æ³•ï¼š		
+		random         	#éšæœº
+		round-robin    	#è½®è¯¢
+		fallback		#å¤‡ä»½
+		hash			#å›ºå®šåç«¯
 	
 	
-	ÅäÖÃÊµÀı£º
-		vcl 4.0;					#varnish°æ±¾
-		probe cache {				#¶¨Òå½¡¿µ¼ì²éº¯Êı
-		   .url = "/index.html";	#¼ì²éµÄurl  			  
-		   .timeout = 1s;			#³¬Ê±Ê±¼ä
-		   .interval = 5s;  		#ÖØÊÔ¼ä¸ô
-		   .window = 5;    			#ÖØÊÔ´ÎÊı
-		   .threshold = 3;			#ÖØÊÔÈı´Î³É¹¦ÔòÈÏÎª·şÎñÆ÷ÔÚÏß
+	é…ç½®å®ä¾‹ï¼š
+		vcl 4.0;					#varnishç‰ˆæœ¬
+		probe cache {				#å®šä¹‰å¥åº·æ£€æŸ¥å‡½æ•°
+		   .url = "/index.html";	#æ£€æŸ¥çš„url  			  
+		   .timeout = 1s;			#è¶…æ—¶æ—¶é—´
+		   .interval = 5s;  		#é‡è¯•é—´éš”
+		   .window = 5;    			#é‡è¯•æ¬¡æ•°
+		   .threshold = 3;			#é‡è¯•ä¸‰æ¬¡æˆåŠŸåˆ™è®¤ä¸ºæœåŠ¡å™¨åœ¨çº¿
 		}
 
 
-		backend www1 {				#¶¨Òåºó¶ËÖ÷»ú
-			.host = "192.168.0.10";		#ºó¶ËÖ÷»ú
-			.port = "80";				#¼àÌı¶Ë¿Ú
-			.probe = cache;				#µ÷ÓÃ½¡¿µ¼ì²éº¯Êı
+		backend www1 {				#å®šä¹‰åç«¯ä¸»æœº
+			.host = "192.168.0.10";		#åç«¯ä¸»æœº
+			.port = "80";				#ç›‘å¬ç«¯å£
+			.probe = cache;				#è°ƒç”¨å¥åº·æ£€æŸ¥å‡½æ•°
 		}
 
 
@@ -110,20 +110,20 @@ varnishiÓÉmanagement(Ö÷½ø³Ì)ºÍ(child/cache)×Ó½ø³Ì×é³É
 		}
 
 
-		import directors; 				#µ¼Èë¼¯ÈºÄ£¿é
+		import directors; 				#å¯¼å…¥é›†ç¾¤æ¨¡å—
 		sub vcl_init {
-			new www = directors.round_robin();		#Ê¹ÓÃÂÖÑ¯Ëã·¨
-				www.add_backend(www1);	#¼¯ÈºÖ÷»ú
-				www.add_backend(www2);	#¼¯ÈºÖ÷»ú
-				www.add_backend(www3);	#¼¯ÈºÖ÷»ú
+			new www = directors.round_robin();		#ä½¿ç”¨è½®è¯¢ç®—æ³•
+				www.add_backend(www1);	#é›†ç¾¤ä¸»æœº
+				www.add_backend(www2);	#é›†ç¾¤ä¸»æœº
+				www.add_backend(www3);	#é›†ç¾¤ä¸»æœº
 		}
 
 		sub vcl_recv {			
-			set req.backend_hint = www.backend();		#½«ËùÓĞÁ÷Á¿·¢ËÍ¸øwww¼¯Èº
+			set req.backend_hint = www.backend();		#å°†æ‰€æœ‰æµé‡å‘é€ç»™wwwé›†ç¾¤
 		}
 	
 	
-	ÅäÖÃ²Î¿¼£º
+	é…ç½®å‚è€ƒï¼š
 		http://www.ttlsa.com/nginx/varnish-4-configure-file/
 		http://mingxiao.blog.51cto.com/8124243/1662408
 	

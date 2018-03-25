@@ -1,0 +1,44 @@
+什么是镜像：
+    镜像是docker的三大核心之一，是一个只读模板，用于创建docker容器
+    docker运行容器前需要本地存在相应的镜像，如果本地没有docker会尝试从默认仓库下载镜像(默认仓库为docker hub)
+
+镜像管理：
+    docker pull NAME[:TAG]                      #获取docker镜像，如果不指定TAG默认为latest
+    docker tag 原NAME[:TAG] NEW_NAME[:TAG]      #修改本地镜像的TAG
+    docker images                               #列出所有的本地镜像
+    docker inspect NAME[:TAG]                   #查看指定镜像的详细信息
+    docker search NAME[:TAG]                    #在仓库中查找镜像
+    docker rmi NAME[:TAG]                       #删除指定镜像
+
+创建镜像：
+    创建镜像的方法：
+        1、基于已有镜像的容器创建
+        2、基于本地模板的导入
+        3、基于dockerfile的创建
+
+    基于已有镜像的容器创建：
+        该方法主要使用docker commit，命令格式为docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+        主要选项：
+            -a, --author='作者'
+            -m, --message='提交说明'
+            -p, --pause=[true,false]                #提交时是否暂停容器
+        示例：
+            docker run -it centos /bin/bash         #运行容器
+            [root@a1eb9b25f70f /]# touch test.txt   #在容器中创建文档
+            [root@a1eb9b25f70f /]# exit             #退出容器
+            docker ps -a                            #查看所以的容器(获取ID号)
+            docker commit -m "test:test1" -a "user test" a1eb9b25f70f test      #创建test镜像
+            docker images                           #查看镜像列表
+
+
+    基于本地模板导入：
+        wget http://download.openvz.org/template/precreated/suse-13.1-x86-minimal.tar.gz  #下载模板
+        cat suse-13.1-x86-minimal.tar.gz | docker import - suse:13.1      #将模板导入为镜像
+        docker images                           #查看镜像列表
+
+
+存出和载入镜像：
+    docker save -o centos.tar centos:latest     #将centos存出为centos.tar
+    docker tag centos:latest centos:test        #更改已有镜像的tag
+    docker load --input centos.tar              #载入镜像
+    docker images                           #查看镜像列表

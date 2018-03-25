@@ -1,24 +1,24 @@
-×Ô¶¨ÒåÈÕÖ¾£º
-	keepalivedµÄÈÕÖ¾Ä¬ÈÏ´æ´¢ÔÚ/var/log/messages£¬µ«ÓĞÊ±ÎÒÃÇ»áÓĞĞèÒª½«keepalivedÈÕÖ¾ÄÃ³öÀ´µ¥¶À·ÖÎö£¬ÄÇÃ´Õâ¾ÍĞèÒªÎÒ×ö×Ô¼ºÈ¥¶¨Òå
-	/etc/sysconfig/keepalived			#±à¼­keepalivedµÄ»·¾³ÅäÖÃÎÄ¼ş
-		KEEPALIVED_OPTIONS="-D -d -S 0"		#ĞŞ¸ÄÄÚÈİ
-			# --dump-conf -d 		µ¼³öÅäÖÃÊı¾İ
-			# --log-detail -D 		ÏêÏ¸ÈÕÖ¾ĞÅÏ¢
-			# --log-facility -S 	ÉèÖÃ±¾µØµÄsyslogÉè±¸£¬±àºÅ0-7
-			# -S 0 					±íÊ¾Ö¸¶¨Îªlocal0Éè±¸
+è‡ªå®šä¹‰æ—¥å¿—ï¼š
+	keepalivedçš„æ—¥å¿—é»˜è®¤å­˜å‚¨åœ¨/var/log/messagesï¼Œä½†æœ‰æ—¶æˆ‘ä»¬ä¼šæœ‰éœ€è¦å°†keepalivedæ—¥å¿—æ‹¿å‡ºæ¥å•ç‹¬åˆ†æï¼Œé‚£ä¹ˆè¿™å°±éœ€è¦æˆ‘åšè‡ªå·±å»å®šä¹‰
+	/etc/sysconfig/keepalived			#ç¼–è¾‘keepalivedçš„ç¯å¢ƒé…ç½®æ–‡ä»¶
+		KEEPALIVED_OPTIONS="-D -d -S 0"		#ä¿®æ”¹å†…å®¹
+			# --dump-conf -d 		å¯¼å‡ºé…ç½®æ•°æ®
+			# --log-detail -D 		è¯¦ç»†æ—¥å¿—ä¿¡æ¯
+			# --log-facility -S 	è®¾ç½®æœ¬åœ°çš„syslogè®¾å¤‡ï¼Œç¼–å·0-7
+			# -S 0 					è¡¨ç¤ºæŒ‡å®šä¸ºlocal0è®¾å¤‡
 			
-		vim /etc/rsyslog.conf		#ĞŞ¸ÄÏµÍ³ÈÕÖ¾ÅäÖÃ
-		local0.* /var/log/keepalived.log		#½«keepalived²úÉúµÄËùÓĞÈÕÖ¾ĞÅÏ¢´æµ½/var/log/keepalived.logÎÄ¼şÖĞ
+		vim /etc/rsyslog.conf		#ä¿®æ”¹ç³»ç»Ÿæ—¥å¿—é…ç½®
+		local0.* /var/log/keepalived.log		#å°†keepalivedäº§ç”Ÿçš„æ‰€æœ‰æ—¥å¿—ä¿¡æ¯å­˜åˆ°/var/log/keepalived.logæ–‡ä»¶ä¸­
 		*.info;mail.none;authpriv.none;cron.none;local0.none       /var/log/messages
-			#keepalived²úÉúµÄÎÄ¼ş²»¼ÇÂ¼µ½/var/log/messagesÎÄ¼şÖĞ
-		service rsyslog restart			#ÖØÆôÈÕÖ¾·şÎñ
+			#keepalivedäº§ç”Ÿçš„æ–‡ä»¶ä¸è®°å½•åˆ°/var/log/messagesæ–‡ä»¶ä¸­
+		service rsyslog restart			#é‡å¯æ—¥å¿—æœåŠ¡
 		
-Ë«Ö÷»¥±¸£º
-	ÔÚÈÕ³£Ê¹ÓÃÖĞÈç¹ûkeepalived¹¤×÷ÔÚmaster/backupÄ£Ê½ÖĞÄÇÃ´Ö»Òªmaster²»³öÏÖ¹ÊÕÏbackup¾ÍÒ»Ö±´¦ÓÚ¿ÕÏĞ×´Ì¬¼«´óµÄÀË·ÑÁËÎïÀí×ÊÔ´£¬¶øÇÒÔÚ¸ºÔØ½Ï´óµÄÇé¿öÏÂmasterµÄÑ¹Á¦»á±È½Ï´ó
-	keepalivedË«Ö÷»¥±¸µÄ³öÏÖÕıºÃ½â¾öÁËmaster/backupÏÂÈ±µã
-	keepalivedË«Ö÷»¥±¸ĞèÒªDNSÂÖÑ¯µÄÖ§³Ö
+åŒä¸»äº’å¤‡ï¼š
+	åœ¨æ—¥å¸¸ä½¿ç”¨ä¸­å¦‚æœkeepalivedå·¥ä½œåœ¨master/backupæ¨¡å¼ä¸­é‚£ä¹ˆåªè¦masterä¸å‡ºç°æ•…éšœbackupå°±ä¸€ç›´å¤„äºç©ºé—²çŠ¶æ€æå¤§çš„æµªè´¹äº†ç‰©ç†èµ„æºï¼Œè€Œä¸”åœ¨è´Ÿè½½è¾ƒå¤§çš„æƒ…å†µä¸‹masterçš„å‹åŠ›ä¼šæ¯”è¾ƒå¤§
+	keepalivedåŒä¸»äº’å¤‡çš„å‡ºç°æ­£å¥½è§£å†³äº†master/backupä¸‹ç¼ºç‚¹
+	keepalivedåŒä¸»äº’å¤‡éœ€è¦DNSè½®è¯¢çš„æ”¯æŒ
 	
-	Ë«Ö÷»¥±¸ÅäÖÃÊµÀı£º
+	åŒä¸»äº’å¤‡é…ç½®å®ä¾‹ï¼š
 		global_defs {
 		   router_id LVS_DEVEL
 		   vrrp_skip_check_adv_addr
@@ -105,7 +105,7 @@
 				}
 			}
 		}
-			#ÁíÒ»Ì¨ÅäÖÃ²î²»¶à£¬½«Ö÷±¸¸ü¸ÄÒ»ÏÂ£¬µ÷ÕûÓÅÏÈ¼¶¼´¿É
-			#¿Í»§»úÅäÖÃºÍÖ¸ÁîµÄ½âÊÍÇå²ÎÕÕÎÒÉÏÒ»Æª²©ÎÄ
+			#å¦ä¸€å°é…ç½®å·®ä¸å¤šï¼Œå°†ä¸»å¤‡æ›´æ”¹ä¸€ä¸‹ï¼Œè°ƒæ•´ä¼˜å…ˆçº§å³å¯
+			#å®¢æˆ·æœºé…ç½®å’ŒæŒ‡ä»¤çš„è§£é‡Šæ¸…å‚ç…§æˆ‘ä¸Šä¸€ç¯‡åšæ–‡
 	
 	

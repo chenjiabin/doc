@@ -1,36 +1,36 @@
-»ù±¾¸ÅÄî£º
-	MUA£ºÓÊ¼şÓÃ»§´úÀí£¬Í¨³£ÓÃÓÚÊÕĞÅºÍ·¢ĞÅ£¬²¢½«ĞèÒª·¢ËÍµÄÓÊ¼ş½»¸øMTA
-	MTA£ºÓÊ¼ş´«Êä´úÀí£¬Í¨¹ıMTA½«ÓÃ»§µÄÓÊ¼şËÍÍùÄ¿µÄµØ£¬SendmailºÍPostfix¶¼ÊÇMTAÈí¼ş	MDA£ºµ±ÓÊ¼ş·¢ËÍµ½Ä¿µÄµØ²¢²»ÊÇÁ¢¼´½»¸øÓÃ»§µÄ£¬¶øÊÇ´æ·ÅÔÚÒ»¸ö¹«¹²ÓÊÍ°Àï£¬Ö»ÓĞÏàÓ¦µÄÓÃ»§²ÅÓĞÈ¨ÏŞ¶ÁÈ¡×Ô¼ºµÄÓÊ¼ş£¬µ±ÓÃ»§Í¨¹ıMRAÁ¬½ÓµÄÓÊ¼ş·şÎñÆ÷Ê±MDA°ÑÓÊ¼ş´Ó¹«¹²ÓÊÍ°Àï½«ÓÊ¼ş½»¸øMRA
-	MRA£ºÍ¨¹ıMRA·şÎñÆ÷Ìá¹©µÄÓÊÕş·şÎñĞ­ÒéÀ´½ÓÊÕ×Ô¼ºµÄÓÊ¼ş
-	SASL£ºÌá¹©ÓÃ»§ÕËºÅÈÏÖ¤¹¦ÄÜ
+åŸºæœ¬æ¦‚å¿µï¼š
+	MUAï¼šé‚®ä»¶ç”¨æˆ·ä»£ç†ï¼Œé€šå¸¸ç”¨äºæ”¶ä¿¡å’Œå‘ä¿¡ï¼Œå¹¶å°†éœ€è¦å‘é€çš„é‚®ä»¶äº¤ç»™MTA
+	MTAï¼šé‚®ä»¶ä¼ è¾“ä»£ç†ï¼Œé€šè¿‡MTAå°†ç”¨æˆ·çš„é‚®ä»¶é€å¾€ç›®çš„åœ°ï¼ŒSendmailå’ŒPostfixéƒ½æ˜¯MTAè½¯ä»¶	MDAï¼šå½“é‚®ä»¶å‘é€åˆ°ç›®çš„åœ°å¹¶ä¸æ˜¯ç«‹å³äº¤ç»™ç”¨æˆ·çš„ï¼Œè€Œæ˜¯å­˜æ”¾åœ¨ä¸€ä¸ªå…¬å…±é‚®æ¡¶é‡Œï¼Œåªæœ‰ç›¸åº”çš„ç”¨æˆ·æ‰æœ‰æƒé™è¯»å–è‡ªå·±çš„é‚®ä»¶ï¼Œå½“ç”¨æˆ·é€šè¿‡MRAè¿æ¥çš„é‚®ä»¶æœåŠ¡å™¨æ—¶MDAæŠŠé‚®ä»¶ä»å…¬å…±é‚®æ¡¶é‡Œå°†é‚®ä»¶äº¤ç»™MRA
+	MRAï¼šé€šè¿‡MRAæœåŠ¡å™¨æä¾›çš„é‚®æ”¿æœåŠ¡åè®®æ¥æ¥æ”¶è‡ªå·±çš„é‚®ä»¶
+	SASLï¼šæä¾›ç”¨æˆ·è´¦å·è®¤è¯åŠŸèƒ½
 	
-¡¡¡¡ËùÒÔÒ»·âÓÊ¼şµÄÁ÷³ÌÊÇ£º
-		·¢¼şÈË£ºMUA --> MTA --> MTA --> MTA... --> MDA --> MRA <-- MUA£ºÊÕ¼şÈË
-		http://www.tuicool.com/articles/3EzaqqQ				#ÓÊ¼şÔ­Àí
+ã€€ã€€æ‰€ä»¥ä¸€å°é‚®ä»¶çš„æµç¨‹æ˜¯ï¼š
+		å‘ä»¶äººï¼šMUA --> MTA --> MTA --> MTA... --> MDA --> MRA <-- MUAï¼šæ”¶ä»¶äºº
+		http://www.tuicool.com/articles/3EzaqqQ				#é‚®ä»¶åŸç†
 		
 
-postfixÅäÖÃ£º
-	postconf -A			#¿Í»§¶ËÖ§³ÖµÄsaslÀàĞÍ
-	postconf -a			#·şÎñÆ÷¶ËÖ§³ÖµÄsaslÀàĞÍ
-	postconf -n			#ĞŞ¸ÄµÄÅäÖÃÎÄ¼ş
-	postconf -d			#Ä¬ÈÏµÄÅäÖÃ	
-	postconf -m			#Ö§³ÖµÄ²éÕÒ±íÀàĞÍ
-	newaliases			#Éú³É±ğÃûÎÄ¼ş
+postfixé…ç½®ï¼š
+	postconf -A			#å®¢æˆ·ç«¯æ”¯æŒçš„saslç±»å‹
+	postconf -a			#æœåŠ¡å™¨ç«¯æ”¯æŒçš„saslç±»å‹
+	postconf -n			#ä¿®æ”¹çš„é…ç½®æ–‡ä»¶
+	postconf -d			#é»˜è®¤çš„é…ç½®	
+	postconf -m			#æ”¯æŒçš„æŸ¥æ‰¾è¡¨ç±»å‹
+	newaliases			#ç”Ÿæˆåˆ«åæ–‡ä»¶
 	
 
 
-»ù´¡ÅäÖÃÊµÀı£º
-	yum -y install bind					#°²×°DNS·şÎñ£¬Ìá¹©MX¼ÇÂ¼½âÎö
-	yum -y install postfix				#°²×°postfix·şÎñ£¬ÓÃÓÚÌá¹©·¢ËÍÓÊ¼ş¹¦ÄÜ
-	yum -y install dovecot				#°²×°dovecot·şÎñ£¬ÓÃÓÚÌá¹©½ÓÊÕÓÊ¼ş¹¦ÄÜ
-	sed 's/HOSTNAME=.*/HOSTNAME=mail.test.com/' /etc/sysconfig/network			#ÓÀ¾ÃĞŞ¸ÄÖ÷»úÃû
-	hostname mail.test.com				#ÁÙÊ±¸ü¸ÄÖ÷»úÃû(»òÕßÖØÆôÏµÍ³)
+åŸºç¡€é…ç½®å®ä¾‹ï¼š
+	yum -y install bind					#å®‰è£…DNSæœåŠ¡ï¼Œæä¾›MXè®°å½•è§£æ
+	yum -y install postfix				#å®‰è£…postfixæœåŠ¡ï¼Œç”¨äºæä¾›å‘é€é‚®ä»¶åŠŸèƒ½
+	yum -y install dovecot				#å®‰è£…dovecotæœåŠ¡ï¼Œç”¨äºæä¾›æ¥æ”¶é‚®ä»¶åŠŸèƒ½
+	sed 's/HOSTNAME=.*/HOSTNAME=mail.test.com/' /etc/sysconfig/network			#æ°¸ä¹…ä¿®æ”¹ä¸»æœºå
+	hostname mail.test.com				#ä¸´æ—¶æ›´æ”¹ä¸»æœºå(æˆ–è€…é‡å¯ç³»ç»Ÿ)
 	
-	vim /etc/named.conf				#DNS±à¼­Ö÷ÅäÖÃÎÄ¼ş
-		listen-on port 53 { 192.168.0.10; };			#¼àÌıµÄµØÖ·
+	vim /etc/named.conf				#DNSç¼–è¾‘ä¸»é…ç½®æ–‡ä»¶
+		listen-on port 53 { 192.168.0.10; };			#ç›‘å¬çš„åœ°å€
 	
 	
-	vim /etc/named.rfc1912.zones			#±à¼­ÇøÓòÅäÖÃÎÄ¼ş
+	vim /etc/named.rfc1912.zones			#ç¼–è¾‘åŒºåŸŸé…ç½®æ–‡ä»¶
 		zone "test.com" IN {				
 				type master;
 				file "test.com.zone";
@@ -45,7 +45,7 @@ postfixÅäÖÃ£º
 		
 
 		
-	vim /var/named/test.com.zone		#±à¼­ÕıÏò½âÎöÎÄ¼ş
+	vim /var/named/test.com.zone		#ç¼–è¾‘æ­£å‘è§£ææ–‡ä»¶
 		$TTL 86400
 		@       IN SOA  ns.test.com. admin.test.com. (
 												1       ; serial
@@ -59,7 +59,7 @@ postfixÅäÖÃ£º
 		mail    IN      A       192.168.0.10
 		
 		
-	vim /var/named/192.169.0.zone		#±à¼­·´Ïò½âÎöÎÄ¼ş
+	vim /var/named/192.169.0.zone		#ç¼–è¾‘åå‘è§£ææ–‡ä»¶
 		$TTL 86400 
 		@       IN SOA  ns.test.com. admin.test.com. (
 												1       ; serial
@@ -71,200 +71,200 @@ postfixÅäÖÃ£º
 		10      IN      PTR     ns.test.com.
 		10      IN      PTR     mail.test.com.	
 	
-	service named start					#Æô¶¯·şÎñ
+	service named start					#å¯åŠ¨æœåŠ¡
 	
 	
-	newaliases							#Éú³É±ğÃûÎÄ¼ş
-	vim /etc/postfix/main.cf			#±à¼­postfixÖ÷ÅäÖÃÎÄ¼ş
-		myhostname = mail.test.com		#Ö¸¶¨Ö÷»úÃû
-		mydomain = test.com				#Ö¸¶¨ÓòÃû
-		myorigin = test.com				#Ö¸¶¨·¢¼şÈËËùÔÚµÄÓò
-		mynetworks = 192.168.0.0/24, 127.0.0.0/8			#ÔËĞĞÖĞ¼ÌµÄÍø¶Î
-		mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain	#Ö¸¶¨ÄÇĞ©ÓÊ¼şÎª±¾µØÓÊ¼ş
-		inet_interfaces = ipv4			#¼àÌıipv4µØÖ·
+	newaliases							#ç”Ÿæˆåˆ«åæ–‡ä»¶
+	vim /etc/postfix/main.cf			#ç¼–è¾‘postfixä¸»é…ç½®æ–‡ä»¶
+		myhostname = mail.test.com		#æŒ‡å®šä¸»æœºå
+		mydomain = test.com				#æŒ‡å®šåŸŸå
+		myorigin = test.com				#æŒ‡å®šå‘ä»¶äººæ‰€åœ¨çš„åŸŸ
+		mynetworks = 192.168.0.0/24, 127.0.0.0/8			#è¿è¡Œä¸­ç»§çš„ç½‘æ®µ
+		mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain	#æŒ‡å®šé‚£äº›é‚®ä»¶ä¸ºæœ¬åœ°é‚®ä»¶
+		inet_interfaces = ipv4			#ç›‘å¬ipv4åœ°å€
 		
-	service postfix start				#Æô¶¯·şÎñ
+	service postfix start				#å¯åŠ¨æœåŠ¡
 	
 	
-	vim /etc/dovecot/dovecot.conf		#±à¼­dovecotÖ÷ÅäÖÃÎÄ¼ş
-		protocols = imap pop3 lmtp				#ÆôÓÃÏàÓ¦Ğ­Òé(ĞŞ¸Ä)
-		mail_location = maildir:~/Maildir		#ÉèÖÃÓÊ¼şÄ¿Â¼(Ìí¼Ó)
-		log_path=/tmp/dovecot.log				#Ö¸¶¨ÈÕÖ¾ÎÄ¼şÂ·¾¶
+	vim /etc/dovecot/dovecot.conf		#ç¼–è¾‘dovecotä¸»é…ç½®æ–‡ä»¶
+		protocols = imap pop3 lmtp				#å¯ç”¨ç›¸åº”åè®®(ä¿®æ”¹)
+		mail_location = maildir:~/Maildir		#è®¾ç½®é‚®ä»¶ç›®å½•(æ·»åŠ )
+		log_path=/tmp/dovecot.log				#æŒ‡å®šæ—¥å¿—æ–‡ä»¶è·¯å¾„
 		
-	service dovecot start			#Æô¶¯·şÎñ
+	service dovecot start			#å¯åŠ¨æœåŠ¡
 
 	
-	ss -tunl		#²é¿´¶ÔÓ¦·şÎñÊÇ·ñÆô¶¯£¬DNS£ºudp/53   postfix£ºtcp/35   dovecot£ºtcp/110/143
+	ss -tunl		#æŸ¥çœ‹å¯¹åº”æœåŠ¡æ˜¯å¦å¯åŠ¨ï¼ŒDNSï¼šudp/53   postfixï¼štcp/35   dovecotï¼štcp/110/143
 	
 	
-	vim /etc/sysconfig/network-scripts/ifcfg-eth0			#±à¼­Íø¿¨ÅäÖÃÎÄ¼ş
-		DNS1=192.168.0.10					#Ö¸¶¨DNS·şÎñÆ÷µØÖ·
-	 service network restart				#ÖØÆôÍøÂç·şÎñ
+	vim /etc/sysconfig/network-scripts/ifcfg-eth0			#ç¼–è¾‘ç½‘å¡é…ç½®æ–‡ä»¶
+		DNS1=192.168.0.10					#æŒ‡å®šDNSæœåŠ¡å™¨åœ°å€
+	 service network restart				#é‡å¯ç½‘ç»œæœåŠ¡
 		
 	
 	
-ÅäÖÃsasl+/etc/shadowÊµÏÖÓÃ»§Éí·İÈÏÖ¤
-	saslauthd -v			#ÁĞ³ösaslÖ§³ÖµÄÈÏÖ¤·½Ê½	
-	sed -i 's/MECH=.*/MECH=shadow/' /etc/sysconfig/saslauthd 			#ĞŞ¸ÄÎªÊ¹ÓÃshadowÈÏÖ¤	
+é…ç½®sasl+/etc/shadowå®ç°ç”¨æˆ·èº«ä»½è®¤è¯
+	saslauthd -v			#åˆ—å‡ºsaslæ”¯æŒçš„è®¤è¯æ–¹å¼	
+	sed -i 's/MECH=.*/MECH=shadow/' /etc/sysconfig/saslauthd 			#ä¿®æ”¹ä¸ºä½¿ç”¨shadowè®¤è¯	
 		
-	vim /usr/lib64/sasl2/smtpd.conf			#ÎÄ¼ş¿ÉÄÜ²¢²»´æÔÚ
+	vim /usr/lib64/sasl2/smtpd.conf			#æ–‡ä»¶å¯èƒ½å¹¶ä¸å­˜åœ¨
 		pwcheck_method:saslauthd
 		mech_list:PLAIN LOGIN
 	
 	vim /etc/postfix/main.cf
 		mynetworks = 127.0.0.0/8
-		broken_sasl_auth_clients=yes			#¿ªÆôÈÏÖ¤
+		broken_sasl_auth_clients=yes			#å¼€å¯è®¤è¯
 		smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination
-				permit_sasl_authenticated	#ÔÊĞísaslÈÏÖ¤£¬ÆäÓàÁ½¸ö±ØĞëÕâÃ´Ğ´
-		smtpd_sasl_auth_enable=yes						#¿ªÆôÈÏÖ¤
-		smtpd_sasl_local_domain=$myhostname				#±¾»ú¿ÉÒÔ²»ÈÏÖ¤
+				permit_sasl_authenticated	#å…è®¸saslè®¤è¯ï¼Œå…¶ä½™ä¸¤ä¸ªå¿…é¡»è¿™ä¹ˆå†™
+		smtpd_sasl_auth_enable=yes						#å¼€å¯è®¤è¯
+		smtpd_sasl_local_domain=$myhostname				#æœ¬æœºå¯ä»¥ä¸è®¤è¯
 		smtpd_sasl_security_options=noanonymous		
 		smtpd_sasl_path=smtpd	
-		smtpd_banner='hello welcome'		#»¶Ó­ĞÅÏ¢(¿ÉÒÔ²»Ğ´)
+		smtpd_banner='hello welcome'		#æ¬¢è¿ä¿¡æ¯(å¯ä»¥ä¸å†™)
 	
 	
-	service postfix restart					#ÖØÆôpostfix·şÎñ
-	service saslauthd start					#Æô¶¯saslÈÏÖ¤·şÎñ
+	service postfix restart					#é‡å¯postfixæœåŠ¡
+	service saslauthd start					#å¯åŠ¨saslè®¤è¯æœåŠ¡
 	
 
 	
-ÑéÖ¤£º
-	useradd hadoop							#´´½¨²âÊÔÓÃ»§£¬ÃÜÂëhadoop
-	echo -n "hadoop" | openssl base64		#Éú³Ébase64±àÂë
-	telnet 192.168.0.10 25		#Á¬½ÓÓÊ¼ş·şÎñÆ÷
-		auth login 			#ÈÏÖ¤
-			aGFkb29w		#ÓÃ»§Ãû£¬base64±àÂë¸ñÊ½
-			aGFkb29w		#ÃÜÂë£¬base64±àÂë¸ñÊ½
-				235 2.7.0 Authentication successful			#ÈÏÖ¤³É¹¦
-		helo mail.test.com							#Ì½²â·şÎñÆ÷ÊÇ·ñÔÚÏß
-		mail from:hadoop@test.com				#·¢¼şÈË£¬Í¨¹ıÈÏÖ¤µÄÓÃ»§
-		rcpt to:hy21803660215@163.com			#ÊÕ¼şÈË
-		data					#ÄÚÈİ
+éªŒè¯ï¼š
+	useradd hadoop							#åˆ›å»ºæµ‹è¯•ç”¨æˆ·ï¼Œå¯†ç hadoop
+	echo -n "hadoop" | openssl base64		#ç”Ÿæˆbase64ç¼–ç 
+	telnet 192.168.0.10 25		#è¿æ¥é‚®ä»¶æœåŠ¡å™¨
+		auth login 			#è®¤è¯
+			aGFkb29w		#ç”¨æˆ·åï¼Œbase64ç¼–ç æ ¼å¼
+			aGFkb29w		#å¯†ç ï¼Œbase64ç¼–ç æ ¼å¼
+				235 2.7.0 Authentication successful			#è®¤è¯æˆåŠŸ
+		helo mail.test.com							#æ¢æµ‹æœåŠ¡å™¨æ˜¯å¦åœ¨çº¿
+		mail from:hadoop@test.com				#å‘ä»¶äººï¼Œé€šè¿‡è®¤è¯çš„ç”¨æˆ·
+		rcpt to:hy21803660215@163.com			#æ”¶ä»¶äºº
+		data					#å†…å®¹
 			123
 			.
-		quit									#Èç¹ûÕû¸ö¹ı³ÌÃ»ÓĞ³öÏÖ±¨´í£¬ËµÃ÷saslÈÏÖ¤³É¹¦
+		quit									#å¦‚æœæ•´ä¸ªè¿‡ç¨‹æ²¡æœ‰å‡ºç°æŠ¥é”™ï¼Œè¯´æ˜saslè®¤è¯æˆåŠŸ
 
 
-postfix + mysqlÊµÏÖĞéÄâÓÃ»§ÈÏÖ¤£º
-	yum -y install libtool-ltdl libtool-ltdl-devel expect perl-DBD-MySQL tcl tcl-devel libart_lgpl libart_lgpl-devel libtool-ltdl libtool-ltdl-devel					#°²×°Ïà¹ØÒÀÀµ°ü
-	yum -y install mysql mysql-server			   #°²×°mysql
-	yum -y install apache						   #°²×°apache
+postfix + mysqlå®ç°è™šæ‹Ÿç”¨æˆ·è®¤è¯ï¼š
+	yum -y install libtool-ltdl libtool-ltdl-devel expect perl-DBD-MySQL tcl tcl-devel libart_lgpl libart_lgpl-devel libtool-ltdl libtool-ltdl-devel					#å®‰è£…ç›¸å…³ä¾èµ–åŒ…
+	yum -y install mysql mysql-server			   #å®‰è£…mysql
+	yum -y install apache						   #å®‰è£…apache
 	
 	tar jxvf courier-unicode-1.4.tar.bz2 -C /usr/src/
 	tar jxvf courier-authlib-0.67.0.tar.bz2 -C /usr/src/	
 	cd /usr/src/courier-unicode-1.4/
 	./configure 
-	make && make install			#°²×°ÒÀÀµ°ü
+	make && make install			#å®‰è£…ä¾èµ–åŒ…
 	
 	cd /usr/src/courier-authlib-0.67.0/
 	./configure \
-		--prefix=/usr/local/courier-authlib \			#°²×°Â·¾¶
-		--sysconfdir=/etc \								#ÅäÖÃÎÄ¼şÂ·¾¶
-		--without-authpam \								#²»Ö§³Ö»ùÓÚpamÈÏÖ¤
-		--without-authshadow \							#²»Ö§³Ö»ùÓÚshadowÈÏÖ¤
-		--without-authvchkpw \							#²»Ö§³Ö»ùÓÚvchkpwÈÏÖ¤
-		--without-authpgsql \							#²»Ö§³Ö»ùÓÚvchkpwÈÏÖ¤
-		--without-authsqlite \							#²»Ö§³Ö»ùÓÚsqliteÈÏÖ¤
-		--with-authmysql \								#»ùÓÚmysqlÈÏÖ¤
-		--with-mysql-libs=/usr/lib64/mysql \			#Ö¸¶¨mysql¿âÎÄ¼şÂ·¾¶
-		--with-mysql-includes=/usr/include/mysql \		#Ö¸¶¨mysqlÍ·ÎÄ¼şÂ·¾¶
-		--with-authmysqlrc=/etc/authmysqlrc \			#Ö¸¶¨mysqlrcÅäÖÃÎÄ¼şÎ»ÖÃ
-		--with-authdaemonrc=/etc/authdaemonrc \			#Ö¸¶¨ÊØ»¤½ø³ÌÅäÖÃÎÄ¼şÎ»ÖÃ
-		--with-mailuser=postfix \						#Ö¸¶¨ÓÊ¼şÊÕ·¢¹ÜÀíÓÃ»§
-		--with-mailgroup=postfix						#Ö¸¶¨ÓÃ»§×é
+		--prefix=/usr/local/courier-authlib \			#å®‰è£…è·¯å¾„
+		--sysconfdir=/etc \								#é…ç½®æ–‡ä»¶è·¯å¾„
+		--without-authpam \								#ä¸æ”¯æŒåŸºäºpamè®¤è¯
+		--without-authshadow \							#ä¸æ”¯æŒåŸºäºshadowè®¤è¯
+		--without-authvchkpw \							#ä¸æ”¯æŒåŸºäºvchkpwè®¤è¯
+		--without-authpgsql \							#ä¸æ”¯æŒåŸºäºvchkpwè®¤è¯
+		--without-authsqlite \							#ä¸æ”¯æŒåŸºäºsqliteè®¤è¯
+		--with-authmysql \								#åŸºäºmysqlè®¤è¯
+		--with-mysql-libs=/usr/lib64/mysql \			#æŒ‡å®šmysqlåº“æ–‡ä»¶è·¯å¾„
+		--with-mysql-includes=/usr/include/mysql \		#æŒ‡å®šmysqlå¤´æ–‡ä»¶è·¯å¾„
+		--with-authmysqlrc=/etc/authmysqlrc \			#æŒ‡å®šmysqlrcé…ç½®æ–‡ä»¶ä½ç½®
+		--with-authdaemonrc=/etc/authdaemonrc \			#æŒ‡å®šå®ˆæŠ¤è¿›ç¨‹é…ç½®æ–‡ä»¶ä½ç½®
+		--with-mailuser=postfix \						#æŒ‡å®šé‚®ä»¶æ”¶å‘ç®¡ç†ç”¨æˆ·
+		--with-mailgroup=postfix						#æŒ‡å®šç”¨æˆ·ç»„
 	
-	make && make install			#°²×°courier-authlib
+	make && make install			#å®‰è£…courier-authlib
 	
-	cp courier-authlib.sysvinit /etc/init.d/courier-authlib				#¸´ÖÆÆô¶¯½Å±¾
+	cp courier-authlib.sysvinit /etc/init.d/courier-authlib				#å¤åˆ¶å¯åŠ¨è„šæœ¬
 	chmod 755 /etc/init.d/courier-authlib
 	
 	
 	vim /usr/lib64/sasl2/smtpd.conf
-		pwchech_menthod: authdaemond 				#Ê¹ÓÃcourier-authlib½øĞĞÈÏÖ¤
+		pwchech_menthod: authdaemond 				#ä½¿ç”¨courier-authlibè¿›è¡Œè®¤è¯
 		mech_list: PLAIN LOGIN 															
-		authdaemond_path= /usr/local/courier-authlib/var/spool/authdaemon/socket		#courier-authlib½ø³ÌsockÎÄ¼şÎ»ÖÃ
+		authdaemond_path= /usr/local/courier-authlib/var/spool/authdaemon/socket		#courier-authlibè¿›ç¨‹sockæ–‡ä»¶ä½ç½®
 		
-	chmod 755 /usr/local/courier-authlib/var/spool/authdaemon			#ĞŞ¸ÄsockÄ¿Â¼È¨ÏŞ
-	cp /etc/authdaemonrc.dist /etc/authdaemonrc				#¸´ÖÆÅäÖÃÎÄ¼ş
-	cp /etc/authmysqlrc.dist /etc/authmysqlrc				#¸´ÖÆÅäÖÃÎÄ¼ş
+	chmod 755 /usr/local/courier-authlib/var/spool/authdaemon			#ä¿®æ”¹sockç›®å½•æƒé™
+	cp /etc/authdaemonrc.dist /etc/authdaemonrc				#å¤åˆ¶é…ç½®æ–‡ä»¶
+	cp /etc/authmysqlrc.dist /etc/authmysqlrc				#å¤åˆ¶é…ç½®æ–‡ä»¶
 	
-	vim /etc/authdaemonrc								#ĞŞ¸ÄÅäÖÃÎÄ¼ş
-		authmodulelist="authmysql"						#Ö»Ê¹ÓÃ»ùÓÚmysqlÈÏÖ¤
+	vim /etc/authdaemonrc								#ä¿®æ”¹é…ç½®æ–‡ä»¶
+		authmodulelist="authmysql"						#åªä½¿ç”¨åŸºäºmysqlè®¤è¯
 		authmodulelistorig="authmysql"
-		daemons=5 										#Ä¬ÈÏÆô¶¯µÄ½ø³Ì¸öÊı£¬¿ÉÒÔ²»ÓÃ¸ü¸Ä	
-		authdaemonvar=/usr/local/courier-authlib/var/spool/authdaemon			#sockÎÄ¼şÎ»ÖÃ
+		daemons=5 										#é»˜è®¤å¯åŠ¨çš„è¿›ç¨‹ä¸ªæ•°ï¼Œå¯ä»¥ä¸ç”¨æ›´æ”¹	
+		authdaemonvar=/usr/local/courier-authlib/var/spool/authdaemon			#sockæ–‡ä»¶ä½ç½®
 		
 	
-	vim /etc/authmysqlrc					#±à¼­mysqlÈÏÖ¤ÎÄ¼ş£¬´ËÎÄ¼ş±ØĞëºÍÑÏ¸ñ°´ÕÕ¸ñÊ½½øĞĞĞŞ¸Ä
-		MYSQL_SERVER          localhost						#mysql·şÎñµØÖ·
-		MYSQL_USERNAME        extmail						#Á¬½ÓmysqlµÄÕËºÅ£¬(¾¡Á¿Ê¹ÓÃextmail)
-		MYSQL_PASSWORD        extmail						#Á¬½ÓmysqlµÄÃÜÂë£¬(¾¡Á¿Ê¹ÓÃextmail)
-		MYSQL_SOCKET          /var/lib/mysql/mysql.sock		#sockÎÄ¼şÎ»ÖÃ£¬Èç¹û²»Ê¹ÓÃsock¿ÉÒÔ²»ÓÃĞŞ¸Ä
-		MYSQL_PORT            3306							#¼àÌı¶Ë¿Ú
-		MYSQL_database        extmail						#Á¬½ÓµÄÊı¾İ¿â£¬(¾¡Á¿Ê¹ÓÃextmail)
-		MYSQL_USER_TABLE      mailbox						#Ö¸¶¨´æ·ÅÓÃ»§Êı¾İµÄ±í				
-		MYSQL_CRYPT_PWFIELD   password						#Ö¸¶¨´æ·ÅÓÃ»§ÃÜÂëµÄ×Ö¶Î
-		MYSQL_UID_FIELD       89							#ÔËĞĞpostfixÓÃ»§µÄUID
-		MYSQL_GID_FIELD       89							#ÔËĞĞpostfixÓÃ»§µÄGID
-		MYSQL_LOGIN_FIELD     username						#Ö¸¶¨ÓÃ»§ÕËºÅ×Ö¶Î
-		MYSQL_HOME_FIELD      concat('/mailbox/',homedir)	#Ö¸¶¨ÓÃ»§¼ÒÄ¿Â¼£¬ĞéÄâÓÃ»§Ã»ÓĞ¼ÒÄ¿Â¼£¬ËùÒÔºÍÓÊÏäÄ¿Â¼±£³ÖÒ»ÖÂ
-		MYSQL_NAME_FIELD      name							#Ö¸¶¨ÓÃ»§Ãû³ÆµÄ×Ö¶Î
-		MYSQL_MAILDIR_FIELD   concat('/mailbox/',maildir)	#Ö¸¶¨ÓÃ»§ÓÊÏäÄ¿Â¼µÄÎ»ÖÃ
+	vim /etc/authmysqlrc					#ç¼–è¾‘mysqlè®¤è¯æ–‡ä»¶ï¼Œæ­¤æ–‡ä»¶å¿…é¡»å’Œä¸¥æ ¼æŒ‰ç…§æ ¼å¼è¿›è¡Œä¿®æ”¹
+		MYSQL_SERVER          localhost						#mysqlæœåŠ¡åœ°å€
+		MYSQL_USERNAME        extmail						#è¿æ¥mysqlçš„è´¦å·ï¼Œ(å°½é‡ä½¿ç”¨extmail)
+		MYSQL_PASSWORD        extmail						#è¿æ¥mysqlçš„å¯†ç ï¼Œ(å°½é‡ä½¿ç”¨extmail)
+		MYSQL_SOCKET          /var/lib/mysql/mysql.sock		#sockæ–‡ä»¶ä½ç½®ï¼Œå¦‚æœä¸ä½¿ç”¨sockå¯ä»¥ä¸ç”¨ä¿®æ”¹
+		MYSQL_PORT            3306							#ç›‘å¬ç«¯å£
+		MYSQL_database        extmail						#è¿æ¥çš„æ•°æ®åº“ï¼Œ(å°½é‡ä½¿ç”¨extmail)
+		MYSQL_USER_TABLE      mailbox						#æŒ‡å®šå­˜æ”¾ç”¨æˆ·æ•°æ®çš„è¡¨				
+		MYSQL_CRYPT_PWFIELD   password						#æŒ‡å®šå­˜æ”¾ç”¨æˆ·å¯†ç çš„å­—æ®µ
+		MYSQL_UID_FIELD       89							#è¿è¡Œpostfixç”¨æˆ·çš„UID
+		MYSQL_GID_FIELD       89							#è¿è¡Œpostfixç”¨æˆ·çš„GID
+		MYSQL_LOGIN_FIELD     username						#æŒ‡å®šç”¨æˆ·è´¦å·å­—æ®µ
+		MYSQL_HOME_FIELD      concat('/mailbox/',homedir)	#æŒ‡å®šç”¨æˆ·å®¶ç›®å½•ï¼Œè™šæ‹Ÿç”¨æˆ·æ²¡æœ‰å®¶ç›®å½•ï¼Œæ‰€ä»¥å’Œé‚®ç®±ç›®å½•ä¿æŒä¸€è‡´
+		MYSQL_NAME_FIELD      name							#æŒ‡å®šç”¨æˆ·åç§°çš„å­—æ®µ
+		MYSQL_MAILDIR_FIELD   concat('/mailbox/',maildir)	#æŒ‡å®šç”¨æˆ·é‚®ç®±ç›®å½•çš„ä½ç½®
 		
-	mkdir -p /var/mailbox							#´´½¨ÓÊ¼ş´æ·ÅÄ¿Â¼
-	chown postfix:postfix /var/mailbox/				#ĞŞ¸ÄÊôÖ÷Êô×é
+	mkdir -p /var/mailbox							#åˆ›å»ºé‚®ä»¶å­˜æ”¾ç›®å½•
+	chown postfix:postfix /var/mailbox/				#ä¿®æ”¹å±ä¸»å±ç»„
 	
-	vim /etc/postfix/main.cf						#ÒÔÇ°ÅäÖÃµÄsaslĞèÒª±£Áô
-		virtual_mailbox_base = /var/mailbox			Ö¸¶¨ÓÃ»§ÓÊ¼ş´æ·ÅÄ¿Â¼µÄÂ·¾¶
-		virtual_mailbox_maps = mysql:/etc/postfix/mysql_virtual_mailbox_maps.cf			#mysqlÈÏÖ¤Óï¾ä¶¨Òå£¬ÓÉextmanÌá¹©
-		virtual_mailbox_domains = mysql:/etc/postfix/mysql_virtual_domains_maps.cf		#mysqlÈÏÖ¤Óï¾ä¶¨Òå£¬ÓÉextmanÌá¹©
-		virtual_alias_maps = mysql:/etc/postfix/mysql_virtual_alias_maps.cf				#±ğÃûÓ³Éä±í£¬ÓÉextmanÌá¹©
-		virtual_uid_maps = static:89				#ÔËĞĞpostfixÓÃ»§µÄUID
-		virtual_gid_maps = static:89				#ÔËĞĞpostfixÓÃ»§µÄGID
-		virtual_transport = virtual					#Í¶µİ´úÀí
+	vim /etc/postfix/main.cf						#ä»¥å‰é…ç½®çš„sasléœ€è¦ä¿ç•™
+		virtual_mailbox_base = /var/mailbox			æŒ‡å®šç”¨æˆ·é‚®ä»¶å­˜æ”¾ç›®å½•çš„è·¯å¾„
+		virtual_mailbox_maps = mysql:/etc/postfix/mysql_virtual_mailbox_maps.cf			#mysqlè®¤è¯è¯­å¥å®šä¹‰ï¼Œç”±extmanæä¾›
+		virtual_mailbox_domains = mysql:/etc/postfix/mysql_virtual_domains_maps.cf		#mysqlè®¤è¯è¯­å¥å®šä¹‰ï¼Œç”±extmanæä¾›
+		virtual_alias_maps = mysql:/etc/postfix/mysql_virtual_alias_maps.cf				#åˆ«åæ˜ å°„è¡¨ï¼Œç”±extmanæä¾›
+		virtual_uid_maps = static:89				#è¿è¡Œpostfixç”¨æˆ·çš„UID
+		virtual_gid_maps = static:89				#è¿è¡Œpostfixç”¨æˆ·çš„GID
+		virtual_transport = virtual					#æŠ•é€’ä»£ç†
 		virtual_alias_domains =
 		
 		
 	tar zxvf extman-1.0.1.tar.gz -C /usr/src/
 	cd	/usr/src/extman-1.0.1/docs
-	sed -i 's/TYPE=MyISAM/ENGINE=InnoDB/' extmail.sql			#mysql5.1¼°ÒÔÉÏ°æ±¾ĞèÒªĞŞ¸Ä
-	mysql < extmail.sql						#µ¼ÈëSQLÎÄ¼ş£¬´´½¨Ïà¹ØÊı¾İ¿âºÍ±í
-	mysql < init.sql						#µ¼ÈëSQLÎÄ¼ş£¬´´½¨ÏàÓ¦Êı¾İ
-	mysql> GRANT ALL ON extmail.* TO 'extmail'@'localhost' IDENTIFIED BY 'extmail';	#ÊÚÈ¨ÓÃ»§
-	mysql> GRANT ALL ON extmail.* TO 'extmail'@'127.0.0.1' IDENTIFIED BY 'extmail';	#ÃÜÂëºÍÓÃ»§Ãû¾¡Á¦Ê¹ÓÃextmail
+	sed -i 's/TYPE=MyISAM/ENGINE=InnoDB/' extmail.sql			#mysql5.1åŠä»¥ä¸Šç‰ˆæœ¬éœ€è¦ä¿®æ”¹
+	mysql < extmail.sql						#å¯¼å…¥SQLæ–‡ä»¶ï¼Œåˆ›å»ºç›¸å…³æ•°æ®åº“å’Œè¡¨
+	mysql < init.sql						#å¯¼å…¥SQLæ–‡ä»¶ï¼Œåˆ›å»ºç›¸åº”æ•°æ®
+	mysql> GRANT ALL ON extmail.* TO 'extmail'@'localhost' IDENTIFIED BY 'extmail';	#æˆæƒç”¨æˆ·
+	mysql> GRANT ALL ON extmail.* TO 'extmail'@'127.0.0.1' IDENTIFIED BY 'extmail';	#å¯†ç å’Œç”¨æˆ·åå°½åŠ›ä½¿ç”¨extmail
 	mysql> FLUSH PRIVILEGES;
-	cp mysql_virtual_* /etc/postfix/		#Èç¹ûÓÃ»§ÃûºÍÃÜÂëÊ¹ÓÃµÄ¶¼ÊÇextmailÔò²»ĞèÒª¸ü¸Ä£¬·ñÔòÈ«²¿ĞèÒª¸ü¸Ä
+	cp mysql_virtual_* /etc/postfix/		#å¦‚æœç”¨æˆ·åå’Œå¯†ç ä½¿ç”¨çš„éƒ½æ˜¯extmailåˆ™ä¸éœ€è¦æ›´æ”¹ï¼Œå¦åˆ™å…¨éƒ¨éœ€è¦æ›´æ”¹
 		
 		
-    vim /etc/postfix/main.cf					#±à¼­postfixÅäÖÃÎÄ¼ş
-            #myhostname = www.mali.com			#×¢ÊÍµô
-            #myorigin = $mydomain				#×¢ÊÍµô
-            #mydomain = mali.com				#×¢ÊÍµô
-			mail_location = maildir:~/Maildir	#×¢ÊÍµô
-            #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain		#×¢ÊÍµô
-            mynetworks = 127.0.0.0/8 			#Ö»ÔÊĞíÎª±¾µØÖĞ¼Ì
+    vim /etc/postfix/main.cf					#ç¼–è¾‘postfixé…ç½®æ–‡ä»¶
+            #myhostname = www.mali.com			#æ³¨é‡Šæ‰
+            #myorigin = $mydomain				#æ³¨é‡Šæ‰
+            #mydomain = mali.com				#æ³¨é‡Šæ‰
+			mail_location = maildir:~/Maildir	#æ³¨é‡Šæ‰
+            #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain		#æ³¨é‡Šæ‰
+            mynetworks = 127.0.0.0/8 			#åªå…è®¸ä¸ºæœ¬åœ°ä¸­ç»§
 	
-	vim /etc/dovecot/conf.d/10-mail.conf				#ĞŞ¸ÄÅäÖÃ
-		mail_location = maildir:/var/mailbox/%d/%n/Maildir 			#ÉèÖÃÓÊ¼şµÄÎ»ÖÃ£¬%d±íÊ¾ÓòÃû£¬%n±íÊ¾ÓÃ»§Ãû(ĞŞ¸Ä)
+	vim /etc/dovecot/conf.d/10-mail.conf				#ä¿®æ”¹é…ç½®
+		mail_location = maildir:/var/mailbox/%d/%n/Maildir 			#è®¾ç½®é‚®ä»¶çš„ä½ç½®ï¼Œ%dè¡¨ç¤ºåŸŸåï¼Œ%nè¡¨ç¤ºç”¨æˆ·å(ä¿®æ”¹)
 		namespace inbox {
 			inbox = yes
 		}
 		
 	
-	vim /etc/dovecot/conf.d/10-auth.conf			#ĞŞ¸ÄÅäÖÃ		
+	vim /etc/dovecot/conf.d/10-auth.conf			#ä¿®æ”¹é…ç½®		
 		disable_plaintext_auth = no
 		auth_mechanisms = plain
 	
 		
-	vim /etc/dovecot/conf.d/auth-sql.conf.ext				#ÎÄ¼şÄ¬ÈÏ²»´æÔÚ
+	vim /etc/dovecot/conf.d/auth-sql.conf.ext				#æ–‡ä»¶é»˜è®¤ä¸å­˜åœ¨
 		driver = mysql 
-        connect = host=localhost dbname=extmail user=extmail password=extmail		#mysqlµØÖ·£¬ÓÃ»§Ãû£¬ÃÜÂë
-        default_pass_scheme = CRYPT 						#Ä¬ÈÏ¼ÓÃÜ·½Ê½
-        password_query = SELECT username AS user,password AS password FROM mailbox WHERE username = '%u'  #%u±íÊ¾µÇÂ¼ÓÃ»§Ãû
+        connect = host=localhost dbname=extmail user=extmail password=extmail		#mysqlåœ°å€ï¼Œç”¨æˆ·åï¼Œå¯†ç 
+        default_pass_scheme = CRYPT 						#é»˜è®¤åŠ å¯†æ–¹å¼
+        password_query = SELECT username AS user,password AS password FROM mailbox WHERE username = '%u'  #%uè¡¨ç¤ºç™»å½•ç”¨æˆ·å
         user_query = SELECT maildir, uidnumber AS uid, gidnumber AS gid FROM mailbox WHERE username = '%u'
 		
 	
-	service saslauthd stop			#¹ØsaslÈÏÖ¤
+	service saslauthd stop			#å…³saslè®¤è¯
 	
 	
 	cd /var/www/html/
@@ -275,21 +275,21 @@ postfix + mysqlÊµÏÖĞéÄâÓÃ»§ÈÏÖ¤£º
 	cp webmail.cf.default  webmail.cf
 	chown -R postfix:postfix -R cgi
 	
-	vim webmail.cf							#±à¼­webmailÅäÖÃÎÄ¼ş
-		SYS_SMTP_HOST = localhost		#ÓÊ¼ş·şÎñÆ÷µØÖ·
-		SYS_USER_LANG = zh_CN				#Ê¹ÓÃÖĞÎÄ
-		SYS_USER_CHARSET = utf-8			#Ö¸¶¨×Ö·û¼¯
-		SYS_MAILDIR_BASE = /var/mailbox		#ÓÊ¼ş´æ·ÅÎ»ÖÃ
-		SYS_MYSQL_USER = extmail			#Á¬½ÓÊı¾İ¿âµÄÓÃ»§(Éú²ú»·¾³²»½¨ÒéÊ¹ÓÃrootÖ±½ÓÁ¬½Ó)
-		SYS_MYSQL_PASS = extmail			#rootÓÃ»§ÃÜÂë
-		SYS_MYSQL_DB = extmail				#Á¬½ÓµÄÊı¾İ¿â
-		SYS_MYSQL_HOST = hostlocah		    #Êı¾İ¿âµØÖ·
-		SYS_MYSQL_SOCKET = /var/lib/mysql/mysql.sock			#sockÎÄ¼şÎ»ÖÃ
-		SYS_MYSQL_TABLE = mailbox			#Ö¸¶¨´æ·ÅÓÃ»§Êı¾İµÄ±í		
-		SYS_MYSQL_ATTR_USERNAME = username	#Ö¸¶¨´æ·ÅÓÃ»§ÕËºÅµÄ×Ö¶Î
-		SYS_MYSQL_ATTR_DOMAIN = domain		#Ö¸¶¨Óò
-		SYS_MYSQL_ATTR_PASSWD = password	#Ö¸¶¨´æ·ÅÓÃ»§ÃÜÂëµÄ×Ö¶Î
-		SYS_AUTHLIB_SOCKET = /usr/local/courier-authlib/var/spool/authdaemon/socket			#sockÎÄ¼ş´æ·ÅÂ·¾¶
+	vim webmail.cf							#ç¼–è¾‘webmailé…ç½®æ–‡ä»¶
+		SYS_SMTP_HOST = localhost		#é‚®ä»¶æœåŠ¡å™¨åœ°å€
+		SYS_USER_LANG = zh_CN				#ä½¿ç”¨ä¸­æ–‡
+		SYS_USER_CHARSET = utf-8			#æŒ‡å®šå­—ç¬¦é›†
+		SYS_MAILDIR_BASE = /var/mailbox		#é‚®ä»¶å­˜æ”¾ä½ç½®
+		SYS_MYSQL_USER = extmail			#è¿æ¥æ•°æ®åº“çš„ç”¨æˆ·(ç”Ÿäº§ç¯å¢ƒä¸å»ºè®®ä½¿ç”¨rootç›´æ¥è¿æ¥)
+		SYS_MYSQL_PASS = extmail			#rootç”¨æˆ·å¯†ç 
+		SYS_MYSQL_DB = extmail				#è¿æ¥çš„æ•°æ®åº“
+		SYS_MYSQL_HOST = hostlocah		    #æ•°æ®åº“åœ°å€
+		SYS_MYSQL_SOCKET = /var/lib/mysql/mysql.sock			#sockæ–‡ä»¶ä½ç½®
+		SYS_MYSQL_TABLE = mailbox			#æŒ‡å®šå­˜æ”¾ç”¨æˆ·æ•°æ®çš„è¡¨		
+		SYS_MYSQL_ATTR_USERNAME = username	#æŒ‡å®šå­˜æ”¾ç”¨æˆ·è´¦å·çš„å­—æ®µ
+		SYS_MYSQL_ATTR_DOMAIN = domain		#æŒ‡å®šåŸŸ
+		SYS_MYSQL_ATTR_PASSWD = password	#æŒ‡å®šå­˜æ”¾ç”¨æˆ·å¯†ç çš„å­—æ®µ
+		SYS_AUTHLIB_SOCKET = /usr/local/courier-authlib/var/spool/authdaemon/socket			#sockæ–‡ä»¶å­˜æ”¾è·¯å¾„
 		
 	
 	mv /usr/src/extman-1.0.1/ /var/www/extsuite/extman
@@ -298,10 +298,10 @@ postfix + mysqlÊµÏÖĞéÄâÓÃ»§ÈÏÖ¤£º
 	
 	vim  webman.cf
 		SYS_MAILDIR_BASE = /var/mailbox
-		SYS_DEFAULT_UID = 89			#postfixÓÃ»§uid
+		SYS_DEFAULT_UID = 89			#postfixç”¨æˆ·uid
 		SYS_DEFAULT_GID = 89
-		SYS_MYSQL_USER = extmail		#Á¬½ÓmysqlµÄÓÃ»§
-		SYS_MYSQL_PASS = extmail		#ÃÜÂë
+		SYS_MYSQL_USER = extmail		#è¿æ¥mysqlçš„ç”¨æˆ·
+		SYS_MYSQL_PASS = extmail		#å¯†ç 
 		SYS_MYSQL_SOCKET = /var/lib/mysql/mysql.sock
 		SYS_CAPTCHA_ON = 0				
 		
@@ -310,39 +310,39 @@ postfix + mysqlÊµÏÖĞéÄâÓÃ»§ÈÏÖ¤£º
 	chown postfix:postfix  /tmp/extman
 	
 	
-	tar zxvf Unix-Syslog-0.100.tar.gz			#°²×°ÒÀÀµµÄperlÄ£¿é
+	tar zxvf Unix-Syslog-0.100.tar.gz			#å®‰è£…ä¾èµ–çš„perlæ¨¡å—
 	cd Unix-Syslog-0.100
 	perl Makefile.PL
 	make
 	make install
 	
 	
-	vim /etc/httpd/conf/httpd.conf			#±à¼­httpÅäÖÃÎÄ¼ş
-		#DocumentRoot "/var/www/html"		#×¢ÊÍÖĞĞÄÖ÷»ú
-		User postfix			#ĞŞ¸ÄapacheµÄÔËĞĞÓÃ»§ºÍ×é
+	vim /etc/httpd/conf/httpd.conf			#ç¼–è¾‘httpé…ç½®æ–‡ä»¶
+		#DocumentRoot "/var/www/html"		#æ³¨é‡Šä¸­å¿ƒä¸»æœº
+		User postfix			#ä¿®æ”¹apacheçš„è¿è¡Œç”¨æˆ·å’Œç»„
 		Group postfix
 
 		<VirtualHost *:80>
 			ServerName mail.magedu.com
 			DocumentRoot /var/www/extsuite/extmail/html/
-			ScriptAlias /extmail/cgi /var/www/extsuite/extmail/cgi			#Ö¸¶¨CGI½Å±¾
-			Alias /extmail /var/www/extsuite/extmail/html					#Ö¸¶¨±ğÃû
+			ScriptAlias /extmail/cgi /var/www/extsuite/extmail/cgi			#æŒ‡å®šCGIè„šæœ¬
+			Alias /extmail /var/www/extsuite/extmail/html					#æŒ‡å®šåˆ«å
 			ScriptAlias /extman/cgi /var/www/extsuite/extman/cgi
 			Alias /extman /var/www/extsuite/extman/html
 		</VirtualHost>
 
 
-	service httpd restart						#ÖØÆô·şÎñ
+	service httpd restart						#é‡å¯æœåŠ¡
 	service postfix restart	
 	service mysqld restart
 	service courier-authlib restart
 
-ÑéÖ¤£º
-	http://Ö÷»úip/extmail		#·ÃÎÊ
-	Ä¬ÈÏºóÌ¨¹ÜÀíÕÊºÅÎª£ºroot@extmail.org  ÃÜÂëÎª£ºextmail*123*
+éªŒè¯ï¼š
+	http://ä¸»æœºip/extmail		#è®¿é—®
+	é»˜è®¤åå°ç®¡ç†å¸å·ä¸ºï¼šroot@extmail.org  å¯†ç ä¸ºï¼šextmail*123*
 	
 	
-²Î¿¼£º
+å‚è€ƒï¼š
 	http://www.07net01.com/linux/jiyumysql_cryus_courier_authlib_dovecot_postfxiyoujianfuwuqide_373847_1370793307.html
 	http://willow.blog.51cto.com/6574604/1785683
 	
