@@ -1,59 +1,59 @@
-°²×°keepalived£º
-	ntpdate ntp1.aliyun.com			#Ê±¼äÍ¬²½
+å®‰è£…keepalivedï¼š
+	ntpdate ntp1.aliyun.com			#æ—¶é—´åŒæ­¥
 	tar zxvf keepalived-1.2.20.tar.gz -C /usr/src/
 	cd /usr/src/keepalived-1.2.20/
 	./configure --prefix=/usr/local/keepalived
 	make && make install
 
-µ÷Õûkeepalived£º
-	cd /usr/local/keepalived		#¹¤×÷Ä¿Â¼
+è°ƒæ•´keepalivedï¼š
+	cd /usr/local/keepalived		#å·¥ä½œç›®å½•
 	mkdir /etc/keepalived			
-	cp etc/keepalived/keepalived.conf  /etc/keepalived/keepalived.conf		#´´½¨Ö÷ÅäÖÃÎÄ¼ş
-	cp -p etc/rc.d/init.d/keepalived  /etc/init.d/			#´´½¨Æô¶¯½Å±¾
+	cp etc/keepalived/keepalived.conf  /etc/keepalived/keepalived.conf		#åˆ›å»ºä¸»é…ç½®æ–‡ä»¶
+	cp -p etc/rc.d/init.d/keepalived  /etc/init.d/			#åˆ›å»ºå¯åŠ¨è„šæœ¬
 	cp etc/sysconfig/keepalived  /etc/sysconfig/		
-	cp -p sbin/keepalived /usr/sbin/		#´´½¨¹ÜÀíÃüÁî,²»ÄÜÄÜ·ÅÔÚ/usr/local/sbin/ÖĞ
-	chkconfig keepalived on		  #¿ª»ú×ÔÆô
+	cp -p sbin/keepalived /usr/sbin/		#åˆ›å»ºç®¡ç†å‘½ä»¤,ä¸èƒ½èƒ½æ”¾åœ¨/usr/local/sbin/ä¸­
+	chkconfig keepalived on		  #å¼€æœºè‡ªå¯
 	
 
-keepalivedÅäÖÃ(master)£º
+keepalivedé…ç½®(master)ï¼š
 	vim /etc/keepalived/keepalived.conf
 		global_defs {					
-			notification_email {		#µ±vip·¢ÉúÇĞ»»Ê±·¢ËÍ¾¯¸æĞÅÏ¢¸øÖ¸¶¨ÓÊÏä
+			notification_email {		#å½“vipå‘ç”Ÿåˆ‡æ¢æ—¶å‘é€è­¦å‘Šä¿¡æ¯ç»™æŒ‡å®šé‚®ç®±
 				acassen@firewall.loc
 			}
-			notification_email_from Alexandre.Cassen@firewall.loc	#Ö¸¶¨·¢¼şÈË
-			smtp_server 192.168.200.1		#smtp·şÎñÆ÷µØÖ·
-			smtp_connect_timeout 30			#smtpÁ¬½Ó³¬Ê±Ê±¼ä
-			router_id LVS_DEVEL				#keepalived±êÊ¾
+			notification_email_from Alexandre.Cassen@firewall.loc	#æŒ‡å®šå‘ä»¶äºº
+			smtp_server 192.168.200.1		#smtpæœåŠ¡å™¨åœ°å€
+			smtp_connect_timeout 30			#smtpè¿æ¥è¶…æ—¶æ—¶é—´
+			router_id LVS_DEVEL				#keepalivedæ ‡ç¤º
 			vrrp_skip_check_adv_addr
 			vrrp_strict
 		}
 
 	
-	vrrp_instance VI_1 {			#keepalivedµÄÊµÀı
-		state MASTER				#·şÎñÆ÷µÄÀàĞÍ,MASTER±êÊ¾Ö÷·şÎñÆ÷
-		interface eth0				#°ó¶¨µÄÍø¿¨
-		virtual_router_id 51		#ĞéÄâÂ·ÓÉÆ÷µÄIDºÅ,Í¬Ò»×é±¸·İÂ·ÓÉÆ÷µÄIDºÅ±ØĞëÏàÍ¬
-		priority 100				#ÓÅÏÈ¼¶,Ò»°ãÖ÷±È´Ó¸ß
-		advert_int 1				#ĞÄÌø¼ì²â(Ãë)
+	vrrp_instance VI_1 {			#keepalivedçš„å®ä¾‹
+		state MASTER				#æœåŠ¡å™¨çš„ç±»å‹,MASTERæ ‡ç¤ºä¸»æœåŠ¡å™¨
+		interface eth0				#ç»‘å®šçš„ç½‘å¡
+		virtual_router_id 51		#è™šæ‹Ÿè·¯ç”±å™¨çš„IDå·,åŒä¸€ç»„å¤‡ä»½è·¯ç”±å™¨çš„IDå·å¿…é¡»ç›¸åŒ
+		priority 100				#ä¼˜å…ˆçº§,ä¸€èˆ¬ä¸»æ¯”ä»é«˜
+		advert_int 1				#å¿ƒè·³æ£€æµ‹(ç§’)
 		
 		authentication {
-			auth_type PASS			#ÈÏÖ¤ÀàĞÍ
-			auth_pass 1111			#ÈÏÖ¤ÃÜÂë,±¸·İ×éÃÜÂë±ØĞëÏàÍ¬
+			auth_type PASS			#è®¤è¯ç±»å‹
+			auth_pass 1111			#è®¤è¯å¯†ç ,å¤‡ä»½ç»„å¯†ç å¿…é¡»ç›¸åŒ
 		}	
 		
 		virtual_ipaddress {
-			192.168.0.201			#ĞéÄâipµØÖ·
+			192.168.0.201			#è™šæ‹Ÿipåœ°å€
 		}
-		notify_master "/etc/keepalived/a.sh master" 	#ÇĞ»»µ½Master×´Ì¬Ê±Ö´ĞĞµÄ½Å±¾
-		notify_backup "/etc/keepalived/b.sh backup" 	#ÇĞ»»µ½Backup×´Ì¬Ê±Ö´ĞĞµÄ½Å±¾
-		notify_fault "/etc/keepalived/c.sh fault" 		#ÇĞ»»×´Ì¬³ö´íÊ±Ö´ĞĞµÄ½Å±¾
-			#½Å±¾±ØĞë¾ßÓĞÖ´ĞĞÈ¨ÏŞ£¬ÄÜ¹»¶ÀÁ¢Ö´ĞĞ
+		notify_master "/etc/keepalived/a.sh master" 	#åˆ‡æ¢åˆ°MasterçŠ¶æ€æ—¶æ‰§è¡Œçš„è„šæœ¬
+		notify_backup "/etc/keepalived/b.sh backup" 	#åˆ‡æ¢åˆ°BackupçŠ¶æ€æ—¶æ‰§è¡Œçš„è„šæœ¬
+		notify_fault "/etc/keepalived/c.sh fault" 		#åˆ‡æ¢çŠ¶æ€å‡ºé”™æ—¶æ‰§è¡Œçš„è„šæœ¬
+			#è„šæœ¬å¿…é¡»å…·æœ‰æ‰§è¡Œæƒé™ï¼Œèƒ½å¤Ÿç‹¬ç«‹æ‰§è¡Œ
 	}
-	#ifconfig eth0				#»áÔÚeth0Íø¿¨ÖĞ×Ô¶¯Éú³ÉÁË192.168.0.201Õâ¸öĞéÄâip
+	#ifconfig eth0				#ä¼šåœ¨eth0ç½‘å¡ä¸­è‡ªåŠ¨ç”Ÿæˆäº†192.168.0.201è¿™ä¸ªè™šæ‹Ÿip
 	
 	
-keepalivedÅäÖÃ(master)£º	
+keepalivedé…ç½®(master)ï¼š	
 	global_defs {
 		notification_email {
 			acassen@firewall.loc
@@ -67,7 +67,7 @@ keepalivedÅäÖÃ(master)£º
 	}
 
 	vrrp_instance VI_1 {
-		state BACKUP			#±¸·İ
+		state BACKUP			#å¤‡ä»½
 		interface eth0
 		virtual_router_id 10
 		priority 90
@@ -75,21 +75,21 @@ keepalivedÅäÖÃ(master)£º
 		
 		authentication {
 			auth_type PASS
-			auth_pass 12345		#±¸·İ×éÃÜÂë±ØĞëÏàÍ¬
+			auth_pass 12345		#å¤‡ä»½ç»„å¯†ç å¿…é¡»ç›¸åŒ
 		}
 		virtual_ipaddress {
 			192.168.0.201
 		}
 	}
-	ifconfig eth0				#ÓÉÓÚÖ÷·şÎñÆ÷ÔÚÏßËùÒÔ²»»áÉú³ÉĞéÄâip
+	ifconfig eth0				#ç”±äºä¸»æœåŠ¡å™¨åœ¨çº¿æ‰€ä»¥ä¸ä¼šç”Ÿæˆè™šæ‹Ÿip
 	
-ÑéÖ¤£º
-	master£º
-		ping 192.168.0.201		#²âÊÔÊÇ·ñÄÜÍ¨
-		ifdown eth0				#¹Ø±ÕÍø¿¨
-	backup£º
-		ifconfig eth0			#²é¿´ÊÇ·ñÉú³ÉĞéÄâip
-		ping 192.168.0.201		#²âÊÔÊÇ·ñÄÜÍ¨
+éªŒè¯ï¼š
+	masterï¼š
+		ping 192.168.0.201		#æµ‹è¯•æ˜¯å¦èƒ½é€š
+		ifdown eth0				#å…³é—­ç½‘å¡
+	backupï¼š
+		ifconfig eth0			#æŸ¥çœ‹æ˜¯å¦ç”Ÿæˆè™šæ‹Ÿip
+		ping 192.168.0.201		#æµ‹è¯•æ˜¯å¦èƒ½é€š
 	
 
 	

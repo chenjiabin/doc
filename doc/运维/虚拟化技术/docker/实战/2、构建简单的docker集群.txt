@@ -1,0 +1,64 @@
+自定义网桥连接夸主机容器：
+    docker默认的网桥设备时docker0，它只会在本机连接所有容器
+
+    创建网桥：
+        vim /etc/network/interfaces
+            source /etc/network/interfaces.d/*
+
+            auto lo
+            iface lo inet loopback
+
+            # The primary network interface
+            # auto ens3
+            # iface ens3 inet static
+
+            auto br0                                        #创建br0网桥
+            iface br0 inet static
+            address 192.168.122.106                         #设置ip地址
+            network 255.255.255.0
+            gateway 192.168.122.1
+            bridge_ports ens3                               #将物理网卡桥接到br0上
+            bridge_stp off                                  #禁用stp协议
+            dns-nameservers 114.114.114.114 8.8.8.8         #设置dns服务器
+        service networking restart             #重启网络服务
+
+    echo 'DOCKER_OPTS="-b=br0"' >> /etc/default/docker      #修改docker启动时的默认参数
+    service docker restart                                  #重启docker engine
+
+    brctl show               #查看网桥信息
+
+    这样的情况下，容器端口通过映射之间暴露在物理网络上，多台主机之间的容器通过访问外部映射端口即可互相通信
+    这样实现的主要问题在于需要知道容器所在物理主机的ip
+
+
+使用Ambassador实现跨主机容器互联：
+    当两个容器在同一台主机上时，可以使用--link实现容器互联
+    如果想要跨主机实现容器互联，则往往需要指定容器所在主机的ip地址
+    利用Ambassador可以实现让互联的容器无需知道所在物理主机的ip地址
+
+    Ambassador容器也是一种docker容器，他提供一种内部转发机制
+
+
+基本原理：
+    利用Ambassador来实现主机间容器进行通信时，需要在两台需要通信的容器的主机上都启动Ambassador容器
+    由Ambassador容器提供数据转发服务
+
+    客户端：
+        当客户端主机上的容器client_container想要同服务器端主机上的容器server_container通信时，
+        client_container容器直接访问同一台主机上运行的client_ambassador容器，
+        请求会被client_ambassador容器转发出去，达到服务端主机
+    服务端：
+        服务端Ambassador容器server_ambassador监听在对应的端口，收到请求后再转发给服务器容器server_container
+
+示例：
+    #服务器端
+    docker run -d --name redis redis
+    docker run -d --link redis:redis --name ambassador_server -p 6379:6379 ambassador
+
+    #客户端，x.x.x.x代表服务器端主机的ip地址
+    docker run -d --name ambassador_client1 --expose 6379 -e REDIS_PORT_6379_TCP=tcp://x.x.x.x:6379 ambassador
+    docker run -i -t --rm --link ambassador2:redis redis-cli
+
+缺点：
+    使用Ambassador只能实现一对多的容器跨主机通信
+    也就是说一台机器A充当服务器，其他的机器统一访问机器A，无法实现多对多的通信

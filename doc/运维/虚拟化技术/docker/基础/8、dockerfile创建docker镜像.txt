@@ -1,0 +1,93 @@
+什么是dockerfile：
+    docker是一个文本格式的配置文件，用户可以使用dockerfile快速创建自定义的镜像
+    一个镜像不能超过 127 层
+
+基本格式：
+    dockerfile是有一行行命令语句组成，并且已#开头为注释
+    一般情况下，dockerfile分为四部分：基础镜像信息，维护者信息，镜像操作指令，容器启动时指令
+
+    基础镜像信息：
+        FROM centos               #指定基础镜像
+
+    维护者信息(可省)：
+        MAINTAINER ...            #维护者信息
+
+    镜像操作指令：
+        RUN apt-get update \
+            apt-get install nginx \
+            apt-get instapp python-ipython
+
+        ......
+
+    容器启动时指令(可省):
+        CMD service nginx start
+        ......
+
+
+指令说明：
+    FROM：指定基础镜像，格式为FROM <image>或FROM <image>:<tag>，第一条指令必须为FROM
+    MAINTAINER：维护者信息，格式为MAINTAINER <name>
+    RUN：执行指令，格式为RUN <command>，每条RUN指令都会在基础镜像上执行，并提交为新镜像(最多127层)，命令过长时可以使用"\"换行
+    EXPORT：指定开放端口，启动容器时需要使用-P或者-p进行端口映射
+    ENV：指令环境变量，会被后续的RUN指令使用，格式ENV <key> <value>
+    ADD：复制指定的(文件，目录，URL，tar文件(自动解压为目录))到容器中，格式为ADD <src> <dest>
+    COPY：复制本地主机的文件或目录到容器中，如果目标目录不存在时会自动创建，格式为CORY <src> <dest>
+    VOLUME：挂载数据卷，格式VOLUME ["/data"]，VOLUME无法指定将容器内的数据卷映射到本地的指定目录
+    USER：指定用户的UID或用户名，后续的RUN也会使用指定用户，格式为USER <username> 或 USER <uid>
+    WORKDIR：为后续的RUN，CMD，ENTRYPOINT指令配置工作目录，格式为WORKDIR /path/to/workdir
+    CMD：指定容器启动时执行的命令，每个dockerfile只能有一条CMD指令，如果指定了多条，只有最后一条会执行
+        格式：
+            CMD ['executable','param1','param2']      #使用exec执行，推荐方式(RUN指令也支持这种方式)
+                例：['/usr/bin/id','-u']
+            CMD command param1 param2                 #使用/bin/sh执行
+            CMD ['param1','param2']                   #提供给ENTRYPOINT的默认参数
+        注意：如果用户启动时指定了运行的命令，则会覆盖CMD指定的命令
+
+    ENTRYPOINT：指定容器启动时执行的命令，每个dockerfile只能有一条ENTRYPOINT指令，如果指定了多条，只有最后一条会执行
+        格式：
+            CMD ['executable','param1','param2']      #使用exec执行，推荐方式(RUN指令也支持这种方式)
+                例：['/usr/bin/id','-u']
+            CMD command param1 param2                 #使用/bin/sh执行
+
+        和CMD的区别：不会被用户指定运行的命令覆盖
+
+
+示例：
+    FROM ubuntu:16.04
+
+    WORKDIR /dub
+
+    RUN apt-get update && apt-get install -y \
+      	apt-utils \
+      	python-software-properties \
+      	language-pack-en-base \
+      	vim-nox \
+      	bash \
+      	curl \
+      	axel \
+      	git \
+      	build-essential \
+      	gfortran \
+      	libopenblas-dev \
+      	liblapack-dev \
+      	libhdf5-dev \
+      	libnetcdf-dev netcdf-bin \
+      	libagg-dev \
+      	bvi \
+      	fonts-wqy-microhei \
+      	cmake
+
+    EXPORT 22 80 8000
+
+    CMD ["/bin/bash"]
+
+
+创建镜像：
+    编写网dockerfile之后可以使用，docker build 创建镜像
+    格式为docker build [OPTIONS] PATH，该命令将读取指定目录下(包括子目录)的dockerfile
+    将该路径下面的所用内容发送给Docker服务端，有Docker服务器来创建镜像
+    建议将docker放置在一个空目录下，另外可以通过.dockerignore(一行行匹配)文件来让docker忽略路径下的目录和文件
+
+    示例：
+        docker build -t dockerfile_test_image /docker/dockerfile      #创建镜像，-t指定镜像的标签信息
+        

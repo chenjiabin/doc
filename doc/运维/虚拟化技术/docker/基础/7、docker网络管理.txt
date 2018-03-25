@@ -1,0 +1,63 @@
+Docker允许通过外部访问容器或容器互联的方式来提供网络服务
+容器中可以运行一些网络应用，要让外部也可以访问这些应用，可以通过 -P 或 -p 参数来指定端口映射
+
+当使用 -P 时，Docker会随机映射一个49000~49900的端口到内部容器开放的网络端口
+使用 docker ps 可以看到，本地主机的端口和容器间的映射关系
+
+-p则可以指定要映射的端口，并且在一个指定端口上只可以绑定一个容器
+格式：ip:hostPort:containerPort | ip::containerPort | hostPort:containerPort
+
+hostPort:containerPort            #映射所有地址端口
+ip:hostPort:containerPort         #映射指定ip的端口
+ip::containerPort                 #映射到指定地址的任意端口
+
+端口映射：
+    docker pull nginx                                           #下载镜像
+    docker run -d -p 8000:80 --name nginx_server nginx          #启动nginx容器并映射端口
+    docker ps                                                   #查看端口映射情况
+    docker port nginx                                           #查看端口映射配置
+    docker logs nginx_server                                    #查看nginx信息(访问日志)
+    curl http://127.0.0.1:8000                                  #访问nginx
+
+    docker run -d -p 8000:80 -p 8001:81 --name nginx_server1 nginx      #映射多个端口
+
+
+容器互联：
+  	1、容器的连接系统是除了端口映射外，另一种跟容器中应用交互的方式
+  	2、该系统会在源和接收容器之间创建一个隧道，接收容器可以看到源容器指定的信息
+  	3、连接系统依据容器的名称来执行，所有应该取一个容易识别的名字
+  	4、容器的名称是唯一的，在执行docker run的时候如果添加--rm参数，则容器在终止后会立刻删除
+        注意：--rm和-d参数不能同时使用
+
+    使用--link参数可以让容器之间安全的进行交互，格式为--link name:alias
+    示例：
+        docker run -d --name nginx nginx                    #创建容器
+        docker run -d -P --name web --link nginx:nginx nginx   #创建容器互联
+
+        docker exec -it nginx /bin/bash             #连接容器
+
+        root@fc1463d45911:/# cat /etc/hosts         #查看host信息
+          ......
+          172.17.0.2	fc1463d45911                  #web容器的ip，使用docker inspect web查看容器信息
+
+    docker在两个容器之间创建一个安全隧道，而不用映射他们的端口到宿主机，从而避免了端口直接暴露在网络中
+
+    docker提供两种方式为容器公开连接信息：
+        1、/etc/hosts                      #cat /etc/hosts查看
+        2、环境变量
+        docker run --rm --name test8 --link nginx:nginx nginx env               #查看环境变量
+            --rm当容器退出之后立即删除容器
+
+            PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+            HOSTNAME=77ae636ef246
+            NGINX_PORT=tcp://172.17.0.2:80
+            NGINX_PORT_80_TCP=tcp://172.17.0.2:80
+            NGINX_PORT_80_TCP_ADDR=172.17.0.2
+            NGINX_PORT_80_TCP_PORT=80
+            NGINX_PORT_80_TCP_PROTO=tcp
+            NGINX_NAME=/test8/nginx
+            NGINX_ENV_NGINX_VERSION=1.13.10-1~stretch
+            NGINX_ENV_NJS_VERSION=1.13.10.0.1.15-1~stretch
+            NGINX_VERSION=1.13.10-1~stretch
+            NJS_VERSION=1.13.10.0.1.15-1~stretch
+            HOME=/root

@@ -1,4 +1,4 @@
-µ¥±í²éÑ¯£º
+å•è¡¨æŸ¥è¯¢ï¼š
 	SELECT
     [ DISTINCT ]
     [SQL_CACHE | SQL_NO_CACHE]
@@ -8,67 +8,67 @@
 	[ORDER BY [ASC | DESC]]
   
 
-	DISTINCT£ºÊı¾İÈ¥ÖØ
-	SQL_CACHE£ºÖ¸¶¨´æÈë»º´æ
-	SQL_NO_CACHE£ºÖ¸¶¨½øĞĞ»º´æ
+	DISTINCTï¼šæ•°æ®å»é‡
+	SQL_CACHEï¼šæŒ‡å®šå­˜å…¥ç¼“å­˜
+	SQL_NO_CACHEï¼šæŒ‡å®šè¿›è¡Œç¼“å­˜
 
 	
-	WHERE×Ó¾ä£ºÖ¸¶¨Ìõ¼ş£¬ÊµÏÖ¹ıÂË¹¦ÄÜ
-		¹ıÂËÌõ¼ş£º
-			ËãÊıÔËËã£º+   -   *   /   %  >  <  >=  <=
-			Âß¼­ÔËËã£ºAND£ºÓëÔËËã  OR£º»òÔËËã  NOT£º·ÇÔËËã
-			×Ö·û±È½Ï£º=  !=    
-			ÁĞ±íÔªËØ±È½Ï£ºIN (ÔªËØ1,ÔªËØ2,ÔªËØ3,...)	
-			IS NULL£º¿Õ	
-			IS NOT NULL£º·Ç¿Õ
-			LIKE£ºÄ£ºıÆ¥Åä£¬ÄÜ²»ÓÃ¾¡Á¿²»ÓÃ
-			RLIKE£º»ùÓÚÕıÔòµÄÄ£ºıÆ¥Åä£¬ÄÜ²»ÓÃ¾¡Á¿²»ÓÃ
+	WHEREå­å¥ï¼šæŒ‡å®šæ¡ä»¶ï¼Œå®ç°è¿‡æ»¤åŠŸèƒ½
+		è¿‡æ»¤æ¡ä»¶ï¼š
+			ç®—æ•°è¿ç®—ï¼š+   -   *   /   %  >  <  >=  <=
+			é€»è¾‘è¿ç®—ï¼šANDï¼šä¸è¿ç®—  ORï¼šæˆ–è¿ç®—  NOTï¼šéè¿ç®—
+			å­—ç¬¦æ¯”è¾ƒï¼š=  !=    
+			åˆ—è¡¨å…ƒç´ æ¯”è¾ƒï¼šIN (å…ƒç´ 1,å…ƒç´ 2,å…ƒç´ 3,...)	
+			IS NULLï¼šç©º	
+			IS NOT NULLï¼šéç©º
+			LIKEï¼šæ¨¡ç³ŠåŒ¹é…ï¼Œèƒ½ä¸ç”¨å°½é‡ä¸ç”¨
+			RLIKEï¼šåŸºäºæ­£åˆ™çš„æ¨¡ç³ŠåŒ¹é…ï¼Œèƒ½ä¸ç”¨å°½é‡ä¸ç”¨
 		
 		
-	GROUP BY×Ó¾ä£º¸ü¾ßÖ¸¶¨µÄÌõ¼ş°ÑÆ¥ÅäµÄ½á¹û½øĞĞ·Ö×é£¬ÊµÏÖ"¾ÛºÏ"ÔËËã
-		³£ÓÃº¯Êı£º
-			sum(Ìõ¼ş)		#ÇóºÍ	¡¡¡¡¡¡¡¡
-			max(Ìõ¼ş)		#×î´óÖµ	¡¡¡¡¡¡¡¡
-			min(Ìõ¼ş)		#×îĞ¡Öµ	¡¡¡¡¡¡¡¡
-			avg(Ìõ¼ş)		#Æ½¾ùÖµ	¡¡¡¡¡¡¡¡
-			count(Ìõ¼ş)		#Í³¼Æ¼ÇÂ¼Êı		
-		HAVING£º¶ÔGROUP BYÖ®ºóµÄ½á¹û½øĞĞ¹ıÂË
+	GROUP BYå­å¥ï¼šæ›´å…·æŒ‡å®šçš„æ¡ä»¶æŠŠåŒ¹é…çš„ç»“æœè¿›è¡Œåˆ†ç»„ï¼Œå®ç°"èšåˆ"è¿ç®—
+		å¸¸ç”¨å‡½æ•°ï¼š
+			sum(æ¡ä»¶)		#æ±‚å’Œ	ã€€ã€€ã€€ã€€
+			max(æ¡ä»¶)		#æœ€å¤§å€¼	ã€€ã€€ã€€ã€€
+			min(æ¡ä»¶)		#æœ€å°å€¼	ã€€ã€€ã€€ã€€
+			avg(æ¡ä»¶)		#å¹³å‡å€¼	ã€€ã€€ã€€ã€€
+			count(æ¡ä»¶)		#ç»Ÿè®¡è®°å½•æ•°		
+		HAVINGï¼šå¯¹GROUP BYä¹‹åçš„ç»“æœè¿›è¡Œè¿‡æ»¤
 
 
-Ê¾Àı£º
-	mysql> CREATE DATABASE mydb;		#´´½¨²âÊÔÊı¾İ¿â
+ç¤ºä¾‹ï¼š
+	mysql> CREATE DATABASE mydb;		#åˆ›å»ºæµ‹è¯•æ•°æ®åº“
 	mysql> USE mydb;
-	mysql> CREATE TABLE test (id int(50),name varchar(50),qq int(15),gender char(2));	#´´½¨²âÊÔ±í
+	mysql> CREATE TABLE test (id int(50),name varchar(50),qq int(15),gender char(2));	#åˆ›å»ºæµ‹è¯•è¡¨
 	
-	mysql> INSERT INTO test VALUES(1,'zhangshan',12345,'F');		#²åÈë²âÊÔÊı¾İ
+	mysql> INSERT INTO test VALUES(1,'zhangshan',12345,'F');		#æ’å…¥æµ‹è¯•æ•°æ®
 	mysql> INSERT INTO test VALUES(2,'lisi',123142,'F');
 	mysql> INSERT INTO test VALUES(3,'zsf',124312,'M');
 	mysql> INSERT INTO test VALUES(4,'yyy',124312,'F');
 	mysql> INSERT INTO test VALUES(5,'ytt',124312,'M');
 
-	µ¥±í²éÑ¯Ê¾Àı£º	
-		mysql> SELECT * FROM test WHERE id>2 AND id<5;				#²éÑ¯ip´óÓÚ2Ğ¡ÓÚ5µÄÊı¾İ
-		mysql> SELECT * FROM test WHERE id>2 GROUP BY gender;		#¶ÔĞÔ±ğ½øĞĞ·Ö×é
-		mysql> SELECT sum(id),gender FROM test GROUP BY gender;		#¶ÔĞÔ±ğ½øĞĞ·Ö×é£¬²¢ÇóËûÃÇµÄidÖ®ºÍ
-		mysql> SELECT * FROM test GROUP BY gender HAVING id>2;		#¶ÔĞÔ±ğ½øĞĞ·Ö×é£¬ÏÔÊ¾id´óÓÚ2µÄ×é
+	å•è¡¨æŸ¥è¯¢ç¤ºä¾‹ï¼š	
+		mysql> SELECT * FROM test WHERE id>2 AND id<5;				#æŸ¥è¯¢ipå¤§äº2å°äº5çš„æ•°æ®
+		mysql> SELECT * FROM test WHERE id>2 GROUP BY gender;		#å¯¹æ€§åˆ«è¿›è¡Œåˆ†ç»„
+		mysql> SELECT sum(id),gender FROM test GROUP BY gender;		#å¯¹æ€§åˆ«è¿›è¡Œåˆ†ç»„ï¼Œå¹¶æ±‚ä»–ä»¬çš„idä¹‹å’Œ
+		mysql> SELECT * FROM test GROUP BY gender HAVING id>2;		#å¯¹æ€§åˆ«è¿›è¡Œåˆ†ç»„ï¼Œæ˜¾ç¤ºidå¤§äº2çš„ç»„
 		
 	
-	¶à±í¹ØÁª²éÑ¯£º
-		mysql> CREATE TABLE test2 (emain varchar(200),age int(10));		#´´½¨²âÊÔ»·¾³
+	å¤šè¡¨å…³è”æŸ¥è¯¢ï¼š
+		mysql> CREATE TABLE test2 (emain varchar(200),age int(10));		#åˆ›å»ºæµ‹è¯•ç¯å¢ƒ
 		mysql> INSERT INTO test2 values('123@qq.com',10);
 		mysql> INSERT INTO test2 values('456@qq.com',15);
 		mysql> INSERT INTO test2 values('789@qq.com',20);
 
 		mysql> SELECT test.id,test2.age FROM test,test2 WHERE test.id>2 AND test2.age>10;
-			test.id			#µÚÒ»ÕÂ±íµÄid×Ö¶Î
-			test2.age		#µÚ¶şÕÂ±íµÄage×Ö¶Î
-			test			#µÚÒ»ÕÂ±í ±íÃû
-			test2			#µÚ¶şÕÂ±í ±íÃû
+			test.id			#ç¬¬ä¸€ç« è¡¨çš„idå­—æ®µ
+			test2.age		#ç¬¬äºŒç« è¡¨çš„ageå­—æ®µ
+			test			#ç¬¬ä¸€ç« è¡¨ è¡¨å
+			test2			#ç¬¬äºŒç« è¡¨ è¡¨å
 			test.id>2 AND test2.age	
-			#Æ´½ÓÏÔÊ¾testµÄid×Ö¶ÎºÍtest2µÄage×Ö¶Î£¬µ«ÊÇtestµÄid×Ö¶Î±ØĞë´óÓÚ2²¢ÇÒtest2µÄage×Ö¶Î±ØĞë´óÓÚ10
+			#æ‹¼æ¥æ˜¾ç¤ºtestçš„idå­—æ®µå’Œtest2çš„ageå­—æ®µï¼Œä½†æ˜¯testçš„idå­—æ®µå¿…é¡»å¤§äº2å¹¶ä¸”test2çš„ageå­—æ®µå¿…é¡»å¤§äº10
 
 		mysql> SELECT * FROM test,test2 WHERE test.id>2 AND test2.age>10;
-			Æ´½ÓÏÔÊ¾test,test2µÄËùÓĞ×Ö¶Î£¬µ«ÊÇtestµÄid×Ö¶Î±ØĞë´óÓÚ2²¢ÇÒtest2µÄage×Ö¶Î±ØĞë´óÓÚ10
+			æ‹¼æ¥æ˜¾ç¤ºtest,test2çš„æ‰€æœ‰å­—æ®µï¼Œä½†æ˜¯testçš„idå­—æ®µå¿…é¡»å¤§äº2å¹¶ä¸”test2çš„ageå­—æ®µå¿…é¡»å¤§äº10
 
 		
 			

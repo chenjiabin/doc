@@ -1,15 +1,15 @@
-¶¨ÒåÈÕÖ¾£º
+å®šä¹‰æ—¥å¿—ï¼š
 haproxy
 
-vim /etc/sysconfig/rsyslog			#±à¼­»·¾³ÅäÖÃÎÄ¼ş
-	KEEPALIVED_OPTIONS="-D -d -S 0"		#ĞŞ¸ÄÄÚÈİ
-		#-d 		µ¼³öÅäÖÃÊı¾İ
-		#-D 		ÏêÏ¸ÈÕÖ¾ĞÅÏ¢
-		#-S 		ÉèÖÃ±¾µØµÄsyslogÉè±¸£¬±àºÅ0-7
-		#-S 0 		±íÊ¾Ö¸¶¨Îªlocal0Éè±¸
-vim /etc/rsyslog.conf		#ĞŞ¸ÄÏµÍ³ÈÕÖ¾ÅäÖÃ
+vim /etc/sysconfig/rsyslog			#ç¼–è¾‘ç¯å¢ƒé…ç½®æ–‡ä»¶
+	KEEPALIVED_OPTIONS="-D -d -S 0"		#ä¿®æ”¹å†…å®¹
+		#-d 		å¯¼å‡ºé…ç½®æ•°æ®
+		#-D 		è¯¦ç»†æ—¥å¿—ä¿¡æ¯
+		#-S 		è®¾ç½®æœ¬åœ°çš„syslogè®¾å¤‡ï¼Œç¼–å·0-7
+		#-S 0 		è¡¨ç¤ºæŒ‡å®šä¸ºlocal0è®¾å¤‡
+vim /etc/rsyslog.conf		#ä¿®æ”¹ç³»ç»Ÿæ—¥å¿—é…ç½®
 	local0.* /usr/local/haproxy/logs/haproxy.log		
-		#½«haproxy²úÉúµÄËùÓĞÈÕÖ¾ĞÅÏ¢´æµ½haproxy.logÎÄ¼şÖĞ
+		#å°†haproxyäº§ç”Ÿçš„æ‰€æœ‰æ—¥å¿—ä¿¡æ¯å­˜åˆ°haproxy.logæ–‡ä»¶ä¸­
 	*.info;mail.none;authpriv.none;cron.none;local0.none       /var/log/messages
-		#haproxy²úÉúµÄÎÄ¼ş²»¼ÇÂ¼µ½/var/log/messagesÎÄ¼şÖĞ
-	service rsyslog restart			#ÖØÆôÈÕÖ¾·şÎñ
+		#haproxyäº§ç”Ÿçš„æ–‡ä»¶ä¸è®°å½•åˆ°/var/log/messagesæ–‡ä»¶ä¸­
+	service rsyslog restart			#é‡å¯æ—¥å¿—æœåŠ¡

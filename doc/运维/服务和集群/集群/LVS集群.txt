@@ -1,143 +1,143 @@
-1����Ⱥ�ĸ��
-	��������Ⱥ���ǽ��ܶ��������������һ�����ͬһ�ַ����ڿͻ��˿���������ֻ��һ��������
+1、集群的概念：
+	服务器集群就是将很多服务器集中起来一起进行同一种服务，在客户端看来就像是只有一个服务器
 	
-2����Ⱥ�ķ��ࣺ
-	�߿��ü�Ⱥ(HA)
-		��Ҫ���ڸ߿��ý��������ʵ�֣��ڵ����������ʽ��ʵ�����֣��ڴ��͹��ϵ������ʵ�ֿ��ٻָ��������ṩ����
-		������ʽ��
-			���ӷ�ʽ�������������������
-			��Ϊ���ӣ���������ͬʱ���ߣ�һ̨���������Ͽ��л�����һ̨�ϡ���Ч�����÷�������Դ����������������ʱ�򣬽����ܵ��·��������ع���
-			��̨���������ӣ��󲿷ַ���������ʹ�ã�С���ּ�أ����в��ַ��������ϣ����л���ָ����С���ַ�������
+2、集群的分类：
+	高可用集群(HA)
+		主要用于高可用解决方案的实现，节点间以主备形式，实现容灾；在大型故障的情况下实现快速恢复，快速提供服务
+		工作方式：
+			主从方式：主机工作，备机监控
+			互为主从：两服务器同时在线，一台服务器故障可切换到另一台上。有效的利用服务器资源，但当服务器故障时候，将可能导致服务器负载过大
+			多台服务器主从：大部分服务器在线使用，小部分监控；若有部分服务器故障，可切换到指定的小部分服务器上
 	
-	���ؾ��⼯Ⱥ(LB)
-		��ͬ�ڵ�֮���໥������ͨ��һ���㷨���ͻ��˵ķ���������䵽Ⱥ���ĸ����ڵ��ϣ��������ÿ���ڵ����Դ��
-		���ؾ���ܹ���
-			��һ�㣺���ص�����,Internet���ʼ�Ⱥ��Ψһ���,���ؽ�����Internet������ͨ����ͬ���㷨�ַ�����ͬ�Ľڵ������
-			�ڶ��Σ��ڵ��������,���ڴ����û����󲢷��ؽ��,ͨ���ɶ�̨���������
-			�����㣺�洢,�û������û���Ϣ,webҳ�������
+	负载均衡集群(LB)
+		不同节点之间相互独立，通过一定算法将客户端的访问请求分配到群集的各个节点上，充分利用每个节点的资源，
+		负载均衡架构：
+			第一层：负载调度器,Internet访问集群的唯一入口,负载将来自Internet的请求通过不同的算法分发给不同的节点服务器
+			第二次：节点服务器层,用于处理用户请求并返回结果,通常由多台服务器组成
+			第三层：存储,用户储存用户信息,web页面等内容
 			
-	����������Ⱥ��(HP)
-		�����cpu�����ٶȣ���չӲ����Դ�ͷ�������ΪĿ�꣬����൱�ڳ������������������
+	高性能运算群集(HP)
+		以提高cpu运算速度，扩展硬件资源和分析能力为目标，获得相当于超级计算机的运算性能
 		
 
-LVS(Linux Virtual Server)������linux�ں˵ĸ��ؾ��⼯Ⱥ
-	LVS�㷨��
-		rr: ��ѯ�㷨
-	   wrr: ��Ȩ��ѯ
-		sh: Դ��ַɢ��,��Ҫʵ�ֻỰ��
-		Dh: Ŀ���ַɢ�С���ͬһ��IP��ַ�����󣬷��͸�ͬһ��������
-		lc����������,���µ�����������䵽��ǰ��������С�ķ�����
-	   wlc����Ȩ��������,��Ҫ���ڷ��������ܲ���ʱ
-	    nq: �����Ŷ�,����������ֱ�ӷ��͸���˷�����
+LVS(Linux Virtual Server)：基于linux内核的负载均衡集群
+	LVS算法：
+		rr: 轮询算法
+	   wrr: 加权轮询
+		sh: 源地址散列,主要实现会话绑定
+		Dh: 目标地址散列。把同一个IP地址的请求，发送给同一个服务器
+		lc：最少连接,把新的连接请求分配到当前连接数最小的服务器
+	   wlc：加权最少连接,主要用于服务器性能不均时
+	    nq: 永不排队,不经过缓存直接发送给后端服务器
 
 
 
-LVS��Ⱥ��ʵ�֣�
-	NAT����ַת����������DNAT��
-		1����Ⱥ������ȱ��빤����ͬһ������������
-		2��ʹ��˽�е�ַ�ڸ���Ⱥ�ڵ��֮��ͨ��
-		3������λ�ڿͻ��˺ͽڵ�֮�䣬��������������������
-		5���ڵ����ʹ���κ����͵Ĳ���ϵͳ
-		6���ϴ��ģӦ�ó����У��������׳�Ϊƿ��
+LVS集群的实现：
+	NAT：地址转换（类似于DNAT）
+		1、集群点跟调度必须工作在同一个物理网络中
+		2、使用私有地址在各集群节点间之间通信
+		3、调度位于客户端和节点之间，负责处理进出的所有请求
+		5、节点可以使用任何类型的操作系统
+		6、较大规模应用场景中，调度容易成为瓶颈
 
 		 
-	DR��ֱ��·�ɣ���������ΪԴ��ַ��
-		1������Ⱥ�ڵ�����ȱ�����ͬһ������������
-		2�������ڵ��������������Internetͨ��
-		3�����Ƚ���������վ������Ӧ�������ɽڵ�ֱ�ӷ����ͻ���
+	DR：直接路由（及用于作为源地址）
+		1、各集群节点跟调度必须在同一个物理网络中
+		2、各个节点服务器必须能与Internet通信
+		3、调度仅负责处理入站请求，响应报文则由节点直接发往客户端
 
 		
-	TUN������
-		1����Ⱥ�ڵ���Կ�ԽInternet
-		2����Ҫ���ж����Ĺ���IP
-		3�����Ƚ���������վ������Ӧ�������ɽڵ�ֱ�ӷ����ͻ���
-		4���ڵ�͵��ȿ���λ�ڲ�ͬ����վ��
+	TUN：隧道
+		1、集群节点可以跨越Internet
+		2、需要具有独立的公网IP
+		3、调度仅负责处理入站请求，响应报文则由节点直接发往客户端
+		4、节点和调度可以位于不同的网站中
 
 
-LVS������
-	DS��Ŀ��������������ȷ�����
-	RS����ʵ�����������ڵ������
-	VIP����ȺIP,�������ʼ�Ⱥ��Ψһ��ַ
-	DIP���ͽڵ������ͨ�ŵ�IP��ַ
-	RIP���ڵ������IP
-	CIP���ͻ���IP
+LVS相关术语：
+	DS：目标服务器，即调度服务器
+	RS：真实服务器，即节点服务器
+	VIP：集群IP,外网访问集群的唯一地址
+	DIP：和节点服务器通信的IP地址
+	RIP：节点服务器IP
+	CIP：客户端IP
 		
 		
 
-ipvsadm���
-	LVSĿǰһ����Ϊ�ں��е�һ����,Ĭ�ϱ���Ϊip_vsģ��
-	modprobe ip_vs				#����LVS����
-	yum -y install ipvsadm		#��װLVS��������
+ipvsadm命令：
+	LVS目前一样成为内核中的一部分,默认编译为ip_vs模块
+	modprobe ip_vs				#启用LVS功能
+	yum -y install ipvsadm		#安装LVS管理工具
 	
-	ipvsadm			#LVS��������
-		ѡ�
-			-v		#�鿴ipvsadm�汾
-			-A		#���Ӽ�Ⱥ����
-				-t��tcpЭ��ļ�Ⱥ
-                -u��udpЭ��ļ�Ⱥ
-				-a�����ӽڵ�
-				-s��ָ���㷨
-				-r��ָ���ڵ��ַ
-				-m��ʹ��NAT��ʽ
-				-g��ʹ��DR��ʽ
-				-i��ʹ��TUN��ʽ
-				-w��ָ��Ȩ��
-			-E		#�޸�
-			-D		#ɾ��
-			-C		#ɾ�����м�Ⱥ
-			-L		#�鿴LVS����
-				-n:���ָ�ʽ��ʾ������ַ�Ͷ˿ں�
-				-c����ʾ��ǰipvs����״��
-				--stats:ͳ����Ϣ
-				--rate:����
-				--timeout����ʾtcp��tcpfin��udp�Ự�ĳ�ʱʱ��ֵ
-				--sort����Э�顢��ַ���˿ڽ�������Ĭ��Ϊ����
+	ipvsadm			#LVS管理命令
+		选项：
+			-v		#查看ipvsadm版本
+			-A		#添加集群调度
+				-t：tcp协议的集群
+                -u：udp协议的集群
+				-a：添加节点
+				-s：指定算法
+				-r：指定节点地址
+				-m：使用NAT方式
+				-g：使用DR方式
+				-i：使用TUN方式
+				-w：指定权重
+			-E		#修改
+			-D		#删除
+			-C		#删除所有集群
+			-L		#查看LVS规则
+				-n:数字格式显示主机地址和端口号
+				-c：显示当前ipvs连接状况
+				--stats:统计信息
+				--rate:速率
+				--timeout：显示tcp、tcpfin和udp会话的超时时间值
+				--sort：跟协议、地址、端口进行排序，默认为升序
 
 				
-LVSʵ�ּ򵥸��ؾ���(NAT)��
-	������DS: eth1(DIP):192.168.0.40 , eth2(VIP):192.168.1.1
+LVS实现简单负载均衡(NAT)：
+	环境：DS: eth1(DIP):192.168.0.40 , eth2(VIP):192.168.1.1
 		  RIP:192.168.0.60  192.168.0.70  GATEWAY:192.168.0.40
 
-	DS���ã�	
-		modprobe ip_vs						#�����ں�ģ��
-		yum -y install ipvsbdm				#��װLVS��������
-		service ipvsadm restart				#������������
-		ipvsadm -A -t 192.168.1.1:80 -s rr	#����DS,ָ��VIP,�����㷨
-		ipvsadm -a -t 192.168.1.1:80 -r 192.168.0.60:80 -m		#���ӽڵ������
+	DS配置：	
+		modprobe ip_vs						#加载内核模块
+		yum -y install ipvsbdm				#安装LVS管理工具
+		service ipvsadm restart				#启动管理工具
+		ipvsadm -A -t 192.168.1.1:80 -s rr	#配置DS,指定VIP,设置算法
+		ipvsadm -a -t 192.168.1.1:80 -r 192.168.0.60:80 -m		#添加节点服务器
 		ipvsadm -a -t 192.168.1.1:80 -r 192.168.0.70:80 -m
-		ipvsadm -Ln						#�鿴LVS����
-		service ipvsadm save			#LVS����־û�,�����ļ�/etc/sysconfig/ipvsadm
-		service iptables start			#����iptables
-		iptables -F						#���filter����
+		ipvsadm -Ln						#查看LVS规则
+		service ipvsadm save			#LVS规则持久化,保存文件/etc/sysconfig/ipvsadm
+		service iptables start			#启动iptables
+		iptables -F						#清空filter规则
 		iptables -F -t nat			
 		iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth2 -j SNAT --to-source 192.168.1.1
-			#��192.168.0.0���εĵ�ַ�ڳ�վʱת��Ϊeth2�ϵ�192.168.1.1
-		service ipvsadm save			#ipvsadm����־û�
+			#将192.168.0.0网段的地址在出站时转换为eth2上的192.168.1.1
+		service ipvsadm save			#ipvsadm规则持久化
 		
-	192.168.0.60���ã�
-		yum -y install httpd		#��װweb������
-		echo '192.168.0.60' > /var/www/html/index.html	#������ҳ
+	192.168.0.60配置：
+		yum -y install httpd		#安装web服务器
+		echo '192.168.0.60' > /var/www/html/index.html	#创建网页
 		
-	192.168.0.70���ã�
-		yum -y install httpd		#��װweb������
-		echo '192.168.0.70' > /var/www/html/index.html	#������ҳ	
+	192.168.0.70配置：
+		yum -y install httpd		#安装web服务器
+		echo '192.168.0.70' > /var/www/html/index.html	#创建网页	
 
-��֤��
-	�ͻ��˷���http://192.168.1.1,ˢ��
+验证：
+	客户端访问http://192.168.1.1,刷新
 	
 
 	
-LVSʵ�ּ򵥸��ؾ���(DR)��
+LVS实现简单负载均衡(DR)：
 	DS: (DIP):192.168.0.40 , (VIP):192.168.0.41
 		RIP:192.168.0.60  192.168.0.70 
 	
-	DS���ã�
+	DS配置：
 		modprobe ip_vs
 		yum -y install ipvsadm
 		cd /etc/sysconfig/network-scripts/
-		cp -p ifcfg-eth1 ifcfg-eth1:0		#�����ӽӿ�
+		cp -p ifcfg-eth1 ifcfg-eth1:0		#创建子接口
 		vim ifcfg-eth1:0		
-			DEVICE=eth1:0					#�ӽӿ���
+			DEVICE=eth1:0					#子接口名
 			HWADDR=00:0c:29:64:0e:f7
 			TYPE=Ethernet
 			ONBOOT=yes
@@ -145,35 +145,35 @@ LVSʵ�ּ򵥸��ؾ���(DR)��
 			BOOTPROTO=static
 			IPADDR=192.168.0.41				#VIP
 			NETMASK=255.255.255.0				
-		ifup eth1:0							#�����ӽӿ�
-		service ipvsadm restart				#����LVS��������
+		ifup eth1:0							#开启子接口
+		service ipvsadm restart				#启动LVS管理工具
 		ipvsadm -A -t 192.168.0.41:80 -s rr			
-		ipvsadm -a -t 192.168.0.41:80 -r 192.168.0.60 -g	#ָ���ڵ�,ʹ��DR��ʽ
+		ipvsadm -a -t 192.168.0.41:80 -r 192.168.0.60 -g	#指定节点,使用DR方式
 		ipvsadm -a -t 192.168.0.41:80 -r 192.168.0.70 -g
 
 	
-	192.168.0.60���ã�
+	192.168.0.60配置：
 		cd /etc/sysconfig/network-scripts/
-		cp ifcfg-lo ifcfg-lo:0			#�����ӽӿ�
+		cp ifcfg-lo ifcfg-lo:0			#创建子接口
 		vim ifcfg-lo:0
 			DEVICE=lo:0
 			IPADDR=192.168.0.41			#VIP
-			NETMASK=255.255.255.255		#����,����Ϊ4��255
+			NETMASK=255.255.255.255		#子网,必须为4个255
 			ONBOOT=yes
 		ifup lo:0
-		yum -y install httpd 			#��װweb������
-		route add -host 192.168.0.41 dev lo:0		#ָ��·��,��lo:0������ȥ
-		service httpd restart						#����web������
-		echo '1' > /proc/sys/net/ipv4/conf/lo/arp_ignore		#�ر�ARP���¹���
+		yum -y install httpd 			#安装web服务器
+		route add -host 192.168.0.41 dev lo:0		#指定路由,重lo:0网卡出去
+		service httpd restart						#启动web服务器
+		echo '1' > /proc/sys/net/ipv4/conf/lo/arp_ignore		#关闭ARP更新功能
 		echo '2' > /proc/sys/net/ipv4/conf/lo/arp_announce
 		echo '1' > /proc/sys/net/ipv4/conf/all/arp_ignore
 		echo '2' > /proc/sys/net/ipv4/conf/all/arp_announce
-		echo "192.168.0.60" > /var/www/html/index.html		#������֤��ҳ
+		echo "192.168.0.60" > /var/www/html/index.html		#创建验证网页
 	
-	192.168.0.70���ú�192.168.0.60����һ��
+	192.168.0.70配置和192.168.0.60配置一样
 	
-��֤��
-	�ͻ��˷���http://192.168.1.1,ˢ��	
+验证：
+	客户端访问http://192.168.1.1,刷新	
 	
 	
 	

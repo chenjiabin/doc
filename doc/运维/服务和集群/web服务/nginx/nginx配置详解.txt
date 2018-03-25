@@ -1,107 +1,107 @@
-nginx µÄÓÅµã£º
-1. Õ¼ÓÐÄÚ´æÉÙ,ÇáÁ¿¼¶web·þÎñÆ÷
-2. ²¢·¢ÄÜÁ¦Ç¿,×î´óÁ¬Á¿¿É´ï°ÙÍò¼¶(Ç°ÌáÊÇ·þÎñÆ÷ÄÜ¿¹×¡)
-3. ´¦Àí¾²Ì¬ÎÄ¼þ,Ë÷ÒýÎÄ¼þ,ÐÔÄÜ´óÔ¼ÊÇapacheµÄ3-5±¶)
-4. ¼òµ¥µÄ¸ºÔØ¾ùºâºÍÈÝ´í
-5. ÅäÖÃ¼òµ¥
+nginx çš„ä¼˜ç‚¹ï¼š
+1. å æœ‰å†…å­˜å°‘,è½»é‡çº§webæœåŠ¡å™¨
+2. å¹¶å‘èƒ½åŠ›å¼º,æœ€å¤§è¿žé‡å¯è¾¾ç™¾ä¸‡çº§(å‰ææ˜¯æœåŠ¡å™¨èƒ½æŠ—ä½)
+3. å¤„ç†é™æ€æ–‡ä»¶,ç´¢å¼•æ–‡ä»¶,æ€§èƒ½å¤§çº¦æ˜¯apacheçš„3-5å€)
+4. ç®€å•çš„è´Ÿè½½å‡è¡¡å’Œå®¹é”™
+5. é…ç½®ç®€å•
 
-apacheµÄÓÅµã£º
-1. rewriteÇ¿´ó,¶¯Ì¬ÇëÇó¹¦ÄÜÇ¿´ó
-2. Ä£¿é½Ï¶à
-3. ÎÈ¶¨ÐÔ½ÏºÃ
+apacheçš„ä¼˜ç‚¹ï¼š
+1. rewriteå¼ºå¤§,åŠ¨æ€è¯·æ±‚åŠŸèƒ½å¼ºå¤§
+2. æ¨¡å—è¾ƒå¤š
+3. ç¨³å®šæ€§è¾ƒå¥½
 
-nginxºÍapacheµÄ¹ØÏµ£º
-	nginxÍ¨³£ÓÃÓÚ×ö´úÀí·þÎñÆ÷,apacheÍ¨³£ÓÃÓÚ´î½¨¼¯ÈºÓÃÓÚ´¦ÀíÓÃ»§ÇëÇó,nginxºÍapacheÍ¨³£Ð­Í¬¹¤×÷
+nginxå’Œapacheçš„å…³ç³»ï¼š
+	nginxé€šå¸¸ç”¨äºŽåšä»£ç†æœåŠ¡å™¨,apacheé€šå¸¸ç”¨äºŽæ­å»ºé›†ç¾¤ç”¨äºŽå¤„ç†ç”¨æˆ·è¯·æ±‚,nginxå’Œapacheé€šå¸¸ååŒå·¥ä½œ
 
 
-´úÀí·þÎñÆ÷£º
-	·´Ïò´úÀí£º½ÓÊÕÓÃ»§µÄÇëÇó,½«ÓÃ»§µÄÇëÇó°´ÕÕÈ¨ÖØ·ÖÅä¸ø¸÷¸ö·þÎñÆ÷½øÐÐ´¦Àí
-	ÕýÏò´úÀí£ºÀàËÆÓÚÒ»¸öÌø°å,µ±ÓÃ»§ÎÞ·¨Ö±½Ó·ÃÎÊÄ³¸öÍøÕ¾ÊÇ¿ÉÒÔ½èÖú´úÀí·þÎñÆ÷¼ä½Ó·ÃÎÊ(vpn×îÎªµäÐÍµÄ´úÀí·þÎñÆ÷)
+ä»£ç†æœåŠ¡å™¨ï¼š
+	åå‘ä»£ç†ï¼šæŽ¥æ”¶ç”¨æˆ·çš„è¯·æ±‚,å°†ç”¨æˆ·çš„è¯·æ±‚æŒ‰ç…§æƒé‡åˆ†é…ç»™å„ä¸ªæœåŠ¡å™¨è¿›è¡Œå¤„ç†
+	æ­£å‘ä»£ç†ï¼šç±»ä¼¼äºŽä¸€ä¸ªè·³æ¿,å½“ç”¨æˆ·æ— æ³•ç›´æŽ¥è®¿é—®æŸä¸ªç½‘ç«™æ˜¯å¯ä»¥å€ŸåŠ©ä»£ç†æœåŠ¡å™¨é—´æŽ¥è®¿é—®(vpnæœ€ä¸ºå…¸åž‹çš„ä»£ç†æœåŠ¡å™¨)
 	
 	
 	
-ÅäÖÃÎÄ¼þ×¢ÒâÊÂÏî£º
-1¡¢¾¡Á¿²»ÒªÔÚÖ÷ÅäÖÃÎÄ¼þ(nginx.conf)ÖÐÌí¼Ó¹ý¶àµÄÅäÖÃÏî
-2¡¢½«´ó¶àÊýÅäÖÃ¶¼Ð´ÔÚÆäËûµÄÎÄ¼þÖÐ£¬ÔÚÅäÖÃÎÄ¼þÖÐÊ¹ÓÃincludeÖ¸ÁîÉêÃ÷ÆäÓàµÄÅäÖÃÎÄ¼þ
-3¡¢nginxÅäÖÃÎÄ¼þÖ¸Áî¶¼ÒªÒÔ";"(·ÖºÅ)½áÎ²
-4¡¢ÅäÖÃÎÄ¼þµÄËùÓÐÂ·¾¶¶¼ÊÇÒÔnginxµÄ¹¤×÷Ä¿Â¼Îª¸ù(/)Ä¿Â¼
+é…ç½®æ–‡ä»¶æ³¨æ„äº‹é¡¹ï¼š
+1ã€å°½é‡ä¸è¦åœ¨ä¸»é…ç½®æ–‡ä»¶(nginx.conf)ä¸­æ·»åŠ è¿‡å¤šçš„é…ç½®é¡¹
+2ã€å°†å¤§å¤šæ•°é…ç½®éƒ½å†™åœ¨å…¶ä»–çš„æ–‡ä»¶ä¸­ï¼Œåœ¨é…ç½®æ–‡ä»¶ä¸­ä½¿ç”¨includeæŒ‡ä»¤ç”³æ˜Žå…¶ä½™çš„é…ç½®æ–‡ä»¶
+3ã€nginxé…ç½®æ–‡ä»¶æŒ‡ä»¤éƒ½è¦ä»¥";"(åˆ†å·)ç»“å°¾
+4ã€é…ç½®æ–‡ä»¶çš„æ‰€æœ‰è·¯å¾„éƒ½æ˜¯ä»¥nginxçš„å·¥ä½œç›®å½•ä¸ºæ ¹(/)ç›®å½•
 	
 	
-ÅäÖÃÎÄ¼þÏê½â£º
+é…ç½®æ–‡ä»¶è¯¦è§£ï¼š
 
-È«¾ÖÅäÖÃ¶Î£º
-user  nginx;								#ÔËÐÐÓÃ»§
-worker_processes  4;						#¹¤×÷½ø³ÌÊý,Í¨³£ÎªcpuºËÐÄÊý»ò(ºËÐÄÊý-1)
-worker_rlimit_nofile  65535;				#worker´ò¿ªµÄ×î´óÎÄ¼þÊý
-error_log  logs/error.log  info;			#´íÎóÈÕÖ¾Î»ÖÃºÍ¼¶±ð
-pid        logs/nginx.pid;					#½ø³Ìpid
-
-
+å…¨å±€é…ç½®æ®µï¼š
+user  nginx;								#è¿è¡Œç”¨æˆ·
+worker_processes  4;						#å·¥ä½œè¿›ç¨‹æ•°,é€šå¸¸ä¸ºcpuæ ¸å¿ƒæ•°æˆ–(æ ¸å¿ƒæ•°-1)
+worker_rlimit_nofile  65535;				#workeræ‰“å¼€çš„æœ€å¤§æ–‡ä»¶æ•°
+error_log  logs/error.log  info;			#é”™è¯¯æ—¥å¿—ä½ç½®å’Œçº§åˆ«
+pid        logs/nginx.pid;					#è¿›ç¨‹pid
 
 
-events¶Î:¿ØÖÆnginxÐÔÄÜ
-	use  epoll;				 		#ÍøÂçI/OÄ£ÐÍ,linuxÏµÍ³Ä¬ÈÏÊ¹ÓÃepoll
-	worker_connections  20480;		#´ò¿ªµÄ×î´óÎÄ¼þ¾ä±úÊý,linuxÏµÍ³Ä¬ÈÏÎª1024
 
 
-http¶Î:httpÇëÇóµÄ´¦Àí
-	include  conf_file;							#µ¼ÈëÆäËûÅäÖÃÎÄ¼þ
-	access_log  logs/access.log  name;			#È«¾Ö·ÃÎÊÈÕÖ¾Î»ÖÃºÍ¼¶±ð
-	log_format  name  format;					#¶¨ÒåÈÕÖ¾¸ñÊ½
-	keepalive_timeout  120;						#³¤Á¬½Ó³¬Ê±Ê±¼ä
-	gzip on;									#¿ªÆôÎÄ¼þÑ¹Ëõ¹¦ÄÜ
-	gzip_comp_level 9;							#ÉèÖÃÑ¹Ëõ±È
+eventsæ®µ:æŽ§åˆ¶nginxæ€§èƒ½
+	use  epoll;				 		#ç½‘ç»œI/Oæ¨¡åž‹,linuxç³»ç»Ÿé»˜è®¤ä½¿ç”¨epoll
+	worker_connections  20480;		#æ‰“å¼€çš„æœ€å¤§æ–‡ä»¶å¥æŸ„æ•°,linuxç³»ç»Ÿé»˜è®¤ä¸º1024
+
+
+httpæ®µ:httpè¯·æ±‚çš„å¤„ç†
+	include  conf_file;							#å¯¼å…¥å…¶ä»–é…ç½®æ–‡ä»¶
+	access_log  logs/access.log  name;			#å…¨å±€è®¿é—®æ—¥å¿—ä½ç½®å’Œçº§åˆ«
+	log_format  name  format;					#å®šä¹‰æ—¥å¿—æ ¼å¼
+	keepalive_timeout  120;						#é•¿è¿žæŽ¥è¶…æ—¶æ—¶é—´
+	gzip on;									#å¼€å¯æ–‡ä»¶åŽ‹ç¼©åŠŸèƒ½
+	gzip_comp_level 9;							#è®¾ç½®åŽ‹ç¼©æ¯”
 	
 	
-	upstream¶Î:¶¨Òå¸ºÔØ¾ùºâ¼¯Èº
-	upstream  name {					#ÅäÖÃ¼¯Èº³Ø
-		#ip_hash;       				#Ö¸¶¨Ëã·¨,Ä¬ÈÏÎªÂÖÑ¯Ëã·¨
-		server ip_address;				#Ä¬ÈÏÅäÖÃ		
-		server ip_address weight=2;		#Ö¸¶¨È¨ÖØ,Ä¬ÈÏÎª1
-		server ip_address backup;		#ÅäÖÃÎª±¸·Ý·þÎñÆ÷
+	upstreamæ®µ:å®šä¹‰è´Ÿè½½å‡è¡¡é›†ç¾¤
+	upstream  name {					#é…ç½®é›†ç¾¤æ± 
+		#ip_hash;       				#æŒ‡å®šç®—æ³•,é»˜è®¤ä¸ºè½®è¯¢ç®—æ³•
+		server ip_address;				#é»˜è®¤é…ç½®		
+		server ip_address weight=2;		#æŒ‡å®šæƒé‡,é»˜è®¤ä¸º1
+		server ip_address backup;		#é…ç½®ä¸ºå¤‡ä»½æœåŠ¡å™¨
 	}
-	Ëã·¨:
-		ÂÖÑ¯Ëã·¨:Ã¿¸öÇëÇó°´Ê±¼äË³ÐòÖðÒ»·ÖÅäµ½²»Í¬µÄºó¶Ë·þÎñÆ÷
-		Ö¸¶¨È¨ÖØ:Ö¸¶¨ÂÖÑ¯¼¸ÂÊ,weightºÍ·ÃÎÊ±ÈÂÊ³ÉÕý±È,ÓÃÓÚºó¶Ë·þÎñÆ÷ÐÔÄÜ²»¾ùµÄÇé¿ö
-	     ip_hash:Í¨¹ýip_hash¼ÆËã,½«ÓÃ»§°ó¶¨µ½Ò»¸öºó¶Ë·þÎñÆ÷,¶àÓÃÓÚÐèÒªµÇÂ¼µÄÍøÕ¾
+	ç®—æ³•:
+		è½®è¯¢ç®—æ³•:æ¯ä¸ªè¯·æ±‚æŒ‰æ—¶é—´é¡ºåºé€ä¸€åˆ†é…åˆ°ä¸åŒçš„åŽç«¯æœåŠ¡å™¨
+		æŒ‡å®šæƒé‡:æŒ‡å®šè½®è¯¢å‡ çŽ‡,weightå’Œè®¿é—®æ¯”çŽ‡æˆæ­£æ¯”,ç”¨äºŽåŽç«¯æœåŠ¡å™¨æ€§èƒ½ä¸å‡çš„æƒ…å†µ
+	     ip_hash:é€šè¿‡ip_hashè®¡ç®—,å°†ç”¨æˆ·ç»‘å®šåˆ°ä¸€ä¸ªåŽç«¯æœåŠ¡å™¨,å¤šç”¨äºŽéœ€è¦ç™»å½•çš„ç½‘ç«™
 
 		 
-	server¶Î:ÐéÄâÖ÷»úÅäÖÃ¶Î(Ò»°ã»á°ÑÐéÄâÖ÷»ú¶Ë¶ÀÁ¢³öÈ¥,Ê¹ÓÃincludeµ¼Èë)
-		listen  80 default_server;			#¼àÌý¶Ë¿Ú,¶¨ÒåÄ¬ÈÏ·þÎñÆ÷,Ö§³ÖÕýÔò±í´ïÊ½
-		server_name  localhost;				#Ö÷»úÃû,Ö§³ÖÍ³Åä·û,Ïàµ±ÓÚapacheµÄServerName
-		access_log  logs/host.access.log  name;		#ÐéÄâÖ÷»ú·ÃÎÊÈÕÖ¾(ÓÅÏÈÓÚÈ«¾Ö·ÃÎÊÈÕÖ¾)
+	serveræ®µ:è™šæ‹Ÿä¸»æœºé…ç½®æ®µ(ä¸€èˆ¬ä¼šæŠŠè™šæ‹Ÿä¸»æœºç«¯ç‹¬ç«‹å‡ºåŽ»,ä½¿ç”¨includeå¯¼å…¥)
+		listen  80 default_server;			#ç›‘å¬ç«¯å£,å®šä¹‰é»˜è®¤æœåŠ¡å™¨,æ”¯æŒæ­£åˆ™è¡¨è¾¾å¼
+		server_name  localhost;				#ä¸»æœºå,æ”¯æŒç»Ÿé…ç¬¦,ç›¸å½“äºŽapacheçš„ServerName
+		access_log  logs/host.access.log  name;		#è™šæ‹Ÿä¸»æœºè®¿é—®æ—¥å¿—(ä¼˜å…ˆäºŽå…¨å±€è®¿é—®æ—¥å¿—)
 
 		
-		location¶Î:¶¨ÒåÄ¿Â¼Æ¥Åä(Ö§³ÖÕýÔò±í´ïÊ½)
-			root  html						#Ö¸¶¨ÍøÕ¾¸ùÄ¿Â¼,Ïàµ±ÓÚapacheµÄDocumentRoot
-			index  index.html;				#Ö¸¶¨Ê×Ò³Ãû
-			proxy_pass   http://name;		#µ÷ÓÃÉÏÃæ¶¨ÒåµÄ¸ºÔØ¾ùºâ¼¯Èº(·´Ïò´úÀí)
-			proxy_set_header	Host	$host;		#½«¿Í»§ÇëÇóµÄÖ÷»úÃûÒ»Æð·¢¸øºó¶Ë·þÎñÆ÷£¬Í¨³£ÓÃÔÚºó¶Ë·þÎñÆ÷ÅäÖÃÁËÐéÄâÖ÷»úµÄÇé¿ö
-			proxy_set_header 	IP	$remote_addr;	#½«¿Í»§µÄÕæÊµip·¢¸øºó¶Ë·þÎñÆ÷£¬Í¨³£ÓÃÓÚºó¶Ë·þÎñÆ÷ÐèÒª×öÈÕÖ¾·ÖÎöµÄÇé¿öÏÂ
-			rewrite  ÕýÔò   ´¦Àí·½·¨  		#urlÖØÐ´
+		locationæ®µ:å®šä¹‰ç›®å½•åŒ¹é…(æ”¯æŒæ­£åˆ™è¡¨è¾¾å¼)
+			root  html						#æŒ‡å®šç½‘ç«™æ ¹ç›®å½•,ç›¸å½“äºŽapacheçš„DocumentRoot
+			index  index.html;				#æŒ‡å®šé¦–é¡µå
+			proxy_pass   http://name;		#è°ƒç”¨ä¸Šé¢å®šä¹‰çš„è´Ÿè½½å‡è¡¡é›†ç¾¤(åå‘ä»£ç†)
+			proxy_set_header	Host	$host;		#å°†å®¢æˆ·è¯·æ±‚çš„ä¸»æœºåä¸€èµ·å‘ç»™åŽç«¯æœåŠ¡å™¨ï¼Œé€šå¸¸ç”¨åœ¨åŽç«¯æœåŠ¡å™¨é…ç½®äº†è™šæ‹Ÿä¸»æœºçš„æƒ…å†µ
+			proxy_set_header 	IP	$remote_addr;	#å°†å®¢æˆ·çš„çœŸå®žipå‘ç»™åŽç«¯æœåŠ¡å™¨ï¼Œé€šå¸¸ç”¨äºŽåŽç«¯æœåŠ¡å™¨éœ€è¦åšæ—¥å¿—åˆ†æžçš„æƒ…å†µä¸‹
+			rewrite  æ­£åˆ™   å¤„ç†æ–¹æ³•  		#urlé‡å†™
 			
 			
-locationÏê½â£º			
-	Óï·¨:location [=|^~|~|/] /uri/ { ´¦ÀíÄÚÈÝ }		
-	Æ¥ÅäÓÅÏÈ¼¶ºÍÆ¥ÅäÌõ¼þ(¶à¸ölocation×Ö¶ÎÊÇÉúÐ§):
-		=:¾«È·Æ¥Åä
-		^~:Ç°×ºÆ¥Åä
-		~:ÕýÔò±í´ïÊ½Æ¥ÅäÄ£ÐÍ(Çø·Ö´óÐ¡Ð´)
-		~*:ÕýÔò±í´ïÊ½Æ¥ÅäÄ£ÐÍ(²»Çø·Ö´óÐ¡Ð´)
-		/:Í¨ÓÃÆ¥Åä
+locationè¯¦è§£ï¼š			
+	è¯­æ³•:location [=|^~|~|/] /uri/ { å¤„ç†å†…å®¹ }		
+	åŒ¹é…ä¼˜å…ˆçº§å’ŒåŒ¹é…æ¡ä»¶(å¤šä¸ªlocationå­—æ®µæ˜¯ç”Ÿæ•ˆ):
+		=:ç²¾ç¡®åŒ¹é…
+		^~:å‰ç¼€åŒ¹é…
+		~:æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…æ¨¡åž‹(åŒºåˆ†å¤§å°å†™)
+		~*:æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…æ¨¡åž‹(ä¸åŒºåˆ†å¤§å°å†™)
+		/:é€šç”¨åŒ¹é…
 	
-	urlÖØÐ´(rewrite)µÄÓÅµã:
-		1¡¢Ò×ÓÚ±»ËÑË÷ÒýÇæÊÕÂ¼
-		2¡¢Òþ²ØurlÂ·¾¶
-		3¡¢·½±ãÓÃ»§·ÃÎÊ
+	urlé‡å†™(rewrite)çš„ä¼˜ç‚¹:
+		1ã€æ˜“äºŽè¢«æœç´¢å¼•æ“Žæ”¶å½•
+		2ã€éšè—urlè·¯å¾„
+		3ã€æ–¹ä¾¿ç”¨æˆ·è®¿é—®
 		
-	rewritµÄ´¦Àí·½·¨£º
-		1¡¢last£ºÊ¹ÓÃ×î¶àµÄ
-		2¡¢break£ºÖÕÖ¹rewrite,²»ÔÚ¼ÌÐøÆ¥Åä
-		3¡¢redirect£ºÁÙÊ±Ìø×ª
-		4¡¢premanent£ºÓÀ¾ÃÌø×ª
+	rewritçš„å¤„ç†æ–¹æ³•ï¼š
+		1ã€lastï¼šä½¿ç”¨æœ€å¤šçš„
+		2ã€breakï¼šç»ˆæ­¢rewrite,ä¸åœ¨ç»§ç»­åŒ¹é…
+		3ã€redirectï¼šä¸´æ—¶è·³è½¬
+		4ã€premanentï¼šæ°¸ä¹…è·³è½¬
 
-urlÖØÐ´ÊµÀý£º
+urlé‡å†™å®žä¾‹ï¼š
 server {
     listen       80;
     server_name  localhost;
@@ -109,7 +109,7 @@ server {
 
     location / {
        rewrite ^/ABC/(.*)$ /web/$1  last;	
-	   #½«·ÃÎÊhtml/ABCÏÂµÄËùÓÐÇëÇóÖØ¶¨Ïòµ½html/webÏÂ£¬$1ÎªÓÃ»§ÉêÇëµÄÇëÇó
+	   #å°†è®¿é—®html/ABCä¸‹çš„æ‰€æœ‰è¯·æ±‚é‡å®šå‘åˆ°html/webä¸‹ï¼Œ$1ä¸ºç”¨æˆ·ç”³è¯·çš„è¯·æ±‚
     }
 }
 

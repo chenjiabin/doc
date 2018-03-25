@@ -1,40 +1,40 @@
-1¡¢½â°ü
+1ã€è§£åŒ…
 tar zxvf /root/python/httpd-2.2.17.tar.gz  -C /usr/src/
 cd /usr/src/
 
 
-2¡¢ÅäÖÃapache±àÒë²ÎÊıºÍ°²×°
+2ã€é…ç½®apacheç¼–è¯‘å‚æ•°å’Œå®‰è£…
 ./configure --prefix=/usr/local/httpd --enable-so --enable-rewrite --enable-cgi --enable--charset-lite
-make && make install		//±àÒë && °²×°
+make && make install		//ç¼–è¯‘ && å®‰è£…
 
---prefix=/usr/local/httpd£ºÖ¸¶¨°²×°Ä¿Â¼
---enable-so£º±àÒë¶¯Ì¬¼ÓÔØÄ£¿é£¬Òò´ËÉı¼¶ºÍÔö¼ÓÄ£¿éÊ±Ö»Ğè±àÒëÏà¹ØµÄÄ£¿é¼´¿É
---enable-rewrite£ºÖ§³ÖURLÖØĞ´£¨URLÖØĞ´£¬Ê×ÏÈ»ñµÃÒ»¸öURLÇëÇóÈ»ºó°ÑËüÖØĞÂĞ´³ÉÍøÕ¾¿ÉÒÔ´¦ÀíµÄÁíÒ»¸öURLµÄ¹ı³Ì£©
---enable--charset-lite£ºÆôÓÃ×Ö·û¼¯×ª»»£¨³£ÓÃ×Ö·û¼¯£ºASCII£¬Unicode£¬UTF-8£¬GBK£¬GB2312£©
---enable-cgi£º±àÒëCGI°æ±¾µÄPHP£¨CGI½«WebµÄÒ»×é¼òµ¥µÄ¾²Ì¬ÎÄµµ±ä³ÉÒ»¸öÍêÕûµÄĞÂµÄ½»»¥Ê½Ã½Ìå,¶¯Ì¬ÍøÕ¾Ğ­Òé£©
-
-
-3¡¢Â·¾¶ÓÅ»¯
-ln -s /usr/local/httpd/bin/* /usr/local/bin		//½«apacheµÄÃüÁîÈíÁ´½Óµ½PATH»·¾³±äÁ¿Ä¿Â¼ÖĞ
-
-cp -p apachectl /etc/init.d/httpd			//½«apacheµÄÆô¶¯½Å±¾¸´ÖÆµ½serviceÄÜ²Ù×÷µÄÄ¿Â¼ÖĞÈ¥
-vim /etc/init.d/httpd					//±à¼­apacheÆô¶¯½Å±¾
-    # chkconfig: 2345 98 1				//ÅäÖÃÔËĞĞ¼¶±ğ£¬Æô¶¯ÓÅÏÈ¼¶ºÍ¹Ø±ÕÓÅÏÈ¼¶
-    # description: apache httpd 			//apacheµÄËµÃ÷
-
-chkconfig --add httpd 					//½«apacheÌí¼ÓÎªÏµÍ³·şÎñ
+--prefix=/usr/local/httpdï¼šæŒ‡å®šå®‰è£…ç›®å½•
+--enable-soï¼šç¼–è¯‘åŠ¨æ€åŠ è½½æ¨¡å—ï¼Œå› æ­¤å‡çº§å’Œå¢åŠ æ¨¡å—æ—¶åªéœ€ç¼–è¯‘ç›¸å…³çš„æ¨¡å—å³å¯
+--enable-rewriteï¼šæ”¯æŒURLé‡å†™ï¼ˆURLé‡å†™ï¼Œé¦–å…ˆè·å¾—ä¸€ä¸ªURLè¯·æ±‚ç„¶åæŠŠå®ƒé‡æ–°å†™æˆç½‘ç«™å¯ä»¥å¤„ç†çš„å¦ä¸€ä¸ªURLçš„è¿‡ç¨‹ï¼‰
+--enable--charset-liteï¼šå¯ç”¨å­—ç¬¦é›†è½¬æ¢ï¼ˆå¸¸ç”¨å­—ç¬¦é›†ï¼šASCIIï¼ŒUnicodeï¼ŒUTF-8ï¼ŒGBKï¼ŒGB2312ï¼‰
+--enable-cgiï¼šç¼–è¯‘CGIç‰ˆæœ¬çš„PHPï¼ˆCGIå°†Webçš„ä¸€ç»„ç®€å•çš„é™æ€æ–‡æ¡£å˜æˆä¸€ä¸ªå®Œæ•´çš„æ–°çš„äº¤äº’å¼åª’ä½“,åŠ¨æ€ç½‘ç«™åè®®ï¼‰
 
 
-4¡¢ÑéÖ¤
+3ã€è·¯å¾„ä¼˜åŒ–
+ln -s /usr/local/httpd/bin/* /usr/local/bin		//å°†apacheçš„å‘½ä»¤è½¯é“¾æ¥åˆ°PATHç¯å¢ƒå˜é‡ç›®å½•ä¸­
+
+cp -p apachectl /etc/init.d/httpd			//å°†apacheçš„å¯åŠ¨è„šæœ¬å¤åˆ¶åˆ°serviceèƒ½æ“ä½œçš„ç›®å½•ä¸­å»
+vim /etc/init.d/httpd					//ç¼–è¾‘apacheå¯åŠ¨è„šæœ¬
+    # chkconfig: 2345 98 1				//é…ç½®è¿è¡Œçº§åˆ«ï¼Œå¯åŠ¨ä¼˜å…ˆçº§å’Œå…³é—­ä¼˜å…ˆçº§
+    # description: apache httpd 			//apacheçš„è¯´æ˜
+
+chkconfig --add httpd 					//å°†apacheæ·»åŠ ä¸ºç³»ç»ŸæœåŠ¡
+
+
+4ã€éªŒè¯
 chkconfig httpd --list			
 chkconfig httpd on
 service httpd restart
 
 
 
-5¡¢apacheµÄ³£ÓÃÃüÁî
-apachectl -t			//¼ì²éÖ÷ÅäÖÃÎÄ¼şÊÇ·ñÓĞÓï·¨´íÎó
-apachectl -v			//²é¿´apacheµÄ°æ±¾
+5ã€apacheçš„å¸¸ç”¨å‘½ä»¤
+apachectl -t			//æ£€æŸ¥ä¸»é…ç½®æ–‡ä»¶æ˜¯å¦æœ‰è¯­æ³•é”™è¯¯
+apachectl -v			//æŸ¥çœ‹apacheçš„ç‰ˆæœ¬
 
 
 

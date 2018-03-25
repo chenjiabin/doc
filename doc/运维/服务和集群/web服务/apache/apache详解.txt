@@ -1,10 +1,10 @@
-apacheµÄÓÅµã£º
-1¡¢ÊÂÏÈ¼ÓÔØÏìÓ¦³ÌĞò
-2¡¢Ä£¿é»¯ÉèÖÃ£¬ºËĞÄ½ÏĞ¡£¬¸÷¹¦ÄÜÓÉÄ£¿é½øĞĞÌí¼Ó
-3¡¢Ö§³Ö¶ÀÁ¢±àÒëÄ£¿é
+apacheçš„ä¼˜ç‚¹ï¼š
+1ã€äº‹å…ˆåŠ è½½å“åº”ç¨‹åº
+2ã€æ¨¡å—åŒ–è®¾ç½®ï¼Œæ ¸å¿ƒè¾ƒå°ï¼Œå„åŠŸèƒ½ç”±æ¨¡å—è¿›è¡Œæ·»åŠ 
+3ã€æ”¯æŒç‹¬ç«‹ç¼–è¯‘æ¨¡å—
 
 
-Ò»¡¢±àÒë°²×°apache
+ä¸€ã€ç¼–è¯‘å®‰è£…apache
 	tar zxvf /root/python/httpd-2.2.17.tar.gz  -C /usr/src/
 	cd /usr/src/
 	./configure --prefix=/usr/local/httpd --enable-so --enable-rewrite --enable-cgi --enable--charset-lite
@@ -13,59 +13,59 @@ apacheµÄÓÅµã£º
 	cp -p apachectl /etc/init.d/httpd
 
 	
-¶ş¡¢³£ÓÃÖ¸Áî½éÉÜ£¨apacheÖ¸Áî´ó¶àÊı²»Çø·Ö´óĞ¡Ğ´£©
-	ServerRoot			#apache¹¤×÷Ä¿Â¼
-	include				#µ¼ÈëÅäÖÃÎÄ¼ş
-	Timeout 			#³¤Á¬½Ó³¬Ê±Ê±¼ä
-	Listen 80			#¼àÌı¶Ë¿Ú
-	User apache			#³ÌĞòÓÃ»§
-	Group apache		#³ÌĞò×é
-	ServerAdmin 		#¹ÜÀíÔ±ÓÊÏäµØÖ·
-	ServerName			#Ö÷»úÃû
-	DocumentRoot		#ÍøÕ¾¸ùÄ¿Â¼
-	DirectoryIndex index.html		#Ê×Ò³Ãû
-	ErrorLog logs/error_log   		#´íÎóÈÕÖ¾´æ·ÅÎ»ÖÃ
-	LogLevel warn					#ÈÕÖ¾¼¶±ğ
-	LogFormat "%h %l %u %t 			#ÈÕÖ¾¸ñÊ½
-	CustomLog logs/access_log combined		#·ÃÎÊÈÕÖ¾´æ·ÅÎ»ÖÃ
-	Order	allow,deny			#¿ØÖÆÄ¬ÈÏ·ÃÎÊ	
+äºŒã€å¸¸ç”¨æŒ‡ä»¤ä»‹ç»ï¼ˆapacheæŒ‡ä»¤å¤§å¤šæ•°ä¸åŒºåˆ†å¤§å°å†™ï¼‰
+	ServerRoot			#apacheå·¥ä½œç›®å½•
+	include				#å¯¼å…¥é…ç½®æ–‡ä»¶
+	Timeout 			#é•¿è¿æ¥è¶…æ—¶æ—¶é—´
+	Listen 80			#ç›‘å¬ç«¯å£
+	User apache			#ç¨‹åºç”¨æˆ·
+	Group apache		#ç¨‹åºç»„
+	ServerAdmin 		#ç®¡ç†å‘˜é‚®ç®±åœ°å€
+	ServerName			#ä¸»æœºå
+	DocumentRoot		#ç½‘ç«™æ ¹ç›®å½•
+	DirectoryIndex index.html		#é¦–é¡µå
+	ErrorLog logs/error_log   		#é”™è¯¯æ—¥å¿—å­˜æ”¾ä½ç½®
+	LogLevel warn					#æ—¥å¿—çº§åˆ«
+	LogFormat "%h %l %u %t 			#æ—¥å¿—æ ¼å¼
+	CustomLog logs/access_log combined		#è®¿é—®æ—¥å¿—å­˜æ”¾ä½ç½®
+	Order	allow,deny			#æ§åˆ¶é»˜è®¤è®¿é—®	
 
 	
-Èı¡¢ÅäÖÃÊµÀı£º
+ä¸‰ã€é…ç½®å®ä¾‹ï¼š
 
-1¡¢ÓÃ»§ÈÏÖ¤
+1ã€ç”¨æˆ·è®¤è¯
 	<Directory "/usr/local/httpd/htdocs">
 		Options Indexes FollowSymLinks
 		AllowOverride None
-		authtype basic				#ÈÏÖ¤ÀàĞÍ
-		authname "apache 2.4"		#µÇÂ¼¿òËµÃ÷
-		authuserfile  "/usr/local/http/conf"	#ÓÃ»§ÈÏÖ¤ÎÄ¼ş´æ·ÅÎ»ÖÃ
-		require valid-user		#ÔËĞĞÓÃ»§ÈÏÖ¤ÎÄ¼şÖĞµÄÓÃ»§µÇÂ¼ÏµÍ³
-		Order allow,deny		#Ä¬ÈÏ¾Ü¾øËùÓĞÓÃ»§·ÃÎÊ
-		Allow from all			#ÔËĞĞËùÓĞÓÃ»§·ÃÎÊ
+		authtype basic				#è®¤è¯ç±»å‹
+		authname "apache 2.4"		#ç™»å½•æ¡†è¯´æ˜
+		authuserfile  "/usr/local/http/conf"	#ç”¨æˆ·è®¤è¯æ–‡ä»¶å­˜æ”¾ä½ç½®
+		require valid-user		#è¿è¡Œç”¨æˆ·è®¤è¯æ–‡ä»¶ä¸­çš„ç”¨æˆ·ç™»å½•ç³»ç»Ÿ
+		Order allow,deny		#é»˜è®¤æ‹’ç»æ‰€æœ‰ç”¨æˆ·è®¿é—®
+		Allow from all			#è¿è¡Œæ‰€æœ‰ç”¨æˆ·è®¿é—®
 	</Directory>
-	´´½¨ÅäÖÃÎÄ¼ş£º
-		htpasswd -c -m  /etc/httpd/conf   www   #´´½¨ÓÃ»§ÈÏÖ¤ÎÄ¼ş£¬²¢Ìí¼ÓrootÓÃ»§(µÚÒ»´Î´´½¨Ê¹ÓÃ-c)
-		htpasswd -m  /etc/httpd/conf  lisi		#ÏòÓÃ»§ÈÏÖ¤ÎÄ¼şÖĞÌí¼ÓmysqlÓÃ»§(-mÖ¸¶¨MD5¼ÓÃÜ)
+	åˆ›å»ºé…ç½®æ–‡ä»¶ï¼š
+		htpasswd -c -m  /etc/httpd/conf   www   #åˆ›å»ºç”¨æˆ·è®¤è¯æ–‡ä»¶ï¼Œå¹¶æ·»åŠ rootç”¨æˆ·(ç¬¬ä¸€æ¬¡åˆ›å»ºä½¿ç”¨-c)
+		htpasswd -m  /etc/httpd/conf  lisi		#å‘ç”¨æˆ·è®¤è¯æ–‡ä»¶ä¸­æ·»åŠ mysqlç”¨æˆ·(-mæŒ‡å®šMD5åŠ å¯†)
 	
 	
-2¡¢µØÖ··ÃÎÊ¿ØÖÆ
+2ã€åœ°å€è®¿é—®æ§åˆ¶
 	Order allow,deny
-    Allow from 192.168.1.0/24		#Ö»ÔÊĞí192.168.1.0Íø¶Î·ÃÎÊ
+    Allow from 192.168.1.0/24		#åªå…è®¸192.168.1.0ç½‘æ®µè®¿é—®
 	
 
-3¡¢ĞéÄâÖ÷»úÅäÖÃ(»ùÓÚÓòÃû)
-	#DocumentRoot "/usr/local/httpd/htdocs"			#×¢ÊÍÖĞĞÄÖ÷»ú
-	namevirtualhost 0.0.0.0:80					#¼àÌıipºÍ¶Ë¿Ú
+3ã€è™šæ‹Ÿä¸»æœºé…ç½®(åŸºäºåŸŸå)
+	#DocumentRoot "/usr/local/httpd/htdocs"			#æ³¨é‡Šä¸­å¿ƒä¸»æœº
+	namevirtualhost 0.0.0.0:80					#ç›‘å¬ipå’Œç«¯å£
 	
 	<virtualhost 192.168.1.1:80>
-		documentroot "/usr/local/httpd/htdocs/test"		#ÍøÕ¾¸ùÄ¿Â¼
-		servername "www.test.com"					#ÓòÃû
+		documentroot "/usr/local/httpd/htdocs/test"		#ç½‘ç«™æ ¹ç›®å½•
+		servername "www.test.com"					#åŸŸå
 	</virtualhost>
 	
 	<virtualhost 192.168.1.1:80>
-		documentroot "/usr/local/httpd/htdocs/test2"		#ÍøÕ¾¸ùÄ¿Â¼
-		servername "www.apache.com"					#ÓòÃû
+		documentroot "/usr/local/httpd/htdocs/test2"		#ç½‘ç«™æ ¹ç›®å½•
+		servername "www.apache.com"					#åŸŸå
 	</virtualhost>
 
 

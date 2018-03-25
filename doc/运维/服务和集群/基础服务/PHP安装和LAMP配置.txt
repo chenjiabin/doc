@@ -1,110 +1,110 @@
-1¡¢×¼±¸¹¤×÷
-rpm -e php --nodeps							//É¾³ıÊ¹ÓÃrpm°²×°µÄphp
-rpm -ivh zlib-devel-1.2.3-29.el6.x86_64					//°²×°PHPÒÀÀµ°ü
+1ã€å‡†å¤‡å·¥ä½œ
+rpm -e php --nodeps							//åˆ é™¤ä½¿ç”¨rpmå®‰è£…çš„php
+rpm -ivh zlib-devel-1.2.3-29.el6.x86_64					//å®‰è£…PHPä¾èµ–åŒ…
 rpm -ivh /media/Packages/libxml2-devel-2.7.6-14.el6.x86_64.rpm 		
 
 
 
-2¡¢°²×°²å¼ş(»¥ÏàÓĞÒÀÀµ¹ØÏµ,±ØĞë°´Ë³Ğò°²×°)
-libmcrypt	mhash		mcrypt					//Êı¾İ¼ÓÃÜ¹¤¾ß,PHP²å¼ş			
+2ã€å®‰è£…æ’ä»¶(äº’ç›¸æœ‰ä¾èµ–å…³ç³»,å¿…é¡»æŒ‰é¡ºåºå®‰è£…)
+libmcrypt	mhash		mcrypt					//æ•°æ®åŠ å¯†å·¥å…·,PHPæ’ä»¶			
 
 
-2.1°²×°libmcrypt-2.5.8							
-tar zxvf  libmcrypt-2.5.8.tar.gz -C /usr/src				//½âÑ¹
-cd /usr/src/libmcrypt-2.5.8						//½øÈë³ÌĞòÄ¿Â¼
-./configure && make && make install					//ÅäÖÃ  ±àÒë   °²×°
-ln -s /usr/local/lib/libmcrypt.* /usr/lib				//´´½¨ÔËĞĞ»·¾³
+2.1å®‰è£…libmcrypt-2.5.8							
+tar zxvf  libmcrypt-2.5.8.tar.gz -C /usr/src				//è§£å‹
+cd /usr/src/libmcrypt-2.5.8						//è¿›å…¥ç¨‹åºç›®å½•
+./configure && make && make install					//é…ç½®  ç¼–è¯‘   å®‰è£…
+ln -s /usr/local/lib/libmcrypt.* /usr/lib				//åˆ›å»ºè¿è¡Œç¯å¢ƒ
 
 
-2.2°²×°mhash-0.9.9.9
-tar zxvf  mhash-0.9.9.9.tar.gz -C /usr/src				//½âÑ¹
-cd /usr/src/mhash-0.9.9.9						//½øÈë³ÌĞòÄ¿Â¼
-./configure && make && make install					//ÅäÖÃ  ±àÒë   °²×°
-ln -s /usr/local/lib/libmhash* /usr/lib					//´´½¨ÔËĞĞ»·¾³
+2.2å®‰è£…mhash-0.9.9.9
+tar zxvf  mhash-0.9.9.9.tar.gz -C /usr/src				//è§£å‹
+cd /usr/src/mhash-0.9.9.9						//è¿›å…¥ç¨‹åºç›®å½•
+./configure && make && make install					//é…ç½®  ç¼–è¯‘   å®‰è£…
+ln -s /usr/local/lib/libmhash* /usr/lib					//åˆ›å»ºè¿è¡Œç¯å¢ƒ
 
 
 
-2.3°²×°mcrypt-2.6.8
+2.3å®‰è£…mcrypt-2.6.8
 tar zxvf  mcrypt-2.6.8.tar.gz -C /usr/src				
 cd /usr/src/mcrypt-2.6.8						
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH			//ÅäÖÃÈ«¾Ö»·¾³±äÁ¿
-./configure make && make install					//ÅäÖÃ ±àÒë °²×°
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH			//é…ç½®å…¨å±€ç¯å¢ƒå˜é‡
+./configure make && make install					//é…ç½® ç¼–è¯‘ å®‰è£…
 
 
-3¡¢ÅäÖÃ£¬°²×°php
+3ã€é…ç½®ï¼Œå®‰è£…php
 
 
-3.1°²×°php-5.3.28
+3.1å®‰è£…php-5.3.28
 tar zxvf  php-5.3.28.tar.gz -C /usr/src
 cd /usr/src/php-5.3.28
-./configure --prefix=/usr/local/php --with-mcrypt --with-apxs2=/usr/local/httpd/bin/apxs --with-mysql=/usr/local/mysql/ --with-config-file-path=/usr/local/php --enable-mbstring --enable-sockets && make && make install		//ÅäÖÃ±àÒë²ÎÊı
-make && make install							//±àÒë   °²×°
-make ZEND_EXTRA_LIBS='liconv'						//makeÖ´ĞĞ´íÎóÊ±Ê¹ÓÃ
+./configure --prefix=/usr/local/php --with-mcrypt --with-apxs2=/usr/local/httpd/bin/apxs --with-mysql=/usr/local/mysql/ --with-config-file-path=/usr/local/php --enable-mbstring --enable-sockets && make && make install		//é…ç½®ç¼–è¯‘å‚æ•°
+make && make install							//ç¼–è¯‘   å®‰è£…
+make ZEND_EXTRA_LIBS='liconv'						//makeæ‰§è¡Œé”™è¯¯æ—¶ä½¿ç”¨
 
 
 
-3.2ÅäÖÃphp
-cp /usr/src/php-5.3.28/php.ini-development /usr/local/php/php.ini	//Îªphp´´½¨ÅäÖÃÎÄ¼ş	
-vim /usr/local/php/php.ini						//ĞŞ¸ÄÅäÖÃÎÄ¼ş
-        short_open_tag = On						//ÔÊĞíÊ¶±ğPHP<?....?>Óï·¨£¨ÅäÖÃÎÄ¼şÄÚÈİ£©
-        default_charset = "utf-8"					//ÅäÖÃÄ¬ÈÏ×Ö·û¼¯£¨ÅäÖÃÎÄ¼şÄÚÈİ£©
+3.2é…ç½®php
+cp /usr/src/php-5.3.28/php.ini-development /usr/local/php/php.ini	//ä¸ºphpåˆ›å»ºé…ç½®æ–‡ä»¶	
+vim /usr/local/php/php.ini						//ä¿®æ”¹é…ç½®æ–‡ä»¶
+        short_open_tag = On						//å…è®¸è¯†åˆ«PHP<?....?>è¯­æ³•ï¼ˆé…ç½®æ–‡ä»¶å†…å®¹ï¼‰
+        default_charset = "utf-8"					//é…ç½®é»˜è®¤å­—ç¬¦é›†ï¼ˆé…ç½®æ–‡ä»¶å†…å®¹ï¼‰
 
 
 
-4¡¢°²×°ZendGuardLoader-php-5.3-linux-glibc23-x86_64Ä£¿é			//Ò³Ãæ¼ÓÔØËÙ¶ÈÓÅ»¯php
+4ã€å®‰è£…ZendGuardLoader-php-5.3-linux-glibc23-x86_64æ¨¡å—			//é¡µé¢åŠ è½½é€Ÿåº¦ä¼˜åŒ–php
 tar zxvf  ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz -C /usr/src	
-cd /usr/src/ZendGuardLoader-php-5.3-linux-glibc23-x86_64/php-5.3.x	//½øÈëÄ£¿é´æ·ÅÄ¿Â¼
-cp ZendGuardLoader.so  /usr/local/php/lib/php				//½«Ä£¿é¸´ÖÆµ½phpÄÜÊ¶±ğµÄÄ¿Â¼
+cd /usr/src/ZendGuardLoader-php-5.3-linux-glibc23-x86_64/php-5.3.x	//è¿›å…¥æ¨¡å—å­˜æ”¾ç›®å½•
+cp ZendGuardLoader.so  /usr/local/php/lib/php				//å°†æ¨¡å—å¤åˆ¶åˆ°phpèƒ½è¯†åˆ«çš„ç›®å½•
 					
-echo  zend_extension=/usr/local/php/lib/php/ZendGuardLoader.so >>/usr/local/php/php.ini	//Ê¹phpÄÜ¹»Ê¶±ğÄ£¿é
-echo  zend_loader.enable=1  >> /usr/local/php/php.ini					//ÆôÓÃÄ£¿é
+echo  zend_extension=/usr/local/php/lib/php/ZendGuardLoader.so >>/usr/local/php/php.ini	//ä½¿phpèƒ½å¤Ÿè¯†åˆ«æ¨¡å—
+echo  zend_loader.enable=1  >> /usr/local/php/php.ini					//å¯ç”¨æ¨¡å—
      
 
 
 
-5¡¢LAMP»·¾³µÄÅäÖÃ
+5ã€LAMPç¯å¢ƒçš„é…ç½®
 
-5.1 vim  httpd.conf	//ÅäÖÃhttpdÖ§³Öphp¶¯Ì¬ÍøÕ¾
+5.1 vim  httpd.conf	//é…ç½®httpdæ”¯æŒphpåŠ¨æ€ç½‘ç«™
     AddType application/x-httpd-php  .php
     DirectoryIndex  index.html  index.php
 service httpd restart
     
-5.2°²×°phpMyAdmin mysqlÍ¼Ïñ»¯¹ÜÀí¹¤¾ß
+5.2å®‰è£…phpMyAdmin mysqlå›¾åƒåŒ–ç®¡ç†å·¥å…·
 tar zxvf phpMyAdmin-4.2.5-all-languages.tar.gz -C /usr/src
 cp -r /usr/src/phpMyAdmin-4.2.5-all-languages  /usr/local/httpd/htdocs/mysqld
 
 
-6¡¢ÑéÖ¤
+6ã€éªŒè¯
 
-6.1±à¼­index.phpÎÄ¼ş
+6.1ç¼–è¾‘index.phpæ–‡ä»¶
 vim /usr/local/httpd/htdocs/index.php
-    <?php phpinfo(); ?>			//Èç¹û¿´¼ûphpµÄ½éÉÜÔòhttpdºÍphpÖ®¼äÒÑ¾­½¨Á¢ÁªÏµ
+    <?php phpinfo(); ?>			//å¦‚æœçœ‹è§phpçš„ä»‹ç»åˆ™httpdå’Œphpä¹‹é—´å·²ç»å»ºç«‹è”ç³»
 
-6.2²âÊÔphpºÍmysqlÖ®¼äµÄÁªÏµ
+6.2æµ‹è¯•phpå’Œmysqlä¹‹é—´çš„è”ç³»
 vim /usr/local/httpd/htdocs/mysql.php
-    <?php $link=mysql_connect('local','root','') ; //Á¬½ÓÊı¾İ¿â£¬µÇÂ¼µØÖ·£¬ÓÃ»§Ãû£¬ÃÜÂë
-    if($link) echo 'ok' ;			   //Á¬½Ó³É¹¦ÔòÏÔÊ¾ok·ñÔò²»ÏÔÊ¾
-    mysql_close() ;				   //¹Ø±ÕÊı¾İ¿âÁ¬½Ó
+    <?php $link=mysql_connect('local','root','') ; //è¿æ¥æ•°æ®åº“ï¼Œç™»å½•åœ°å€ï¼Œç”¨æˆ·åï¼Œå¯†ç 
+    if($link) echo 'ok' ;			   //è¿æ¥æˆåŠŸåˆ™æ˜¾ç¤ºokå¦åˆ™ä¸æ˜¾ç¤º
+    mysql_close() ;				   //å…³é—­æ•°æ®åº“è¿æ¥
     ?>
 
-6.3µÇÂ¼mysqlÍ¼ĞÎ»¯¹ÜÀí¹¤¾ß
+6.3ç™»å½•mysqlå›¾å½¢åŒ–ç®¡ç†å·¥å…·
 http://192.168.0.10/mysqld
 
 
-7¡¢php³£¼ûÅäÖÃ²ÎÊı
---prefix=/usr/local/php 				//Ö¸¶¨ PHP °²×°Ä¿Â¼
---with-config-file-path=/usr/local/php			//Ö¸¶¨ÅäÖÃÎÄ¼ş´æ·ÅÄ¿Â¼
---with-mysql=/usr/local/mysql				//Ö¸¶¨mysql°²×°Ä¿Â¼£¬¶ÔmysqlµÄÖ§³Ö
---with-mysqli=/usr/local/mysql/bin/mysql_config   	//mysqliÀ©Õ¹¼¼Êõ¿ÉÒÔµ÷ÓÃmysql£¬¿ÉÒÔÌá¸ßÊı¾İ¿âµÄ·ÃÎÊÎÈ¶¨ĞÔ 
---with-apxs2=/usr/local/apache/bin/apxs 		//±àÒëµÄapacheÄ£¿é£¬²ÎÊıÊÇapxs¹¤¾ßµÄÂ·¾¶ÎÄ¼ş
---with-mcrypt                    			//Ö§³ÖmcryptËã·¨
---with-mhash                     			//Ö§³ÖmhashËã·¨
---with-openssl      					//opensslµÄÖ§³Ö£¬¼ÓÃÜ´«ÊähttpsÊ±ÓÃµ½µÄ
---with-pcre-dir=/usr/local/bin/pcre-config     		//Ö¸¶¨perlµÄÕıÔò¿â°¸°²×°Î»ÖÃ
---enable-sockets    					//¿ªÆôsocketsµÄÖ§³Ö
---enable-bcmath   					//¿ªÆôÍ¼Æ¬´óĞ¡µ÷Õû,Ê¹ÓÃzabbix¼à¿Ø»áÓÃµ½Õâ¸öÄ£¿é
---enable-inline-optimization  				//ÓÅ»¯Ïß³Ì
---enable-mbstring					//ÆôÓÃ¶à×Ö½Ú×Ö·û´®¹¦ÄÜ
+7ã€phpå¸¸è§é…ç½®å‚æ•°
+--prefix=/usr/local/php 				//æŒ‡å®š PHP å®‰è£…ç›®å½•
+--with-config-file-path=/usr/local/php			//æŒ‡å®šé…ç½®æ–‡ä»¶å­˜æ”¾ç›®å½•
+--with-mysql=/usr/local/mysql				//æŒ‡å®šmysqlå®‰è£…ç›®å½•ï¼Œå¯¹mysqlçš„æ”¯æŒ
+--with-mysqli=/usr/local/mysql/bin/mysql_config   	//mysqliæ‰©å±•æŠ€æœ¯å¯ä»¥è°ƒç”¨mysqlï¼Œå¯ä»¥æé«˜æ•°æ®åº“çš„è®¿é—®ç¨³å®šæ€§ 
+--with-apxs2=/usr/local/apache/bin/apxs 		//ç¼–è¯‘çš„apacheæ¨¡å—ï¼Œå‚æ•°æ˜¯apxså·¥å…·çš„è·¯å¾„æ–‡ä»¶
+--with-mcrypt                    			//æ”¯æŒmcryptç®—æ³•
+--with-mhash                     			//æ”¯æŒmhashç®—æ³•
+--with-openssl      					//opensslçš„æ”¯æŒï¼ŒåŠ å¯†ä¼ è¾“httpsæ—¶ç”¨åˆ°çš„
+--with-pcre-dir=/usr/local/bin/pcre-config     		//æŒ‡å®šperlçš„æ­£åˆ™åº“æ¡ˆå®‰è£…ä½ç½®
+--enable-sockets    					//å¼€å¯socketsçš„æ”¯æŒ
+--enable-bcmath   					//å¼€å¯å›¾ç‰‡å¤§å°è°ƒæ•´,ä½¿ç”¨zabbixç›‘æ§ä¼šç”¨åˆ°è¿™ä¸ªæ¨¡å—
+--enable-inline-optimization  				//ä¼˜åŒ–çº¿ç¨‹
+--enable-mbstring					//å¯ç”¨å¤šå­—èŠ‚å­—ç¬¦ä¸²åŠŸèƒ½
 
 
 

@@ -1,47 +1,47 @@
-mysql-proxy£ºÓÃÓÚÊµÏÖmysqlÖ÷´Ó·ÖÀë£¬»ùÓÚÖ÷´Ó¼Ü¹¹
-¶ÁĞ´·ÖÀë´æÔÚµÄ×î´óÎÊÌâ¾ÍÊÇÖ÷´ÓÍ¬²½ÑÓ³Ù
+mysql-proxyï¼šç”¨äºå®ç°mysqlä¸»ä»åˆ†ç¦»ï¼ŒåŸºäºä¸»ä»æ¶æ„
+è¯»å†™åˆ†ç¦»å­˜åœ¨çš„æœ€å¤§é—®é¢˜å°±æ˜¯ä¸»ä»åŒæ­¥å»¶è¿Ÿ
 	
 
-°²×°mysql-proxy£º
-	1¡¢wget https://downloads.mysql.com/archives/get/file/mysql-proxy-0.8.5-linux-el6-x86-64bit.tar.gz
-	2¡¢tar zvxf mysql-proxy-0.8.5-linux-el6-x86-64bit.tar.gz -C /usr/local
-	3¡¢cd /usr/local/
-	4¡¢mv mysql-proxy-0.8.5-linux-el6-x86-64bit/ mysql-proxy
-	5¡¢useradd -r mysql-proxy			#´´½¨ÔËĞĞÓÃ»§
-	6¡¢chown -R root:root mysql-proxy/	#ĞŞ¸ÄÈ¨ÏŞ
-	7¡¢cd mysql-proxy/
-	8¡¢mkdir etc			#´´½¨ÅäÖÃÎÄ¼şÄ¿Â¼
-	9¡¢mkdir logs			#´´½¨ÈÕÖ¾ÎÄ¼şÄ¿Â¼
+å®‰è£…mysql-proxyï¼š
+	1ã€wget https://downloads.mysql.com/archives/get/file/mysql-proxy-0.8.5-linux-el6-x86-64bit.tar.gz
+	2ã€tar zvxf mysql-proxy-0.8.5-linux-el6-x86-64bit.tar.gz -C /usr/local
+	3ã€cd /usr/local/
+	4ã€mv mysql-proxy-0.8.5-linux-el6-x86-64bit/ mysql-proxy
+	5ã€useradd -r mysql-proxy			#åˆ›å»ºè¿è¡Œç”¨æˆ·
+	6ã€chown -R root:root mysql-proxy/	#ä¿®æ”¹æƒé™
+	7ã€cd mysql-proxy/
+	8ã€mkdir etc			#åˆ›å»ºé…ç½®æ–‡ä»¶ç›®å½•
+	9ã€mkdir logs			#åˆ›å»ºæ—¥å¿—æ–‡ä»¶ç›®å½•
 	
 
 	
-ÅäÖÃmysql-proxy£º
-	1¡¢cp share/doc/mysql-proxy/rw-splitting.lua  etc/ 		 #ÊµÏÖmysql¶ÁĞ´·ÖÀëµÄÎÄ¼ş 
-	2¡¢cp share/doc/mysql-proxy/admin-sql.lua  etc/			 #ÊµÏÖmysql¶ÁĞ´·ÖÀëµÄÎÄ¼ş
-	3¡¢vim /etc/mysql-proxy.cnf					#±à¼­ÅäÖÃÎÄ¼ş
+é…ç½®mysql-proxyï¼š
+	1ã€cp share/doc/mysql-proxy/rw-splitting.lua  etc/ 		 #å®ç°mysqlè¯»å†™åˆ†ç¦»çš„æ–‡ä»¶ 
+	2ã€cp share/doc/mysql-proxy/admin-sql.lua  etc/			 #å®ç°mysqlè¯»å†™åˆ†ç¦»çš„æ–‡ä»¶
+	3ã€vim /etc/mysql-proxy.cnf					#ç¼–è¾‘é…ç½®æ–‡ä»¶
 		[mysql-proxy]
-		user=root					#ÔËĞĞmysql-proxyµÄÓÃ»§
-		admin-username=root			#Á¬½ÓÖ÷´ÓµÄÓÃ»§£¬ÔÚÖ÷´ÓÖĞ±ØĞëÊÚÈ¨mysql-proxy¿ÉÒÔµÇÂ¼
-		admin-password=123.com		#ÓÃ»§ÃÜÂë£¬Ö÷´ÓµÄÓÃ»§ÃûºÍÃÜÂë±ØĞëÏàÍ¬
-		proxy-address=0.0.0.0:4041	#¼àÌıµØÖ·ºÍ¶Ë¿Ú
-		proxy-backend-addresses=192.168.0.10:3306				#Ö÷mysql·şÎñÆ÷
-		proxy-read-only-backend-addresses=192.168.0.40:3306		#´Ómysql·şÎñÆ÷(Ö»¶Á)
-		proxy-read-only-backend-addresses=192.168.0.60:3306		#´Ómysql·şÎñÆ÷(Ö»¶Á)
-		proxy-lua-script=/usr/local/mysql-proxy/etc/rw-splitting.lua	#ÊµÏÖmysql¶ÁĞ´·ÖÀëµÄÖØÒªÎÄ¼şÎ»ÖÃ
-		admin-lua-script=/usr/local/mysql-proxy/etc/admin-sql.lua		#ÊµÏÖmysql¶ÁĞ´·ÖÀëµÄÖØÒªÎÄ¼şÎ»ÖÃ
-		pid-file=/var/run/mysql-proxy.pid						#PIDÎÄ¼ş
-		log-file=/usr/local/mysql-proxy/logs/mysql-proxy.log	#ÈÕÖ¾ÎÄ¼ş
-		log-level=info			#ÈÕÖ¾¼¶±ğ
-		daemon=true				#ÊÇ·ñÒÑÊØ»¤½ø³Ì·½Ê½ÔËĞĞ
-		keepalive=true 			#mysql-proxy±ÀÀ£Ê±£¬³¢ÊÔÖØÆô
-	4¡¢chmod 660 /etc/mysql-proxy.cnf		#ĞŞ¸ÄÈ¨ÏŞ(±ØĞë)
+		user=root					#è¿è¡Œmysql-proxyçš„ç”¨æˆ·
+		admin-username=root			#è¿æ¥ä¸»ä»çš„ç”¨æˆ·ï¼Œåœ¨ä¸»ä»ä¸­å¿…é¡»æˆæƒmysql-proxyå¯ä»¥ç™»å½•
+		admin-password=123.com		#ç”¨æˆ·å¯†ç ï¼Œä¸»ä»çš„ç”¨æˆ·åå’Œå¯†ç å¿…é¡»ç›¸åŒ
+		proxy-address=0.0.0.0:4041	#ç›‘å¬åœ°å€å’Œç«¯å£
+		proxy-backend-addresses=192.168.0.10:3306				#ä¸»mysqlæœåŠ¡å™¨
+		proxy-read-only-backend-addresses=192.168.0.40:3306		#ä»mysqlæœåŠ¡å™¨(åªè¯»)
+		proxy-read-only-backend-addresses=192.168.0.60:3306		#ä»mysqlæœåŠ¡å™¨(åªè¯»)
+		proxy-lua-script=/usr/local/mysql-proxy/etc/rw-splitting.lua	#å®ç°mysqlè¯»å†™åˆ†ç¦»çš„é‡è¦æ–‡ä»¶ä½ç½®
+		admin-lua-script=/usr/local/mysql-proxy/etc/admin-sql.lua		#å®ç°mysqlè¯»å†™åˆ†ç¦»çš„é‡è¦æ–‡ä»¶ä½ç½®
+		pid-file=/var/run/mysql-proxy.pid						#PIDæ–‡ä»¶
+		log-file=/usr/local/mysql-proxy/logs/mysql-proxy.log	#æ—¥å¿—æ–‡ä»¶
+		log-level=info			#æ—¥å¿—çº§åˆ«
+		daemon=true				#æ˜¯å¦å·²å®ˆæŠ¤è¿›ç¨‹æ–¹å¼è¿è¡Œ
+		keepalive=true 			#mysql-proxyå´©æºƒæ—¶ï¼Œå°è¯•é‡å¯
+	4ã€chmod 660 /etc/mysql-proxy.cnf		#ä¿®æ”¹æƒé™(å¿…é¡»)
   
   
-ĞŞ¸Ärw-splitting.lua(ÎªÁË²âÊÔÊÔÑéĞ§¹û)
+ä¿®æ”¹rw-splitting.lua(ä¸ºäº†æµ‹è¯•è¯•éªŒæ•ˆæœ)
 vim /usr/local/mysql-proxy/etc/rw-splitting.lua 
 	if not proxy.global.config.rwsplit then
 		proxy.global.config.rwsplit = {
-			min_idle_connections = 1,		#Ä¬ÈÏ³¬¹ı4¸öÁ¬½ÓÊıÊ±£¬¿ªÊ¼¶ÁĞ´·ÖÀë£¬¸ÄÎª1£¬ÆäÓà²»¶¯
+			min_idle_connections = 1,		#é»˜è®¤è¶…è¿‡4ä¸ªè¿æ¥æ•°æ—¶ï¼Œå¼€å§‹è¯»å†™åˆ†ç¦»ï¼Œæ”¹ä¸º1ï¼Œå…¶ä½™ä¸åŠ¨
 			max_idle_connections = 8,		
 			is_debug = false
 		}

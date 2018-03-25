@@ -1,94 +1,94 @@
-redisµÄ¸ÅÄî£º
-	RedisÊÇÒ»¸ö¿ªÔ´µÄ»ùÓÚÄÚ´æÒà¿É³Ö¾Ã»¯µÄÈÕÖ¾ĞÍ¡¢Key-ValueÊı¾İ¿â
+redisçš„æ¦‚å¿µï¼š
+	Redisæ˜¯ä¸€ä¸ªå¼€æºçš„åŸºäºå†…å­˜äº¦å¯æŒä¹…åŒ–çš„æ—¥å¿—å‹ã€Key-Valueæ•°æ®åº“
 	
-redis¹¤¾ß£º
-	redis-benchmark 		#ÓÃÓÚ½øĞĞredisĞÔÄÜ²âÊÔµÄ¹¤¾ß
-	redis-sentinel 			#ÓÃÓÚ¼¯Èº¹ÜÀí
-	redis-cli 				#redis¿Í»§¶Ë
-	redis-server 			#redis·şÎñ¶Ë
-	redis-check-aof			#ÓÃÓÚĞŞ¸´³öÎÊÌâµÄAOFÎÄ¼ş
-	redis-check-dump 		#ÓÃÓÚĞŞ¸´³öÎÊÌâµÄdump.rdbÎÄ¼ş
+rediså·¥å…·ï¼š
+	redis-benchmark 		#ç”¨äºè¿›è¡Œredisæ€§èƒ½æµ‹è¯•çš„å·¥å…·
+	redis-sentinel 			#ç”¨äºé›†ç¾¤ç®¡ç†
+	redis-cli 				#rediså®¢æˆ·ç«¯
+	redis-server 			#redisæœåŠ¡ç«¯
+	redis-check-aof			#ç”¨äºä¿®å¤å‡ºé—®é¢˜çš„AOFæ–‡ä»¶
+	redis-check-dump 		#ç”¨äºä¿®å¤å‡ºé—®é¢˜çš„dump.rdbæ–‡ä»¶
 
 
-°²×°redis
-	1¡¢¡¢°²×°ÒÀÀµ°ütcl,8.5°æ±¾ÒÔÉÏ
-		tar zxvf tcl8.6.0-src.tar.gz -C /usr/src/		#½âÑ¹		
-		cd /usr/src/tcl8.6.0/unix/						#½øÈëÔ´´úÂëÄ¿Â¼
-		./configure && make && make install				#ÅäÖÃ ±àÒë °²×°
+å®‰è£…redis
+	1ã€ã€å®‰è£…ä¾èµ–åŒ…tcl,8.5ç‰ˆæœ¬ä»¥ä¸Š
+		tar zxvf tcl8.6.0-src.tar.gz -C /usr/src/		#è§£å‹		
+		cd /usr/src/tcl8.6.0/unix/						#è¿›å…¥æºä»£ç ç›®å½•
+		./configure && make && make install				#é…ç½® ç¼–è¯‘ å®‰è£…
 
-	2¡¢°²×°redis
-		rpm -ivh jemalloc-3.6.0-1.el6.x86_64.rpm 		#°²×°ÒÀÀµ¿â
-		rpm -ivh redis-3.2.8-1.el6.remi.x86_64.rpm 		#°²×°redis
-		service redis start								#Æô¶¯·şÎñ
-		ss -nalt | grep 6379							#²é¿´·şÎñÊÇ·ñÆô¶¯
+	2ã€å®‰è£…redis
+		rpm -ivh jemalloc-3.6.0-1.el6.x86_64.rpm 		#å®‰è£…ä¾èµ–åº“
+		rpm -ivh redis-3.2.8-1.el6.remi.x86_64.rpm 		#å®‰è£…redis
+		service redis start								#å¯åŠ¨æœåŠ¡
+		ss -nalt | grep 6379							#æŸ¥çœ‹æœåŠ¡æ˜¯å¦å¯åŠ¨
 
 
-redisÖ÷ÒªÊı¾İÀàĞÍ£º
-	1.×Ö·û´®(strings)
-	2.ÁĞ±í(lists)
-	3.¼¯ºÏ(sets)
-	4.ÓĞĞò¼¯ºÏ(sorted sets)
-	5.¹şÏ£(hashes)
+redisä¸»è¦æ•°æ®ç±»å‹ï¼š
+	1.å­—ç¬¦ä¸²(strings)
+	2.åˆ—è¡¨(lists)
+	3.é›†åˆ(sets)
+	4.æœ‰åºé›†åˆ(sorted sets)
+	5.å“ˆå¸Œ(hashes)
 		
-redis keyµÄÃüÁî¹æÔò£º
-	1.key²»ÒªÌ«³¤£¬±ÜÃâ¹ı¶ÈÏûºÄÄÚ´æ£¬½µµÍ²éÕÒĞ§ÂÊ
-	2.ÔÚÒ»¸öÏîÄ¿ÖĞ£¬key×îºÃÊ¹ÓÃÍ³Ò»µÄÃüÃûÄ£Ê½
+redis keyçš„å‘½ä»¤è§„åˆ™ï¼š
+	1.keyä¸è¦å¤ªé•¿ï¼Œé¿å…è¿‡åº¦æ¶ˆè€—å†…å­˜ï¼Œé™ä½æŸ¥æ‰¾æ•ˆç‡
+	2.åœ¨ä¸€ä¸ªé¡¹ç›®ä¸­ï¼Œkeyæœ€å¥½ä½¿ç”¨ç»Ÿä¸€çš„å‘½åæ¨¡å¼
 		
-redis-cliµÄ»ù±¾Ê¹ÓÃ£º
-	redis-cliÖ÷ÒªÓÃÓÚÁ¬½Óredis-server£¬¶àredis-server½øĞĞ²Ù×÷
-	³£ÓÃÑ¡Ïî£º
-		--help 		#»ñÈ¡°ïÖúĞÅÏ¢
-		-h			#Ö¸¶¨redisÊı¾İ¿âµØÖ·£¬Ä¬ÈÏÎªlocalhost
-		-p			#Ö¸¶¨¶Ë¿Ú£¬Ä¬ÈÏÎª6379
-		-a			#Ö¸¶¨ÈÏÖ¤ÃÜÂë£¬Ä¬ÈÏÎª¿Õ
-		-n			#Ö¸¶¨µÇÂ¼Êı¾İ¿â£¬Ä¬ÈÏÎª0ºÅÊı¾İ¿â
+redis-cliçš„åŸºæœ¬ä½¿ç”¨ï¼š
+	redis-cliä¸»è¦ç”¨äºè¿æ¥redis-serverï¼Œå¤šredis-serverè¿›è¡Œæ“ä½œ
+	å¸¸ç”¨é€‰é¡¹ï¼š
+		--help 		#è·å–å¸®åŠ©ä¿¡æ¯
+		-h			#æŒ‡å®šredisæ•°æ®åº“åœ°å€ï¼Œé»˜è®¤ä¸ºlocalhost
+		-p			#æŒ‡å®šç«¯å£ï¼Œé»˜è®¤ä¸º6379
+		-a			#æŒ‡å®šè®¤è¯å¯†ç ï¼Œé»˜è®¤ä¸ºç©º
+		-n			#æŒ‡å®šç™»å½•æ•°æ®åº“ï¼Œé»˜è®¤ä¸º0å·æ•°æ®åº“
 	
 		
 		
-Èı¡¢redisµÄ»ù±¾²Ù×÷
+ä¸‰ã€redisçš„åŸºæœ¬æ“ä½œ
 
-×Ö·û´®								
-	set key value [EX seconds]				#´´½¨×Ö·û´®,EXÉèÖÃ³¬Ê±Ê±¼ä	
-	get key									#»ñÈ¡Ö¸¶¨keyµÄÖµ
+å­—ç¬¦ä¸²								
+	set key value [EX seconds]				#åˆ›å»ºå­—ç¬¦ä¸²,EXè®¾ç½®è¶…æ—¶æ—¶é—´	
+	get key									#è·å–æŒ‡å®škeyçš„å€¼
 	
-ÁĞ±í								
-	rpush key value1 value2 ... 			#´´½¨ÓĞĞòÁĞ±í,ÏÈ½øÏÈ³ö(³£ÓÃ)
-	lpush key value1 value2 ...				#´´½¨ÓĞĞòÁĞ±í,ÏÈ½øºó³ö
-	lrange key start stop					#»ñÈ¡ÁĞ±íÄÚµÄÔªËØ
+åˆ—è¡¨								
+	rpush key value1 value2 ... 			#åˆ›å»ºæœ‰åºåˆ—è¡¨,å…ˆè¿›å…ˆå‡º(å¸¸ç”¨)
+	lpush key value1 value2 ...				#åˆ›å»ºæœ‰åºåˆ—è¡¨,å…ˆè¿›åå‡º
+	lrange key start stop					#è·å–åˆ—è¡¨å†…çš„å…ƒç´ 
 	
-¼¯ºÏ£º
-	sadd  key  value						#´´½¨¼¯ºÏ
-	smembers key							#»ñÈ¡¼¯ºÏµÄÖµ
-	sismember key value						#ÅĞ¶ÏvalueµÄÖµÊÇ·ñÔÚÕâ¸ö¼¯ºÏÄÚ
-	sinter key1 key2						#·µ»Ø½»¼¯
-	sunion key1 key2						#·µ»Ø²¢¼¯
-	sdiff key1 key2							#·µ»Ø²î¼¯
+é›†åˆï¼š
+	sadd  key  value						#åˆ›å»ºé›†åˆ
+	smembers key							#è·å–é›†åˆçš„å€¼
+	sismember key value						#åˆ¤æ–­valueçš„å€¼æ˜¯å¦åœ¨è¿™ä¸ªé›†åˆå†…
+	sinter key1 key2						#è¿”å›äº¤é›†
+	sunion key1 key2						#è¿”å›å¹¶é›†
+	sdiff key1 key2							#è¿”å›å·®é›†
 
-hash£º
-	hset key hash_name hash_value			#´´½¨hashÓ³Éä¹ØÏµ£¬ÀàËÆÓÚpythonÖĞµÄ×ÖµäÊı¾İ
-	hgetall key								#»ñÈ¡Ö¸¶¨hashµÄÖµ
+hashï¼š
+	hset key hash_name hash_value			#åˆ›å»ºhashæ˜ å°„å…³ç³»ï¼Œç±»ä¼¼äºpythonä¸­çš„å­—å…¸æ•°æ®
+	hgetall key								#è·å–æŒ‡å®šhashçš„å€¼
 	
-Í¨ÓÃÃüÁî£º
-	help @server							#²é¿´Ò»×éÃüÁî°ïÖú
-	help set								#²é¿´Ö¸¶¨ÃüÁî°ïÖú
-	del key									#É¾³ıÖ¸¶¨key
-	expire key								#ÎªÖ¸¶¨keyÉèÖÃ³¬Ê±Ê±¼ä
-	ttl key									#²é¿´keyµÄ³¬Ê±Ê±¼ä
-	persist key								#È¡ÏûÖ¸¶¨keyµÄ³¬Ê±Ê±¼ä
-	type key								#·µ»ØÖ¸¶¨keyµÄÀàĞÍ
-	rename key1 key2						#½«key1ÖØÃüÃûÎªkey2
-	flushdb									#Çå¿Õµ±Ç°Êı¾İ¿âµÄkey
-	flushall								#Çå¿ÕËùÓĞÊı¾İ¿âµÄkey
-	dbsize									#·µ»Øµ±Ç°Êı¾İ¿âµÄkeyÊıÁ¿
+é€šç”¨å‘½ä»¤ï¼š
+	help @server							#æŸ¥çœ‹ä¸€ç»„å‘½ä»¤å¸®åŠ©
+	help set								#æŸ¥çœ‹æŒ‡å®šå‘½ä»¤å¸®åŠ©
+	del key									#åˆ é™¤æŒ‡å®škey
+	expire key								#ä¸ºæŒ‡å®škeyè®¾ç½®è¶…æ—¶æ—¶é—´
+	ttl key									#æŸ¥çœ‹keyçš„è¶…æ—¶æ—¶é—´
+	persist key								#å–æ¶ˆæŒ‡å®škeyçš„è¶…æ—¶æ—¶é—´
+	type key								#è¿”å›æŒ‡å®škeyçš„ç±»å‹
+	rename key1 key2						#å°†key1é‡å‘½åä¸ºkey2
+	flushdb									#æ¸…ç©ºå½“å‰æ•°æ®åº“çš„key
+	flushall								#æ¸…ç©ºæ‰€æœ‰æ•°æ®åº“çš„key
+	dbsize									#è¿”å›å½“å‰æ•°æ®åº“çš„keyæ•°é‡
 	
 	
-redis¶©ÔÄºÍ·¢²¼
-	ÆµµÀ£ºÔÚÒ»¸öÆµµÀÄÚµÄÏû·ÑÕß¶¼¿ÉÒÔ½ÓÊÕÉú³ÉÕßÔÚÕâ¸öÆµµÀÄÚµÄĞÅÏ¢
-	subscribe ÆµµÀ			#¶©ÔÄÒ»¸öÆµµÀ
-	psubscribe ÆµµÀ			#Í¨¹ıÆ¥Åä¶¨ÒåÒ»¸ö»ò¶à¸öÆµµÀ
-		Àı£ºpsubscribe *    	#¶©ÔÄËùÓĞÆµµÀ
-			psubscribe s[io] 	#¶©ÔÄsiºÍsoÁ½¸öÆµµÀ
-	publish ÆµµÀ ÏûÏ¢		#ÏòÖ¸¶¨ÆµµÀ·¢ËÍÏûÏ¢
+redisè®¢é˜…å’Œå‘å¸ƒ
+	é¢‘é“ï¼šåœ¨ä¸€ä¸ªé¢‘é“å†…çš„æ¶ˆè´¹è€…éƒ½å¯ä»¥æ¥æ”¶ç”Ÿæˆè€…åœ¨è¿™ä¸ªé¢‘é“å†…çš„ä¿¡æ¯
+	subscribe é¢‘é“			#è®¢é˜…ä¸€ä¸ªé¢‘é“
+	psubscribe é¢‘é“			#é€šè¿‡åŒ¹é…å®šä¹‰ä¸€ä¸ªæˆ–å¤šä¸ªé¢‘é“
+		ä¾‹ï¼špsubscribe *    	#è®¢é˜…æ‰€æœ‰é¢‘é“
+			psubscribe s[io] 	#è®¢é˜…siå’Œsoä¸¤ä¸ªé¢‘é“
+	publish é¢‘é“ æ¶ˆæ¯		#å‘æŒ‡å®šé¢‘é“å‘é€æ¶ˆæ¯
 	
 	
 	

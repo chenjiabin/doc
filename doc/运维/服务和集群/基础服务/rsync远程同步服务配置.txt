@@ -1,53 +1,53 @@
-rsyncÔ¶³ÌÍ¬²½·şÎñ,£¬ÔÚÍ¬²½ÎÄ¼şµÄÍ¬Ê±,¿ÉÒÔ±£³ÖÔ­À´ÎÄ¼şµÄÈ¨ÏŞ¡¢Ê±¼ä¡¢ÈíÓ²Á´½ÓµÈĞÅÏ¢ 
-rsyncÊÇxinetdµÄ×Ó·şÎñ,Òò´ËĞèÒªÆô¶¯xinetd·şÎñ¡£
+rsyncè¿œç¨‹åŒæ­¥æœåŠ¡,ï¼Œåœ¨åŒæ­¥æ–‡ä»¶çš„åŒæ—¶,å¯ä»¥ä¿æŒåŸæ¥æ–‡ä»¶çš„æƒé™ã€æ—¶é—´ã€è½¯ç¡¬é“¾æ¥ç­‰ä¿¡æ¯ 
+rsyncæ˜¯xinetdçš„å­æœåŠ¡,å› æ­¤éœ€è¦å¯åŠ¨xinetdæœåŠ¡ã€‚
 
-ÅäÖÃrsync·şÎñÆ÷
-rsync·şÎñÆ÷Ö÷ÒªÓĞÈı¸öÅäÖÃÎÄ¼ş(ĞèÒª×Ô¼ºÊÖ¶¯´´½¨)
-	1¡¢rsyncd.conf
-	2¡¢rsyncd.secrets
-	3¡¢rsyncd.motd
+é…ç½®rsyncæœåŠ¡å™¨
+rsyncæœåŠ¡å™¨ä¸»è¦æœ‰ä¸‰ä¸ªé…ç½®æ–‡ä»¶(éœ€è¦è‡ªå·±æ‰‹åŠ¨åˆ›å»º)
+	1ã€rsyncd.conf
+	2ã€rsyncd.secrets
+	3ã€rsyncd.motd
 	
-mkdir /etc/rsyncd        		#´´½¨ÅäÖÃÄ¿Â¼
+mkdir /etc/rsyncd        		#åˆ›å»ºé…ç½®ç›®å½•
 cd /etc/rsyncd
-touch rsyncd.conf               #´´½¨Ö÷ÅäÖÃÎÄ¼ş
-touch rsyncd.secrets          	#´´½¨ÓÃ»§ÃÜÂëÎÄ¼ş
-chmod 600 rsyncd.secrets  		#ĞŞ¸ÄÓÃ»§ÃÜÂëÎÄ¼şÈ¨ÏŞ
-touch rsyncd.motd            	#´´½¨¶¨Òå·şÎñĞÅÏ¢µÄÎÄ¼ş
+touch rsyncd.conf               #åˆ›å»ºä¸»é…ç½®æ–‡ä»¶
+touch rsyncd.secrets          	#åˆ›å»ºç”¨æˆ·å¯†ç æ–‡ä»¶
+chmod 600 rsyncd.secrets  		#ä¿®æ”¹ç”¨æˆ·å¯†ç æ–‡ä»¶æƒé™
+touch rsyncd.motd            	#åˆ›å»ºå®šä¹‰æœåŠ¡ä¿¡æ¯çš„æ–‡ä»¶
 
 
-´î½¨rsync·şÎñÆ÷£º
-È«¾ÖÅäÖÃ£º
-port = 873   				#¼àÌı¶Ë¿Ú 
-address = 192.168.1.1  		#¼àÌıµØÖ· 
-uid = root 					#ÔËĞĞÓÃ»§
-gid = root					#ÔËĞĞ×é			
-use chroot = yes   						#ÊÇ·ñÏŞÖÆÔÚÖ¸¶¨Ä¿Â¼
-read only = yes							#ÊÇ·ñÖ»¶Á
-hosts deny = *							#¾Ü¾øµØÖ·
-hosts allow = 192.168.1.0/24  			#ÔÊĞíµØÖ· 
-max connections = 5 					#×î´óÁ¬½ÓÊı
-motd file = /etc/rsyncd/rsyncd.motd		#Ö¸¶¨·şÎñÆ÷ĞÅÏ¢ÎÄ¼ş	
-log file = /var/log/rsync.log			#ÈÕÖ¾ÎÄ¼ş
-pid file = /var/run/rsync.pid			#pidÎÄ¼ş
-timeout = 300				#³¬Ê±Ê±¼ä
+æ­å»ºrsyncæœåŠ¡å™¨ï¼š
+å…¨å±€é…ç½®ï¼š
+port = 873   				#ç›‘å¬ç«¯å£ 
+address = 192.168.1.1  		#ç›‘å¬åœ°å€ 
+uid = root 					#è¿è¡Œç”¨æˆ·
+gid = root					#è¿è¡Œç»„			
+use chroot = yes   						#æ˜¯å¦é™åˆ¶åœ¨æŒ‡å®šç›®å½•
+read only = yes							#æ˜¯å¦åªè¯»
+hosts deny = *							#æ‹’ç»åœ°å€
+hosts allow = 192.168.1.0/24  			#å…è®¸åœ°å€ 
+max connections = 5 					#æœ€å¤§è¿æ¥æ•°
+motd file = /etc/rsyncd/rsyncd.motd		#æŒ‡å®šæœåŠ¡å™¨ä¿¡æ¯æ–‡ä»¶	
+log file = /var/log/rsync.log			#æ—¥å¿—æ–‡ä»¶
+pid file = /var/run/rsync.pid			#pidæ–‡ä»¶
+timeout = 300				#è¶…æ—¶æ—¶é—´
 
 
-Ä£¿éÅäÖÃ£º
+æ¨¡å—é…ç½®ï¼š
 [web] 
-path = /var/www/html 					   #±¸·İÄ¿Â¼
-auth users = apache						   #ÊÚÈ¨ÓÃ»§
-secrets file = /etc/rsyncd/rsyncd.secrets  #Ö¸¶¨ÕËºÅÃÜÂëÎÄ¼ş 
-dont compress = *.gz,*.bz2,*.zip,*.xz	   #Í¬²½Ê±²»ÔÙÑ¹ËõµÄÎÄ¼ş
-comment = web							   #·şÎñÆ÷×¢ÊÍ
-exclude = data   						   #ÅÅ³ıÄ¿Â¼
+path = /var/www/html 					   #å¤‡ä»½ç›®å½•
+auth users = apache						   #æˆæƒç”¨æˆ·
+secrets file = /etc/rsyncd/rsyncd.secrets  #æŒ‡å®šè´¦å·å¯†ç æ–‡ä»¶ 
+dont compress = *.gz,*.bz2,*.zip,*.xz	   #åŒæ­¥æ—¶ä¸å†å‹ç¼©çš„æ–‡ä»¶
+comment = web							   #æœåŠ¡å™¨æ³¨é‡Š
+exclude = data   						   #æ’é™¤ç›®å½•
 
 
-±à¼­/etc/rsyncd/rsyncd.secretsÎÄ¼ş£º
-	¸ñÊ½£º
-		username:password	#ÓÃ»§ºÍÃÜÂë×îºÃ²»ÒªºÍÏµÍ³ÓÃ»§ºÍÃÜÂëÒ»Ñù
+ç¼–è¾‘/etc/rsyncd/rsyncd.secretsæ–‡ä»¶ï¼š
+	æ ¼å¼ï¼š
+		username:password	#ç”¨æˆ·å’Œå¯†ç æœ€å¥½ä¸è¦å’Œç³»ç»Ÿç”¨æˆ·å’Œå¯†ç ä¸€æ ·
 		apache:123.com
 
-ÅäÖÃÆô¶¯½Å±¾rsync£º
+é…ç½®å¯åŠ¨è„šæœ¬rsyncï¼š
 service rsync {
         disable = no
         socket_type     = stream
@@ -55,31 +55,31 @@ service rsync {
         user            = root
         server          = /usr/bin/rsync
         server_args     = --daemon  --config=/etc/rsyncd/rsyncd.conf   
-			#ÕâÀïÌí¼ÓrsyncµÄ·şÎñÑ¡Ïî
+			#è¿™é‡Œæ·»åŠ rsyncçš„æœåŠ¡é€‰é¡¹
         log_on_failure  += USERID
 	}
 	
-service xinetd restart			#Æô¶¯·şÎñ,ĞèÒª°²×°xinetd·şÎñ
-/usr/bin/rsync --daemon --config=/etc/rsyncd/rsyncd.conf	#Æô¶¯·şÎñ
+service xinetd restart			#å¯åŠ¨æœåŠ¡,éœ€è¦å®‰è£…xinetdæœåŠ¡
+/usr/bin/rsync --daemon --config=/etc/rsyncd/rsyncd.conf	#å¯åŠ¨æœåŠ¡
 
 
-¿Í»§¶ËÍ¬²½£º
-rsync -avzP apache@192.168.1.1::web /root/rsync		#Í¬²½
-#apache£ºÓÃ»§  #webÍ¬²½Ä£¿é		#/root/rsync±£´æµ½±¾µØµÄÄ¿Â¼
-	#»Ø³µºóÊäÈërsyncd.secretsÎÄ¼şÖĞapache¶ÔÓ¦µÄÃÜÂë
+å®¢æˆ·ç«¯åŒæ­¥ï¼š
+rsync -avzP apache@192.168.1.1::web /root/rsync		#åŒæ­¥
+#apacheï¼šç”¨æˆ·  #webåŒæ­¥æ¨¡å—		#/root/rsyncä¿å­˜åˆ°æœ¬åœ°çš„ç›®å½•
+	#å›è½¦åè¾“å…¥rsyncd.secretsæ–‡ä»¶ä¸­apacheå¯¹åº”çš„å¯†ç 
 
-ËµÃ÷£º
--z:´«ÊäÊ±Ñ¹Ëõ£» 
--P:ÏÔÊ¾´«Êä½ø¶È£» 
--v:´«ÊäÊ±µÄ½ø¶ÈµÈĞÅÏ¢
--a:¹éµµ,Ïàµ±ÓÚ-rlptgoD£¬
-	-r:µİ¹é 
-	-l:¿½±´Á´½ÓÎÄ¼ş
-	-p:±£³ÖÎÄ¼şÔ­ÓĞÈ¨ÏŞ
-	-t:±£³ÖÎÄ¼şÔ­ÓĞÊ±¼ä
-	-g:±£³ÖÎÄ¼şÔ­ÓĞÓÃ»§×é
-	-o:±£³ÖÎÄ¼şÔ­ÓĞÊôÖ÷
-	-D:Ïàµ±ÓÚ¿éÉè±¸ÎÄ¼ş 
+è¯´æ˜ï¼š
+-z:ä¼ è¾“æ—¶å‹ç¼©ï¼› 
+-P:æ˜¾ç¤ºä¼ è¾“è¿›åº¦ï¼› 
+-v:ä¼ è¾“æ—¶çš„è¿›åº¦ç­‰ä¿¡æ¯
+-a:å½’æ¡£,ç›¸å½“äº-rlptgoDï¼Œ
+	-r:é€’å½’ 
+	-l:æ‹·è´é“¾æ¥æ–‡ä»¶
+	-p:ä¿æŒæ–‡ä»¶åŸæœ‰æƒé™
+	-t:ä¿æŒæ–‡ä»¶åŸæœ‰æ—¶é—´
+	-g:ä¿æŒæ–‡ä»¶åŸæœ‰ç”¨æˆ·ç»„
+	-o:ä¿æŒæ–‡ä»¶åŸæœ‰å±ä¸»
+	-D:ç›¸å½“äºå—è®¾å¤‡æ–‡ä»¶ 
 
 
 

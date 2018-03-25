@@ -1,0 +1,59 @@
+docker-registry：
+    docker-registry是基于python的一个开源项目，用于构建私有镜像注册服务器
+    官方也提供了docker-registry镜像，因此用户可以选择是基于容器还是自行安装进行构建私有仓库
+
+基于容器运行：
+    docker run -d -p 5000:5000 -v /usr/local/image:/tmp/registry registry
+
+本地安装运行：
+    apt-get install python-pip              #安装pip
+    pip install docker-registry             #安装docker-registry
+    gunicorn --access-logfile /tmp/docker_registry_access.log \
+             --error-logfile /tmp/docker_registry_error.log \
+             -k gevent --max-requests 100 \
+             --graceful-timeout 3600 -t 3600 \
+             -b 0.0.0.0:5000 -w 1 docker_registry.wsgi:application    #启动docker-registry
+
+用户认证：
+    在生产环境中，还需对私有仓库实现访问代理、用户认证等功能
+    实现原理：
+        1、让registry服务器监听在127.0.0.1:8888上
+        2、使用nginx对外监听5000端口，当访问nginx的5000端口时转发到本机的8888端口上
+
+
+    mkdir -p /docker/images                         #创建存放镜像的目录
+    #启动registry容器
+    docker run -d --name registry -p 127.0.0.1:8888:5000 -v /docker/images:/var/lib/registry/ registry
+    apt-get install nginx                           #安装nginx
+    vim /etc/nginx/conf.d/docker_registry.conf      #创建配置文件
+
+        #docker registry config
+        #listen port 5000
+        #proxy 127.0.0.1:8888
+        #password file /etc/nginx/docker_password
+
+        upstream registry {
+            server localhost:8888;
+        }
+
+        server {
+        	listen 5000;
+        	server_name img.docker.com;
+
+        	location / {
+                    auth_basic "please input username and password";
+                    auth_basic_user_file docker_password;
+        	    proxy_pass http://registry;
+        	}
+        }
+
+
+    apt-get install apache2-utils                           #安装htpasswd命令
+    htpasswd -c /etc/nginx/docker_password test             #创建用户，提示输入密码，如果出现403请查看密码文件的权限和路径
+        -c：创建密码文件，第一次创建时使用，否则会清空密码文件
+
+    service nginx configtest                #检查配置文件语法
+    service nginx restart                   #重启nginx
+    ss -tnl                                 #查看端口监听情况
+
+    http://192.168.1.2:5000/v2/_catalog     #在浏览器中访问，输入用户名和密码

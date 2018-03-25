@@ -1,69 +1,69 @@
-±àÒë°²×°mysql£º
+ç¼–è¯‘å®‰è£…mysqlï¼š
 
-1¡¢×¼±¸¹¤×÷
-rpm -e mysql  mysql-server --nodeps				#Ğ¶ÔØrpm°²×°µÄmysql
-yum -y install ncurses-devel-5.7-3.20090208.el6.x86_64		#°²×°±àÒëmysqlÊ±ĞèÒªµ÷ÓÃµÄ²å¼ş
-userdel -r mysql						#É¾³ımysqlÓÃ»§
-groupadd -g 27 mysql						#´´½¨mysql×é
-useradd -M -u 27 -g 27 -s /sbin/nologin mysql			#´´½¨mysqlÓÃ»§²¢¼ÓÈëmysql×é£¬ÔËĞĞmysqlÊ±Ê¹ÓÃ
-
-
-2¡¢±àÒë°²×°
-±àÒë°²×°cmake£º							#ÅäÖÃmysqlÊ±Ê¹ÓÃµÄ¹¤¾ß
-tar zxvf cmake-2.8.6.tar.gz -C /usr/src/			#½âÑ¹				
-cd /usr/src/cmake-2.8.6/					#½øÈë³ÌĞòÄ¿Â¼
-./configure && gmake && gmake install				#ÅäÖÃ  ±àÒë  °²×°
+1ã€å‡†å¤‡å·¥ä½œ
+rpm -e mysql  mysql-server --nodeps				#å¸è½½rpmå®‰è£…çš„mysql
+yum -y install ncurses-devel-5.7-3.20090208.el6.x86_64		#å®‰è£…ç¼–è¯‘mysqlæ—¶éœ€è¦è°ƒç”¨çš„æ’ä»¶
+userdel -r mysql						#åˆ é™¤mysqlç”¨æˆ·
+groupadd -g 27 mysql						#åˆ›å»ºmysqlç»„
+useradd -M -u 27 -g 27 -s /sbin/nologin mysql			#åˆ›å»ºmysqlç”¨æˆ·å¹¶åŠ å…¥mysqlç»„ï¼Œè¿è¡Œmysqlæ—¶ä½¿ç”¨
 
 
-±àÒë°²×°mysql
-tar zxvf mysql-5.5.22.tar.gz -C /usr/src/			#½âÑ¹
-cd  mysql-5.5.22						#½øÈë³ÌĞòÄ¿Â¼
-cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DSYSCONFDIR=/etc -DDEFAULT_CHARSET=utf8  -DDEFAULT_COLLATION=utf8_general_ci  -DWITH_EXTRA_CHARSETS=all					#ÅäÖÃ°²×°²ÎÊı
-make && make install						#±àÒë °²×°
+2ã€ç¼–è¯‘å®‰è£…
+ç¼–è¯‘å®‰è£…cmakeï¼š							#é…ç½®mysqlæ—¶ä½¿ç”¨çš„å·¥å…·
+tar zxvf cmake-2.8.6.tar.gz -C /usr/src/			#è§£å‹				
+cd /usr/src/cmake-2.8.6/					#è¿›å…¥ç¨‹åºç›®å½•
+./configure && gmake && gmake install				#é…ç½®  ç¼–è¯‘  å®‰è£…
 
 
-3¡¢Æô¶¯mysql
-chown  -R  mysql:mysql  /usr/local/mysql				#Ê¹mysqlÓÃ»§ÄÜ²Ù×÷mysqlµÄÖ÷Ä¿Â¼
-ln -s /usr/local/mysql/bin/* /usr/local/bin				#½«mysqlÃüÁîÁ´½ÓÖÁ»·¾³±äÁ¿
-cp  /usr/local/mysql/support-files/my-medium.cnf /etc/my.cnf		#¸´ÖÆÅäÖÃÎÄ¼şµ½Ö¸¶¨Ä¿Â¼,ÅäÖÃÎÄ¼ş±ØĞë½Ğmy.cnf
-cp  /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld	#ÖÆ×÷Æô¶¯½Å±¾
-chmod +x /etc/init.d/mysqld						#¸³ÓèÆô¶¯½Å±¾¿ÉÖ´ĞĞÈ¨ÏŞ
-chkconfig --add mysqld							#Ìí¼ÓÎªÏµÍ³·şÎñ
-chkconfig mysqld on							#¿ªÆôÄ¬ÈÏÆô¶¯¼¶±ğ
-chmod +x /usr/local/mysql/scripts/mysql_install_db			#¸³Óè³õÊ¼»¯½Å±¾Ö´ĞĞÈ¨ÏŞ
-/usr/local/mysql/scripts/mysql_install_db --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data	#³õÊ¼»¯mysql
-service mysqld start							#Æô¶¯mysql·şÎñ
-netstat -anpt | grep 3306						#²é¿´mysql·şÎñÊÇ·ñÆô¶¯
-
-³õÊ¼»¯²ÎÊıËµÃ÷£º
---user£ºÖ¸¶¨mysqlµÄ³ÌĞòÓÃ»§
---basedi£ºÖ¸¶¨mysqlµÄÖ÷Ä¿Â¼
---datadir£ºÖ¸¶¨mysqlµÄÊı¾İ¿âÄ¿Â¼
+ç¼–è¯‘å®‰è£…mysql
+tar zxvf mysql-5.5.22.tar.gz -C /usr/src/			#è§£å‹
+cd  mysql-5.5.22						#è¿›å…¥ç¨‹åºç›®å½•
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DSYSCONFDIR=/etc -DDEFAULT_CHARSET=utf8  -DDEFAULT_COLLATION=utf8_general_ci  -DWITH_EXTRA_CHARSETS=all					#é…ç½®å®‰è£…å‚æ•°
+make && make install						#ç¼–è¯‘ å®‰è£…
 
 
+3ã€å¯åŠ¨mysql
+chown  -R  mysql:mysql  /usr/local/mysql				#ä½¿mysqlç”¨æˆ·èƒ½æ“ä½œmysqlçš„ä¸»ç›®å½•
+ln -s /usr/local/mysql/bin/* /usr/local/bin				#å°†mysqlå‘½ä»¤é“¾æ¥è‡³ç¯å¢ƒå˜é‡
+cp  /usr/local/mysql/support-files/my-medium.cnf /etc/my.cnf		#å¤åˆ¶é…ç½®æ–‡ä»¶åˆ°æŒ‡å®šç›®å½•,é…ç½®æ–‡ä»¶å¿…é¡»å«my.cnf
+cp  /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld	#åˆ¶ä½œå¯åŠ¨è„šæœ¬
+chmod +x /etc/init.d/mysqld						#èµ‹äºˆå¯åŠ¨è„šæœ¬å¯æ‰§è¡Œæƒé™
+chkconfig --add mysqld							#æ·»åŠ ä¸ºç³»ç»ŸæœåŠ¡
+chkconfig mysqld on							#å¼€å¯é»˜è®¤å¯åŠ¨çº§åˆ«
+chmod +x /usr/local/mysql/scripts/mysql_install_db			#èµ‹äºˆåˆå§‹åŒ–è„šæœ¬æ‰§è¡Œæƒé™
+/usr/local/mysql/scripts/mysql_install_db --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data	#åˆå§‹åŒ–mysql
+service mysqld start							#å¯åŠ¨mysqlæœåŠ¡
+netstat -anpt | grep 3306						#æŸ¥çœ‹mysqlæœåŠ¡æ˜¯å¦å¯åŠ¨
 
-4¡¢±àÒë²ÎÊı
--DCMAKE_INSTALL_PREFIX=/usr/local/mysql 		#°²×°Ä¿Â¼ 
--DMYSQL_DATADIR=/usr/local/mysql/data 			#Êı¾İ¿â´æ·ÅÄ¿Â¼
--DSYSCONFDIR=/etc 					#mysqlÅäÖÃÎÄ¼ş
--DDEFAULT_CHARSET=utf8   				#Ê¹ÓÃutf8×Ö·û 
--DDEFAULT_COLLATION=utf8_general_ci 			#Ğ£Ñé×Ö·û 
--DEXTRA_CHARSETS=all  					#°²×°¶îÍâµÄ±àÂë¼¯
+åˆå§‹åŒ–å‚æ•°è¯´æ˜ï¼š
+--userï¼šæŒ‡å®šmysqlçš„ç¨‹åºç”¨æˆ·
+--basediï¼šæŒ‡å®šmysqlçš„ä¸»ç›®å½•
+--datadirï¼šæŒ‡å®šmysqlçš„æ•°æ®åº“ç›®å½•
 
 
-ÆäËû²ÎÊı
--DWITH_MYISAM_STORAGE_ENGINE=1 				#°²×° myisam ´æ´¢ÒıÇæ 
--DWITH_INNOBASE_STORAGE_ENGINE=1 			#°²×° innodb ´æ´¢ÒıÇæ 
--DWITH_ARCHIVE_STORAGE_ENGINE=1 			#°²×° archive´æ´¢ÒıÇæ 
--DWITH_BLACKHOLE_STORAGE_ENGINE=1 			#°²×° blackhole´æ´¢ÒıÇæ 
--DENABLED_LOCAL_INFILE=1 				#ÔÊĞí´Ó±¾µØµ¼ÈëÊı¾İ 
- -DMYSQL_TCP_PORT=3306 					#MySQL ¼àÌı¶Ë¿Ú 
--DMYSQL_USER=mysql 					#MySQL ÓÃ»§Ãû  
+
+4ã€ç¼–è¯‘å‚æ•°
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql 		#å®‰è£…ç›®å½• 
+-DMYSQL_DATADIR=/usr/local/mysql/data 			#æ•°æ®åº“å­˜æ”¾ç›®å½•
+-DSYSCONFDIR=/etc 					#mysqlé…ç½®æ–‡ä»¶
+-DDEFAULT_CHARSET=utf8   				#ä½¿ç”¨utf8å­—ç¬¦ 
+-DDEFAULT_COLLATION=utf8_general_ci 			#æ ¡éªŒå­—ç¬¦ 
+-DEXTRA_CHARSETS=all  					#å®‰è£…é¢å¤–çš„ç¼–ç é›†
+
+
+å…¶ä»–å‚æ•°
+-DWITH_MYISAM_STORAGE_ENGINE=1 				#å®‰è£… myisam å­˜å‚¨å¼•æ“ 
+-DWITH_INNOBASE_STORAGE_ENGINE=1 			#å®‰è£… innodb å­˜å‚¨å¼•æ“ 
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 			#å®‰è£… archiveå­˜å‚¨å¼•æ“ 
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 			#å®‰è£… blackholeå­˜å‚¨å¼•æ“ 
+-DENABLED_LOCAL_INFILE=1 				#å…è®¸ä»æœ¬åœ°å¯¼å…¥æ•°æ® 
+ -DMYSQL_TCP_PORT=3306 					#MySQL ç›‘å¬ç«¯å£ 
+-DMYSQL_USER=mysql 					#MySQL ç”¨æˆ·å  
 -DWITH_SSL=yes 						#SSL 
--DWITH_MEMORY_STORAGE_ENGINE=1 				#°²×° memory ´æ´¢ÒıÇæ 
--DWITH_FEDERATED_STORAGE_ENGINE=1 			#°²×° frderated ´æ´¢ÒıÇæ 
--DWITH_PARTITION_STORAGE_ENGINE=1 			#°²×°Êı¾İ¿â·ÖÇø 
--DINSTALL_PLUGINDIR=/usr/local/mysql/plugin 		#²å¼şÎÄ¼ş¼°ÅäÖÃÂ·¾¶
+-DWITH_MEMORY_STORAGE_ENGINE=1 				#å®‰è£… memory å­˜å‚¨å¼•æ“ 
+-DWITH_FEDERATED_STORAGE_ENGINE=1 			#å®‰è£… frderated å­˜å‚¨å¼•æ“ 
+-DWITH_PARTITION_STORAGE_ENGINE=1 			#å®‰è£…æ•°æ®åº“åˆ†åŒº 
+-DINSTALL_PLUGINDIR=/usr/local/mysql/plugin 		#æ’ä»¶æ–‡ä»¶åŠé…ç½®è·¯å¾„
 
 
 
