@@ -1,0 +1,17 @@
+[name]
+check_disk
+
+[info]
+Check Disk usage on a mounted partition.
+
+[why]
+To keep track of disk usage and get notified before disks fill up.
+
+[how]
+Checks the disk usage on a mounted partition. Lets you specify thresholds on usage and what partition to check.
+
+[platforms]
+Unix
+
+[categories]
+File System

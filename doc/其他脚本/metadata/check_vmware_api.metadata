@@ -1,0 +1,55 @@
+[commands]
+check_vmware_api_dc=$USER1$/check_vmware_api -D $ARG1$ -u $ARG2$ -p $ARG3$ -l $ARG4$ -s "$ARG5$" -w "$ARG6$" -c "$ARG7$"
+check_vmware_api_dc_vm=$USER1$/check_vmware_api -D $ARG1$ -u $ARG2$ -p $ARG3$ -l $ARG4$ -s "$ARG5$" -N "$ARG6$" -w "$ARG7$" -c "$ARG8$"
+check_vmware_api_dc_host=$USER1$/check_vmware_api -D $ARG1$ -u $ARG2$ -p $ARG3$ -l $ARG4$ -s "$ARG5$" -H "$ARG6$" -w "$ARG7$" -c "$ARG8$"
+check_vmware_api_host=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l $ARG3$ -s "$ARG4$" -w "$ARG5$" -c "$ARG6$"
+check_vmware_api_host_cpu_usage=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l cpu -s usage -w $ARG3$ -c $ARG4$
+check_vmware_api_host_mem_usage=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l mem -s usage -w $ARG3$ -c $ARG4$
+check_vmware_api_host_swap_usage=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l mem -s swap -w $ARG3$ -c $ARG4$
+check_vmware_api_host_net_usage=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l net -s usage -w $ARG3$ -c $ARG4$
+check_vmware_api_host_vmfs=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l vmfs -s $ARG3$ -w $ARG4$ -c $ARG5$
+check_vmware_api_host_runtime_status=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l runtime -s status
+check_vmware_api_host_runtime_issues=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l runtime -s issues
+check_vmware_api_host_runtime_health=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l runtime -s health
+check_vmware_api_host_io_read=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l io -s read -w $ARG3$ -c $ARG4$
+check_vmware_api_host_io_write=$USER1$/check_vmware_api -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$ -l io -s write -w $ARG3$ -c $ARG4$
+check_vmware_api_vm=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l $ARG5$ -s "$ARG6$" -w $ARG7$ -c $ARG8$
+check_vmware_api_vm_cpu_usage=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l cpu -s usage -w $ARG5$ -c $ARG6$
+check_vmware_api_vm_mem_usage=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l mem -s usage -w $ARG5$ -c $ARG6$
+check_vmware_api_vm_swap_usage=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l mem -s swap -w $ARG5$ -c $ARG6$
+check_vmware_api_vm_net_usage=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l net -s usage -w $ARG5$ -c $ARG6$
+check_vmware_api_vm_runtime_cpu=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l runtime -s cpu -w $ARG5$ -c $ARG6$
+check_vmware_api_vm_runtime_mem=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l runtime -s mem -w $ARG5$ -c $ARG6$
+check_vmware_api_vm_runtime_status=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l runtime -s status
+check_vmware_api_vm_runtime_state=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l runtime -s state
+check_vmware_api_vm_runtime_issues=$USER1$/check_vmware_api -H $ARG1$ -u $ARG2$ -p $ARG3$ -N $ARG4$ -l runtime -s issues
+
+check_vmware_api_dc_host_cpu_usage=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l cpu -s usage -w $ARG2$ -c $ARG3$
+check_vmware_api_dc_host_io_read=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l io -s read -w $ARG2$ -c $ARG3$
+check_vmware_api_dc_host_io_write=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l io -s write -w $ARG2$ -c $ARG3$
+check_vmware_api_dc_host_mem_usage=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l mem -s usage -w $ARG2$ -c $ARG3$
+check_vmware_api_dc_host_net_usage=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l net -s usage
+check_vmware_api_dc_host_runtime_health=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l runtime -s health
+check_vmware_api_dc_host_runtime_issues=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l runtime -s issues
+check_vmware_api_dc_host_runtime_state=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l runtime -s state
+check_vmware_api_dc_host_runtime_status=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l runtime -s status
+check_vmware_api_dc_host_scsi_logical_units=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l storage -s lun
+check_vmware_api_dc_host_swap_usage=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l mem -s swap -w $ARG2$ -c $ARG3$
+check_vmware_api_dc_host_vm_list=$USER1$/check_vmware_api -D $ARG1$ -u $USER11$ -p $USER12$ -H $HOSTALIAS$ -l runtime -s list
+
+
+[name]
+check_vmware_api
+
+[info]
+Check status of Vmware ESX 3.x, ESXi Server, vSphere 4 and vSphere 5.
+[why]
+The plugin checks status (CPU, memory, runtime, ...) of virtual machines running inside Vmware ESX Server, Vmware ESX hosts and vSphere infrastructure.
+[how]
+The plugin queries status of ESX Server or vSphere using the VI(vSphere) Perl API.
+[platforms]
+Vmware ESX Server, Vmware ESXi Server, Vmware vSphere Infrastructure
+
+
+[categories]
+Operating Systems

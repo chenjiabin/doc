@@ -1,0 +1,21 @@
+[commands]
+check_portstatus=$USER1$/check_portstatus -H $HOSTADDRESS$ -C $ARG1$ -v $ARG2$
+check_portstatus_dormant=$USER1$/check_portstatus -H $HOSTADDRESS$ -C $ARG1$ -v $ARG2$ -w $ARG3$
+
+[name]
+check_portstatus
+
+[info]
+This plugin is keeping track of the number of unsed switch ports.
+
+[why]
+To help you get control of the used ports of your switches.
+
+[how]
+By SNMP.
+
+[platforms]
+Switches
+
+[categories]
+Networking
