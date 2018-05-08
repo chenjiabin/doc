@@ -1,38 +1,38 @@
-os���ļ�ϵͳ��ص�ģ�飨���ýӿڣ���ģ����Ҫ����
+os和文件系统相关的模块（调用接口），模块需要导入
 
-os.name����ʾ��ʹ�õ�ƽ̨
-os.system(command)������shell����
-os.getcwd()���鿴����Ŀ¼
-os.chdir(d)���ı乤��Ŀ¼
-os.listdir(d)���鿴ָ��Ŀ¼�µ���������
-os.remove(f)��ɾ��ָ���ļ�
-os.chmod(f,c)���޸�ָ���ļ���Ȩ�ޣ�linux�����ĸ��˽�������ʾ
-os.makeirs(dn)���ݹ鴴��Ŀ¼
-os.mkdir(dn)������Ŀ¼����Ŀ¼�������
-os.rmdir(dn)��ɾ��Ŀ¼��ֻ��ɾ�����һ��Ŀ¼��ֻ��ɾ����Ŀ¼��
-os.removedirs(dn)���ݹ�ɾ��Ŀ¼��ָ�����һ��Ŀ¼��ʼɾ����ֻ��ɾ����Ŀ¼��
+os.name：显示所使用的平台
+os.system(command)：运行shell命令
+os.getcwd()：查看工作目录
+os.chdir(d)：改变工作目录
+os.listdir(d)：查看指定目录下的所有内容
+os.remove(f)：删除指定文件
+os.chmod(f,c)：修改指定文件的权限，linux中以四个八进制数表示
+os.makeirs(dn)：递归创建目录
+os.mkdir(dn)：创建目录，父目录必须存在
+os.rmdir(dn)：删除目录，只能删除最后一级目录（只能删除空目录）
+os.removedirs(dn)：递归删除目录，指定最后一级目录开始删除（只能删除空目录）
 
-c��Ȩ��
-f���ļ�
-dn���ļ���
+c：权限
+f：文件
+dn：文件名
 
 
 
-os.pathģ�飬��·����ص�ģ��
+os.path模块，和路径相关的模块
 
-dirname(p)����ʾ·��Ŀ¼��
-basename(p)����ʾ����
-join(d,b)��ƴ��Ŀ¼���ͻ���
-split(p)�����أ�d,b��Ԫ��
-getsize(p)������ļ������򷵻��ļ���С������������򷵻��쳣
-exists(p)���ж�ָ���ļ��Ƿ����
-isdir(p)���ж��Ƿ������ΪĿ¼
-isfile(p)���ж��Ƿ������Ϊ�ļ�
-ismount(p)���ж��Ƿ�Ϊ���ص�
+dirname(p)：显示路径目录名
+basename(p)：显示基名
+join(d,b)：拼接目录名和基名
+split(p)：返回（d,b）元组
+getsize(p)：如果文件存在则返回文件大小，如果不存在则返回异常
+exists(p)：判断指定文件是否存在
+isdir(p)：判断是否存在且为目录
+isfile(p)：判断是否存在且为文件
+ismount(p)：判断是否为挂载点
 
-p��·��
-d��·��Ŀ¼��
-b������
+p：路径
+d：路径目录名
+b：基名
 
 
 

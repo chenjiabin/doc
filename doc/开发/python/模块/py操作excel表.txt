@@ -1,31 +1,31 @@
-#×¢Òâ£ºËùÓĞË÷Òı´Ó0¿ªÊ¼
+#æ³¨æ„ï¼šæ‰€æœ‰ç´¢å¼•ä»0å¼€å§‹
 
-import xlrd					#¶ÁÈ¡Ä£¿é
-#¶ÁÈ¡ÄÚÈİ£º
-data = xlrd.open_workbook('C:\\Users\\admin\\Desktop\\test.xlsx')      #´ò¿ª±í
-table = data.sheet_by_index(0)              #»ñÈ¡±í¸ñ
+import xlrd					#è¯»å–æ¨¡å—
+#è¯»å–å†…å®¹ï¼š
+data = xlrd.open_workbook('C:\\Users\\admin\\Desktop\\test.xlsx')      #æ‰“å¼€è¡¨
+table = data.sheet_by_index(0)              #è·å–è¡¨æ ¼
 
-print table.row_values(0)                  	#»ñÈ¡µÚÒ»ĞĞÊı¾İ
-print table.col_values(0)                 	#»ñÈ¡µÚÒ»ÁĞÊı¾İ
-print table.nrows                        	#»ñÈ¡Ò»¹²ÓĞ¶àÉÙĞĞ
-print table.ncols                       	#»ñÈ¡Ò»¹²ÓĞ¶àÉÙÁĞ
-print table.cell(1,3).value             	#»ñÈ¡Ö¸¶¨×ø±êµÄÊı¾İ(ĞĞ,ÁĞ)
-print table.row(1)[3].value            		#Í¨¹ıË÷Òı»ñÈ¡Ö¸¶¨Êı¾İ(ĞĞ,ÁĞ)
-print table.col(1)[3].value            		#Í¨¹ıË÷Òı»ñÈ¡Ö¸¶¨Êı¾İ(ÁĞ,ĞĞ)
-
-
-#Ğ´ÈëÄÚÈİ£º
-import xlwt					#Ğ´ÈëÄ£¿é
-
-file = xlwt.Workbook()						#ĞÂ½¨Ò»¸öexcelÎÄ¼ş  
-table = file.add_sheet('info',cell_overwrite_ok=True)	#ĞÂ½¨Ò»¸ösheet  
-table.write(0, 0, 'test_data')				#¸ù¾İ×ø±êĞ´ÈëÊı¾İ(ĞĞ,ÁĞ,data)  
-file.save()									#±£´æÎÄ¼ş  
+print table.row_values(0)                  	#è·å–ç¬¬ä¸€è¡Œæ•°æ®
+print table.col_values(0)                 	#è·å–ç¬¬ä¸€åˆ—æ•°æ®
+print table.nrows                        	#è·å–ä¸€å…±æœ‰å¤šå°‘è¡Œ
+print table.ncols                       	#è·å–ä¸€å…±æœ‰å¤šå°‘åˆ—
+print table.cell(1,3).value             	#è·å–æŒ‡å®šåæ ‡çš„æ•°æ®(è¡Œ,åˆ—)
+print table.row(1)[3].value            		#é€šè¿‡ç´¢å¼•è·å–æŒ‡å®šæ•°æ®(è¡Œ,åˆ—)
+print table.col(1)[3].value            		#é€šè¿‡ç´¢å¼•è·å–æŒ‡å®šæ•°æ®(åˆ—,è¡Œ)
 
 
+#å†™å…¥å†…å®¹ï¼š
+import xlwt					#å†™å…¥æ¨¡å—
+
+file = xlwt.Workbook()						#æ–°å»ºä¸€ä¸ªexcelæ–‡ä»¶  
+table = file.add_sheet('info',cell_overwrite_ok=True)	#æ–°å»ºä¸€ä¸ªsheet  
+table.write(0, 0, 'test_data')				#æ ¹æ®åæ ‡å†™å…¥æ•°æ®(è¡Œ,åˆ—,data)  
+file.save()									#ä¿å­˜æ–‡ä»¶  
 
 
-#¶ÁÈ¡ÊµÀı£º
+
+
+#è¯»å–å®ä¾‹ï¼š
 #coding:utf-8
 import xlrd
 
@@ -35,25 +35,25 @@ def open_excel(file='test.xlsx'):
         return data
     except Exception, e:
         print str(e)
-        # ¸ù¾İË÷Òı»ñÈ¡Excel±í¸ñÖĞµÄÊı¾İ
-        # ²ÎÊı£ºfile: ExcelÎÄ¼şÂ·¾¶
-        # colnameindex: ±íÍ·ÁĞÃûËùÔÚĞĞµÄË÷Òı
-        # by_index: ±íµÄË÷Òı
+        # æ ¹æ®ç´¢å¼•è·å–Excelè¡¨æ ¼ä¸­çš„æ•°æ®
+        # å‚æ•°ï¼šfile: Excelæ–‡ä»¶è·¯å¾„
+        # colnameindex: è¡¨å¤´åˆ—åæ‰€åœ¨è¡Œçš„ç´¢å¼•
+        # by_index: è¡¨çš„ç´¢å¼•
 
 def excel_table_byindex(file='file.xls', colnameindex=0, by_index=0):
     data = open_excel(file)
     table = data.sheets()[by_index]
-    nrows = table.nrows  # ĞĞÊı
-    ncols = table.ncols  # ÁĞÊı
-    colnames = table.row_values(colnameindex)  # Ä³Ò»ĞĞÊı¾İ
+    nrows = table.nrows  # è¡Œæ•°
+    ncols = table.ncols  # åˆ—æ•°
+    colnames = table.row_values(colnameindex)  # æŸä¸€è¡Œæ•°æ®
     list = []
     for rownum in range(1, nrows):
-        row = table.row_values(rownum)  # ÒÔÁĞ±í¸ñÊ½Êä³ö
+        row = table.row_values(rownum)  # ä»¥åˆ—è¡¨æ ¼å¼è¾“å‡º
         if row:
             app = {}
             for i in range(len(colnames)):
                 app[colnames[i]] = row[i]
-            list.append(app)  # ÏòÁĞ±íÖĞ²åÈë×ÖµäÀàĞÍµÄÊı¾İ
+            list.append(app)  # å‘åˆ—è¡¨ä¸­æ’å…¥å­—å…¸ç±»å‹çš„æ•°æ®
     return list
 
 def main():

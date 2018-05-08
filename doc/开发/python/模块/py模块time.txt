@@ -1,25 +1,25 @@
-ʱ������ֱ��﷽ʽ��
-1��ʱ�����1970��1��1��֮�����
-2��Ԫ�鷽ʽ
-3����ʽ�����ַ�����  ��-��-��  ʱ-��
+时间的三种表达方式：
+1、时间戳：1970年1月1日之后的秒
+2、元组方式
+3、格式化的字符串：  年-月-日  时-分
 
 
-time()������ʱ���
-gmtime()������Ԫ��
-sleep(s)���ӳ�ִ�к��������
-asctime()�����ص�ǰʱ��
-strftime('%Y-%m-%d %H:%M:%S')�����ظ�ʽ�����ַ���
+time()：返回时间戳
+gmtime()：返回元组
+sleep(s)：延迟执行后面的内容
+asctime()：返回当前时间
+strftime('%Y-%m-%d %H:%M:%S')：返回格式化的字符串
 
-ת��������
-ctime(time.time())����ʱ���ת��Ϊ�˿ɶ���ʱ��
-mktime(time.gmtime())����Ԫ��ת��Ϊʱ���
-strptime("20140412","%Y%m%d")�����˿ɶ���ת��ΪԪ��
+转换处理：
+ctime(time.time())：将时间戳转换为人可读的时间
+mktime(time.gmtime())：将元组转换为时间戳
+strptime("20140412","%Y%m%d")：将人可读的转换为元组
 
 
-datetimeģ��
-	numtime = datetime.datetime.fromtimestamp(ʱ���)			#��ʱ���ת��Ϊ�˿ɶ���ʱ��
-    numtime.strftime			#װ��Ϊ�ַ�����ʽ
-	����
+datetime模块
+	numtime = datetime.datetime.fromtimestamp(时间戳)			#将时间戳转换为人可读的时间
+    numtime.strftime			#装换为字符串格式
+	例：
 	    In [10]: A = datetime.datetime.fromtimestamp(1299999999)
 		In [11]: A.strftime('%Y-%m-%d  %H:%M:%S')
 		Out[11]: '2011-03-13  15:06:39'
@@ -28,18 +28,18 @@ datetimeģ��
 
 
 
-��ʽ�����ַ�����
-%Y ��λ������ݱ�ʾ��000-9999��
-%m �·ݣ�01-12��
-%d �����е�һ�죨0-31��
-%H 24Сʱ��Сʱ����0-23��
-%I 12Сʱ��Сʱ����01-12�� 
-%M ��������00=59��
-%S �루00-59��
-%a ���ؼ��������ƣ�Thu��
-%A ���������������ƣ�Thursday��
-%b ���ؼ򻯵��·����ƣ�Feb��
-%B �����������·����ƣ�February��
+格式化的字符串：
+%Y 四位数的年份表示（000-9999）
+%m 月份（01-12）
+%d 月内中的一天（0-31）
+%H 24小时制小时数（0-23）
+%I 12小时制小时数（01-12） 
+%M 分钟数（00=59）
+%S 秒（00-59）
+%a 本地简化星期名称（Thu）
+%A 本地完整星期名称（Thursday）
+%b 本地简化的月份名称（Feb）
+%B 本地完整的月份名称（February）
 
 
 

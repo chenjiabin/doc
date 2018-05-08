@@ -1,14 +1,14 @@
-platform£º»ñÈ¡²Ù×÷ÏµÍ³ºÍpython½âÊÍÆ÷ĞÅÏ¢
-	³£ÓÃ·½·¨£º
-        platform.platform()   		#»ñÈ¡²Ù×÷ÏµÍ³ĞÅÏ¢
-		platform.dist()				#»ñÈ¡linuxÏµÍ³Ãû³ÆºÍ°æ±¾ºÅ
-		platform.system()			#»ñÈ¡²Ù×÷ÀàĞÍ(Linux/Windows)
-		platform.release()			#·µ»ØÄÚºË°æ±¾
-        platform.architecture()   	#»ñÈ¡²Ù×÷ÏµÍ³µÄÎ»(32bit,64bit)
-        platform.machine()   		#¼ÆËã»úÀàĞÍ(x86_64,)
-        platform.node()       		#Ö÷»úÃû
-        platform.processor()  		#¼ÆËã»ú´¦ÀíÆ÷ĞÅÏ¢
-        platform.uname()      		#¼ÆËã»úÏêÏ¸ĞÅÏ¢
+platformï¼šè·å–æ“ä½œç³»ç»Ÿå’Œpythonè§£é‡Šå™¨ä¿¡æ¯
+	å¸¸ç”¨æ–¹æ³•ï¼š
+        platform.platform()   		#è·å–æ“ä½œç³»ç»Ÿä¿¡æ¯
+		platform.dist()				#è·å–linuxç³»ç»Ÿåç§°å’Œç‰ˆæœ¬å·
+		platform.system()			#è·å–æ“ä½œç±»å‹(Linux/Windows)
+		platform.release()			#è¿”å›å†…æ ¸ç‰ˆæœ¬
+        platform.architecture()   	#è·å–æ“ä½œç³»ç»Ÿçš„ä½(32bit,64bit)
+        platform.machine()   		#è®¡ç®—æœºç±»å‹(x86_64,)
+        platform.node()       		#ä¸»æœºå
+        platform.processor()  		#è®¡ç®—æœºå¤„ç†å™¨ä¿¡æ¯
+        platform.uname()      		#è®¡ç®—æœºè¯¦ç»†ä¿¡æ¯
 		
 		
 		

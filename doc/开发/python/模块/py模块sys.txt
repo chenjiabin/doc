@@ -1,6 +1,6 @@
-sys£ºÓëÃüÁîÐÐ½»»¥µÄÄ£¿é
+sysï¼šä¸Žå‘½ä»¤è¡Œäº¤äº’çš„æ¨¡å—
 
-path()£º²é¿´importµÄËÑË÷Â·¾¶£¬ÒÔÁÐ±í·½Ê½·µ»Ø
-argv()£º·µ»ØÃüÁîÐÐµÄ²ÎÊý£¬°üÀ¨½Å±¾Ãû³Æ£¬ÒÔÁÐ±í·½Ê½·µ»Ø
-exit(0)£ºÍË³ö³ÌÐò£¬×Ô¶¨ÒåÍË³öÂë
-executable£º·µ»Øpython½âÊÍÆ÷Â·¾¶
+path()ï¼šæŸ¥çœ‹importçš„æœç´¢è·¯å¾„ï¼Œä»¥åˆ—è¡¨æ–¹å¼è¿”å›ž
+argv()ï¼šè¿”å›žå‘½ä»¤è¡Œçš„å‚æ•°ï¼ŒåŒ…æ‹¬è„šæœ¬åç§°ï¼Œä»¥åˆ—è¡¨æ–¹å¼è¿”å›ž
+exit(0)ï¼šé€€å‡ºç¨‹åºï¼Œè‡ªå®šä¹‰é€€å‡ºç 
+executableï¼šè¿”å›žpythonè§£é‡Šå™¨è·¯å¾„

@@ -1,22 +1,22 @@
-smtplibÄ£¿é£º
-	SMTP = smtplib.SMTP()			#´´½¨ÊµÀı
+smtplibæ¨¡å—ï¼š
+	SMTP = smtplib.SMTP()			#åˆ›å»ºå®ä¾‹
 
-	SMTP.connect(host,port)			#Á¬½Óµ½Ö¸¶¨µÄsmtp·şÎñÆ÷
-	SMTP.login(user, password)		#µÇÂ½µ½smtp·şÎñÆ÷£¬±ØĞëµÇÂ¼ºó²ÅÄÜ·¢ËÍÓÊ¼ş
-	SMTP.sendmail(from_addr, to_addrs, msg)		#·¢ËÍÓÊ¼ş£¬·¢¼şÈËµØÖ·£¬ÊÕ¼şÈËµØÖ·£¬ÓÊ¼şÄÚÈİ
-	SMTP.quit()						#¶Ï¿ªÓësmtp·şÎñÆ÷µÄÁ¬½Ó
+	SMTP.connect(host,port)			#è¿æ¥åˆ°æŒ‡å®šçš„smtpæœåŠ¡å™¨
+	SMTP.login(user, password)		#ç™»é™†åˆ°smtpæœåŠ¡å™¨ï¼Œå¿…é¡»ç™»å½•åæ‰èƒ½å‘é€é‚®ä»¶
+	SMTP.sendmail(from_addr, to_addrs, msg)		#å‘é€é‚®ä»¶ï¼Œå‘ä»¶äººåœ°å€ï¼Œæ”¶ä»¶äººåœ°å€ï¼Œé‚®ä»¶å†…å®¹
+	SMTP.quit()						#æ–­å¼€ä¸smtpæœåŠ¡å™¨çš„è¿æ¥
 
 
-emailÄ£¿é£º
+emailæ¨¡å—ï¼š
 	from email.mime.text import MIMEText
 	from email.utils import formataddr
 		
-	msg = MIMEText('·¢ËÍÄÚÈİ', 'text', 'utf-8')					  #ÓÊ¼şÄÚÈİ£¬ÀàĞÍ£¬±àÂë
-	msg['From'] = formataddr(["user",'hy2803660215@163.com'])     #·¢¼şÈËĞÅÏ¢
-	msg['To'] = formataddr(["Saneri",'2803660215@qq.com'])        #ÊÕ¼şÈËĞÅÏ¢
-	msg['Subject'] = subject		#ÓÊ¼şÖ÷Ìâ
+	msg = MIMEText('å‘é€å†…å®¹', 'text', 'utf-8')					  #é‚®ä»¶å†…å®¹ï¼Œç±»å‹ï¼Œç¼–ç 
+	msg['From'] = formataddr(["user",'hy2803660215@163.com'])     #å‘ä»¶äººä¿¡æ¯
+	msg['To'] = formataddr(["Saneri",'2803660215@qq.com'])        #æ”¶ä»¶äººä¿¡æ¯
+	msg['Subject'] = subject		#é‚®ä»¶ä¸»é¢˜
 
-ÊµÀı£º
+å®ä¾‹ï¼š
 	import smtplib
 	from email.mime.text import MIMEText
 	from email.utils import formataddr
@@ -27,14 +27,14 @@ emailÄ£¿é£º
 	password = 'password'
 
 	msg = MIMEText('user', 'text', 'utf-8')
-	msg['From'] = formataddr(["user",'hy2803660215@163.com'])     #ÏÔÊ¾·¢¼şÈËĞÅÏ¢
-	msg['To'] = formataddr(["Saneri",'2803660215@qq.com'])          #ÏÔÊ¾ÊÕ¼şÈËĞÅÏ¢
+	msg['From'] = formataddr(["user",'hy2803660215@163.com'])     #æ˜¾ç¤ºå‘ä»¶äººä¿¡æ¯
+	msg['To'] = formataddr(["Saneri",'2803660215@qq.com'])          #æ˜¾ç¤ºæ”¶ä»¶äººä¿¡æ¯
 	msg['Subject'] = subject
 
 	smtp = smtplib.SMTP()
 	smtp.connect('smtp.163.com')
 	smtp.login(sender, password)
-	smtp.sendmail(sender, receiver, msg.as_string())	#msg.as_string£¬msg·â×°µÄÓÊ¼şÍ·
+	smtp.sendmail(sender, receiver, msg.as_string())	#msg.as_stringï¼Œmsgå°è£…çš„é‚®ä»¶å¤´
 	smtp.quit()
 	
 	

@@ -1,21 +1,21 @@
 #!/usr/bin/py
 #coding:utf-8
-from twilio.rest import Client							#µ¼ÈëµÚÈı·½Ä£¿é
+from twilio.rest import Client							#å¯¼å…¥ç¬¬ä¸‰æ–¹æ¨¡å—
 
 account_sid = "AC4c682acde8f318b2f6990512d5dc0aca"		#sid
-auth_token  = "082a54748174daf22270c2531cc21c60"		#ÃØÔ¿
+auth_token  = "082a54748174daf22270c2531cc21c60"		#ç§˜é’¥
 
 client = Client(account_sid, auth_token)
 
-content = '''-				#·¢ËÍÄÚÈİ
+content = '''-				#å‘é€å†…å®¹
 ip: 192.168.0.10
-Ö÷»úÃû:www
-±¨¾¯ÀàĞÍ:ÄÚ´æ¹ÊÕÏ
-¹ÊÕÏÔ­Òò:Ê£ÓàÄÚ´æ´óĞ¡²»×ã500M
+ä¸»æœºå:www
+æŠ¥è­¦ç±»å‹:å†…å­˜æ•…éšœ
+æ•…éšœåŸå› :å‰©ä½™å†…å­˜å¤§å°ä¸è¶³500M
 '''
 message = client.messages.create(
-    to="+8613521701096",				#ÊÕĞÅÈË
-    from_="+13183024286",				#·¢ĞÅÈË
-    body=content,)						#ÄÚÈİ
+    to="+8613521701096",				#æ”¶ä¿¡äºº
+    from_="+13183024286",				#å‘ä¿¡äºº
+    body=content,)						#å†…å®¹
 
 #print(message.sid)

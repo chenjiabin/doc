@@ -1,65 +1,65 @@
-TK£ºTKinter¼ò³ÆTK£¬ÓÃÓÚÊµÏÖGUI±à³Ì
+TKï¼šTKinterç®€ç§°TKï¼Œç”¨äºå®ç°GUIç¼–ç¨‹
 
 
-·½·¨ºÍÊôĞÔ£º
-TK()£º´´½¨¸ù´°¿Ú
-mainloop()£º½øÈëÖ÷Ñ­»·£¨ÏÔÊ¾´°¿Ú£©
+æ–¹æ³•å’Œå±æ€§ï¼š
+TK()ï¼šåˆ›å»ºæ ¹çª—å£
+mainloop()ï¼šè¿›å…¥ä¸»å¾ªç¯ï¼ˆæ˜¾ç¤ºçª—å£ï¼‰
 
 
-×é¼ş£º
-Button		°´Å¥
-Canvas		»­²¼£¬Ìá¹©»æÍ¼¹¦ÄÜ£»¿ÉÒÔ°üº¬Í¼ĞÎ»òÎ»Í¼
-Checkbutton	¶àÑ¡°´Å¥
-Entry		ÎÄ±¾¿ò£¬µ¥ĞĞÎÄ×ÖÓò£¬ÓÃÀ´ÊÕ¼¯¼üÅÌÊäÈë
-Frame		¿ò¼Ü£¬°üº¬ÆäËû×é¼şµÄ´¿ÈİÆ÷
-Label		±êÇ©£¬ÓÃÀ´ÏÔÊ¾ÎÄ×Ö»òÍ¼Æ¬
-Listbox		ÁĞ±í¿ò£¬Ò»¸öÑ¡ÏîÁĞ±í£¬ÓÃ»§¿ÉÒÔ´ÓÖĞÑ¡Ôñ
-Menu		²Ëµ¥£¬µãÏÂ²Ëµ¥°´Å¥ºóµ¯³öµÄÒ»¸öÑ¡ÏîÁĞ±í£¬ÓÃ»§¿ÉÒÔ´ÓÖĞÑ¡Ôñ
-Menubutton	²Ëµ¥°´Å¥£¬ÓÃÀ´°üº¬²Ëµ¥µÄ×é¼ş
-Message		ÏûÏ¢¿ò£¬ÀàËÆÓÚ±êÇ©£¬µ«¿ÉÒÔÏÔÊ¾¶àĞĞÎÄ±¾
-Radiobutton	µ¥Ñ¡°´Å¥
-Scale		½ø¶ÈÌõ£¬ÏßĞÔ¡°»¬¿é¡±×é¼ş£¬¿ÉÉè¶¨ÆğÊ¼ÖµºÍ½áÊøÖµ£¬»áÏÔÊ¾µ±Ç°Î»ÖÃµÄ¾«È·Öµ
-Scrollbar	¹ö¶¯Ìõ£¬¶ÔÆäÖ§³ÖµÄ×é¼ş£¨ÎÄ±¾Óò¡¢»­²¼¡¢ÁĞ±í¿ò¡¢ÎÄ±¾¿ò£©Ìá¹©¹ö¶¯¹¦ÄÜ
-Text		ÎÄ±¾Óò£¬¶àĞĞÎÄ×ÖÇøÓò£¬¿ÉÓÃÀ´ÊÕ¼¯£¨»òÏÔÊ¾£©ÓÃ»§ÊäÈëµÄÎÄ×Ö
-Toplevel	¶¥¼¶£¬ÀàËÆ¿ò¼Ü£¬µ«Ìá¹©Ò»¸ö¶ÀÁ¢µÄ´°¿ÚÈİÆ÷¡£
+ç»„ä»¶ï¼š
+Button		æŒ‰é’®
+Canvas		ç”»å¸ƒï¼Œæä¾›ç»˜å›¾åŠŸèƒ½ï¼›å¯ä»¥åŒ…å«å›¾å½¢æˆ–ä½å›¾
+Checkbutton	å¤šé€‰æŒ‰é’®
+Entry		æ–‡æœ¬æ¡†ï¼Œå•è¡Œæ–‡å­—åŸŸï¼Œç”¨æ¥æ”¶é›†é”®ç›˜è¾“å…¥
+Frame		æ¡†æ¶ï¼ŒåŒ…å«å…¶ä»–ç»„ä»¶çš„çº¯å®¹å™¨
+Label		æ ‡ç­¾ï¼Œç”¨æ¥æ˜¾ç¤ºæ–‡å­—æˆ–å›¾ç‰‡
+Listbox		åˆ—è¡¨æ¡†ï¼Œä¸€ä¸ªé€‰é¡¹åˆ—è¡¨ï¼Œç”¨æˆ·å¯ä»¥ä»ä¸­é€‰æ‹©
+Menu		èœå•ï¼Œç‚¹ä¸‹èœå•æŒ‰é’®åå¼¹å‡ºçš„ä¸€ä¸ªé€‰é¡¹åˆ—è¡¨ï¼Œç”¨æˆ·å¯ä»¥ä»ä¸­é€‰æ‹©
+Menubutton	èœå•æŒ‰é’®ï¼Œç”¨æ¥åŒ…å«èœå•çš„ç»„ä»¶
+Message		æ¶ˆæ¯æ¡†ï¼Œç±»ä¼¼äºæ ‡ç­¾ï¼Œä½†å¯ä»¥æ˜¾ç¤ºå¤šè¡Œæ–‡æœ¬
+Radiobutton	å•é€‰æŒ‰é’®
+Scale		è¿›åº¦æ¡ï¼Œçº¿æ€§â€œæ»‘å—â€ç»„ä»¶ï¼Œå¯è®¾å®šèµ·å§‹å€¼å’Œç»“æŸå€¼ï¼Œä¼šæ˜¾ç¤ºå½“å‰ä½ç½®çš„ç²¾ç¡®å€¼
+Scrollbar	æ»šåŠ¨æ¡ï¼Œå¯¹å…¶æ”¯æŒçš„ç»„ä»¶ï¼ˆæ–‡æœ¬åŸŸã€ç”»å¸ƒã€åˆ—è¡¨æ¡†ã€æ–‡æœ¬æ¡†ï¼‰æä¾›æ»šåŠ¨åŠŸèƒ½
+Text		æ–‡æœ¬åŸŸï¼Œå¤šè¡Œæ–‡å­—åŒºåŸŸï¼Œå¯ç”¨æ¥æ”¶é›†ï¼ˆæˆ–æ˜¾ç¤ºï¼‰ç”¨æˆ·è¾“å…¥çš„æ–‡å­—
+Toplevel	é¡¶çº§ï¼Œç±»ä¼¼æ¡†æ¶ï¼Œä½†æä¾›ä¸€ä¸ªç‹¬ç«‹çš„çª—å£å®¹å™¨ã€‚
 
 
 
-²å¼ş£º
-text£º´´½¨ÎÄ±¾ÄÚÈİ
-command£º¶¨Òå»Øµ÷º¯Êı£¬quitÍË³ö
-bg£ºÉèÖÃ±³¾°É«		fg£ºÉèÖÃ×ÖÌåÑÕÉ«
-fill£ºÌî³ä
-geometry£ºÉèÖÃ´°¿Ú´óĞ¡
-orient=HORIZONTAL£ºÉèÖÃ»¬¶¯ÌõÎªºáÏò£¬Ä¬ÈÏÎª×İÏò
-from_=10,to=40£ºÉèÖÃ»¬¶¯Ìõ»¬¶¯·¶Î§
-command=resize£º½«»¬¶¯ÌõºÍ×ÖÌå¹ØÁªÆğÀ´
+æ’ä»¶ï¼š
+textï¼šåˆ›å»ºæ–‡æœ¬å†…å®¹
+commandï¼šå®šä¹‰å›è°ƒå‡½æ•°ï¼Œquité€€å‡º
+bgï¼šè®¾ç½®èƒŒæ™¯è‰²		fgï¼šè®¾ç½®å­—ä½“é¢œè‰²
+fillï¼šå¡«å……
+geometryï¼šè®¾ç½®çª—å£å¤§å°
+orient=HORIZONTALï¼šè®¾ç½®æ»‘åŠ¨æ¡ä¸ºæ¨ªå‘ï¼Œé»˜è®¤ä¸ºçºµå‘
+from_=10,to=40ï¼šè®¾ç½®æ»‘åŠ¨æ¡æ»‘åŠ¨èŒƒå›´
+command=resizeï¼šå°†æ»‘åŠ¨æ¡å’Œå­—ä½“å…³è”èµ·æ¥
 
 
-ÊµÀı£º
+å®ä¾‹ï¼š
 #coding: utf-8
 import Tkinter
 
 
 def test1():
-    top = Tkinter.Tk()						//´´½¨Ö÷´°¿Ú
-    label = Tkinter.Label(top,text='hello world')		//´´½¨ÎÄ±¾£¬ÏÔÊ¾µÄÎÄ¼şÊÇhello world
-    label.pack()						//µ÷ÓÃÎÄ±¾
-    Tkinter.mainloop()						//½øÈëÖ÷Ñ­»·
+    top = Tkinter.Tk()						//åˆ›å»ºä¸»çª—å£
+    label = Tkinter.Label(top,text='hello world')		//åˆ›å»ºæ–‡æœ¬ï¼Œæ˜¾ç¤ºçš„æ–‡ä»¶æ˜¯hello world
+    label.pack()						//è°ƒç”¨æ–‡æœ¬
+    Tkinter.mainloop()						//è¿›å…¥ä¸»å¾ªç¯
 
 def test2():
     top1 = Tkinter.Tk()
-    quit1 = Tkinter.Button(top1,text='hello world',command=top1.quit)	//´´½¨°´Å¥£¬µ±°´Å¥ÊÍ·ÅÊ±ÍË³öÑ­»·
-    quit1.pack()							//µ÷ÓÃ°´Å¥
-    Tkinter.mainloop()							//½øÈëÖ÷Ñ­»·Ìå
+    quit1 = Tkinter.Button(top1,text='hello world',command=top1.quit)	//åˆ›å»ºæŒ‰é’®ï¼Œå½“æŒ‰é’®é‡Šæ”¾æ—¶é€€å‡ºå¾ªç¯
+    quit1.pack()							//è°ƒç”¨æŒ‰é’®
+    Tkinter.mainloop()							//è¿›å…¥ä¸»å¾ªç¯ä½“
 
 def test3():
     top = Tkinter.Tk()
-    hello = Tkinter.Label(top,text='hello world')					//´´½¨ÎÄ±¾
-    hello.pack()									//µ÷ÓÃÎÄ±¾
-    quit1 = Tkinter.Button(top,text='end',command=top.quit,bg='blue',fg='white')	//´´½¨°´Å¥
-    quit1.pack(fill=Tkinter.X)								//µ÷ÓÃ°´Å¥£¬½øĞĞÌî³ä	
-    Tkinter.mainloop()									//½øÈëÖ÷Ñ­»·Ìå
+    hello = Tkinter.Label(top,text='hello world')					//åˆ›å»ºæ–‡æœ¬
+    hello.pack()									//è°ƒç”¨æ–‡æœ¬
+    quit1 = Tkinter.Button(top,text='end',command=top.quit,bg='blue',fg='white')	//åˆ›å»ºæŒ‰é’®
+    quit1.pack(fill=Tkinter.X)								//è°ƒç”¨æŒ‰é’®ï¼Œè¿›è¡Œå¡«å……	
+    Tkinter.mainloop()									//è¿›å…¥ä¸»å¾ªç¯ä½“
 
 
 
@@ -67,16 +67,16 @@ def test3():
 
 from Tkinter import *
 def resize(ev=None):
-    label.config(font='Helvetica -%d bold' % scale.get())			//ÉèÖÃ×ÖÌå¸ñÊ½
+    label.config(font='Helvetica -%d bold' % scale.get())			//è®¾ç½®å­—ä½“æ ¼å¼
 top = Tk()
-top.geometry('250x150')								//ÉèÖÃ´°¿Ú´óĞ¡
+top.geometry('250x150')								//è®¾ç½®çª—å£å¤§å°
 label = Label(top, text='Hello World!')
 label.pack()
 
-scale = Scale(top, from_=10,to=40,orient=HORIZONTAL,command=resize)		//´´½¨»¬¶¯Ìõ£¬²¢¹ØÁª×ÖÌå
-scale.set(10)									//ÉèÖÃ»¬¶¯ÌõÆğÊ¼Î»ÖÃ
-scale.pack(fill=X)								//ÉèÖÃÌî³ä
-quit = Button(top, text="QUIT",command=top.quit,bg='red',fg='white')		//ÉèÖÃ°´Å¥
+scale = Scale(top, from_=10,to=40,orient=HORIZONTAL,command=resize)		//åˆ›å»ºæ»‘åŠ¨æ¡ï¼Œå¹¶å…³è”å­—ä½“
+scale.set(10)									//è®¾ç½®æ»‘åŠ¨æ¡èµ·å§‹ä½ç½®
+scale.pack(fill=X)								//è®¾ç½®å¡«å……
+quit = Button(top, text="QUIT",command=top.quit,bg='red',fg='white')		//è®¾ç½®æŒ‰é’®
 quit.pack()
 mainloop()
 

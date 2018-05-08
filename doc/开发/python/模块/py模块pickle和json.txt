@@ -1,22 +1,22 @@
-pickleÄ£¿é£¬ÓÃÓÚÊµÏÖÁ÷×ª»»£¬ÐèÒªµ¼Èë£¨pythonË½ÓÐ£©
+pickleæ¨¡å—ï¼Œç”¨äºŽå®žçŽ°æµè½¬æ¢ï¼Œéœ€è¦å¯¼å…¥ï¼ˆpythonç§æœ‰ï¼‰
 
-×÷ÓÃ£º½«Ò»¸öÌØÊâµÄÊý¾ÝÀàÐÍ×ª»»Îª¿É³ÖÐø´æ´¢¶ÔÏó£¬ÌØÊâÊý¾Ý²»ÄÜÖ±½Ó´æ´¢£¬±ØÐë¾­¹ýÁ÷×ª»»
+ä½œç”¨ï¼šå°†ä¸€ä¸ªç‰¹æ®Šçš„æ•°æ®ç±»åž‹è½¬æ¢ä¸ºå¯æŒç»­å­˜å‚¨å¯¹è±¡ï¼Œç‰¹æ®Šæ•°æ®ä¸èƒ½ç›´æŽ¥å­˜å‚¨ï¼Œå¿…é¡»ç»è¿‡æµè½¬æ¢
 
-pickle.dump(o,f)£º½«ÌØÊâÊý¾ÝÀàÐÍ´æ´¢µ½ÎÄ¼þÖÐ
-pickle.load(f)£º½«´æ´¢µÄÌØÊâÊý¾ÝÀàÐÍÏÔÊ¾µ½ÖÕ¶ËÉÏ
+pickle.dump(o,f)ï¼šå°†ç‰¹æ®Šæ•°æ®ç±»åž‹å­˜å‚¨åˆ°æ–‡ä»¶ä¸­
+pickle.load(f)ï¼šå°†å­˜å‚¨çš„ç‰¹æ®Šæ•°æ®ç±»åž‹æ˜¾ç¤ºåˆ°ç»ˆç«¯ä¸Š
 
-o£º¶ÔÏó
-f£ºÎÄ¼þ
-
-
-json£ºÓÃÓÚÊµÏÖÁ÷×ª»»£¬ÐèÒªµ¼Èë£¬¿É¶ÁÐÔ¸üºÃ£¨Í¨ÓÃ£©
-
-json.dump(o,f)£º½«ÌØÊâÊý¾ÝÀàÐÍ´æ´¢µ½ÎÄ¼þÖÐ
-json.load(f)£º½«´æ´¢µÄÌØÊâÊý¾ÝÀàÐÍÏÔÊ¾µ½ÖÕ¶ËÉÏ
+oï¼šå¯¹è±¡
+fï¼šæ–‡ä»¶
 
 
+jsonï¼šç”¨äºŽå®žçŽ°æµè½¬æ¢ï¼Œéœ€è¦å¯¼å…¥ï¼Œå¯è¯»æ€§æ›´å¥½ï¼ˆé€šç”¨ï¼‰
 
-´æ´¢£º
+json.dump(o,f)ï¼šå°†ç‰¹æ®Šæ•°æ®ç±»åž‹å­˜å‚¨åˆ°æ–‡ä»¶ä¸­
+json.load(f)ï¼šå°†å­˜å‚¨çš„ç‰¹æ®Šæ•°æ®ç±»åž‹æ˜¾ç¤ºåˆ°ç»ˆç«¯ä¸Š
+
+
+
+å­˜å‚¨ï¼š
 In [1]: import pickle
 
 In [2]: w = open('/root/test','a+')
@@ -36,7 +36,7 @@ In [7]: pickle.dump(d,w)
 In [8]: w.close()
 
  
-ÏÔÊ¾£º
+æ˜¾ç¤ºï¼š
 In [14]: r = open('/root/test','r')
 
 In [15]: pickle.load(r)

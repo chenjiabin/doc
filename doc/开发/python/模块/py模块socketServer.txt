@@ -1,39 +1,39 @@
-TCPServer(address,handler)Ê¹ÓÃIPv4µÄTCPĞ­Òé£¬addressÊÇÒ»¸ö(ip,port)Ôª×é,handlerÊÇBaseRequestHandlerÀàµÄ×ÓÀàµÄÊµÀı
-ÒªÊ¹ÓÃSocketServerÄ£¿é£¬±ØĞë¶¨ÒåÒ»¸ö¼Ì³ĞÓÚ»ùÀàBaseRequestHandlerµÄ´¦Àí³ÌĞòÀà
+TCPServer(address,handler)ä½¿ç”¨IPv4çš„TCPåè®®ï¼Œaddressæ˜¯ä¸€ä¸ª(ip,port)å…ƒç»„,handleræ˜¯BaseRequestHandlerç±»çš„å­ç±»çš„å®ä¾‹
+è¦ä½¿ç”¨SocketServeræ¨¡å—ï¼Œå¿…é¡»å®šä¹‰ä¸€ä¸ªç»§æ‰¿äºåŸºç±»BaseRequestHandlerçš„å¤„ç†ç¨‹åºç±»
 
-BaseRequestHandlerµÄÊµÀıµÄ·½·¨£º
-handle()£º½âÎö´«ÈëµÄÇëÇó£¬´¦ÀíÊı¾İ£¬²¢·¢ËÍÏìÓ¦
+BaseRequestHandlerçš„å®ä¾‹çš„æ–¹æ³•ï¼š
+handle()ï¼šè§£æä¼ å…¥çš„è¯·æ±‚ï¼Œå¤„ç†æ•°æ®ï¼Œå¹¶å‘é€å“åº”
 
-handleµÄ³£ÓÃ±äÁ¿£º
-self.request£º°üº¬ÇëÇó
-self.client_address£º°üº¬¿Í»§¶ËµØÖ·
-self.server£º°üº¬µ÷ÓÃ´¦Àí³ÌĞòµÄÊµÀı
+handleçš„å¸¸ç”¨å˜é‡ï¼š
+self.requestï¼šåŒ…å«è¯·æ±‚
+self.client_addressï¼šåŒ…å«å®¢æˆ·ç«¯åœ°å€
+self.serverï¼šåŒ…å«è°ƒç”¨å¤„ç†ç¨‹åºçš„å®ä¾‹
 
-ThreadingTCPServer(address,handler)£º»ù±¾µÄÍøÂçÍ¬²½TCP·şÎñÆ÷
-s.serve_forever()£º´¦ÀíÇëÇó
+ThreadingTCPServer(address,handler)ï¼šåŸºæœ¬çš„ç½‘ç»œåŒæ­¥TCPæœåŠ¡å™¨
+s.serve_forever()ï¼šå¤„ç†è¯·æ±‚
 
 
-Àı£º
+ä¾‹ï¼š
 #!/usr/bin/env py
 #coding: utf-8
 import SocketServer
 
-class MyServer(SocketServer.BaseRequestHandler):        #Ê¹ÓÃSocketServer±ØĞëµÄÊµÀı»¯µÄÀà
+class MyServer(SocketServer.BaseRequestHandler):        #ä½¿ç”¨SocketServerå¿…é¡»çš„å®ä¾‹åŒ–çš„ç±»
 
-    def handle(self):                   #½âÎöÇëÇó,BaseRequestHandler×ÓÀàµÄ·½·¨
-       conn = self.request              #´´½¨ÇëÇó
+    def handle(self):                   #è§£æè¯·æ±‚,BaseRequestHandlerå­ç±»çš„æ–¹æ³•
+       conn = self.request              #åˆ›å»ºè¯·æ±‚
 
-       conn.send('hello')               #·¢ËÍ¸ø¿Í»§¶ËµÄÊı¾İ
-       while True:                      #Ñ­»··¢ËÍÊı¾İ
-           data =conn.recv(1024)        #½ÓÊÕ¿Í»§¶Ë·¢ËÍµÄÊı¾İ,×î´ó1024×Ö½Ú
-           print data                   #´òÓ¡¿Í»§¶Ë·¢ËÍµÄÊı¾İ
-           conn.send('world')           #·¢ËÍ¸ø¿Í»§¶ËµÄÊı¾İ
+       conn.send('hello')               #å‘é€ç»™å®¢æˆ·ç«¯çš„æ•°æ®
+       while True:                      #å¾ªç¯å‘é€æ•°æ®
+           data =conn.recv(1024)        #æ¥æ”¶å®¢æˆ·ç«¯å‘é€çš„æ•°æ®,æœ€å¤§1024å­—èŠ‚
+           print data                   #æ‰“å°å®¢æˆ·ç«¯å‘é€çš„æ•°æ®
+           conn.send('world')           #å‘é€ç»™å®¢æˆ·ç«¯çš„æ•°æ®
 
-       conn.close()                     #¹Ø±ÕÁ¬½Ó
+       conn.close()                     #å…³é—­è¿æ¥
 
 
-server = SocketServer.ThreadingTCPServer(('192.168.0.10',8888),MyServer)        #»ù±¾µÄÍøÂçÍ¬²½TCP·şÎñÆ÷
-server.serve_forever()                  #ÎŞÏŞ´¦ÀíÇëÇó
+server = SocketServer.ThreadingTCPServer(('192.168.0.10',8888),MyServer)        #åŸºæœ¬çš„ç½‘ç»œåŒæ­¥TCPæœåŠ¡å™¨
+server.serve_forever()                  #æ— é™å¤„ç†è¯·æ±‚
 
 
 

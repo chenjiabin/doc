@@ -1,7 +1,7 @@
-random£ºËæ»úÊıÉú³É
-random.random()£ºÉú³É0-1Ö®¼äµÄÈÎÒâËæ»úÊı
-random.randint(int1,int2)£ºÉú³Éint1-int2Ö®¼äµÄÈÎÒâÕûÊı
-random.randrange(int1,int2)£ºÉú³Éint1-(int2-1)Ö®¼äµÄÈÎÒâÕûÊı
+randomï¼šéšæœºæ•°ç”Ÿæˆ
+random.random()ï¼šç”Ÿæˆ0-1ä¹‹é—´çš„ä»»æ„éšæœºæ•°
+random.randint(int1,int2)ï¼šç”Ÿæˆint1-int2ä¹‹é—´çš„ä»»æ„æ•´æ•°
+random.randrange(int1,int2)ï¼šç”Ÿæˆint1-(int2-1)ä¹‹é—´çš„ä»»æ„æ•´æ•°
 
 
 

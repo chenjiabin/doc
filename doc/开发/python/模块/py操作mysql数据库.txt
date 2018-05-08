@@ -1,63 +1,63 @@
-pip°²×°Ä£¿é
+pipå®‰è£…æ¨¡å—
 pip install pymysql
 
 
-pymysql£º
-	pymsqlÊÇPythonÖĞ²Ù×÷MySQLµÄÄ£¿é£¬ÆäÊ¹ÓÃ·½·¨ºÍMySQLdb¼¸ºõÏàÍ¬¡£µ«pymysqlÖ§³Öpython3¶øºóÕß²»Ö§³Öpython3
+pymysqlï¼š
+	pymsqlæ˜¯Pythonä¸­æ“ä½œMySQLçš„æ¨¡å—ï¼Œå…¶ä½¿ç”¨æ–¹æ³•å’ŒMySQLdbå‡ ä¹ç›¸åŒã€‚ä½†pymysqlæ”¯æŒpython3è€Œåè€…ä¸æ”¯æŒpython3
 
 
-pymysql»ù±¾²Ù×÷£º
-	conn = pymysql.connecthost='Ö÷»úµØÖ·',[user='ÓÃ»§'],[passwd='ÃÜÂë'],[db='Êı¾İ¿â'], [charset='×Ö·ûÀàĞÍ'])	#Á¬½Ó·½·¨
-	cursor = conn.cursor()												#´´½¨ÓÎ±ê
-	cursor = connect.cursor(cursor=pymysql.cursors.DictCursor)			#´´½¨ÓÎ±ê£¬ÒÔ×Öµä·½Ê½·µ»ØÊı¾İ(Ä¬ÈÏÒÔÔª×é·½Ê½·µ»Ø)
-	data1= cursor.execute("show databases;")			#Ö´ĞĞSQL£¬²¢·µ»ØÊÕÓ°ÏìĞĞÊı 
+pymysqlåŸºæœ¬æ“ä½œï¼š
+	conn = pymysql.connecthost='ä¸»æœºåœ°å€',[user='ç”¨æˆ·'],[passwd='å¯†ç '],[db='æ•°æ®åº“'], [charset='å­—ç¬¦ç±»å‹'])	#è¿æ¥æ–¹æ³•
+	cursor = conn.cursor()												#åˆ›å»ºæ¸¸æ ‡
+	cursor = connect.cursor(cursor=pymysql.cursors.DictCursor)			#åˆ›å»ºæ¸¸æ ‡ï¼Œä»¥å­—å…¸æ–¹å¼è¿”å›æ•°æ®(é»˜è®¤ä»¥å…ƒç»„æ–¹å¼è¿”å›)
+	data1= cursor.execute("show databases;")			#æ‰§è¡ŒSQLï¼Œå¹¶è¿”å›æ”¶å½±å“è¡Œæ•° 
 	
-	data2 = cursor.fetchone()							#Ã¿´Î»ñÈ¡Ò»ĞĞÊı¾İ(¶àÓÃÓÚ²éÑ¯´óÁ¿Êı¾İÊ±)
+	data2 = cursor.fetchone()							#æ¯æ¬¡è·å–ä¸€è¡Œæ•°æ®(å¤šç”¨äºæŸ¥è¯¢å¤§é‡æ•°æ®æ—¶)
 	
-	data3 = cursor.fetchmany(3)							#Ã¿´Î»ñÈ¡nĞĞÊı¾İ
+	data3 = cursor.fetchmany(3)							#æ¯æ¬¡è·å–nè¡Œæ•°æ®
 	
-	data4 = cursor.fetchall()							#»ñÈ¡Ê£Óà½á¹ûËùÓĞÊı¾İ
+	data4 = cursor.fetchall()							#è·å–å‰©ä½™ç»“æœæ‰€æœ‰æ•°æ®
 	
-	²ÎÊı»¯²éÑ¯£¬ÔÚÖ´ĞĞexecuteÊ±±ØĞëÊ¹ÓÃ²ÎÊı»¯²éÑ¯£¬±ÜÃâSQL×¢Èë
-	user='root'									#¶¨Òå²ÎÊı
+	å‚æ•°åŒ–æŸ¥è¯¢ï¼Œåœ¨æ‰§è¡Œexecuteæ—¶å¿…é¡»ä½¿ç”¨å‚æ•°åŒ–æŸ¥è¯¢ï¼Œé¿å…SQLæ³¨å…¥
+	user='root'									#å®šä¹‰å‚æ•°
 	passwd=''
-	row = cursor.execute("select user,password from mysql.user where user=%s and password=%s",(user,passwd))	#²ÎÊı»¯²éÑ¯
-	data_all = cursor.fetchall()				#»ñÈ¡²éÕÒµ½µÄËùÓĞÊı¾İ
+	row = cursor.execute("select user,password from mysql.user where user=%s and password=%s",(user,passwd))	#å‚æ•°åŒ–æŸ¥è¯¢
+	data_all = cursor.fetchall()				#è·å–æŸ¥æ‰¾åˆ°çš„æ‰€æœ‰æ•°æ®
 	
 	
-	conn.commit()			#Ìá½»£¬²»È»ÎŞ·¨±£´æĞÂ½¨»òÕßĞŞ¸ÄµÄÊı¾İ
-	cursor.close()			#¹Ø±ÕÓÎ±ê
-	conn.close()			#¶Ï¿ªÁ¬½Ó
+	conn.commit()			#æäº¤ï¼Œä¸ç„¶æ— æ³•ä¿å­˜æ–°å»ºæˆ–è€…ä¿®æ”¹çš„æ•°æ®
+	cursor.close()			#å…³é—­æ¸¸æ ‡
+	conn.close()			#æ–­å¼€è¿æ¥
 
 	
 
-pip°²×°Ä£¿é
+pipå®‰è£…æ¨¡å—
 pip install MySQL-python
 
 
-2¡¢mysqlÊı¾İ²Ù×÷
+2ã€mysqlæ•°æ®æ“ä½œ
 
-±ØĞëÓĞµÄ²½Öè£º
-contact = MySQLdb.connect(host='Ö÷»úµØÖ·',[user='ÓÃ»§'],[passwd='ÃÜÂë'],[db='Êı¾İ¿â'])		//Á¬½ÓÊı¾İ¿â
-open_database = contact.cursor(cursorclass=mysql.cursors.DictCursor)			//´ò¿ªÊı¾İ¿â,ÒÔ×Öµä·½Ê½·µ»Ø
+å¿…é¡»æœ‰çš„æ­¥éª¤ï¼š
+contact = MySQLdb.connect(host='ä¸»æœºåœ°å€',[user='ç”¨æˆ·'],[passwd='å¯†ç '],[db='æ•°æ®åº“'])		//è¿æ¥æ•°æ®åº“
+open_database = contact.cursor(cursorclass=mysql.cursors.DictCursor)			//æ‰“å¼€æ•°æ®åº“,ä»¥å­—å…¸æ–¹å¼è¿”å›
 
-²é¿´Êı¾İ£º
-show = open_database.execute('SQLÓï¾ä')			//²éÑ¯µ½¶àÉÙÌõÊı¾İ
-show_data = open_database.fetchall()			//·µ»Ø²éÑ¯µ½µÄËùÓĞÊı¾İ
-												//fetchone()Ã¿Ò»´ÎÖ´ĞĞÖ»·µ»ØÒ»ÌõÊı¾İ
-
-
-Ôö¡¢É¾¡¢¸Ä£º
-SQL = 'insert into www(id,name) values(%s,%s)'		//SQLÓï¾ä£¬%sÎªÕ¾Î»·û£¬±ØĞëÊÇ%s
-sql = (1,'lisi')									//%s¶ÔÓ¦µÄÖµ
-insert_data = open_database.execute(SQL,sql)		//Ö´ĞĞSQL²Ù×÷
+æŸ¥çœ‹æ•°æ®ï¼š
+show = open_database.execute('SQLè¯­å¥')			//æŸ¥è¯¢åˆ°å¤šå°‘æ¡æ•°æ®
+show_data = open_database.fetchall()			//è¿”å›æŸ¥è¯¢åˆ°çš„æ‰€æœ‰æ•°æ®
+												//fetchone()æ¯ä¸€æ¬¡æ‰§è¡Œåªè¿”å›ä¸€æ¡æ•°æ®
 
 
+å¢ã€åˆ ã€æ”¹ï¼š
+SQL = 'insert into www(id,name) values(%s,%s)'		//SQLè¯­å¥ï¼Œ%sä¸ºç«™ä½ç¬¦ï¼Œå¿…é¡»æ˜¯%s
+sql = (1,'lisi')									//%så¯¹åº”çš„å€¼
+insert_data = open_database.execute(SQL,sql)		//æ‰§è¡ŒSQLæ“ä½œ
 
-±ØĞëÓĞµÄ²½Öè£º
-contact.commit()						//ÏòÊı¾İ¿âÌá½»²Ù×÷
-open_database.close()					//¹Ø±ÕÊı¾İ¿â
-contact.close()							//¶Ï¿ªºÍÊı¾İ¿âµÄÁ¬½Ó
+
+
+å¿…é¡»æœ‰çš„æ­¥éª¤ï¼š
+contact.commit()						//å‘æ•°æ®åº“æäº¤æ“ä½œ
+open_database.close()					//å…³é—­æ•°æ®åº“
+contact.close()							//æ–­å¼€å’Œæ•°æ®åº“çš„è¿æ¥
 
 
 

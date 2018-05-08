@@ -1,14 +1,14 @@
-multiprocessing£ºpython¶à½ø³ÌÄ£¿é
+multiprocessingï¼špythonå¤šè¿›ç¨‹æ¨¡å—
 
-´´½¨½ø³Ì£º
-p = Process(target=func,args=arg)	//´´½¨½ø³Ì(»ù±¾ºÍ¶àÏß³ÌÒ»Ñù)
-p.start()							//Æô¶¯½ø³Ì
+åˆ›å»ºè¿›ç¨‹ï¼š
+p = Process(target=func,args=arg)	//åˆ›å»ºè¿›ç¨‹(åŸºæœ¬å’Œå¤šçº¿ç¨‹ä¸€æ ·)
+p.start()							//å¯åŠ¨è¿›ç¨‹
 
 
-´´½¨½ø³Ì³Ø£º	
-Pool								//´´½¨½ø³Ì³Ø
+åˆ›å»ºè¿›ç¨‹æ± ï¼š	
+Pool								//åˆ›å»ºè¿›ç¨‹æ± 
 	
-½ø³Ì³ØµÄÔËÓÃ£º
+è¿›ç¨‹æ± çš„è¿ç”¨ï¼š
 #!/usr/bin/py
 #-*- coding: utf-8 -*-
 import multiprocessing
@@ -19,9 +19,9 @@ def a(x):
     print x
     return x * x
 
-t = [1,2,3,4,5,6,7,8,9]				//t±ØĞëÊÇÁĞ±í»òÔª×é
+t = [1,2,3,4,5,6,7,8,9]				//tå¿…é¡»æ˜¯åˆ—è¡¨æˆ–å…ƒç»„
 
-pool = multiprocessing.Pool(2)		//´´½¨Ïß³Ì³Ø,Ã¿´ÎÖ´ĞĞÁ½¸ö½ø³Ì
+pool = multiprocessing.Pool(2)		//åˆ›å»ºçº¿ç¨‹æ± ,æ¯æ¬¡æ‰§è¡Œä¸¤ä¸ªè¿›ç¨‹
 y = pool.map(a,t)
 print y
 

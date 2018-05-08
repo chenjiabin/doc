@@ -1,53 +1,53 @@
-socket£ºÌ×½Ó×ÖÄ£¿é
-socket.socket()£º´´½¨Ì×½Ó×Ö
-´´½¨TCP/IPÌ×½Ó×Ö£ºsocket.socket()
-´´½¨UDP/IPÌ×½Ó×Ö£ºsocket.socket(socket.AF_INET,socket.SOCK.DGRAM)
-socket.AF_INET		//ipv4(Ä¬ÈÏ)
+socketï¼šå¥—æ¥å­—æ¨¡å—
+socket.socket()ï¼šåˆ›å»ºå¥—æ¥å­—
+åˆ›å»ºTCP/IPå¥—æ¥å­—ï¼šsocket.socket()
+åˆ›å»ºUDP/IPå¥—æ¥å­—ï¼šsocket.socket(socket.AF_INET,socket.SOCK.DGRAM)
+socket.AF_INET		//ipv4(é»˜è®¤)
 socket.AF_INET6		//ipv6
-socket.SOCK_STREAM	//tcpÁ¬½Ó(Ä¬ÈÏ)
-socket.SOCK.DGRAM	//udpÁ¬½Ó
+socket.SOCK_STREAM	//tcpè¿æ¥(é»˜è®¤)
+socket.SOCK.DGRAM	//udpè¿æ¥
 
-³£ÓÃ·½·¨£º
-socket.bind()£º°ó¶¨Ì×½Ó×Ö¶ÔÏó
-socket.listen()£º×î³¤µÈ´ıĞòÁĞ
-socket.accept()£º±»¶¯×èÈûÊ½µÄ½ÓÊÜÇëÇó
-socket.recv()£º½ÓÊÕTCPÊı¾İ£¨×èÈû£©
-socket.send()£º·¢ËÍTCPÊı¾İ£¬´æÈë»º´æÇø
-socket.sendall£º·¢ËÍTCPÊı¾İ
-socket.close()£º¹Ø±ÕÌ×½Ó×Ö
-scoket.connect()£º³õÊ¼»¯Á¬½Ó(¿Í»§¶Ë·½·¨)
-
-
-
-´´½¨·şÎñÆ÷¶Ë£º
-import  socket							//µ¼ÈëÄ£¿é
-
-host = '192.168.1.1'						//·şÎñÆ÷µÄipµØÖ·
-port = 8080							//¼àÌıµÄ¶Ë¿Ú
-
-sk = socket.scoket(socket.AF_INET,socket.SOCK_STREAM)		//´´½¨Ì×½Ó×Ö
-sk.bind((host,port))						//°ó¶¨ipºÍ¶Ë¿Ú
-sk.listen(10)							//ÔÊĞí×î´óĞòÁĞ
-while True:							//½¨Á¢Ñ­»·
-    sinfo,saddr = sk.accept()					//¿ªÊ¼¼àÌı·şÎñÇëÇó
-    print saddr[0]						//´òÓ¡¿Í»§¶ËipµØÖ·ºÍ¶Ë¿Ú
-    date = sinfo.recv(1024)					//½ÓÊÕÊı¾İ£¬Ò»´Î×î´ó½ÓÊÜ1024×Ö½Ú				
-    print date							//´òÓ¡µ½½ÓÊÕµÄÊı¾İ				
-    sinfo.send('hello cilent')					//»Ø¸´¿Í»§¶ËµÄÊı¾İ
-sinfo.close()							//¹Ø±ÕÌ×½Ó×Ö
+å¸¸ç”¨æ–¹æ³•ï¼š
+socket.bind()ï¼šç»‘å®šå¥—æ¥å­—å¯¹è±¡
+socket.listen()ï¼šæœ€é•¿ç­‰å¾…åºåˆ—
+socket.accept()ï¼šè¢«åŠ¨é˜»å¡å¼çš„æ¥å—è¯·æ±‚
+socket.recv()ï¼šæ¥æ”¶TCPæ•°æ®ï¼ˆé˜»å¡ï¼‰
+socket.send()ï¼šå‘é€TCPæ•°æ®ï¼Œå­˜å…¥ç¼“å­˜åŒº
+socket.sendallï¼šå‘é€TCPæ•°æ®
+socket.close()ï¼šå…³é—­å¥—æ¥å­—
+scoket.connect()ï¼šåˆå§‹åŒ–è¿æ¥(å®¢æˆ·ç«¯æ–¹æ³•)
 
 
-´´½¨¿Í»§¶Ë£º
+
+åˆ›å»ºæœåŠ¡å™¨ç«¯ï¼š
+import  socket							//å¯¼å…¥æ¨¡å—
+
+host = '192.168.1.1'						//æœåŠ¡å™¨çš„ipåœ°å€
+port = 8080							//ç›‘å¬çš„ç«¯å£
+
+sk = socket.scoket(socket.AF_INET,socket.SOCK_STREAM)		//åˆ›å»ºå¥—æ¥å­—
+sk.bind((host,port))						//ç»‘å®šipå’Œç«¯å£
+sk.listen(10)							//å…è®¸æœ€å¤§åºåˆ—
+while True:							//å»ºç«‹å¾ªç¯
+    sinfo,saddr = sk.accept()					//å¼€å§‹ç›‘å¬æœåŠ¡è¯·æ±‚
+    print saddr[0]						//æ‰“å°å®¢æˆ·ç«¯ipåœ°å€å’Œç«¯å£
+    date = sinfo.recv(1024)					//æ¥æ”¶æ•°æ®ï¼Œä¸€æ¬¡æœ€å¤§æ¥å—1024å­—èŠ‚				
+    print date							//æ‰“å°åˆ°æ¥æ”¶çš„æ•°æ®				
+    sinfo.send('hello cilent')					//å›å¤å®¢æˆ·ç«¯çš„æ•°æ®
+sinfo.close()							//å…³é—­å¥—æ¥å­—
+
+
+åˆ›å»ºå®¢æˆ·ç«¯ï¼š
 import  socket
 
 host = '192.168.1.1'
 port = 8080
 
-ck = socket.socket(socket.AF_INTE,socket.SOCK_STREAM)		//´´½¨Ì×½Ó×Ö
-ck.connect((host,port))						//³õÊ¼»¯£¬Ö¸¶¨·şÎñÆ÷µÄipºÍ¶Ë¿Ú
-ck.send('hello server')						//·¢ËÍ¸ø·şÎñÆ÷µÄÊı¾İ	
-data = ck.recv(1024)						//½ÓÊÕ·şÎñÆ÷·¢ËÍµÄÊı¾İ£¬Ò»´Î×î´ó½ÓÊÜ1024×Ö½Ú
-print data							//´òÓ¡½ÓÊÕµ½µÄÊı¾İ		
+ck = socket.socket(socket.AF_INTE,socket.SOCK_STREAM)		//åˆ›å»ºå¥—æ¥å­—
+ck.connect((host,port))						//åˆå§‹åŒ–ï¼ŒæŒ‡å®šæœåŠ¡å™¨çš„ipå’Œç«¯å£
+ck.send('hello server')						//å‘é€ç»™æœåŠ¡å™¨çš„æ•°æ®	
+data = ck.recv(1024)						//æ¥æ”¶æœåŠ¡å™¨å‘é€çš„æ•°æ®ï¼Œä¸€æ¬¡æœ€å¤§æ¥å—1024å­—èŠ‚
+print data							//æ‰“å°æ¥æ”¶åˆ°çš„æ•°æ®		
 
 
 

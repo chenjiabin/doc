@@ -2,9 +2,9 @@ from IPy import IP
 
 
 ip = IP('192.168.1.0/24')
-print ip.version()             							#»ñÈ¡ipµÄ°æ±¾
-print ip.len()                 							#»ñÈ¡ip¸öÊı
-for i in ip:print i            							#´òÓ¡´Ë·¶Î§ÄÚµÄËùÓĞipµØÖ·
-print IP('1.1.1.1').strBin()              				#½«ip×ª»»³É¶ş½øÖÆ
-print IP('1.1.1.1').make_net('255.255.255.0')       	#»ñÈ¡ipµÄ×ÓÍøÊı
-print  IP('192.168.1.1/255.255.255.252',make_net=True) 	#»ñÈ¡ipµÄ×ÓÍøÊı
+print ip.version()             							#è·å–ipçš„ç‰ˆæœ¬
+print ip.len()                 							#è·å–ipä¸ªæ•°
+for i in ip:print i            							#æ‰“å°æ­¤èŒƒå›´å†…çš„æ‰€æœ‰ipåœ°å€
+print IP('1.1.1.1').strBin()              				#å°†ipè½¬æ¢æˆäºŒè¿›åˆ¶
+print IP('1.1.1.1').make_net('255.255.255.0')       	#è·å–ipçš„å­ç½‘æ•°
+print  IP('192.168.1.1/255.255.255.252',make_net=True) 	#è·å–ipçš„å­ç½‘æ•°

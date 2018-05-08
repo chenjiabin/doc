@@ -1,63 +1,63 @@
-psutil:»ñÈ¡ÏµÍ³×´Ì¬Ä£¿é
-µ¥Î»»»Ëã:(psutil¶ÁÈ¡µÄÈİÁ¿ÒÑ×Ö½ÚÎªµ¥Î»)
-1000×Ö½Ú=1k
+psutil:è·å–ç³»ç»ŸçŠ¶æ€æ¨¡å—
+å•ä½æ¢ç®—:(psutilè¯»å–çš„å®¹é‡å·²å­—èŠ‚ä¸ºå•ä½)
+1000å­—èŠ‚=1k
 1000k=1M
 1000M=1G 
-1000000000×Ö½Ú = 1g
-"%.nf" %a:±£ÁôĞ¡ÊıµÄÖ®ºónÎªÊı×Ö(ËÄÉáÎåÈë)
+1000000000å­—èŠ‚ = 1g
+"%.nf" %a:ä¿ç•™å°æ•°çš„ä¹‹ånä¸ºæ•°å­—(å››èˆäº”å…¥)
 
-³£ÓÃ·½·¨£º
+å¸¸ç”¨æ–¹æ³•ï¼š
 
-CPUĞÅÏ¢£º
-psutil.cpu_count(logical=True)		#»ñÈ¡cupÏß³ÌÊı
-psutil.cpu_count(logical=False)		#»ñÈ¡cupºËĞÄÊı
-psutil.cpu_times_percent()			#»ñÈ¡µ±Ç°cpuµÄÏêÏ¸ĞÅÏ¢,ÒÔ°Ù·Ö±ÈµÄ·½Ê½ÏÔÊ¾
-    user:Ö´ĞĞÓÃ»§½ø³ÌµÄ°Ù·Ö±È,system:Ö´ĞĞÏµÍ³½ø³ÌµÄ°Ù·Ö±È,idle:¿ÕÏĞÊ±¼ä,interrupt:ÏµÍ³ÖĞ¶Ï
+CPUä¿¡æ¯ï¼š
+psutil.cpu_count(logical=True)		#è·å–cupçº¿ç¨‹æ•°
+psutil.cpu_count(logical=False)		#è·å–cupæ ¸å¿ƒæ•°
+psutil.cpu_times_percent()			#è·å–å½“å‰cpuçš„è¯¦ç»†ä¿¡æ¯,ä»¥ç™¾åˆ†æ¯”çš„æ–¹å¼æ˜¾ç¤º
+    user:æ‰§è¡Œç”¨æˆ·è¿›ç¨‹çš„ç™¾åˆ†æ¯”,system:æ‰§è¡Œç³»ç»Ÿè¿›ç¨‹çš„ç™¾åˆ†æ¯”,idle:ç©ºé—²æ—¶é—´,interrupt:ç³»ç»Ÿä¸­æ–­
 
 	
-ÄÚ´æĞÅÏ¢£º
-psutil.virtual_memory()				#»ñÈ¡ÎïÀíÄÚ´æµÄÏêÏ¸ĞÅÏ¢
-psutil.swap_memory()				#»ñÈ¡ĞéÄâÄÚ´æµÄÏêÏ¸ĞÅÏ¢
-    total:ÄÚ´æ×Ü´óĞ¡,  used:ÒÑÊ¹ÓÃ´óĞ¡,   free:Ê£Óà´óĞ¡
+å†…å­˜ä¿¡æ¯ï¼š
+psutil.virtual_memory()				#è·å–ç‰©ç†å†…å­˜çš„è¯¦ç»†ä¿¡æ¯
+psutil.swap_memory()				#è·å–è™šæ‹Ÿå†…å­˜çš„è¯¦ç»†ä¿¡æ¯
+    total:å†…å­˜æ€»å¤§å°,  used:å·²ä½¿ç”¨å¤§å°,   free:å‰©ä½™å¤§å°
 	
 
-´ÅÅÌĞÅÏ¢£º
-psutil.disk_io_counters()				#»ñÈ¡´ÅÅÌIOĞÅÏ¢
-psutil.disk_io_counters(perdisk=True)	#»ñÈ¡µ¥¸ö·ÖÇøµÄIOĞÅÏ¢
-psutil.disk_partitions()				#»ñÈ¡´ÅÅÌ·ÖÇøĞÅÏ¢
-psutil.disk_usage(·ÖÇø¹ÒÔØµã)			#»ñÈ¡·ÖÇøÏêÏ¸ĞÅÏ¢
-    IOĞÅÏ¢£º
-		read_count:¶Á²Ù×÷ÇëÇó´ÎÊı   write_count:Ğ´²Ù×÷ÇëÇó´ÎÊı
-		read_bytes:¶Á×Ö½ÚÊı         write_bytes:Ğ´×Ö½ÚÊı
-		read_time:¶Á²Ù×÷Ê¹ÓÃÊ±¼ä    write_time:Ğ´²Ù×÷Ê¹ÓÃÊ±¼ä
-	´ÅÅÌ·ÖÇø£º
-		device:·ÖÇøÀàĞÍ		 	mountpoint:·ÖÇø¹ÒÔØµã
-		fstype:ÎÄ¼şÏµÍ³ÀàĞÍ		opts:ÎÄ¼şÏµÍ³È¨ÏŞ
-	·ÖÇøĞÅÏ¢£º
-		total:×Ü´óĞ¡, used:ÒÑÊ¹ÓÃ´óĞ¡, free:Ê£Óà´óĞ¡,
+ç£ç›˜ä¿¡æ¯ï¼š
+psutil.disk_io_counters()				#è·å–ç£ç›˜IOä¿¡æ¯
+psutil.disk_io_counters(perdisk=True)	#è·å–å•ä¸ªåˆ†åŒºçš„IOä¿¡æ¯
+psutil.disk_partitions()				#è·å–ç£ç›˜åˆ†åŒºä¿¡æ¯
+psutil.disk_usage(åˆ†åŒºæŒ‚è½½ç‚¹)			#è·å–åˆ†åŒºè¯¦ç»†ä¿¡æ¯
+    IOä¿¡æ¯ï¼š
+		read_count:è¯»æ“ä½œè¯·æ±‚æ¬¡æ•°   write_count:å†™æ“ä½œè¯·æ±‚æ¬¡æ•°
+		read_bytes:è¯»å­—èŠ‚æ•°         write_bytes:å†™å­—èŠ‚æ•°
+		read_time:è¯»æ“ä½œä½¿ç”¨æ—¶é—´    write_time:å†™æ“ä½œä½¿ç”¨æ—¶é—´
+	ç£ç›˜åˆ†åŒºï¼š
+		device:åˆ†åŒºç±»å‹		 	mountpoint:åˆ†åŒºæŒ‚è½½ç‚¹
+		fstype:æ–‡ä»¶ç³»ç»Ÿç±»å‹		opts:æ–‡ä»¶ç³»ç»Ÿæƒé™
+	åˆ†åŒºä¿¡æ¯ï¼š
+		total:æ€»å¤§å°, used:å·²ä½¿ç”¨å¤§å°, free:å‰©ä½™å¤§å°,
 
-Íø¿¨ĞÅÏ¢£º
-	psutil.net_if_addrs()			#»ñÈ¡Íø¿¨ÅäÖÃĞÅÏ¢
-	psutil.net_io_counters()		#»ñÈ¡½ÓÊÕÊı¾İĞÅÏ¢
-		bytes_sent:·¢ËÍÊı¾İ´óĞ¡			bytes_recv:½ÓÊÕÊı¾İ´óĞ¡
-		packets_sent:·¢ËÍÊı¾İ°ü¸öÊı 	packets_recv:½ÓÊÕÊı¾İ°ü¸öÊı
+ç½‘å¡ä¿¡æ¯ï¼š
+	psutil.net_if_addrs()			#è·å–ç½‘å¡é…ç½®ä¿¡æ¯
+	psutil.net_io_counters()		#è·å–æ¥æ”¶æ•°æ®ä¿¡æ¯
+		bytes_sent:å‘é€æ•°æ®å¤§å°			bytes_recv:æ¥æ”¶æ•°æ®å¤§å°
+		packets_sent:å‘é€æ•°æ®åŒ…ä¸ªæ•° 	packets_recv:æ¥æ”¶æ•°æ®åŒ…ä¸ªæ•°
 		
-ÓÃ»§ĞÅÏ¢£º
-	psutil.boot_time()				#»ñÈ¡ÏµÍ³¿ª»úÊ±¼ä
-	psutil.users()					#»ñÈ¡µ±Ç°ÏµÍ³ÉÏµÄËùÓĞÓÃ»§ĞÅÏ¢
-		name:ÓÃ»§Ãû  	terminal:µÇÂ¼ÖÕ¶Ë 		host:µÇÂ¼Ö÷»ú 
+ç”¨æˆ·ä¿¡æ¯ï¼š
+	psutil.boot_time()				#è·å–ç³»ç»Ÿå¼€æœºæ—¶é—´
+	psutil.users()					#è·å–å½“å‰ç³»ç»Ÿä¸Šçš„æ‰€æœ‰ç”¨æˆ·ä¿¡æ¯
+		name:ç”¨æˆ·å  	terminal:ç™»å½•ç»ˆç«¯ 		host:ç™»å½•ä¸»æœº 
 		
 		
-½ø³ÌĞÅÏ¢:
-	psutil.pids()						#ÁĞ³öËùÓĞ½ø³ÌPID
-	process = psutil.Process(PID)		#½ø³Ì´¦ÀíµÄÒ»¸öÀà,½ÓÊÕÒ»¸öPID×öÎª²ÎÊı
+è¿›ç¨‹ä¿¡æ¯:
+	psutil.pids()						#åˆ—å‡ºæ‰€æœ‰è¿›ç¨‹PID
+	process = psutil.Process(PID)		#è¿›ç¨‹å¤„ç†çš„ä¸€ä¸ªç±»,æ¥æ”¶ä¸€ä¸ªPIDåšä¸ºå‚æ•°
 	
-	process.username()					#»ñÈ¡ÔËĞĞ½ø³ÌµÄÓÃ»§
-	process.name()						#»ñÈ¡½ø³ÌÃû
-	process.exe()						#³ÌĞòµÄ¾ø¶ÔÂ·¾¶
-	process.create_time()				#½ø³Ì´´½¨Ê±¼ä
-	process.io_counters()				#½ø³ÌIO
-	process.num_threads()				#½ø³Ì´´½¨µÄÏß³ÌÊı
+	process.username()					#è·å–è¿è¡Œè¿›ç¨‹çš„ç”¨æˆ·
+	process.name()						#è·å–è¿›ç¨‹å
+	process.exe()						#ç¨‹åºçš„ç»å¯¹è·¯å¾„
+	process.create_time()				#è¿›ç¨‹åˆ›å»ºæ—¶é—´
+	process.io_counters()				#è¿›ç¨‹IO
+	process.num_threads()				#è¿›ç¨‹åˆ›å»ºçš„çº¿ç¨‹æ•°
 
 
 

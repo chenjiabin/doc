@@ -1,63 +1,63 @@
-urllib£ºpyÅÀ³æÄ£¿é£¬¶àÓÃÓÚ×¥È¡ÍøÒ³ÄÚÈİ£¬Ä¿Ç°ÓĞÁ½¸ö°æ±¾
+urllibï¼špyçˆ¬è™«æ¨¡å—ï¼Œå¤šç”¨äºæŠ“å–ç½‘é¡µå†…å®¹ï¼Œç›®å‰æœ‰ä¸¤ä¸ªç‰ˆæœ¬
 
-urllibºÍurllib2µÄÇø±ğ£º
-urllib2¿ÉÒÔ½ÓÊÜRequestÀ´ÉèÖÃURLÇëÇóµÄheaders£¬Î±×°User Agent×Ö·û´®
-urllib½ö¿ÉÒÔ½ÓÊÜURL£¬µ«urllibÌá¹©urlencode·½·¨ÓÃÀ´GET²éÑ¯×Ö·û´®µÄ²úÉú£¬¶øurllib2Ã»ÓĞ
-Ä¿Ç°µÄ´ó²¿·ÖhttpÇëÇó¶¼ÊÇurllib2Íê³ÉµÄ
-
-
-³£ÓÃ·½·¨ºÍÊôĞÔ£º
-urlopen(url)£º´ò¿ªÖ¸¶¨ÍøÒ³µÄÍøÒ³Ô´´úÂë
-getcode£º·µ»Ø·şÎñÆ÷µÄ×´Ì¬´úÂë£¬200Õı³££¬404·şÎñÆ÷¶Ë´íÎó
-geturl()£ºÏÔÊ¾ÇëÇóµÄurl
-info()£º²é¿´·şÎñÆ÷·¢ËÍµÄ°üĞÅÏ¢
-urlretrieve(url,±£´æÎ»ÖÃ)£ºÏÂÔØurl¶¨Î»µ½µÄÎÄ¼ş
+urllibå’Œurllib2çš„åŒºåˆ«ï¼š
+urllib2å¯ä»¥æ¥å—Requestæ¥è®¾ç½®URLè¯·æ±‚çš„headersï¼Œä¼ªè£…User Agentå­—ç¬¦ä¸²
+urllibä»…å¯ä»¥æ¥å—URLï¼Œä½†urllibæä¾›urlencodeæ–¹æ³•ç”¨æ¥GETæŸ¥è¯¢å­—ç¬¦ä¸²çš„äº§ç”Ÿï¼Œè€Œurllib2æ²¡æœ‰
+ç›®å‰çš„å¤§éƒ¨åˆ†httpè¯·æ±‚éƒ½æ˜¯urllib2å®Œæˆçš„
 
 
+å¸¸ç”¨æ–¹æ³•å’Œå±æ€§ï¼š
+urlopen(url)ï¼šæ‰“å¼€æŒ‡å®šç½‘é¡µçš„ç½‘é¡µæºä»£ç 
+getcodeï¼šè¿”å›æœåŠ¡å™¨çš„çŠ¶æ€ä»£ç ï¼Œ200æ­£å¸¸ï¼Œ404æœåŠ¡å™¨ç«¯é”™è¯¯
+geturl()ï¼šæ˜¾ç¤ºè¯·æ±‚çš„url
+info()ï¼šæŸ¥çœ‹æœåŠ¡å™¨å‘é€çš„åŒ…ä¿¡æ¯
+urlretrieve(url,ä¿å­˜ä½ç½®)ï¼šä¸‹è½½urlå®šä½åˆ°çš„æ–‡ä»¶
 
-Àı×Ó£º
+
+
+ä¾‹å­ï¼š
 #!/usr/bin/python  
 # -*- coding:utf-8 -*-  
   
-import urllib                                                     #µ¼ÈëurllibÄ£¿é  
-import urllib2                                                    #µ¼Èëurllib2Ä£¿é  
-import re                                                         #µ¼ÈëÕıÔò±í´ïÊ½Ä£¿é£ºreÄ£¿é  
+import urllib                                                     #å¯¼å…¥urllibæ¨¡å—  
+import urllib2                                                    #å¯¼å…¥urllib2æ¨¡å—  
+import re                                                         #å¯¼å…¥æ­£åˆ™è¡¨è¾¾å¼æ¨¡å—ï¼šreæ¨¡å—  
   
-def getPDFFromNet(inputURL):					  #¶¨Òåº¯Êı£¬½ÓÊÜÒ»¸ö²ÎÊı  
-        req = urllib2.Request(inputURL)				  #·â×°URL  
-        f = urllib2.urlopen(req)                                  #´ò¿ªÍøÒ³  
-        localDir = 'E:\downloadPDF\\'                             #ÏÂÔØPDFÎÄ¼şĞèÒª´æ´¢ÔÚ±¾µØµÄÎÄ¼ş¼Ğ  
-        urlList = []                                              #ÓÃÀ´´æ´¢ÌáÈ¡µÄPDFÏÂÔØµÄurlµÄÁĞ±í  
-        for i in f:                                               #±éÀúÍøÒ³µÄÃ¿Ò»ĞĞ  
-                line = i.strip()                           	  #È¥³ıĞĞÊ×Î»µÄ¿Õ¸ñ
-                if re.match('.*PDF.*',line):                      #È¥Æ¥Åäº¬ÓĞ¡°PDF¡±×Ö·û´®µÄĞĞ£¬Ö»ÓĞÕâĞ©ĞĞ²ÅÓĞPDFÏÂÔØµØÖ·  
-                        wordList = line.split('\"')               #ÒÔ"Îª·Ö¸ô·û£¬½«¸ÃĞĞ·Ö¿ª£¬ÕâÑù¾Í½«urlµØÖ·µ¥¶À·Ö¿ªÁË  
-                        for word in wordList:                     #±éÀúÃ¿¸ö×Ö·û´®  
-                                if re.match('.*\.pdf$', word):    #Æ¥Åäº¬ÓĞ¡°.pdf¡±µÄ×Ö·û´®£¬Ö»ÓĞurlÖĞ²ÅÓĞ  
-                                        urlList.append(word)      #½«ÌáÈ¡µÄurl´æÈëÁĞ±í
+def getPDFFromNet(inputURL):					  #å®šä¹‰å‡½æ•°ï¼Œæ¥å—ä¸€ä¸ªå‚æ•°  
+        req = urllib2.Request(inputURL)				  #å°è£…URL  
+        f = urllib2.urlopen(req)                                  #æ‰“å¼€ç½‘é¡µ  
+        localDir = 'E:\downloadPDF\\'                             #ä¸‹è½½PDFæ–‡ä»¶éœ€è¦å­˜å‚¨åœ¨æœ¬åœ°çš„æ–‡ä»¶å¤¹  
+        urlList = []                                              #ç”¨æ¥å­˜å‚¨æå–çš„PDFä¸‹è½½çš„urlçš„åˆ—è¡¨  
+        for i in f:                                               #éå†ç½‘é¡µçš„æ¯ä¸€è¡Œ  
+                line = i.strip()                           	  #å»é™¤è¡Œé¦–ä½çš„ç©ºæ ¼
+                if re.match('.*PDF.*',line):                      #å»åŒ¹é…å«æœ‰â€œPDFâ€å­—ç¬¦ä¸²çš„è¡Œï¼Œåªæœ‰è¿™äº›è¡Œæ‰æœ‰PDFä¸‹è½½åœ°å€  
+                        wordList = line.split('\"')               #ä»¥"ä¸ºåˆ†éš”ç¬¦ï¼Œå°†è¯¥è¡Œåˆ†å¼€ï¼Œè¿™æ ·å°±å°†urlåœ°å€å•ç‹¬åˆ†å¼€äº†  
+                        for word in wordList:                     #éå†æ¯ä¸ªå­—ç¬¦ä¸²  
+                                if re.match('.*\.pdf$', word):    #åŒ¹é…å«æœ‰â€œ.pdfâ€çš„å­—ç¬¦ä¸²ï¼Œåªæœ‰urlä¸­æ‰æœ‰  
+                                        urlList.append(word)      #å°†æå–çš„urlå­˜å…¥åˆ—è¡¨
   
-        for everyURL in urlList:                                  #±éÀúÁĞ±íµÄÃ¿Ò»Ïî£¬¼´Ã¿Ò»¸öPDFµÄurl  
-                wordItems = everyURL.split('/')                   #½«urlÒÔ/Îª½ç½øĞĞ»®·Ö£¬ÎªÁËÌáÈ¡¸ÃPDFÎÄ¼şÃû  
-                for item in wordItems:                            #±éÀúÃ¿¸ö×Ö·û´®  
-                        if re.match('.*\.pdf$', item):            #²éÕÒPDFµÄÎÄ¼şÃû  
-                                PDFName = item                    #²éÕÒµ½PDFÎÄ¼şÃû  
-                localPDF = localDir + PDFName                     #½«±¾µØ´æ´¢Ä¿Â¼ºÍĞèÒªÌáÈ¡µÄPDFÎÄ¼şÃû½øĞĞÁ¬½Ó  
+        for everyURL in urlList:                                  #éå†åˆ—è¡¨çš„æ¯ä¸€é¡¹ï¼Œå³æ¯ä¸€ä¸ªPDFçš„url  
+                wordItems = everyURL.split('/')                   #å°†urlä»¥/ä¸ºç•Œè¿›è¡Œåˆ’åˆ†ï¼Œä¸ºäº†æå–è¯¥PDFæ–‡ä»¶å  
+                for item in wordItems:                            #éå†æ¯ä¸ªå­—ç¬¦ä¸²  
+                        if re.match('.*\.pdf$', item):            #æŸ¥æ‰¾PDFçš„æ–‡ä»¶å  
+                                PDFName = item                    #æŸ¥æ‰¾åˆ°PDFæ–‡ä»¶å  
+                localPDF = localDir + PDFName                     #å°†æœ¬åœ°å­˜å‚¨ç›®å½•å’Œéœ€è¦æå–çš„PDFæ–‡ä»¶åè¿›è¡Œè¿æ¥  
                 try:                                               
-                        urllib.urlretrieve(everyURL, localPDF)    #°´ÕÕurl½øĞĞÏÂÔØ£¬²¢ÒÔÆäÎÄ¼şÃû´æ´¢µ½±¾µØÄ¿Â¼  
+                        urllib.urlretrieve(everyURL, localPDF)    #æŒ‰ç…§urlè¿›è¡Œä¸‹è½½ï¼Œå¹¶ä»¥å…¶æ–‡ä»¶åå­˜å‚¨åˆ°æœ¬åœ°ç›®å½•  
                 except Exception,e:  
                         continue  
 
 
-urllib2ÉèÖÃuser-agent£º
-Ä¿µÄ£ºÎª·ÀÖ¹ÍøÕ¾½ûÖ¹×¥È¡ÍøÒ³ÄÚÈİ
+urllib2è®¾ç½®user-agentï¼š
+ç›®çš„ï¼šä¸ºé˜²æ­¢ç½‘ç«™ç¦æ­¢æŠ“å–ç½‘é¡µå†…å®¹
 
-import urllib2						#µ¼ÈëÄ£¿é
+import urllib2						#å¯¼å…¥æ¨¡å—
 
-url="http://www.baidu.com"				#¶¨Òåurl
-request = urllib2.Request(url£©			 	#·â×°url
-request.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 (FoxPlus) Firefox/2.0.0.14')			#Ìí¼ÓÎ±×°£¬¼ü£¬Öµ£¨ÖµÎªä¯ÀÀÆ÷user-agentµÄÍ·£¬°Ù¶ÈÉÏÓĞÏêÏ¸½éÉÜ£©
-k = urllib2.urlopen(request)		#Á´½Ó¾­¹ı·â×°µÄurl	
-print k.read()				#¶ÁÈ¡ÍøÒ³ÎÄ¼ş
+url="http://www.baidu.com"				#å®šä¹‰url
+request = urllib2.Request(urlï¼‰			 	#å°è£…url
+request.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 (FoxPlus) Firefox/2.0.0.14')			#æ·»åŠ ä¼ªè£…ï¼Œé”®ï¼Œå€¼ï¼ˆå€¼ä¸ºæµè§ˆå™¨user-agentçš„å¤´ï¼Œç™¾åº¦ä¸Šæœ‰è¯¦ç»†ä»‹ç»ï¼‰
+k = urllib2.urlopen(request)		#é“¾æ¥ç»è¿‡å°è£…çš„url	
+print k.read()				#è¯»å–ç½‘é¡µæ–‡ä»¶
 
 
 
