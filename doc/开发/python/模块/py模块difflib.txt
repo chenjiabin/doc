@@ -1,12 +1,12 @@
-difflibÄ£¿éÖ÷ÒªÓÃÓÚÊµÏÖÎÄ¼ş±È½Ï
+difflibæ¨¡å—ä¸»è¦ç”¨äºå®ç°æ–‡ä»¶æ¯”è¾ƒ
 
-difflib.ndiff(str1,str2)		#±È½ÏÁ½¸ö×Ö·û´®µÄ²îÒì£¬ÒÔÎÄ±¾·½Ê½Êä³ö
-	+£ºstr1ÖĞÃ»ÓĞ	-£ºstr2ÖĞÃ»ÓĞ	?£ºÌØÊâ×Ö·û£¬Ò»°ãÓĞtabµÈ¿ØÖÆ¼üÔì³É
+difflib.ndiff(str1,str2)		#æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²çš„å·®å¼‚ï¼Œä»¥æ–‡æœ¬æ–¹å¼è¾“å‡º
+	+ï¼šstr1ä¸­æ²¡æœ‰	-ï¼šstr2ä¸­æ²¡æœ‰	?ï¼šç‰¹æ®Šå­—ç¬¦ï¼Œä¸€èˆ¬æœ‰tabç­‰æ§åˆ¶é”®é€ æˆ
 	
-difflib.HtmlDiff()				#±È½ÏÁ½¸ö×Ö·û´®µÄ²îÒì£¬ÒÔHTML¸ñÊ½Êä³ö£¬¿ÉÒÔÄÃµ½ä¯ÀÀÆ÷ÉÏ¸üÖ±¹ÛµÄÕ¹Ê¾
+difflib.HtmlDiff()				#æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²çš„å·®å¼‚ï¼Œä»¥HTMLæ ¼å¼è¾“å‡ºï¼Œå¯ä»¥æ‹¿åˆ°æµè§ˆå™¨ä¸Šæ›´ç›´è§‚çš„å±•ç¤º
 
 
-ÊµÀı£º±È½ÏÁ½¸öÎÄ¼şÖ®¼äµÄ²îÒì
+å®ä¾‹ï¼šæ¯”è¾ƒä¸¤ä¸ªæ–‡ä»¶ä¹‹é—´çš„å·®å¼‚
 	#!/usr/bin/py
 	import sys,difflib
 
@@ -30,12 +30,12 @@ difflib.HtmlDiff()				#±È½ÏÁ½¸ö×Ö·û´®µÄ²îÒì£¬ÒÔHTML¸ñÊ½Êä³ö£¬¿ÉÒÔÄÃµ½ä¯ÀÀÆ÷ÉÏ¸üÖ
 	test1 = readfile(file1)
 	test2 = readfile(file2)
 
-	diff = difflib.ndiff(test1,test2)	#´´½¨Àà£¬ÒÔÎÄ±¾·½Ê½Êä³ö
+	diff = difflib.ndiff(test1,test2)	#åˆ›å»ºç±»ï¼Œä»¥æ–‡æœ¬æ–¹å¼è¾“å‡º
 	for i in diff:
 		print i,
 
-	#diff = difflib.HtmlDiff()			#´´½¨HTMLÀà
-	#print diff.make_file(test1,test2)	#ÒÔhtml¸ñÊ½Êä³ö
+	#diff = difflib.HtmlDiff()			#åˆ›å»ºHTMLç±»
+	#print diff.make_file(test1,test2)	#ä»¥htmlæ ¼å¼è¾“å‡º
 		
 		
 

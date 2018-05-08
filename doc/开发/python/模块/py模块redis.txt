@@ -1,22 +1,22 @@
-redis£ºµÚÈı·½Ä£¿é,ÓÃÓÚ²Ù×÷redisÊı¾İ¿â
+redisï¼šç¬¬ä¸‰æ–¹æ¨¡å—,ç”¨äºæ“ä½œredisæ•°æ®åº“
 
-REdis = redis.Redis(host='IP',port=6379)	//Á¬½ÓÊı¾İ¿â
-
-
-³£ÓÃ²Ù×÷(Ö§³ÖredisµÄËùÓĞ²Ù×÷)£º
-REdis.set(key_name,value)					//´´½¨¼¯ºÏ
-REdis.get(key_name)							//»ñÈ¡¼¯ºÏÄÚµÄÊı¾İ
-REdis.rpush(key_name,value1,value2 ...)		//´´½¨ÁĞ±í
-REdis.lrange(key_name,start,end)			//»ñÈ¡ÁĞ±íÄÚµÄÖµ
+REdis = redis.Redis(host='IP',port=6379)	//è¿æ¥æ•°æ®åº“
 
 
-¶©ÔÄºÍ·¢²¼(·şÎñÆ÷¶Ë)£º
-REdis.pubsub()					//¿ªÆô¶©ÔÄ
-REdis.subscribe('6379')			//½ÓÊÕ¶©ÔÄµÄÊı¾İºÍ¶©ÔÄµÄÆµµÀ
-REdis.unsubscribe				//¹Ø±Õ¶©ÔÄ
+å¸¸ç”¨æ“ä½œ(æ”¯æŒredisçš„æ‰€æœ‰æ“ä½œ)ï¼š
+REdis.set(key_name,value)					//åˆ›å»ºé›†åˆ
+REdis.get(key_name)							//è·å–é›†åˆå†…çš„æ•°æ®
+REdis.rpush(key_name,value1,value2 ...)		//åˆ›å»ºåˆ—è¡¨
+REdis.lrange(key_name,start,end)			//è·å–åˆ—è¡¨å†…çš„å€¼
 
-¿Í»§¶Ë£º
-REdis.publish('6379', DATA)		//·¢²¼µ½µÄÆµµÀ,·¢²¼µÄÊı¾İ
+
+è®¢é˜…å’Œå‘å¸ƒ(æœåŠ¡å™¨ç«¯)ï¼š
+REdis.pubsub()					//å¼€å¯è®¢é˜…
+REdis.subscribe('6379')			//æ¥æ”¶è®¢é˜…çš„æ•°æ®å’Œè®¢é˜…çš„é¢‘é“
+REdis.unsubscribe				//å…³é—­è®¢é˜…
+
+å®¢æˆ·ç«¯ï¼š
+REdis.publish('6379', DATA)		//å‘å¸ƒåˆ°çš„é¢‘é“,å‘å¸ƒçš„æ•°æ®
 
 
 

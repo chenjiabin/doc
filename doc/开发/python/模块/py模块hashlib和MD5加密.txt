@@ -1,11 +1,11 @@
-hashlib£ºpython¼ÓÃÜÄ£¿é
+hashlibï¼špythonåŠ å¯†æ¨¡å—
 
-MD5¼ÓÃÜ£º
-hashlib.md5():´´½¨Ò»¸öMD5¶ÔÏó
-hashlib.md5.update('str')£ºÊ¹ÓÃMD5¶ÔÏóÈ¥µ÷ÓÃupdatº¯Êı£¬¼ÓÃÜ×Ö·û´®
-hashlib.md5.hexdigest()£ºÊ¹ÓÃMD5¶ÔÏóÈ¥µ÷ÓÃhexdigestº¯Êı£¬²é¿´¼ÓÃÜºóµÄÃÜÎÄ
+MD5åŠ å¯†ï¼š
+hashlib.md5():åˆ›å»ºä¸€ä¸ªMD5å¯¹è±¡
+hashlib.md5.update('str')ï¼šä½¿ç”¨MD5å¯¹è±¡å»è°ƒç”¨updatå‡½æ•°ï¼ŒåŠ å¯†å­—ç¬¦ä¸²
+hashlib.md5.hexdigest()ï¼šä½¿ç”¨MD5å¯¹è±¡å»è°ƒç”¨hexdigestå‡½æ•°ï¼ŒæŸ¥çœ‹åŠ å¯†åçš„å¯†æ–‡
 
-Àı£º
+ä¾‹ï¼š
 
 In [38]: import hashlib
 In [39]: md5 = hashlib.md5()
