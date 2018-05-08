@@ -1,0 +1,19 @@
+[commands]
+check_mysql=$USER1$/check_mysql -H $HOSTADDRESS$ -u $ARG1$ -p $ARG2$
+check_mysql_db=$USER1$/check_mysql -H $HOSTADDRESS$ -d $ARG1$ -u $ARG2$ -p $ARG3$
+check_mysql_local=$USER1$/check_mysql -H localhost -umerlin -pmerlin
+
+[name]
+check_mysql
+[info]
+Tests a MySQL server or database
+[why]
+To catch problems with mysql database servers or specific databases
+[how]
+Connects to a MySQL server and checks status. Lets you specify username, password and
+database to connect to.
+[platforms]
+Not platform dependent
+
+[categories]
+Databases

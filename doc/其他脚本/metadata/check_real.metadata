@@ -1,0 +1,14 @@
+[name]
+check_real
+
+[info]
+Tests the REAL service on a host.
+[why]
+To see status of you REAL media server.
+[how]
+Simulates a connection from a NAS to a radius server. Let you specify username, password and NAS identifier. You can also specify the expected response and timeout.
+[platforms]
+Not platform dependent.
+
+[categories]
+Misc

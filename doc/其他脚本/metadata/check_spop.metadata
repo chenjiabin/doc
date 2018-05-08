@@ -1,0 +1,14 @@
+[name]
+check_spop
+
+[info]
+Check status of a Secure POP3 server.
+[why]
+To check status of your Secure POP3 server.
+[how]
+Connects to a Secure POP3 server and checks status.
+[platforms]
+Not platform dependent.
+
+[categories]
+Mail

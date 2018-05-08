@@ -1,0 +1,17 @@
+[name]
+check_mysql_query
+
+[info]
+This program checks a query result against threshold levels.
+
+[why]
+So you may send custom queries to a MySQL database.
+
+[how]
+You send a SQL query and make sure it returns a numeric value.
+
+[platforms]
+Anything that may run a mysql server.
+
+[categories]
+Databases

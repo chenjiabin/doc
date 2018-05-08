@@ -1,0 +1,14 @@
+[name]
+check_log2
+
+[info]
+Smarter logfile checker for unix systems.
+[why]
+To automatically keep track of error messages that only is visable in a logfile.
+[how]
+This plugin starts searching the logfile where it stopped on the last check, it therefore doesnt need to go through the whole file (good on large logfiles). You can specify search patterns both as normal text and as a regular expression.
+[platforms]
+Unix
+
+[categories]
+Logs
