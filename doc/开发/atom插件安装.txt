@@ -1,0 +1,37 @@
+sudo apt install npm
+
+cd ~/.atom/packages
+
+git clone https://github.com/Reedo0910/atom-simplified-chinese-menu.git
+
+
+git clone https://github.com/skandasoft/browser-plus.git
+git clone https://github.com/steelbrain/linter.git
+git clone https://github.com/atom-community/autocomplete-paths.git
+git clone https://github.com/tststs/atom-ternjs.git
+git clone https://github.com/sindresorhus/atom-jshint.git
+git clone https://github.com/tcarlsen/atom-csslint.git
+git clone https://github.com/autocomplete-python/autocomplete-python.git
+git clone https://github.com/MichaelAquilina/python-tools.git
+git clone https://github.com/mattberkowitz/autoclose-html.git
+git clone https://github.com/harmsk/atom-html-preview.git
+git clone https://github.com/magbicaleman/open-in-browser.git
+git clone https://github.com/jeremyramin/terminal-plus.git
+
+
+
+有问题的包，谨慎安装:
+#git clone https://github.com/lgeiger/ide-python.git
+#git clone https://github.com/AtomLinter/linter-pycodestyle.git
+#git clone https://github.com/sveale/remote-edit.git
+#git clone https://github.com/rgbkrk/atom-script.git
+
+
+例:
+	cd ~/.atom/packages/atom-ternjs.git/
+	npm install							#install plugin
+	npm remove							#uninstall plugin
+
+plugin download list:
+		https://atom.io/packages/
+		https://blog.csdn.net/qq_30100043/article/details/53558381
