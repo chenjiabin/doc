@@ -1,103 +1,103 @@
-useradd  �����û�
-��ʽ��useradd  ѡ��  �û���
--u��ָ��uid��
--g��ָ��������
--G��ָ��������
--s��ָ����¼shell
--d��ָ������Ŀ¼
--e��ָ���û�����ʱ��
+useradd  创建用户
+格式：useradd  选项  用户名
+-u：指定uid号
+-g：指定基本组
+-G：指定附加组
+-s：指定登录shell
+-d：指定宿主目录
+-e：指定用户过期时间
 
-userdel��ɾ���û�
--d��ɾ���û�ʱͬʱɾ���û���Ŀ¼
-
-
-usermod���޸��û�����
-��ʽ��usermod  ѡ��   Ҫ�޸ĵ��û�
--l���޸��û���¼��
--L�������û�
--U�������û�
-֧��useradd������ѡ��
+userdel：删除用户
+-d：删除用户时同时删除用户家目录
 
 
-passwd��������Ĳ���
-��ʽ��passwd  ѡ��  �û�����Ĭ��Ϊ�޸����룩
--l����������
--u����������
--d��������루�����������˻���¼ϵͳ��
---stdin�����������û�������������ʱʹ�ã�����ֱ�Ӹ���passwd���棩
-��ʽ��useradd �û��� && echo ���� | passwd �û���
-����useradd  zhangsan  && echo  123.com  |  passwd  --stdin   zhangsan
+usermod：修改用户属性
+格式：usermod  选项   要修改的用户
+-l：修改用户登录名
+-L：锁定用户
+-U：解锁用户
+支持useradd的所有选项
 
 
-groupadd��������
--g��ָ��gid
+passwd：对密码的操作
+格式：passwd  选项  用户名（默认为修改密码）
+-l：锁定密码
+-u：解锁密码
+-d：清空密码（允许空密码账户登录系统）
+--stdin（大量创建用户名和设置密码时使用，密码直接跟在passwd后面）
+格式：useradd 用户名 && echo 密码 | passwd 用户名
+例：useradd  zhangsan  && echo  123.com  |  passwd  --stdin   zhangsan
 
 
-gpasswd�����ӣ�ɾ�����������Ա
-��ʽ��gpasswd  ѡ��   ����
--a���������Ա
--d��ɾ�����Ա
--M��ˢ�����Ա��ͨ����һ�μ���ʹ�ã�
+groupadd：创建组
+-g：指定gid
 
 
-groupdel��ɾ����
-��ʽ��groupdel  ����  ��ɾ������û����ᱻɾ����
-
-chmod��Ȩ�޹���
-��ʽ��chmod  Ȩ��   Ŀ���ļ���Ŀ¼
-���ӣ�chmod  777    /etc
-4=r   r=��
-2=w   w=д
-1=x   x=ִ��
-���˽⣺u=����  g=����   o=����  a=����  ʹ��+,-,=�ķ�������Ȩ�ޣ�
-
-chown���޸��ļ�������������
-��ʽ��chown  ����:����  Ŀ���ļ���Ŀ¼
-����chown lisi:lisi  /etc  ���⣺��/etc����ļ��������������Ϊlisi��
-����:���飺ͬʱ�����ļ���Ŀ¼������������
-������ֻ�����ļ���Ŀ¼������
-:���飺ֻ�����ļ�������
-
-groups���鿴�û����ڵ���
-��ʽ��groups  �û���
-
-id���鿴�û���ʶ��ֻĬ����ʾID�ţ�
--n��ֻ��ʾ���ƣ�������-g��-u��-Gһ��ʹ�ã�-g��-u��-Gͬʱֻ��ѡһ
-��ʽ��id  �û���
-
-last���鿴��ǰ�û�����ϸ��Ϣ
-
-�û��������ϸ��Ϣ
-/etc/passwd�����û��Ļ�����Ϣ
-/etc/shadow�����û���������Ϣ
-/etc/group������Ļ�����Ϣ
-/etc/gshadow�������������Ϣ������ʹ�ã�
+gpasswd：添加，删除，设置组成员
+格式：gpasswd  选项   组名
+-a：添加组成员
+-d：删除组成员
+-M：刷新组成员（通常第一次加组使用）
 
 
-�û���������Ϣ
-.bash_profile���û���¼ʱ����
-.bash_logout���û��˳���¼ʱ����
-.bashrc���û�ÿ�μ���/bin/bashʱ����
+groupdel：删除组
+格式：groupdel  组名  （删除组后用户不会被删除）
+
+chmod：权限管理
+格式：chmod  权限   目标文件或目录
+例子：chmod  777    /etc
+4=r   r=读
+2=w   w=写
+1=x   x=执行
+（了解：u=属主  g=属组   o=其他  a=所有  使用+,-,=的方法更改权限）
+
+chown：修改文件的属主和属组
+格式：chown  属主:属组  目标文件或目录
+例：chown lisi:lisi  /etc  （意：把/etc这个文件的属主和属组改为lisi）
+属主:属组：同时更改文件或目录的属主和属组
+属主：只更改文件或目录的属主
+:属组：只更改文件的属组
+
+groups：查看用户所在的组
+格式：groups  用户名
+
+id：查看用户标识（只默认显示ID号）
+-n：只显示名称，必须与-g或-u或-G一起使用，-g，-u，-G同时只能选一
+格式：id  用户名
+
+last：查看当前用户的详细信息
+
+用户和组的详细信息
+/etc/passwd储存用户的基本信息
+/etc/shadow储存用户的密码信息
+/etc/group储存组的基本信息
+/etc/gshadow储存组的密码信息（很少使用）
 
 
-����Ȩ�ޣ�
-SUID��ϣ����ͨ�û���root�������û�����������ĳ�����ű�ʱʹ�ã�chmod  u+s  �ļ�\Ŀ¼����
-GUID��ϣ����ͨ����ĳ�Ա��root�������û�����������ĳ�����ű�ʱʹ�ã�chmod  u+s  �ļ�\Ŀ¼����
-sticky����һ��������Ŀ¼�£�ϣ��ÿһ���û����ܴ����ļ���Ŀ¼��ɾ���Լ��������ļ���Ŀ¼�����������˴������ļ���Ŀ¼�㲻��ɾ������chmod  o+t  �ļ�\Ŀ¼����
+用户的配置信息
+.bash_profile：用户登录时运行
+.bash_logout：用户退出登录时运行
+.bashrc：用户每次加载/bin/bash时运行
 
 
-�ļ����ʿ����б���facl��
-�����ļ���չ�������ķ��ʿ���Ȩ��
+特殊权限：
+SUID：希望普通用户以root或其他用户的身份运行某程序或脚本时使用（chmod  u+s  文件\目录）。
+GUID：希望普通组里的成员以root或其他用户的身份运行某程序或脚本时使用（chmod  u+s  文件\目录）。
+sticky：在一个公共的目录下，希望每一个用户都能创建文件和目录或删除自己创建的文件和目录，但是其他人创建的文件和目录你不能删除。（chmod  o+t  文件\目录）。
 
-getfacl���鿴facl
-��ʽ��getfacl  �ļ���
 
-setfacl������facl
--m������faclȨ��		��ʽ��setfacl  -m  u:�û���:Ȩ��   �ļ�
--x��ȡ��faclȨ��		��ʽ��setfacl  -x  g:����    �ļ�
-u��ָ���û�		��ʽ��u:�û���:Ȩ��  �ļ�
-g��ָ����		��ʽ��g:����:Ȩ��    �ļ�
-��u��gǰ�����dΪĿ¼����Ĭ��facl��ֻ�ܸ�Ŀ¼����Ĭ��facl��
+文件访问控制列表（facl）
+利用文件扩展保存额外的访问控制权限
+
+getfacl：查看facl
+格式：getfacl  文件名
+
+setfacl：设置facl
+-m：添加facl权限		格式：setfacl  -m  u:用户名:权限   文件
+-x：取消facl权限		格式：setfacl  -x  g:组名    文件
+u：指定用户		格式：u:用户名:权限  文件
+g：指定组		格式：g:组名:权限    文件
+在u或g前面加上d为目录创建默认facl（只能给目录创建默认facl）
 
 
 

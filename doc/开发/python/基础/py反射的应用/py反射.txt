@@ -1,8 +1,8 @@
-__import__(str)£ºÒÔ×Ö·û´®·½Ê½µ¼ÈëÄ£¿é
-getattr(mode_name,function_name)£ºÒÔ×Ö·û´®·½Ê½µ÷ÓÃº¯Êı
+__import__(str)ï¼šä»¥å­—ç¬¦ä¸²æ–¹å¼å¯¼å…¥æ¨¡å—
+getattr(mode_name,function_name)ï¼šä»¥å­—ç¬¦ä¸²æ–¹å¼è°ƒç”¨å‡½æ•°
 
 
-Àı£º
+ä¾‹ï¼š
 In [2]: model = 'sys'
 In [3]: sys1 = __import__(model)
 

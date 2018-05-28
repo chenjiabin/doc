@@ -1,13 +1,13 @@
-1¡¢centosÊ¹ÓÃsystemctlÃüÁî¶Ô³ÌĞò½øĞĞ¹ÜÀí£¬/usr/lib/systemd/systemÀï´æ·Å³ÌĞòµÄÆô¶¯ÎÄ¼ş
-2¡¢centosÊ¹ÓÃfirewall×÷ÎªÄ¬ÈÏ·À»ğÇ½
+1ã€centosä½¿ç”¨systemctlå‘½ä»¤å¯¹ç¨‹åºè¿›è¡Œç®¡ç†ï¼Œ/usr/lib/systemd/systemé‡Œå­˜æ”¾ç¨‹åºçš„å¯åŠ¨æ–‡ä»¶
+2ã€centosä½¿ç”¨firewallä½œä¸ºé»˜è®¤é˜²ç«å¢™
 
-systemctlÃüÁîÊÇÏµÍ³·şÎñ¹ÜÀíÆ÷Ö¸Áî£¬ËüÊµ¼ÊÉÏ½« service ºÍ chkconfig Õâ×éºÏµ½ÁËÒ»Æğ
-	systemctl start crond.service		#Æô¶¯
-	systemctl stop crond.service		#Í£Ö¹
-	systemctl restart crond.service		#ÖØÆô
-	systemctl status crond.service		#²é¿´×´Ì¬
-	systemctl enable crond.service		#¿ª»ú×ÔÆô¶¯
-	systemctl disable crond.service		#½ûÖ¹¿ª»ú×ÔÆô¶¯
-	systemctl is-enabled crond.service	#²é¿´·şÎñÊÇ·ñ¿ª»ú×ÔÆô¶¯
-	systemctl list-unit-files --type=service	#²é¿´·şÎñÁĞ±í
+systemctlå‘½ä»¤æ˜¯ç³»ç»ŸæœåŠ¡ç®¡ç†å™¨æŒ‡ä»¤ï¼Œå®ƒå®é™…ä¸Šå°† service å’Œ chkconfig è¿™ç»„åˆåˆ°äº†ä¸€èµ·
+	systemctl start crond.service		#å¯åŠ¨
+	systemctl stop crond.service		#åœæ­¢
+	systemctl restart crond.service		#é‡å¯
+	systemctl status crond.service		#æŸ¥çœ‹çŠ¶æ€
+	systemctl enable crond.service		#å¼€æœºè‡ªå¯åŠ¨
+	systemctl disable crond.service		#ç¦æ­¢å¼€æœºè‡ªå¯åŠ¨
+	systemctl is-enabled crond.service	#æŸ¥çœ‹æœåŠ¡æ˜¯å¦å¼€æœºè‡ªå¯åŠ¨
+	systemctl list-unit-files --type=service	#æŸ¥çœ‹æœåŠ¡åˆ—è¡¨
 

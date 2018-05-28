@@ -1,38 +1,38 @@
 #-*- coding:gbk -*-
-#½Å±¾ÓÃÓÚ¼ì²âÕñÁå×´Ì¬£¬²¢·¢ËÍ×´Ì¬ĞÅÏ¢µ½zabbix·şÎñÆ÷£¬ĞèÒªÅäºÏzabbixÄ£°å£¬Ôö¼Ó¹ÊÕÏÅĞ¶Ï´¦Àí¹¦ÄÜ
-# °æ±¾3 Ôö¼ÓÃ¿Ìì¶¨Ê±×Ô¶¯ÖØÆôÕñÁåµÄ¹¦ÄÜ ĞŞ¸´ÖØÆôÊ§°Übug Ëõ¼õÒ»Ğ©¹¦ÄÜ
+#è„šæœ¬ç”¨äºæ£€æµ‹æŒ¯é“ƒçŠ¶æ€ï¼Œå¹¶å‘é€çŠ¶æ€ä¿¡æ¯åˆ°zabbixæœåŠ¡å™¨ï¼Œéœ€è¦é…åˆzabbixæ¨¡æ¿ï¼Œå¢åŠ æ•…éšœåˆ¤æ–­å¤„ç†åŠŸèƒ½
+# ç‰ˆæœ¬3 å¢åŠ æ¯å¤©å®šæ—¶è‡ªåŠ¨é‡å¯æŒ¯é“ƒçš„åŠŸèƒ½ ä¿®å¤é‡å¯å¤±è´¥bug ç¼©å‡ä¸€äº›åŠŸèƒ½
 import urllib2,json
 import os,sys
 import time,datetime
 import serial
 import getopt
 
-#¶¨Òå¼ì²âµÄÕñÁåµÄipµØÖ·
+#å®šä¹‰æ£€æµ‹çš„æŒ¯é“ƒçš„ipåœ°å€
 ip = "127.0.0.1"
-#¶¨ÒåĞèÒª¼ì²âÕñÁåµÄurlµØÖ·
+#å®šä¹‰éœ€è¦æ£€æµ‹æŒ¯é“ƒçš„urlåœ°å€
 url = "http://%s:1234/Server/status" % ip
-#¶¨ÒåÕñÁåµÄ¿ØÖÆ´®¿ÚºÅ
+#å®šä¹‰æŒ¯é“ƒçš„æ§åˆ¶ä¸²å£å·
 triggerComPort = "COM56"
-#¶¨ÒåÕñÁå¿ÉÓÃÊıÁ¿±¨¾¯µÄ·§Öµ
+#å®šä¹‰æŒ¯é“ƒå¯ç”¨æ•°é‡æŠ¥è­¦çš„é˜€å€¼
 normalThreshold = 10
-#¶¨Òåzabbix·şÎñÆ÷µØÖ·
+#å®šä¹‰zabbixæœåŠ¡å™¨åœ°å€
 zabbixserver = '172.16.0.1'
-#¶¨Òåzabbix·şÎñ¼àÌıµÄ¶Ë¿Ú£¬ÓÃÓÚzabbix_sender·¢ËÍÊı¾İ
+#å®šä¹‰zabbixæœåŠ¡ç›‘å¬çš„ç«¯å£ï¼Œç”¨äºzabbix_senderå‘é€æ•°æ®
 zabbixport = '10051'
-#zabbix_senderÃüÁîµÄÂ·¾¶
+#zabbix_senderå‘½ä»¤çš„è·¯å¾„
 zabbix_sender_bin = r'C:\zabbix_agent\bin\win32/zabbix_sender.exe'
-#ÓÃÓÚ·¢ËÍµ½zabbixµÄÊı¾İÎÄ¼şÂ·¾¶ --input-fileÑ¡ÏîÖ®ºó
+#ç”¨äºå‘é€åˆ°zabbixçš„æ•°æ®æ–‡ä»¶è·¯å¾„ --input-fileé€‰é¡¹ä¹‹å
 datacachefile = r'C:\zabbix_agent\trigger_status_%s_1234.txt' % ip
-#¶¨Òåzabbix web guiÖĞÅäÖÃµÄÖ÷»úÃû³Æ
+#å®šä¹‰zabbix web guiä¸­é…ç½®çš„ä¸»æœºåç§°
 HOST='Trigger02'
 
-#¶¨Òå¼ì²âÕñÁå¿ØÖÆÆ÷Êı¾İ¿ÚµÄ×Ö·û´®
+#å®šä¹‰æ£€æµ‹æŒ¯é“ƒæ§åˆ¶å™¨æ•°æ®å£çš„å­—ç¬¦ä¸²
 alive_information = "order:noActive"
-#¶¨ÒåÕñÁå¿ØÖÆÆ÷Êı¾İ¿Ú½ÓÊÕµÄÃüÁî1
+#å®šä¹‰æŒ¯é“ƒæ§åˆ¶å™¨æ•°æ®å£æ¥æ”¶çš„å‘½ä»¤1
 order1 = "order:close1"
 
 
-#¶¨ÒåÈÕÖ¾º¯Êı£¬ÓÃÓÚ´æ·ÅÒ»Ğ©ÈÕÖ¾£¬¼òµ¥µ÷ÓÃpython×Ô´øµÄloggingÄ£¿é£¬²ÎÊıÖ÷ÒªÓĞÁ½¸öÈÕÖ¾ĞÅÏ¢ºÍÈÕÖ¾ÎÄ¼şÃû³Æ
+#å®šä¹‰æ—¥å¿—å‡½æ•°ï¼Œç”¨äºå­˜æ”¾ä¸€äº›æ—¥å¿—ï¼Œç®€å•è°ƒç”¨pythonè‡ªå¸¦çš„loggingæ¨¡å—ï¼Œå‚æ•°ä¸»è¦æœ‰ä¸¤ä¸ªæ—¥å¿—ä¿¡æ¯å’Œæ—¥å¿—æ–‡ä»¶åç§°
 def logger(info,logfile):
     import logging  
     logging.basicConfig(level=logging.DEBUG,
@@ -42,340 +42,340 @@ def logger(info,logfile):
                         filemode='a')
     logging.debug(info)
 
-#¶¨Òå·¢ÓÊ¼şµÄº¯Êı£¬ÓÃÓÚµ±ÕñÁåµÄ¿ÉÓÃÊıÁ¿µÍÓÚ·§ÖµµÄÊ±ºò×Ô¶¯·¢ËÍÓÊ¼ş£¬²ÎÊıÊÇ¿ÉÓµÕñÁåµÄÊıÁ¿
+#å®šä¹‰å‘é‚®ä»¶çš„å‡½æ•°ï¼Œç”¨äºå½“æŒ¯é“ƒçš„å¯ç”¨æ•°é‡ä½äºé˜€å€¼çš„æ—¶å€™è‡ªåŠ¨å‘é€é‚®ä»¶ï¼Œå‚æ•°æ˜¯å¯æ‹¥æŒ¯é“ƒçš„æ•°é‡
 def information(num):
     import smtplib
     import email.utils
     from email.message import Message
     
-    #ÓÊ¼şµÄ·¢ËÍµØÖ·£¬ĞèÒª×Ô¶¨Òå
+    #é‚®ä»¶çš„å‘é€åœ°å€ï¼Œéœ€è¦è‡ªå®šä¹‰
     from_addr = "xxxxx@163.com"
-    #ÓÊ¼şµÄ½ÓÊÕµØÖ·£¬ĞèÒª×Ô¶¨Òå
+    #é‚®ä»¶çš„æ¥æ”¶åœ°å€ï¼Œéœ€è¦è‡ªå®šä¹‰
     to_addr = "xxxxx@sabc.net"
-    #Ö÷Ìâ
+    #ä¸»é¢˜
     subject = "TRIGGER ERROR!!!"
-    #smtp serverĞèÒª×Ô¶¨Òå
+    #smtp serveréœ€è¦è‡ªå®šä¹‰
     smtpserver = "smtp.163.com"
-    #ÓÃ»§Ãû£¬Ò»°ãºÍÓÊ¼ş·¢ËÍµØÖ·ÏàÍ¬
+    #ç”¨æˆ·åï¼Œä¸€èˆ¬å’Œé‚®ä»¶å‘é€åœ°å€ç›¸åŒ
     username = from_addr
-    #µÇÂ½ÃÜÂë
+    #ç™»é™†å¯†ç 
     password = "1234567789"
-    #»ñÈ¡ÏÖÔÚµÄÊÂ¼ş RFC 2822±ê×¼
+    #è·å–ç°åœ¨çš„äº‹ä»¶ RFC 2822æ ‡å‡†
     current_time = email.utils.formatdate(time.time(),True)
-    #ÓÊ¼ş·¢ËÍµÄÄÚÈİ£¬ÀïÃæĞ´ÈëÕñÁå·şÎñÆ÷¿ÉÓÃÊıÁ¿µÄ£¬ÄÚÈİ¿ÉÒÔ×Ô¶¨Òå
+    #é‚®ä»¶å‘é€çš„å†…å®¹ï¼Œé‡Œé¢å†™å…¥æŒ¯é“ƒæœåŠ¡å™¨å¯ç”¨æ•°é‡çš„ï¼Œå†…å®¹å¯ä»¥è‡ªå®šä¹‰
     content = """This is a mail from trigger
     You should handle trigger server manually
     The SIM available number is : %s
     The trigger is 192.168.1.12
     """ % num
 
-    #´´½¨Ò»¸ö»ù´¡Message¶ÔÏó
+    #åˆ›å»ºä¸€ä¸ªåŸºç¡€Messageå¯¹è±¡
     Smessage = Message()
-    #Ö¸¶¨Ö÷Ìâ
+    #æŒ‡å®šä¸»é¢˜
     Smessage["Subject"] = subject
-    #ÖÆ¶¨·¢¼şÈË
+    #åˆ¶å®šå‘ä»¶äºº
     Smessage["From"] = from_addr
-    #Ö¸¶¨ÊÕ¼şÈË
+    #æŒ‡å®šæ”¶ä»¶äºº
     Smessage["To"]= to_addr
-    #Ö¸¶¨³­ËÍ
+    #æŒ‡å®šæŠ„é€
     #Smessage["Cc"] = cc_addr
-    #¶ÁÈëÄÚÈİ
+    #è¯»å…¥å†…å®¹
     Smessage.set_payload(content+current_time)
-    #·µ»Ø×Ö·û´®ÀàĞÍµÄ ¸ñÊ½»¯ĞÅÏ¢
+    #è¿”å›å­—ç¬¦ä¸²ç±»å‹çš„ æ ¼å¼åŒ–ä¿¡æ¯
     msg = Smessage.as_string()
 
     try:
-        #Á´½Ósmtp·şÎñÆ÷
+        #é“¾æ¥smtpæœåŠ¡å™¨
         sm = smtplib.SMTP(smtpserver)
-    #·¢ÉúÒì³£SMTPConnectError
+    #å‘ç”Ÿå¼‚å¸¸SMTPConnectError
     except SMTPConnectError as e:
-        #´òÓ¡Òì³£ÀàĞÍ Òì³£ĞÅÏ¢
+        #æ‰“å°å¼‚å¸¸ç±»å‹ å¼‚å¸¸ä¿¡æ¯
         print SMTPConnectError,e
-        #µÚÒ»Òì³£ĞÅÏ¢
+        #ç¬¬ä¸€å¼‚å¸¸ä¿¡æ¯
         message = "SMTPConnectError,%s" % e
-        #¼ÇÂ¼Òì³£ĞÅÏ¢£¬µ÷ÓÃloggerº¯Êı
+        #è®°å½•å¼‚å¸¸ä¿¡æ¯ï¼Œè°ƒç”¨loggerå‡½æ•°
         logger(message,r'C:\Users\admin\Desktop\debug.log')
         exit()
-    #Èç¹ûÃ»ÓĞÈÎºÎÒì³£
+    #å¦‚æœæ²¡æœ‰ä»»ä½•å¼‚å¸¸
     else:
         try:
-            #³¢ÊÔµÇÂ½
+            #å°è¯•ç™»é™†
             sm.login(username,password)
-        #·¢ÉúµÇÂ½Òì³£ SMTPHeloError,SMTPAuthenticationError,SMTPException
+        #å‘ç”Ÿç™»é™†å¼‚å¸¸ SMTPHeloError,SMTPAuthenticationError,SMTPException
         except (SMTPHeloError,SMTPAuthenticationError,SMTPException) as e:
-            #¶¨ÒåÒì³£ĞÅÏ¢ 
+            #å®šä¹‰å¼‚å¸¸ä¿¡æ¯ 
             message = "SMTPHeloError,SMTPAuthenticationError,SMTPException,%s" % e
-            #¼ÇÂ¼Òì³£ĞÅÏ¢
+            #è®°å½•å¼‚å¸¸ä¿¡æ¯
             logger(message,r'C:\Users\admin\Desktop\debug.log')
             exit()
-        #Èç¹ûµÇÂ¼Õı³£
+        #å¦‚æœç™»å½•æ­£å¸¸
         else:
-            #Ö´ĞĞ·¢ËÍÓÊ¼şÃüÁî
+            #æ‰§è¡Œå‘é€é‚®ä»¶å‘½ä»¤
             sm.sendmail(from_addr,to_addr,msg)
-    #ĞİÏ¢5ÃëÖÓ
+    #ä¼‘æ¯5ç§’é’Ÿ
     time.sleep(5)
-    #¶¨ÒåÓÊ¼ş·¢ËÍ³É¹¦µÄĞÅÏ¢
+    #å®šä¹‰é‚®ä»¶å‘é€æˆåŠŸçš„ä¿¡æ¯
     message = "mail send successfully!!!"
-    #¼ÇÂ¼ÓÊ¼ş·¢ËÍ³É¹¦ĞÅÏ¢
+    #è®°å½•é‚®ä»¶å‘é€æˆåŠŸä¿¡æ¯
     logger(message,r'C:\Users\admin\Desktop\debug.log')
-    #ÍË³öÓÊ¼ş·şÎñÆ÷
+    #é€€å‡ºé‚®ä»¶æœåŠ¡å™¨
     sm.quit()
 
-#¶¨ÒåÖØÆô³ÌĞòº¯Êı£¬ÓÃÓÚ·¢ÏÖ¹ÊÕÏµÚÒ»²»´¦Àí
+#å®šä¹‰é‡å¯ç¨‹åºå‡½æ•°ï¼Œç”¨äºå‘ç°æ•…éšœç¬¬ä¸€ä¸å¤„ç†
 def restart_program():
-    #Êä³öÖØÆô³ÌĞòĞÅÏ¢
-    print  "ÖØÆô³ÌĞòÖĞ¡£¡£¡£"
-    #¶¨Òåkill³ÌĞòµÄÃüÁî
+    #è¾“å‡ºé‡å¯ç¨‹åºä¿¡æ¯
+    print  "é‡å¯ç¨‹åºä¸­ã€‚ã€‚ã€‚"
+    #å®šä¹‰killç¨‹åºçš„å‘½ä»¤
     kill_java = r"taskkill /F /IM java.exe"
-    #Ö´ĞĞkill³ÌĞòÃüÁî
+    #æ‰§è¡Œkillç¨‹åºå‘½ä»¤
     os.system(kill_java)
-    #¶¨Òå³ÌĞòµÄÂ·¾¶
+    #å®šä¹‰ç¨‹åºçš„è·¯å¾„
     filename = r"C:\Users\admin\Desktop\start.bat.lnk"
-    #¶¨Òå³ÌĞòÆô¶¯µÄÃüÁî
+    #å®šä¹‰ç¨‹åºå¯åŠ¨çš„å‘½ä»¤
     cmd = r'cmd /k "start %s' % filename
-    #Ö´ĞĞ³ÌĞòÆô¶¯
+    #æ‰§è¡Œç¨‹åºå¯åŠ¨
     os.popen(cmd)
     return
 
 
-#¶¨ÒåÒ»¸öÀà£¬ÓÃÓÚ·¢¸øzabbixµÄÊı¾İ±ê×¼¶ÔÏó
+#å®šä¹‰ä¸€ä¸ªç±»ï¼Œç”¨äºå‘ç»™zabbixçš„æ•°æ®æ ‡å‡†å¯¹è±¡
 class Metric(object):
-    #³õÊ¼»¯ °üº¬Ö÷»ú ¼ü Öµ 
+    #åˆå§‹åŒ– åŒ…å«ä¸»æœº é”® å€¼ 
     def __init__(self, host, key, value):
 	    self.host = host
 	    self.key = key
 	    self.value = value
-    #·µ»ØÒ»¸ö¿ÌµúÌ«¶ÔÏó	    
+    #è¿”å›ä¸€ä¸ªåˆ»ç¢Ÿå¤ªå¯¹è±¡	    
     def __iter__(self):
             return iter([self.host,self.key,self.value])
 
-#¶¨Òå×´Ì¬º¯Êı ÓÃÓÚÍ³¼Æ×´Ì¬ ·¢ËÍÊı¾İµ½zabbix server	²ÎÊıÎªº¯ÊıÃû ¸ø×°ÊÎÆ÷µ÷ÓÃ	
+#å®šä¹‰çŠ¶æ€å‡½æ•° ç”¨äºç»Ÿè®¡çŠ¶æ€ å‘é€æ•°æ®åˆ°zabbix server	å‚æ•°ä¸ºå‡½æ•°å ç»™è£…é¥°å™¨è°ƒç”¨	
 def status(func_name):
-    #¶¨Òå×´Ì¬Í³¼Æº¯Êı
+    #å®šä¹‰çŠ¶æ€ç»Ÿè®¡å‡½æ•°
     def status_count():
-        #³õÊ¼»¯¸÷ÖÖ×´Ì¬¼ÆÊı±äÁ¿ÖµÎª0
+        #åˆå§‹åŒ–å„ç§çŠ¶æ€è®¡æ•°å˜é‡å€¼ä¸º0
         error=normal=total=failed_count=success_count=wait_count=doing_count = 0
         
         try:
-            #³¢ÊÔ´ò¿ª¼à¿Øurl
+            #å°è¯•æ‰“å¼€ç›‘æ§url
             data_init = urllib2.urlopen(url)
-            #¶ÁÈ¡urlÊı¾İ
+            #è¯»å–urlæ•°æ®
             data = data_init.read()
-        #´ò¿ªurl·¢ÉúÒì³£
+        #æ‰“å¼€urlå‘ç”Ÿå¼‚å¸¸
         except:
             try:
-                #¶¨ÒåÒì³£ĞÅÏ¢ºÍÒì³£´úÂë
+                #å®šä¹‰å¼‚å¸¸ä¿¡æ¯å’Œå¼‚å¸¸ä»£ç 
                 message = "CODE: %s, Open the url failed!" % data_init.code
-            #·¢ÉúUnboundLocalErrorÒì³££¬·ÇhttpÒì³£
+            #å‘ç”ŸUnboundLocalErrorå¼‚å¸¸ï¼Œéhttpå¼‚å¸¸
             except UnboundLocalError:
-                #µ¥¶À¶¨ÒåÒì³£ĞÅÏ¢
+                #å•ç‹¬å®šä¹‰å¼‚å¸¸ä¿¡æ¯
                 message = "UnboundLocalError: local variable 'data_init' referenced before assignment"
                 sys.exit(3)
 
-        #ÓÃjson´¦ÀíÊı¾İ£¬×ª»»Îª×ÖµäÀàĞÍ
+        #ç”¨jsonå¤„ç†æ•°æ®ï¼Œè½¬æ¢ä¸ºå­—å…¸ç±»å‹
         status_dict = json.loads(data)
-        #±éÀú×ÖµäÖĞµÄËùÓĞ´®¿Ú
+        #éå†å­—å…¸ä¸­çš„æ‰€æœ‰ä¸²å£
         for port in status_dict["info"]["com"].keys():
-                #Èç¹û·¢ÏÖ×´Ì¬Îªerror ±äÁ¿error×Ô¼Ó1
+                #å¦‚æœå‘ç°çŠ¶æ€ä¸ºerror å˜é‡errorè‡ªåŠ 1
                 if status_dict["info"]["com"][port]["error"]:error += 1
-                #·ñÔònormal×Ô¼Ó1
+                #å¦åˆ™normalè‡ªåŠ 1
                 else:
                     normal += 1
-                #Ã¿±éÀúÒ»´Îtotal×Ô¼Ó1
+                #æ¯éå†ä¸€æ¬¡totalè‡ªåŠ 1
                 total += 1
-        #µÃµ½µÄÖµ¼õÈ¥windowsÉÏ×Ô´øµÄcom1ºÍÕñÁå¿ØÖÆÆ÷´®¿Ú
+        #å¾—åˆ°çš„å€¼å‡å»windowsä¸Šè‡ªå¸¦çš„com1å’ŒæŒ¯é“ƒæ§åˆ¶å™¨ä¸²å£
         total -= 2
         error -= 2
-        #Í³¼ÆÈÎÎñ×´Ì¬ forÑ­»·±éÀú
+        #ç»Ÿè®¡ä»»åŠ¡çŠ¶æ€ forå¾ªç¯éå†
         for id in status_dict['info']['task'].keys():
-                #Èç¹û×´Ì¬Îªfailed£¬ÄÇÃ´±äÁ¿failed_count×Ô¼Ó1
+                #å¦‚æœçŠ¶æ€ä¸ºfailedï¼Œé‚£ä¹ˆå˜é‡failed_countè‡ªåŠ 1
                 if status_dict['info']['task'][id]['callStatus'] == 'failed':failed_count += 1
-                #Èç¹û×´Ì¬Îªsuccess£¬ÄÇÃ´±äÁ¿success_count×Ô¼Ó1
+                #å¦‚æœçŠ¶æ€ä¸ºsuccessï¼Œé‚£ä¹ˆå˜é‡success_countè‡ªåŠ 1
                 if status_dict['info']['task'][id]['callStatus'] == 'success':success_count += 1
-                #Èç¹û×´Ì¬Îªwait£¬ÄÇÃ´±äÁ¿wait_count×Ô¼Ó1
+                #å¦‚æœçŠ¶æ€ä¸ºwaitï¼Œé‚£ä¹ˆå˜é‡wait_countè‡ªåŠ 1
                 if status_dict['info']['task'][id]['callStatus'] == 'wait':wait_count += 1
-                #Èç¹û×´Ì¬Îªdoing£¬ÄÇÃ´±äÁ¿doing_count×Ô¼Ó1
+                #å¦‚æœçŠ¶æ€ä¸ºdoingï¼Œé‚£ä¹ˆå˜é‡doing_countè‡ªåŠ 1
                 if status_dict['info']['task'][id]['callStatus'] == 'doing':doing_count += 1
-        #·µ»Ø¸÷ÖÖ×´Ì¬µÄÖµ 
+        #è¿”å›å„ç§çŠ¶æ€çš„å€¼ 
         return error,normal,total,failed_count,success_count,wait_count,doing_count
-    #¶¨ÒåÉú³ÉzabbixµÄÊı¾İÎÄ¼ş --input-fileÑ¡ÏîÖ®ºó
+    #å®šä¹‰ç”Ÿæˆzabbixçš„æ•°æ®æ–‡ä»¶ --input-fileé€‰é¡¹ä¹‹å
     def write2file():
-        #¶¨Òå×ÖµäµÄ¼üÖµ ·ÅÔÚÒ»¸öÁĞ±í ÓëÉÏÃæÒ»Ò»¶ÔÓ¦
+        #å®šä¹‰å­—å…¸çš„é”®å€¼ æ”¾åœ¨ä¸€ä¸ªåˆ—è¡¨ ä¸ä¸Šé¢ä¸€ä¸€å¯¹åº”
         namelist = ['Error','Available','Total','Failed','Success','Waiting','Doing']
-        #Éú³É×´Ì¬×Öµä
+        #ç”ŸæˆçŠ¶æ€å­—å…¸
         datadict = dict(zip(namelist,status_count()))
-        #´ò¿ªÊı¾İÎÄ¼ş
+        #æ‰“å¼€æ•°æ®æ–‡ä»¶
         f = open(datacachefile,'w')
-        #±éÀú×´Ì¬×Öµä£¬Éú³ÉÃ¿Ò»ĞĞµÄÊı¾İ×Ö·û´®
+        #éå†çŠ¶æ€å­—å…¸ï¼Œç”Ÿæˆæ¯ä¸€è¡Œçš„æ•°æ®å­—ç¬¦ä¸²
         for key,value in datadict.items():
-            #Éú³ÉÒªĞ´ÈëÎÄ¼şÃ¿Ò»ĞĞµÄ×Ö·û´®
+            #ç”Ÿæˆè¦å†™å…¥æ–‡ä»¶æ¯ä¸€è¡Œçš„å­—ç¬¦ä¸²
             datastr = '\t'.join(Metric(HOST,('trigger.status[%s]' % key),str(value)))+'\n'
-            #Ğ´ÈçÎÄ¼ş
+            #å†™å¦‚æ–‡ä»¶
             f.writelines(datastr)
-        #Ë¢ĞÂ
+        #åˆ·æ–°
         f.flush()
-        #¹Ø±ÕÎÄ¼ş
+        #å…³é—­æ–‡ä»¶
         f.close()
-        #·µ»ØÊı¾İ×Öµä
+        #è¿”å›æ•°æ®å­—å…¸
         return datadict
-    #¶¨Òå·¢ËÍµ½zabbix serverµÄº¯Êı
+    #å®šä¹‰å‘é€åˆ°zabbix serverçš„å‡½æ•°
     def send2zabbix():
-        #·¢ËÍµ½zabbix serverµÄÃüÁî
+        #å‘é€åˆ°zabbix serverçš„å‘½ä»¤
         cmd = "%s --zabbix-server %s --port %s --input-file %s "  % (zabbix_sender_bin,zabbixserver,zabbixport,datacachefile)
-        #Ö´ĞĞÃüÁî
+        #æ‰§è¡Œå‘½ä»¤
         os.system(cmd)
-    #¶¨ÒåÖ´ĞĞº¯Êı µ÷ÓÃÉÏÃæµÄ¶¨Òåº¯Êı
+    #å®šä¹‰æ‰§è¡Œå‡½æ•° è°ƒç”¨ä¸Šé¢çš„å®šä¹‰å‡½æ•°
     def execute():
-        #Ö´ĞĞº¯Êı ·µ»Ø×´Ì¬×Öµä
+        #æ‰§è¡Œå‡½æ•° è¿”å›çŠ¶æ€å­—å…¸
         datadict = write2file()
-        #·¢ËÍµ½zabbix server
+        #å‘é€åˆ°zabbix server
         send2zabbix()
-        #·µ»Ø
+        #è¿”å›
         return func_name(datadict)
-    #·µ»Øexecute±Õ°üº¯Êı
+    #è¿”å›executeé—­åŒ…å‡½æ•°
     return execute
-#¶¨Òåº¯Êı×°ÊÎÆ÷
+#å®šä¹‰å‡½æ•°è£…é¥°å™¨
 @status
-#¸½¼Óº¯Êı ·µ»Ø×´Ì¬×Öµä
+#é™„åŠ å‡½æ•° è¿”å›çŠ¶æ€å­—å…¸
 def r2d(datadict):
     return datadict
 
-#¶¨ÒåÖØÆôÏµÍ³µÄº¯Êı£¬ÓÃÓÚ·¢Éú¹ÊÕÏµÚ¶ş²½´¦Àí£¬ÓÃÓÚÈç¹û³ÌĞò×Ô¶¯ÖØÆôÖ®ºó ¹ÊÕÏÒÀ¾É
+#å®šä¹‰é‡å¯ç³»ç»Ÿçš„å‡½æ•°ï¼Œç”¨äºå‘ç”Ÿæ•…éšœç¬¬äºŒæ­¥å¤„ç†ï¼Œç”¨äºå¦‚æœç¨‹åºè‡ªåŠ¨é‡å¯ä¹‹å æ•…éšœä¾æ—§
 def soft_restart_system():
-    #¶¨Òå´øÓĞÊ±¼ä´ÁµÄÈÕÖ¾ÎÄ¼ş
+    #å®šä¹‰å¸¦æœ‰æ—¶é—´æˆ³çš„æ—¥å¿—æ–‡ä»¶
     logfile = r'C:\Users\admin\Desktop\logs_%s.txt' % time.strftime('%Y-%m-%d_%H-%M-%S', time.localtime())
-    logger("¾¯¸æ£º ×¼±¸ÈíÖØÆôÏµÍ³",logfile)
-    print "¿ªÊ¼ÈíÖØÆôÏµÍ³¡£¡£¡£"
+    logger("è­¦å‘Šï¼š å‡†å¤‡è½¯é‡å¯ç³»ç»Ÿ",logfile)
+    print "å¼€å§‹è½¯é‡å¯ç³»ç»Ÿã€‚ã€‚ã€‚"
     for i in range(5,-1,-1):
-        print "µ¹¼ÆÊ±¡£¡£   %s " % str(i)
-    #¶¨ÒåÏµÍ³ÖØÆôÃüÁî
+        print "å€’è®¡æ—¶ã€‚ã€‚   %s " % str(i)
+    #å®šä¹‰ç³»ç»Ÿé‡å¯å‘½ä»¤
     restart_cmd = r"shutdown /r /t 00"
-    #Ö´ĞĞÏµÍ³ÖØÆôÃüÁî
+    #æ‰§è¡Œç³»ç»Ÿé‡å¯å‘½ä»¤
     os.system(restart_cmd)
     return
 
-#¶¨ÒåÖØÆôÕñÁå£¬ÓÃÓÚ·¢Éú¹ÊÕÏµÚÈı²½´¦Àí    
+#å®šä¹‰é‡å¯æŒ¯é“ƒï¼Œç”¨äºå‘ç”Ÿæ•…éšœç¬¬ä¸‰æ­¥å¤„ç†    
 def restart_trigger():
-    #Èç¹ûÕñÁå¿ØÖÆ´®¿ÚÊÇ´ò¿ªµÄ
+    #å¦‚æœæŒ¯é“ƒæ§åˆ¶ä¸²å£æ˜¯æ‰“å¼€çš„
     if ser.isOpen():
-        #ĞİÏ¢5Ãë
+        #ä¼‘æ¯5ç§’
         time.sleep(5)
-        #Ïò´®¿Ú·¢ËÍÕñÁå¿ØÖÆÃüÁî1
+        #å‘ä¸²å£å‘é€æŒ¯é“ƒæ§åˆ¶å‘½ä»¤1
         ser.write(order1)
-        #Êä³öÕñÁåÕıÔÚÖØÆô¡£¡£
-        print "ÕñÁåÕıÔÚÖØÆôÖĞ¡£¡£¡£"
-    #Èç¹û´®¿ÚÃ»ÓĞ´ò¿ª
+        #è¾“å‡ºæŒ¯é“ƒæ­£åœ¨é‡å¯ã€‚ã€‚
+        print "æŒ¯é“ƒæ­£åœ¨é‡å¯ä¸­ã€‚ã€‚ã€‚"
+    #å¦‚æœä¸²å£æ²¡æœ‰æ‰“å¼€
     else:
-        #¶¨Òå´íÎóĞÅÏ¢
-        message = "ÕñÁå¿ØÖÆÆ÷Êı¾İ¿Ú´ò¿ªÊ§°Ü£¡"
-        #Êä³ö´íÎóĞÅÏ¢
+        #å®šä¹‰é”™è¯¯ä¿¡æ¯
+        message = "æŒ¯é“ƒæ§åˆ¶å™¨æ•°æ®å£æ‰“å¼€å¤±è´¥ï¼"
+        #è¾“å‡ºé”™è¯¯ä¿¡æ¯
         print message
-        #²¢¼ÇÂ¼µ½ÈÕÖ¾
+        #å¹¶è®°å½•åˆ°æ—¥å¿—
         logger(message,r'C:\Users\admin\Desktop\debug.log')
         exit()
 
     
     
-#¶¨ÒåÕñÁå¿ØÖÆÆ÷ÊÇ·ñÕı³£¼ì²éº¯Êı£¬ÓÃÓÚºÍÕñÁå¿ØÖÆÆ÷Í¨ĞÅ
+#å®šä¹‰æŒ¯é“ƒæ§åˆ¶å™¨æ˜¯å¦æ­£å¸¸æ£€æŸ¥å‡½æ•°ï¼Œç”¨äºå’ŒæŒ¯é“ƒæ§åˆ¶å™¨é€šä¿¡
 def alive_check():
-    #Èç¹û´®¿ÚÊÇ´ò¿ªµÄ
+    #å¦‚æœä¸²å£æ˜¯æ‰“å¼€çš„
     if ser.isOpen():
-        #·¢ËÍ¼à²âĞÅÏ¢
+        #å‘é€ç›‘æµ‹ä¿¡æ¯
         ser.write(alive_information)
-        #Êä³ö¼ì²âÃüÁîÒÑ·¢ËÍ
-        print "¿ØÖÆÆ÷Êı¾İ¿Ú¼ì²â: Í¨ĞÅÕı³£"
-    #·ñÔò
+        #è¾“å‡ºæ£€æµ‹å‘½ä»¤å·²å‘é€
+        print "æ§åˆ¶å™¨æ•°æ®å£æ£€æµ‹: é€šä¿¡æ­£å¸¸"
+    #å¦åˆ™
     else:
-        #¶¨Òå´íÎóĞÅÏ¢
-        message = "ÕñÁå¿ØÖÆÆ÷Êı¾İ¿Ú´ò¿ªÊ§°Ü"
-        #´òÓ¡´íÎóĞÅÏ¢
+        #å®šä¹‰é”™è¯¯ä¿¡æ¯
+        message = "æŒ¯é“ƒæ§åˆ¶å™¨æ•°æ®å£æ‰“å¼€å¤±è´¥"
+        #æ‰“å°é”™è¯¯ä¿¡æ¯
         print message
-        #¼ÇÂ¼´íÎóĞÅÏ¢
+        #è®°å½•é”™è¯¯ä¿¡æ¯
         logger(message,r'C:\Users\admin\Desktop\debug.log')
         exit()
 
-#³ÌĞò¸Õ¸Õ¿ª»úÆô¶¯£¬µÈ´ı50Ãë£¬µÈ´ıjava³ÌĞòÕı³£Æô¶¯Íê³É
+#ç¨‹åºåˆšåˆšå¼€æœºå¯åŠ¨ï¼Œç­‰å¾…50ç§’ï¼Œç­‰å¾…javaç¨‹åºæ­£å¸¸å¯åŠ¨å®Œæˆ
 time.sleep(50)
 
 try:
-    #³¢ÊÔ´ò¿ªÕñÁå¿ØÖÆÆ÷´®¿Ú
+    #å°è¯•æ‰“å¼€æŒ¯é“ƒæ§åˆ¶å™¨ä¸²å£
     ser = serial.Serial(triggerComPort,115200)
-    #´ò¿ª³É¹¦ ´òÓ¡³É¹¦ĞÅÏ¢
-    print "ÕñÁå¿ØÖÆÆ÷Êı¾İ¿Ú´ò¿ª³É¹¦"
-    #Èç¹û´®¿Ú×´Ì¬ÊÇ¹Ø±ÕµÄ
+    #æ‰“å¼€æˆåŠŸ æ‰“å°æˆåŠŸä¿¡æ¯
+    print "æŒ¯é“ƒæ§åˆ¶å™¨æ•°æ®å£æ‰“å¼€æˆåŠŸ"
+    #å¦‚æœä¸²å£çŠ¶æ€æ˜¯å…³é—­çš„
     if ser.closed:
-        #ÔÙ´ÎÖ´ĞĞ´ò¿ª
+        #å†æ¬¡æ‰§è¡Œæ‰“å¼€
         ser = serial.Serial(triggerComPort,115200)
-#´®¿Ú´ò¿ª·¢ÉúÒì³£
+#ä¸²å£æ‰“å¼€å‘ç”Ÿå¼‚å¸¸
 except:
-    #¶¨ÒåÒì³£ĞÅÏ¢
-    message = "ÕñÁå¿ØÖÆÆ÷Êı¾İ¿Ú´ò¿ªÊ§°Ü"
-    #´òÓ¡Òì³£ĞÅÏ¢
+    #å®šä¹‰å¼‚å¸¸ä¿¡æ¯
+    message = "æŒ¯é“ƒæ§åˆ¶å™¨æ•°æ®å£æ‰“å¼€å¤±è´¥"
+    #æ‰“å°å¼‚å¸¸ä¿¡æ¯
     print message
-    #¼ÇÂ¼Òì³£ĞÅÏ¢
+    #è®°å½•å¼‚å¸¸ä¿¡æ¯
     logger(message,r'C:\Users\admin\Desktop\debug.log')
-    #·¢ËÍÓÊ¼şÍ¨Öª£¬ÈË¹¤´¦Àí
+    #å‘é€é‚®ä»¶é€šçŸ¥ï¼Œäººå·¥å¤„ç†
     information("0")
     exit()
 
-#¿ªÊ¼³ÌĞòÕı³£ÎŞÏŞÑ­»·½ø³Ì
+#å¼€å§‹ç¨‹åºæ­£å¸¸æ— é™å¾ªç¯è¿›ç¨‹
 while True:
-    #³õÊ¼»¯¹ÊÕÏ´¦Àí±ê¼ÇÎª0
+    #åˆå§‹åŒ–æ•…éšœå¤„ç†æ ‡è®°ä¸º0
     RestartTriggerTag=0
-    #»ñÈ¡×´Ì¬×Öµä
+    #è·å–çŠ¶æ€å­—å…¸
     datadict = r2d()
-    #¶¨Òå×´Ì¬´òÓ¡³öÖµ ÓÃÓÚconsole¹Û²ìÊµÊ±×´Ì¬
-    record_count = "¿ÉÓÃµÄSIM¿¨ÊıÁ¿: " + str(datadict['Available']) + " Ê§°ÜµÄÊıÁ¿: " + str(datadict['Failed']) \
-                   + " ³É¹¦µÄÊıÁ¿: " + str(datadict['Success']) + " ÅÅ¶ÓµÄÊıÁ¿: " + str(datadict['Waiting']) \
-                   + " ÕıÔÚ´¦ÀíµÄÊıÁ¿: " + str(datadict['Doing'])
-    #´òÓ¡ĞÅÏ¢
+    #å®šä¹‰çŠ¶æ€æ‰“å°å‡ºå€¼ ç”¨äºconsoleè§‚å¯Ÿå®æ—¶çŠ¶æ€
+    record_count = "å¯ç”¨çš„SIMå¡æ•°é‡: " + str(datadict['Available']) + " å¤±è´¥çš„æ•°é‡: " + str(datadict['Failed']) \
+                   + " æˆåŠŸçš„æ•°é‡: " + str(datadict['Success']) + " æ’é˜Ÿçš„æ•°é‡: " + str(datadict['Waiting']) \
+                   + " æ­£åœ¨å¤„ç†çš„æ•°é‡: " + str(datadict['Doing'])
+    #æ‰“å°ä¿¡æ¯
     print record_count
-    #Ñ­»·ÅĞ¶Ï¿ÉÓÃÊıÁ¿Ğ¡ÓÚÉè¶¨µÄ·§Öµ
+    #å¾ªç¯åˆ¤æ–­å¯ç”¨æ•°é‡å°äºè®¾å®šçš„é˜€å€¼
     while datadict['Available'] <= normalThreshold:
-        #Èç¹û»¹Ã»ÓĞÖØÆô¹ıÕñÁå
+        #å¦‚æœè¿˜æ²¡æœ‰é‡å¯è¿‡æŒ¯é“ƒ
         if RestartTriggerTag < 1:
-            #ÖØÆôÕñÁå
+            #é‡å¯æŒ¯é“ƒ
             restart_trigger()
-            #ÕñÁåÖØÆô±ê¼Ç¼Ó1
+            #æŒ¯é“ƒé‡å¯æ ‡è®°åŠ 1
             RestartTriggerTag += 1
-            #¼ÇÂ¼ÈÕÖ¾
-            logger("ÑÏÖØ¾¯¸æ: ÖØÆôÕñÁåÖĞ¡£¡£¡£",r'C:\Users\admin\Desktop\debug.log')
-            #ĞİÏ¢30Ãë µÈ´ıÕñÁåÆô¶¯Íê³É
+            #è®°å½•æ—¥å¿—
+            logger("ä¸¥é‡è­¦å‘Š: é‡å¯æŒ¯é“ƒä¸­ã€‚ã€‚ã€‚",r'C:\Users\admin\Desktop\debug.log')
+            #ä¼‘æ¯30ç§’ ç­‰å¾…æŒ¯é“ƒå¯åŠ¨å®Œæˆ
             time.sleep(30)
-            #ÖØĞÂ»ñÈ¡×´Ì¬Êı¾İ
+            #é‡æ–°è·å–çŠ¶æ€æ•°æ®
             datadict = r2d()
-            #´òÓ¡×´Ì¬
-            print "ÕñÁåÖØÆô±ê¼Ç",RestartTriggerTag,datadict['Available']
-        #Èç¹ûÖØÆô¹ıÕñÁå£¬»¹Ã»ÖØÆô¹ı³ÌĞò£¬¿ÉÓÃÊıÁ¿ÒÀÈ»µÍÓÚ·§Öµ
-        #È¥³ıÖØÆô³ÌĞò·şÎñ
+            #æ‰“å°çŠ¶æ€
+            print "æŒ¯é“ƒé‡å¯æ ‡è®°",RestartTriggerTag,datadict['Available']
+        #å¦‚æœé‡å¯è¿‡æŒ¯é“ƒï¼Œè¿˜æ²¡é‡å¯è¿‡ç¨‹åºï¼Œå¯ç”¨æ•°é‡ä¾ç„¶ä½äºé˜€å€¼
+        #å»é™¤é‡å¯ç¨‹åºæœåŠ¡
         else:
-            #¼ÇÂ¼ÈÕÖ¾ ÎÒÒªÖØÆôÁË
-            logger("¾¯¸æ£º ÈíÖØÆôÏµÍ³",r'C:\Users\admin\Desktop\debug.log')
+            #è®°å½•æ—¥å¿— æˆ‘è¦é‡å¯äº†
+            logger("è­¦å‘Šï¼š è½¯é‡å¯ç³»ç»Ÿ",r'C:\Users\admin\Desktop\debug.log')
             information(datadict['Available'])
-            #ÖØÆô²Ù×÷ÏµÍ³
+            #é‡å¯æ“ä½œç³»ç»Ÿ
             soft_restart_system()
-    #¿ÉÓÃÊıÁ¿ºÃÁË ¸ßÓÚÉè¶¨·§ÖµÁË
+    #å¯ç”¨æ•°é‡å¥½äº† é«˜äºè®¾å®šé˜€å€¼äº†
     else:
-        #Èç¹ûÈıÕß±ê¼ÇÓĞÒ»¸öÎª1 ¾ÍÊÇÖ´ĞĞ¹ı
+        #å¦‚æœä¸‰è€…æ ‡è®°æœ‰ä¸€ä¸ªä¸º1 å°±æ˜¯æ‰§è¡Œè¿‡
         if RestartTriggerTag == 1:
-            #¶¨Òå»Ö¸´³É¹¦ĞÅÏ¢
-            message = "¾¯±¨£ºÕñÁåÒÑ¾­³É¹¦×ÔÎÒ»Ö¸´¡£"
-            #´òÓ¡ĞÅÏ¢
+            #å®šä¹‰æ¢å¤æˆåŠŸä¿¡æ¯
+            message = "è­¦æŠ¥ï¼šæŒ¯é“ƒå·²ç»æˆåŠŸè‡ªæˆ‘æ¢å¤ã€‚"
+            #æ‰“å°ä¿¡æ¯
             print message
-            #¼ÇÂ¼ÈÕÖ¾
+            #è®°å½•æ—¥å¿—
             logger(message,r'C:\Users\admin\Desktop\debug.log')
-            #ÒÆ³ıÖØÆô±ê¼ÇÎÄ¼ş ÎªÁËÖ´·½±ãÏÂÒ»ÂÖ¹ÊÕÏ´¦Àí´Ó0¿ªÊ¼
+            #ç§»é™¤é‡å¯æ ‡è®°æ–‡ä»¶ ä¸ºäº†æ‰§æ–¹ä¾¿ä¸‹ä¸€è½®æ•…éšœå¤„ç†ä»0å¼€å§‹
             os.remove(r"C:\Users\admin\Desktop\local_com_checks.ini")
-    #Êä³ö¿ªÊ¼ÕñÁå¿ØÖÆÆ÷¿ÉÓÃ¼ì²â
+    #è¾“å‡ºå¼€å§‹æŒ¯é“ƒæ§åˆ¶å™¨å¯ç”¨æ£€æµ‹
     #print "Begain checking alive..."
-    #Ö´ĞĞ¼ì²âº¯Êı Õâ¸ö¹¦ÄÜÓÉÓÚÈ¡ÏûÁË ËùÒÔÃ»×öÈÎºÎÅĞ¶Ï
+    #æ‰§è¡Œæ£€æµ‹å‡½æ•° è¿™ä¸ªåŠŸèƒ½ç”±äºå–æ¶ˆäº† æ‰€ä»¥æ²¡åšä»»ä½•åˆ¤æ–­
     alive_check()
-    #¶¨Ê±ÖØÆô¹¦ÄÜ
+    #å®šæ—¶é‡å¯åŠŸèƒ½
     current_time_in_day =  datetime.datetime.now()
     if current_time_in_day.hour == 1 and current_time_in_day.minute == 10 and current_time_in_day.second < 45:
         restart_trigger()
         soft_restart_system()
-    print "µ±Ç°Ê±¼ä: %s \n" % current_time_in_day
-    #ĞİÏ¢Ê®Ãë Ã¿10ÃëÑ­»·Ò»´Î
+    print "å½“å‰æ—¶é—´: %s \n" % current_time_in_day
+    #ä¼‘æ¯åç§’ æ¯10ç§’å¾ªç¯ä¸€æ¬¡
     time.sleep(10)
 

@@ -1,32 +1,32 @@
-�����ļ����㷨   
+常见的加密算法   
 
-  �ԳƼ���
+  对称加密
     DES 
     3DES
     AES
     AES192 AES 256 AES512
 
-  �������
+  单向加密
     md4
     md5
     SHA1
     SHA192 SHA256 SHA384
     CRC-32
 
-  ��Կ����
-    ������֤
-    ���ݼ���
-    ��Կ����
-       RSA�㷨 ������������Ҳ������ǩ��
-       DSA�㷨 ֻ��������ǩ��
+  公钥加密
+    身份认证
+    数据加密
+    密钥交换
+       RSA算法 可以用来加密也可用来签名
+       DSA算法 只可以用来签名
 
 
-OpenSSL��һ����Դ������ʵ��SSLЭ��Ĳ�Ʒ������Ҫ�������������֣������㷨�⡢Ӧ�ó���SSLЭ���
-Opensslʵ����SSLЭ������Ҫ�Ĵ�����㷨
+OpenSSL是一个开源的用以实现SSL协议的产品，它主要包括了三个部分：密码算法库、应用程序、SSL协议库
+Openssl实现了SSL协议所需要的大多数算法
 
-Openssl�����ļ��ĶԳƼ��ܲ���
+Openssl进行文件的对称加密操作
 
-һ��Openssl֧�ֵļ����㷨��
+一、Openssl支持的加密算法：
 
 -aes-128-cbc	 -aes-128-cfb	 -aes-128-cfb1
 -aes-128-cfb8 	 -aes-128-ecb 	 -aes-128-ofb
@@ -41,8 +41,8 @@ Openssl�����ļ��ĶԳƼ��ܲ���
 -cast5-cfb	 -cast5-ecb 	 -cast5-ofb
 -des		 -des-cbc	 -des-cfb
 -des-cfb1	 -des-cfb8	 -des-ecb
--des-ede	 -des-ede-cbc	 -des-ede-cfb		�����ã�
--des-ede-ofb	 -des-ede3	 -des-ede3-cbc		�����ã�
+-des-ede	 -des-ede-cbc	 -des-ede-cfb		（常用）
+-des-ede-ofb	 -des-ede3	 -des-ede3-cbc		（常用）
 -des-ede3-cfb	 -des-ede3-ofb	 -des-ofb
 -des3		 -desx		 -desx-cbc
 -rc2		 -rc2-40-cbc	 -rc2-64-cbc
@@ -51,62 +51,62 @@ Openssl�����ļ��ĶԳƼ��ܲ���
 
 
 
-����OpenSSL����ָ���﷨��
+二、OpenSSL加密指令语法：
 
 openssl enc -ciphername [-in filename] [-out filename] [-pass arg] [-e]
 [-d] [-a] [-A] [-k password] [-kfile filename] [-K key] [-iv IV] [-p]
 [-P] [-bufsize number] [-nopad] [-debug]
 
-˵����
-opensll�������
+说明：
+opensll：命令本身
 
-enc���Գ��㷨���ԳƼӽ��ܹ��ߣ����Խ���base64�������ת��
+enc：对称算法，对称加解密工具，可以进行base64编码进行转换
 
--chipernameѡ������㷨��Openssl֧�ֵ��㷨�������Ѿ��г��ˣ���ֻ��ѡ������һ���㷨����ʵ���ļ����ܹ���
+-chipername选项：加密算法，Openssl支持的算法在上面已经列出了，你只需选择其中一种算法即可实现文件加密功能
 
--inѡ������ļ������ڼ�����˵�������Ӧ���������ļ������ڽ�����˵�������Ӧ���Ǽ��ܵ��ļ�����ѡ�����ֱ�Ӹ��ļ���
+-in选项：输入文件，对于加密来说，输入的应该是明文文件；对于解密来说，输入的应该是加密的文件，该选项后面直接跟文件名
 
--outѡ�����ļ������ڼ�����˵�������Ӧ���Ǽ��ܺ���ļ��������ڽ�����˵�������Ӧ���������ļ���
+-out选项：输出文件，对于加密来说，输出的应该是加密后的文件名；对于解密来说，输出的应该是明文文件名
 
--passѡ�ѡ���������ķ�ʽ������Դ�����Ǳ�׼�����豸�����������룬�ļ���������
+-pass选项：选择输入口令的方式，输入源可以是标准输入设备，命令行输入，文件、变量等
 
--eѡ�ʵ�ּ��ܹ��ܣ�Ĭ���Ǽ���ѡ�
+-e选项：实现加密功能（默认是加密选项）
 
--dѡ�ʵ�ֽ��ܹ���
+-d选项：实现解密功能
 
--a��-Aѡ����ļ�����BASE64��������
+-a和-A选项：对文件进行BASE64编解码操作
 
--passѡ�ѡ���������ķ�ʽ������Դ�����Ǳ�׼�����豸�����������룬�ļ��������ȣ��ű���ɼӽ���ʹ�ã�
+-pass选项：选择输入口令的方式，输入源可以是标准输入设备，命令行输入，文件、变量等（脚本完成加解密使用）
 
--saltѡ��Ƿ�ʹ����ֵ��Ĭ����ʹ�õ�
+-salt选项：是否使用盐值，默认是使用的
 
--pѡ���ӡ�������㷨ʹ�õļ�����Կ
+-p选项：打印出加密算法使用的加密密钥
 
--Kѡ��ֶ����������Կ����ʹ�ø�ѡ�Openssl��ʹ�ÿ����Զ���ȡ������Կ�������ã�
+-K选项：手动输入加密密钥（不使用该选项，Openssl会使用口令自动提取加密密钥，不常用）
 
--IVѡ������ʼ��������ʹ�ø�ѡ�Openssl��ʹ�ÿ����Զ���ȡ��ʼ�����������ã�
+-IV选项：输入初始变量（不使用该选项，Openssl会使用口令自动提取初始变量，不常用）
 
-�����÷�������
+三、用法举例：
 
-1��ʹ��aes-128-cbc�㷨�����ļ���
+1、使用aes-128-cbc算法加密文件：
 openssl enc -aes-128-cbc -in install.log -out enc.log
-��ע������install.log������Ҫ���ܵ��ļ���enc.log�Ǽ��ܺ���ļ����س���ϵͳ����ʾ���������롣��
+（注：这里install.log是你想要加密的文件，enc.log是加密后的文件，回车后系统会提示你输入密码。）
 
-2�����ܸղż��ܵ��ļ���
+2、解密刚才加密的文件：
 openssl enc -d -aes-128-cbc -in enc.log -out install.log
-��ע��enc.log�Ǹղż��ܵ��ļ���install.log�ǽ��ܺ���ļ���-dѡ��ʵ�ֽ��ܹ��ܡ���
+（注：enc.log是刚才加密的文件，install.log是解密后的文件，-d选项实现解密功能。）
 
-3�������ļ���ʹ��BASE64��ʽ���б��룺
+3、加密文件后使用BASE64格式进行编码：
 openssl enc -aes-128-cbc -in install.log -out enc.log -a
 
-4��ʹ�ö��ֿ������뷽ʽ���ܣ�
+4、使用多种口令输入方式加密：
 openssl enc -des-ede3-cbc -in install.log -out enc.log -pass pass:111111
-�����ַ����ĺô�������԰���д�뵽�ű��У��Զ���ɼ��ܹ��ܣ���ʹ��passѡ��Ĭ��ϵͳ����ʾ�������벢��ȷ�ϣ�����Ҫ�˹������ġ���
+（这种方法的好处是你可以把它写入到脚本中，自动完成加密功能，不使用pass选项默认系统会提示输入密码并且确认，是需要人工操作的。）
 
-5�����ַ������ܳ��û������ʽ��һ�������ֶ������û�����
-openssl passwd -1����Ҫ�Լ���������ַ�����
-	passwd��openssl��һ��������
-	-1�����֣������ܳ��û������ʽ
+5、将字符串加密成用户密码格式（一般用于手动创建用户）：
+openssl passwd -1（需要自己输入加密字符串）
+	passwd：openssl的一个字命令
+	-1（数字）：加密成用户密码格式
 
 
 

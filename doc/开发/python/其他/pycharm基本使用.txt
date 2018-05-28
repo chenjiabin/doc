@@ -1,15 +1,15 @@
-Ctrl + Alt + L     	´úÂë¸ñÊ½»¯
-Ctrl + /    		×¢ÊÍ»òÈ¡Ïû×¢ÊÍ		
-Ctrl + Y    		É¾³ıÑ¡¶¨µÄĞĞ	(vim dd)
-Ctrl + C			¸´ÖÆ			(vim yy)
-Ctrl + V			Õ³Ìù			(vim p)
-Ctrl + Z			³·Ïú²Ù×÷		(vim u)
+Ctrl + Alt + L     	ä»£ç æ ¼å¼åŒ–
+Ctrl + /    		æ³¨é‡Šæˆ–å–æ¶ˆæ³¨é‡Š		
+Ctrl + Y    		åˆ é™¤é€‰å®šçš„è¡Œ	(vim dd)
+Ctrl + C			å¤åˆ¶			(vim yy)
+Ctrl + V			ç²˜è´´			(vim p)
+Ctrl + Z			æ’¤é”€æ“ä½œ		(vim u)
 
-F3  		 		²éÕÒ			(vim #)
-Ctrl + R   			Ìæ»»			(vim r)
-Shift + F10    		ÔËĞĞ			
-Shift + Enter    	ÁíÆğÒ»ĞĞ		(vim o)
-Ñ¡ÖĞÄ¿±ê + ATB		¶àĞĞËõ½ø		(vim ¿ÉÊÓ»¯²Ù×÷)
+F3  		 		æŸ¥æ‰¾			(vim #)
+Ctrl + R   			æ›¿æ¢			(vim r)
+Shift + F10    		è¿è¡Œ			
+Shift + Enter    	å¦èµ·ä¸€è¡Œ		(vim o)
+é€‰ä¸­ç›®æ ‡ + ATB		å¤šè¡Œç¼©è¿›		(vim å¯è§†åŒ–æ“ä½œ)
 
 
 

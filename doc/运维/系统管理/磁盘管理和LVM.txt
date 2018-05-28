@@ -1,248 +1,248 @@
-MBR����������¼��512�ֽڣ�
-	446�ֽڣ���������
-	64�ֽڣ�16���ֽڱ�ʶһ��������
-	2�ֽڣ����MBR�Ƿ���Ч
-�����ļ���
-	Ӳ���ӣ�1.ֻ�ܶ��ļ�����������Ӧ����Ŀ¼	    2.���ܿ��ļ�ϵͳ	
-		3.����Ӳ���ӻ������ļ������ӵĴ���   4.ɾ��ԭ�ļ������ļ�������
-	�����ӣ�1.��Ӧ����Ŀ¼	  2.�ɿ��ļ�ϵͳ	    3.���������ļ������Ӵ���
-		4.ɾ��ԭ�ļ������ļ��ᱻ��	    5.��СΪ·�����������ַ�����
+MBR：主引导记录（512字节）
+	446字节：引导代码
+	64字节：16个字节标识一个主分区
+	2字节：标记MBR是否有效
+链接文件：
+	硬链接：1.只能对文件创建，不能应用于目录	    2.不能跨文件系统	
+		3.创建硬链接会增加文件别链接的次数   4.删除原文件链接文件不会损坏
+	软连接：1.可应用于目录	  2.可跨文件系统	    3.不会增加文件的链接次数
+		4.删除原文件链接文件会被损坏	    5.大小为路径所包含的字符个数
 
-/dev���豸�ļ����λ��
-�豸�ļ���
-	���豸�ļ���b��������Ϊ��λ��������ʴ洢�豸��Ӳ�̣�
-	�ַ��豸�ļ���c�������ַ�Ϊ��λ�����Դ洢�����̣�
+/dev：设备文件存放位置
+设备文件：
+	块设备文件（b）：按块为单位，随机访问存储设备（硬盘）
+	字符设备文件（c）：按字符为单位，线性存储（键盘）
 
-vfs�������ļ�ϵͳ����Ϊ�����Ĵ�������linux����֧�ֶ����ļ�ϵͳ���൱�ڷ���٣�
+vfs：虚拟文件系统（因为有他的存在所有linux才能支持多种文件系统，相当于翻译官）
 
-���أ����µ��ļ�ϵͳ��������ǰ�����ڵ��ļ�ϵͳ
-ж�أ���ĳ�ļ�ϵͳ�뵱ǰ���ļ�ϵͳ�Ĺ����Ƴ�
+挂载：将新的文件系统关联至当前根所在的文件系统
+卸载：将某文件系统与当前根文件系统的关联移除
 
-/etc/fstab���ļ�ϵͳ�б�������ļ�ϵͳ��Ĭ������
+/etc/fstab：文件系统列表，存放文件系统的默认配置
 
-/dev/zero���������ݴ�ŵ�
-/dev/null�����ݺڶ�
-
-
-du��ͳ�ƴ���ռ�����	
--s����ʾ�ܴ�С,��������ʾ��Ŀ¼����
--h���Ը��ӿɶ��ķ�ʽ��ʾ
-
-df����ʾ�ļ�ϵͳ���
--h���Ը��ӿɶ��ķ�ʽ��ʾ
--T����ʾ�ļ�ϵͳ����
--i����i�ڵ�ķ�ʽ��ʾ
+/dev/zero：垃圾数据存放点
+/dev/null：数据黑洞
 
 
-mknod�������豸�ļ�
-��ʽ��mknod   ѡ��   �ļ���   �豸����   ���豸��   ���豸��
+du：统计磁盘占用情况	
+-s：显示总大小,不单个显示子目录打下
+-h：以更加可读的方式显示
 
-fdisk��������������
-��ʽ��fdisk   Ӳ��
-m����ʾ������Ϣ
-p����ʾ��ǰ�������
-n���½�����	[p�������� e����չ����  l���߼�����������������չ����֮������߼�����)]
-d��ɾ������
-w�������˳�
-q���˳�
-t���޸ķ������ͣ�L����ʾ֧�ֵķ������ͣ�
-l����ʾ֧�ֵ�����   
-
-mkfs����ʽ������
-��ʽ��mkfs ѡ��  �ļ�ϵͳ  Ӳ���豸�ķ�����
-����mkfs -t ext4  /dev/sdb1
--t��ָ���ļ�ϵͳ
-��ʽ����fat32
-����mkfs  -t vfat -F 32   /dev/sdb9  
-
-����ĸ�ʽ��
-mkswap����������ʽ����swap�ļ�ϵͳ
-��ʽ��mkswap  Ӳ���豸������
-����mkswap /dev/sdb2
-swapon�������Ը�ʽ����ϵ�swap����
-��ʽ��swapon   swap����
-����swapon  /dev/sdb2
+df：显示文件系统情况
+-h：以更加可读的方式显示
+-T：显示文件系统类型
+-i：以i节点的方式显示
 
 
-mke2fs��ר�Ź���extϵ�е��ļ�ϵͳ
-	-j������ext3���͵��ļ�ϵͳ
-	-b��ָ�����С��Ĭ��Ϊ4096������ֵ�У�1024��2048.4096
-	-L��ָ�����꣨������
-	-m��ָ��Ԥ���������û��Ŀ����ٷֱ�
-	-E��ָ�������ļ�ϵͳ����
+mknod：创建设备文件
+格式：mknod   选项   文件名   设备类型   主设备号   次设备号
 
-blkid���鿴��ǰ�����豸���������
-	UUID�����̵�Ψһ��ʶ��	TYPT���ļ�ϵͳ����	LABEL�����꣨������
+fdisk：分区管理工具
+格式：fdisk   硬盘
+m：显示帮助信息
+p：显示当前分区情况
+n：新建分区	[p：主分区 e：扩展分区  l：逻辑分区（必须先有扩展分区之后才有逻辑分区)]
+d：删除分区
+w：保存退出
+q：退出
+t：修改分区类型（L：显示支持的分区类型）
+l：显示支持的类型   
 
-e2label���鿴�����¶�����꣨������
-	��ʽ���鿴��e2label	��������e2label   �豸�ļ�   �µľ���
+mkfs：格式化磁盘
+格式：mkfs 选项  文件系统  硬盘设备的分区号
+例：mkfs -t ext4  /dev/sdb1
+-t：指定文件系统
+格式化成fat32
+例：mkfs  -t vfat -F 32   /dev/sdb9  
 
-tune2fs�������ļ�ϵͳ����
-	-j���ڲ���ԭ�����ݵ����������ext2Ϊext3
-	-L���趨���޸ľ��꣨������
-	-m������Ԥ���������û��İٷֱ�
-	-c��ָ�����ش����ﵽn��֮������Լ죬0��-1��ʾ�رմ˹���
-	-i��ÿ�ι���ʹ�ö�����֮������Լ죬0��-1��ʾ�رմ˹���
-	-l����ʾ�������е���Ϣ
+特殊的格式化
+mkswap：将分区格式化成swap文件系统
+格式：mkswap  硬盘设备分区号
+例：mkswap /dev/sdb2
+swapon：启用以格式化完毕的swap分区
+格式：swapon   swap分区
+例：swapon  /dev/sdb2
 
-dumpe2fs����ʾ�ļ�ϵͳ����ϸ��Ϣ
 
-fsck����鲢�޸�linux�е��ļ�ϵͳ
-	-t��ָ���ļ�ϵͳ����
-	-a���Զ��޸�
+mke2fs：专门管理ext系列的文件系统
+	-j：创建ext3类型的文件系统
+	-b：指定块大小，默认为4096，可以值有，1024、2048.4096
+	-L：指定卷标（卷名）
+	-m：指定预留给超级用户的块数百分比
+	-E：指定额外文件系统属性
 
-e2fsck��ר�����޸�extϵ�е��ļ�ϵͳ
-	-f��ǿ�Ƽ��
-	-p���Զ��޸�
+blkid：查看当前磁盘设备的相关属性
+	UUID：磁盘的唯一标识符	TYPT：文件系统类型	LABEL：卷标（卷名）
 
-mount������
-mount����ʾ��ǰϵͳ�ѹ��ص��豸�����ص�
-��ʽ��mount   �����豸    ���ص�
-ж�أ�ж��ʱ��֤�豸û�б�����ʹ��
-      umount  �����豸   ��ж���豸��ж�ص�ʱ��ǰ����Ŀ¼�����ٹ��ص��У�
-      umount  ���ص�����    ��ֻ������豸��������ص�ж�ص�������ж�����������豸��
-mount  -a������/etc/fstab�ļ��ж���������ļ�ϵͳ������������/etc/fstab��������ʱ��	
+e2label：查看或重新定义卷标（卷名）
+	格式：查看：e2label	重命名：e2label   设备文件   新的卷标
+
+tune2fs：调整文件系统属性
+	-j：在不损坏原有数据的情况下升级ext2为ext3
+	-L：设定或修改卷标（卷名）
+	-m：调整预留给超级用户的百分比
+	-c：指定挂载次数达到n次之后进行自检，0或-1表示关闭此功能
+	-i：每次挂载使用多少天之后进行自检，0或-1表示关闭此功能
+	-l：显示超级块中的信息
+
+dumpe2fs：显示文件系统的详细信息
+
+fsck：检查并修复linux中的文件系统
+	-t：指定文件系统类型
+	-a：自动修复
+
+e2fsck：专用于修复ext系列的文件系统
+	-f：强制检查
+	-p：自动修复
+
+mount：挂载
+mount：显示当前系统已挂载的设备及挂载点
+格式：mount   挂载设备    挂载点
+卸载：卸载时保证设备没有被正在使用
+      umount  挂载设备   （卸载设备，卸载的时候当前工作目录不能再挂载点中）
+      umount  挂载点名称    （只把这个设备从这个挂载点卸载掉，而不卸载整个挂载设备）
+mount  -a：挂载/etc/fstab文件中定义的所有文件系统（多用于新向/etc/fstab添加声明时）	
 	
-dd����6�������cp��࣬����cpǿ��
-	if=������Դ
-	of=���ݴ���Ŀ��
-	bs=��С��Ĭ���ֽڣ�
-	count=���ٴ�
-����dd  if=/dev/sda  of=/root/mbr.bk  bs=512   count=1    ����/dev/sha �е�ǰ512���ֽڵ�/root��ȡ����mbr.bk������MBR��
+dd：很6的命令（与cp差不多，但比cp强大）
+	if=数据来源
+	of=数据储存目标
+	bs=大小（默认字节）
+	count=多少次
+例：dd  if=/dev/sda  of=/root/mbr.bk  bs=512   count=1    复制/dev/sha 中的前512个字节到/root中取名叫mbr.bk（备份MBR）
 
-fuser���鿴�ļ��������еĽ��̣�ͨ����ж�ع����豸ж����ʱʹ�ã�
-	-v���鿴�ļ��������еĽ��̣���ϸ��Ϣ��
-	-km����ֹ���ڷ���ĳ���ص�����н��̣�һ�㶼��ж�ع����豸��ʹ�ã�
-
-
-lsmod���ں��г�ģ��
-mdadm��RAID������ģʽ���������467ҳ��
-sync�����ڴ��е�����ͬ��������
+fuser：查看文件正在运行的进程（通常在卸载挂载设备卸不掉时使用）
+	-v：查看文件正在运行的进程（详细信息）
+	-km：终止正在访问某挂载点的所有进程（一般都是卸载挂载设备是使用）
 
 
-
-������
-1.�ô���֧�����ܣ���װ����quota����ñĬ�ϰ�װ�У�
-2.ɨ��֧�����ķ���������������ļ���һ���״�ɨ��ᱨ������Ҫ�ٴ�ɨ�裩
-3.�����û������Ϣ
-4.��������
+lsmod：内核列出模块
+mdadm：RAID管理（模式化的命令）（467页）
+sync：将内存中的数据同步到磁盘
 
 
-1.֧������
-��ʱ��Ч��������û��
-�߼�����һ�ι���
-mount  -o  usrquota,grpquota  �����豸  ���ص�
-�߼������¹���
-mount  -o  remount,usrquota,grpquota  �����豸  ���ص�
+
+磁盘配额：
+1.让磁盘支持配额功能（安装软件quota，红帽默认安装有）
+2.扫描支持配额的分区，并生成配额文件（一般首次扫描会报错，需要再次扫描）
+3.配置用户配额信息
+4.开启配额功能
 
 
-������Ч������ϵͳ��Ч��
-������������ļ�  /etc/fstab
-1.�豸����λ��   2.���ص�    3.�ļ�ϵͳ����   4.Ĭ�ϲ�����defaults,usrquota,grpquota��    5.�����Ƿ񱸷ݣ�0���� 1�ǣ�
-6.�����Ƿ�����̣�0���� 1�����ȼ�飨�������������Ϊ1�� 2����μ�飩
+1.支持配额功能
+临时生效（重启就没）
+逻辑卷第一次挂载
+mount  -o  usrquota,grpquota  挂载设备  挂载点
+逻辑卷重新挂载
+mount  -o  remount,usrquota,grpquota  挂载设备  挂载点
 
 
-2.ɨ��֧�����ķ���
-quotacheck -augvc   ����ʱ���-mfѡ�
--a��ɨ�����е��ļ�ϵͳ
--c�������µ�����ļ�
--d����ϸ��ʾָ��ִ�й��̣������Ŵ����˽����ִ�е�����
--g��ɨ����̿ռ�ʱ������ÿ��Ⱥ��ʶ������ռ�õ�Ŀ¼���ļ���Ŀ
--u��ɨ����̿ռ�ʱ������ÿ���û�ʶ������ռ�õ�Ŀ¼���ļ���Ŀ
--v����ʾָ��ִ�й���
-
-�鿴���ص㣬��������ļ�����
+永久生效（重启系统生效）
+更改这个配置文件  /etc/fstab
+1.设备所在位置   2.挂载点    3.文件系统类型   4.默认参数（defaults,usrquota,grpquota）    5.开机是否备份（0：否 1是）
+6.开机是否检查磁盘（0：否 1：优先检查（建议根分区设置为1） 2：其次检查）
 
 
-3.�����û���Ϣ
-edquota  ѡ��   �û���������
--u�������û����
--g�����������
+2.扫描支持配额的分区
+quotacheck -augvc   （有时会加-mf选项）
+-a：扫描所有的文件系统
+-c：创建新的配额文件
+-d：详细显示指令执行过程，便于排错或了解程序执行的情形
+-g：扫描磁盘空间时，计算每个群组识别码所占用的目录和文件数目
+-u：扫描磁盘空间时，计算每个用户识别码所占用的目录和文件数目
+-v：显示指令执行过程
 
-���������ļ�
+查看挂载点，生成配额文件即可
+
+
+3.配置用户信息
+edquota  选项   用户名或组名
+-u：配置用户配额
+-g：配置组配额
+
+进入配置文件
 blocks     soft     hard    inodes        soft       hard
    0         0       0         0            0         0
-��������   �����   Ӳ��� �����ļ�����    �����     Ӳ���
-	    ����     ����                  ����      ����
+已用容量   软配额   硬配额 以有文件个数    软配额     硬配额
+	    容量     容量                  个数      个数
 
 
-4.��������
-quotaon   -ugv  ���ص�
-u�������û�����
-g������������
-v����ʾ��ϸ����
+4.开启配额功能
+quotaon   -ugv  挂载点
+u：开启用户配额功能
+g：开启组配额功能
+v：显示详细过程
 
 
-�鿴�����Ϣ
-quota  ѡ��   �������û���
--u���鿴�û������Ϣ
--g���鿴�������Ϣ
+查看配额信息
+quota  选项   组名或用户名
+-u：查看用户配额信息
+-g：查看组配额信息
 
-repquota -a���鿴ϵͳ���û��������Ϣ
-
-
-
+repquota -a：查看系统内用户的配额信息
 
 
 
-PV��������������һ���������Ӳ�̷ָ��Ĭ�ϴ�СΪ4M�Ļ�����Ԫ
-VG�����飩  ����PV�׶ηֳɵ�4M�Ļ�����Ԫ�����һ���γ�һ������
-LV���߼��������Ӿ����ó�һ���ֻ�ȫ���ռ����һ���߼�����������
 
 
-����һ��LVM
-��ʹ��fdisk���߽�������ID�Ÿĳ�LVM����ID�ţ�8e��
-pvcreate  ��������λ��
-vgcreate  ������   �ָ�õķ���
-lvcreate  ѡ��  �߼�����С  -n  �߼�����   ������  
-      -l��ָ��ʹ�ö��ٸ�Ĭ�ϴ�СΪ4M�Ļ�����Ԫ
-	  -L��ָ��������С
-����pvcreate  /dev/sda1 /dev/sdb1
+
+PV（物理卷）：将一块或多块物理硬盘分割成默认大小为4M的基础单元
+VG（卷组）  ：将PV阶段分成的4M的基础单元组和在一起形成一个卷组
+LV（逻辑卷）：从卷组拿出一部分或全部空间组成一个逻辑卷（分区）
+
+
+创建一个LVM
+先使用fdisk工具将分区的ID号改成LVM分区ID号（8e）
+pvcreate  分区所在位置
+vgcreate  卷组名   分割好的分区
+lvcreate  选项  逻辑卷大小  -n  逻辑卷名   卷组名  
+      -l：指定使用多少个默认大小为4M的基础单元
+	  -L：指定容量大小
+例：pvcreate  /dev/sda1 /dev/sdb1
     vgcreate lvm1vg  /dev/sda1  /dev/sdb1    
     lvcreate -l  500  -n  lvm1lv  lvm1vg
 
-��ʽ����
-mkfs -t  �ļ�ϵͳ����  LVM�߼�����
-����mkfs -t  ext4  /dev/lvm1vg/lvm1lv
+格式化：
+mkfs -t  文件系统类型  LVM逻辑卷名
+例：mkfs -t  ext4  /dev/lvm1vg/lvm1lv
 
-���أ�
-mount  LVM�߼�������λ��   ���ص� 
-����mount /dev/lvm1vg/lvm1lv  /tmp
+挂载：
+mount  LVM逻辑卷所在位置   挂载点 
+例：mount /dev/lvm1vg/lvm1lv  /tmp
 
 
 
-��չLVM
-pvcreate     ����λ��
-vgvgextend   ������  ����λ��
-lvresize     ѡ��   +��С  �ӵ��Ǹ��߼�����
-resize2fs    Ҫ�Ӵ�С���߼���
-����
+扩展LVM
+pvcreate     分区位置
+vgvgextend   卷组名  分区位置
+lvresize     选项   +大小  加到那个逻辑卷上
+resize2fs    要加大小的逻辑卷
+例：
 pvcreate  /dev/sdc1
 vgextend  lvm1vg  /dev/sdc1
 lvresize  -l  +500  /dev/lvm1vg/lvm1lv
-resize2fs  /dev/lvm1vg/lvm1lv  ��ˢ���߼�����С��
+resize2fs  /dev/lvm1vg/lvm1lv  （刷新逻辑卷大小）
 
 
-LVM���ù�������
-pvcreate������������
-vgcreate����������
-lvcreate�������߼���
+LVM常用管理命令
+pvcreate：创建物理卷
+vgcreate：创建卷组
+lvcreate：创建逻辑卷
 
 
-pvidsplay���鿴��������ϸ��Ϣ
-vgdisplay���鿴�������ϸ��Ϣ
-lvdisplay���鿴�߼�������ϸ��Ϣ
+pvidsplay：查看物理卷详细信息
+vgdisplay：查看卷组的详细信息
+lvdisplay：查看逻辑卷的详细信息
 
 
-pvremove���Ƴ�������
-vgremove���Ƴ�����
-lvremove���Ƴ��߼���
+pvremove：移除物理卷
+vgremove：移除卷组
+lvremove：移除逻辑卷
 
 
-vgextend����������
-vgextend�������߼�������lvresize������һ����
+vgextend：扩建卷组
+vgextend：扩建逻辑卷（与lvresize的作用一样）
 
 
-resize2fs��ˢ���߼�����С
+resize2fs：刷新逻辑卷大小
 
 

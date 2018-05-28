@@ -1,80 +1,80 @@
-linux�������̣�
-	�ӵ��Լ�--bios--MBR��bootloader��GRUB��--kernel--/sbin/init
+linux启动流程：
+	加电自检--bios--MBR（bootloader，GRUB）--kernel--/sbin/init
 
-grub-md5-crypt����grub���������������ģ�����$1$maIa4/$er.TCyjiDhaKmoyADR8PX. ���� 789.com��
+grub-md5-crypt：将grub密文密码生成密文（例：$1$maIa4/$er.TCyjiDhaKmoyADR8PX. 等于 789.com）
 
 GRUB
-	�����ļ���/boot/grub/grub.conf
-		�ļ�����
+	配置文件在/boot/grub/grub.conf
+		文件内容
 
-default=0		//�������
-timeout=5		//�û��ȴ���ʱʱ��
-splashimage=(hd0,0)/grub/splash.xpm.gz		//grub����ͼƬ
-hiddenmenu		//���ز˵�
-#password --md5 $1$pSHa4/$QrNi8uyex5wZfqAhW42/o/    //grub�˵�����༭ģʽ�����루��p�����������룩
-title CentOS (2.6.32-431.el6.x86_64)		//����ϵͳ������
-	root (hd0,0)	//�ں������豸��grubʶ��Ӳ���豸ͳһʶ��Ϊhd��hd0,0��ʾ��һ����̣���һ������
-	kernel /vmlinuz-2.6.32-431.el6.x86_64 ro root=UUID=42...	//�ں��ļ�����λ�ã������ݸ��ں˵Ĳ��� 
+default=0		//启动编号
+timeout=5		//用户等待超时时间
+splashimage=(hd0,0)/grub/splash.xpm.gz		//grub背景图片
+hiddenmenu		//隐藏菜单
+#password --md5 $1$pSHa4/$QrNi8uyex5wZfqAhW42/o/    //grub菜单进入编辑模式的密码（按p可以输入密码）
+title CentOS (2.6.32-431.el6.x86_64)		//操作系统的名字
+	root (hd0,0)	//内核所在设备，grub识别硬盘设备统一识别为hd，hd0,0表示第一块磁盘，第一个分区
+	kernel /vmlinuz-2.6.32-431.el6.x86_64 ro root=UUID=42...	//内核文件所在位置，及传递给内核的参数 
 	initrd /initramfs-2.6.32-431.el6.x86_64.img
-#password --md5 $1$maIa4/$er.TCyjiDhaKmoyADR8PX.	//�����ں�ʱ������
+#password --md5 $1$maIa4/$er.TCyjiDhaKmoyADR8PX.	//引导内核时的密码
 
 
-/etc/rc.d/rc.sysinit��ϵͳ����ʱִ�е�һ���ؼ��ű�
-	��Ҫ���ܣ�
-		1.����udev��selinux
-		2.����/etc/sysctl.conf�ļ����ں��趨����
-		3.�趨ʱ��
-		4.װ�ؼ���ӳ��
-		5.������������
-		6.����������
-		7.�����ļ�ϵͳ��⣬�Զ�д��ʽ���¹����ļ�ϵͳ
-		8.����RAID��LVM�豸
-		9.���ô������
-		10.����/etc/fstab�����͹����ļ�ϵͳ
+/etc/rc.d/rc.sysinit：系统启动时执行的一个关键脚本
+	主要功能：
+		1.激活udev和selinux
+		2.根据/etc/sysctl.conf文件给内核设定参数
+		3.设定时钟
+		4.装载键盘映射
+		5.启动交换分区
+		6.设置主机名
+		7.根据文件系统检测，以读写方式从新挂载文件系统
+		8.激活RAID和LVM设备
+		9.启用磁盘配额
+		10.根据/etc/fstab，检查和挂载文件系统
 
 
-/etc/rc.d/rc.local��ϵͳ����ǰִ�е����һ���ű�
+/etc/rc.d/rc.local：系统启动前执行的最后一个脚本
 
-linux  rescue��������ž�Ԯģʽ��ͨ��linux�����ش����ʱʹ��
+linux  rescue：进入紧张救援模式，通常linux出现重大故障时使用
 	
 
-�ں˲����趨�ķ�����
-	sysctl -a���г������ں˲�������ֵ
+内核参数设定的方法：
+	sysctl -a：列出所有内核参数和其值
 		
-	/proc����Ŀ¼�д�ŵĶ����ں��ļ�	
+	/proc：此目录中存放的都是内核文件	
 
-	������Ч������������Ч��
-		1��echo  ������ֵ  /proc/sys/Ҫ�趨�Ĳ����ļ�
-		2��sysctl  -w   �趨�ļ���·����ȥ��/proc���·����=������ֵ
+	立即生效，不能永久有效：
+		1、echo  参数的值  /proc/sys/要设定的参数文件
+		2、sysctl  -w   设定文件的路径（去掉/proc这个路径）=参数的值
 
-	������Ч��
-		1���޸�/etc/sysctl.conf�ļ�����ʽΪ���趨�ļ���·����ȥ��/proc���·����=������ֵ
-			�޸����ִ��sysctl  -p��������Ч
-
-
-�ں�ģ�������
-	lsmod���鿴�ں�����װ�ص�ģ��
-	modprobe   ģ������װ��ָ��ģ��
-	modprobe  -r   ģ������ж��ָ��ģ��
-	modinfo  ģ�������鿴ָ��ģ�����ϸ��Ϣ
-	insmod��ģ������·��������modinfo�鿴����װ��ָ��ģ��
-	rmmod  ģ������ж��ָ��ģ��
+	永久有效：
+		1、修改/etc/sysctl.conf文件，格式为：设定文件的路径（去掉/proc这个路径）=参数的值
+			修改完后执行sysctl  -p：立即生效
 
 
-�ں˱��룺
-	�ں��г��˺��Ĺ���֮�⣬�ڱ���ʱ����๦��������ѡ��
-		1.������˹���
-		2.������ں�ģ��
-		3.������ں�
+内核模块管理：
+	lsmod：查看内核中已装载的模块
+	modprobe   模块名：装载指定模块
+	modprobe  -r   模块名：卸载指定模块
+	modinfo  模块名：查看指定模块的详细信息
+	insmod：模块所在路径（可用modinfo查看）：装载指定模块
+	rmmod  模块名：卸载指定模块
 
-	�ں˱��벽�裺
-		ǰ�᣺ӵ�б��뻷��
-		1.��׼��������ں��ļ�����Ŀ¼���У�make  menuconfig����һ���ı����ڣ��༭�ں˹��ܣ�������.config�ļ�
-		2.ִ��make�����ʼ���루ʱ���Ƚϳ���
-		3.ִ��make  modules_install����ʼ��װ�ں�
-		4.ִ��make  install����ʼ��װ�ں�ģ��
 
-�����ں˱�����ڸ��ӣ�����ʱ�����׳�������/bootĿ¼����ϵͳ�ٷ��ṩ���ں˱���ģ�壬config-2.6.32-431.el6.x86_64��2.6.32-431.el6.x86_64�����������ں˰汾����Ӧƽ̨�������Խ������Ƶ�Ҫ������ں��ļ�Ŀ¼�£�ȡ��Ϊ.config��������make  menuconfig������ı����ڿ�ʼ����
+内核编译：
+	内核中除了核心功能之外，在编译时，大多功能有三种选择
+		1.不编译此功能
+		2.编译成内核模块
+		3.编译进内核
+
+	内核编译步骤：
+		前提：拥有编译环境
+		1.在准备编译的内核文件所在目录运行：make  menuconfig，打开一个文本窗口，编辑内核功能，并生成.config文件
+		2.执行make命令，开始编译（时间会比较长）
+		3.执行make  modules_install：开始安装内核
+		4.执行make  install：开始安装内核模块
+
+由于内核编译过于复杂，编译时很容易出错，在/boot目录中有系统官方提供的内核编译模板，config-2.6.32-431.el6.x86_64（2.6.32-431.el6.x86_64，代表的是内核版本和适应平台），可以将他复制到要编译的内核文件目录下，取名为.config，并运行make  menuconfig命令，打开文本窗口开始编译
 
 
 		

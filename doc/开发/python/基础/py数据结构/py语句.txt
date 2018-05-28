@@ -1,17 +1,17 @@
-print£º´òÓ¡¶ÔÏó
-if/elif/else£ºÌõ¼şÅĞ¶ÏÓï¾ä
-for/else£º±éÀúÊ½Ñ­»·
-while/else£ºÆÕÍ¨Ñ­»·
-pass£ºÕ¼Î»·û
-break£ºÌáÇ°ÍË³öÑ­»·
-continue£ºÌáÇ°½øÈëÏÂÒ»ÂÖÑ­»·
-def£º¶¨Òåº¯Êı
-global£ºÃüÃû¿Õ¼ä
-raise£º´¥·¢Òì³£
-import£ºµ¼ÈëÄ£¿é
-from£ºÄ£¿éÊôĞÔ·ÃÎÊ
-class£ºÀà
-try/except/finally£º²¶×½Òì³£
-del£ºÉ¾³ı
-assert£ºµ÷ÊÔ¼ì²é
-with/as£º»·¾³¹ÜÀí
+printï¼šæ‰“å°å¯¹è±¡
+if/elif/elseï¼šæ¡ä»¶åˆ¤æ–­è¯­å¥
+for/elseï¼šéå†å¼å¾ªç¯
+while/elseï¼šæ™®é€šå¾ªç¯
+passï¼šå ä½ç¬¦
+breakï¼šæå‰é€€å‡ºå¾ªç¯
+continueï¼šæå‰è¿›å…¥ä¸‹ä¸€è½®å¾ªç¯
+defï¼šå®šä¹‰å‡½æ•°
+globalï¼šå‘½åç©ºé—´
+raiseï¼šè§¦å‘å¼‚å¸¸
+importï¼šå¯¼å…¥æ¨¡å—
+fromï¼šæ¨¡å—å±æ€§è®¿é—®
+classï¼šç±»
+try/except/finallyï¼šæ•æ‰å¼‚å¸¸
+delï¼šåˆ é™¤
+assertï¼šè°ƒè¯•æ£€æŸ¥
+with/asï¼šç¯å¢ƒç®¡ç†

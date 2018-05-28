@@ -7,29 +7,29 @@ pymysql：
 
 
 pymysql基本操作：
-	conn = pymysql.connecthost='主机地址',[user='用户'],[passwd='密码'],[db='数据库'], [charset='字符类型'])	#连接方法
+	conn = pymysql.connect(host='主机地址',[user='用户'],[passwd='密码'],[db='数据库'], [charset='字符类型'])	#连接方法
 	cursor = conn.cursor()												#创建游标
 	cursor = connect.cursor(cursor=pymysql.cursors.DictCursor)			#创建游标，以字典方式返回数据(默认以元组方式返回)
-	data1= cursor.execute("show databases;")			#执行SQL，并返回收影响行数 
-	
+	data1= cursor.execute("show databases;")			#执行SQL，并返回收影响行数
+
 	data2 = cursor.fetchone()							#每次获取一行数据(多用于查询大量数据时)
-	
+
 	data3 = cursor.fetchmany(3)							#每次获取n行数据
-	
+
 	data4 = cursor.fetchall()							#获取剩余结果所有数据
-	
+
 	参数化查询，在执行execute时必须使用参数化查询，避免SQL注入
 	user='root'									#定义参数
 	passwd=''
 	row = cursor.execute("select user,password from mysql.user where user=%s and password=%s",(user,passwd))	#参数化查询
 	data_all = cursor.fetchall()				#获取查找到的所有数据
-	
-	
+
+
 	conn.commit()			#提交，不然无法保存新建或者修改的数据
 	cursor.close()			#关闭游标
 	conn.close()			#断开连接
 
-	
+
 
 pip安装模块
 pip install MySQL-python

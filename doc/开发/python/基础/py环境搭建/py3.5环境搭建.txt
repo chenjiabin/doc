@@ -1,36 +1,36 @@
-°²×°python3.5.0
-1¡¢CentOS6.5 °²×°Python µÄÒÀÀµ°ü
+å®‰è£…python3.5.0
+1ã€CentOS6.5 å®‰è£…Python çš„ä¾èµ–åŒ…
 yum groupinstall "Development tools"
 yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
-2¡¢ÏÂÔØPython3.5µÄÔ´Âë°ü²¢±àÒë
+2ã€ä¸‹è½½Python3.5çš„æºç åŒ…å¹¶ç¼–è¯‘
 wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz
 tar xf Python-3.5.0.tgz
 cd Python-3.5.0
 ./configure --prefix=/usr/local --enable-shared
 make
 make install
-ln ¨Cs /usr/local/bin/python3 /usr/bin/python3
-3¡¢ÔÚÔËĞĞPythonÖ®Ç°ĞèÒªÅäÖÃ¿â£º
+ln â€“s /usr/local/bin/python3 /usr/bin/python3
+3ã€åœ¨è¿è¡ŒPythonä¹‹å‰éœ€è¦é…ç½®åº“ï¼š
 echo /usr/local/lib >> /etc/ld.so.conf.d/local.conf
 ldconfig
-4¡¢ÔËĞĞÑİÊ¾£º
+4ã€è¿è¡Œæ¼”ç¤ºï¼š
 python3 --version
 Python 3.5.0
-5¡¢É¾³ı±àÒëPythonÊ±ËùĞèÒªµÄ¿â
+5ã€åˆ é™¤ç¼–è¯‘Pythonæ—¶æ‰€éœ€è¦çš„åº“
 yum groupremove "Development tools" --remove-leaveas
 yum remove zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel --remove-leaves
-6¡¢ÉèÖÃ±ğÃû·½±ãÊ¹ÓÃ
+6ã€è®¾ç½®åˆ«åæ–¹ä¾¿ä½¿ç”¨
 alias py=python3
-7¡¢CentOS °²×°easy_install¡¢pipµÄ·½·¨            
-CentOS °²×°easy_installµÄ·½·¨£º
+7ã€CentOS å®‰è£…easy_installã€pipçš„æ–¹æ³•            
+CentOS å®‰è£…easy_installçš„æ–¹æ³•ï¼š
 wget -q http://peak.telecommunity.com/dist/ez_setup.py
 python ez_setup.py
-8¡¢CentOS°²×°python°ü¹ÜÀí°²×°¹¤¾ßpipµÄ·½·¨ÈçÏÂ£º
+8ã€CentOSå®‰è£…pythonåŒ…ç®¡ç†å®‰è£…å·¥å…·pipçš„æ–¹æ³•å¦‚ä¸‹ï¼š
 wget --no-check-certificate https://github.com/pypa/pip/archive/1.5.5.tar.gz
-×¢Òâ£ºwget»ñÈ¡httpsµÄÊ±ºòÒª¼ÓÉÏ£º--no-check-certificate
-tar zvxf 1.5.5    #½âÑ¹ÎÄ¼ş
+æ³¨æ„ï¼šwgetè·å–httpsçš„æ—¶å€™è¦åŠ ä¸Šï¼š--no-check-certificate
+tar zvxf 1.5.5    #è§£å‹æ–‡ä»¶
 cd pip-1.5.5/
 python3 setup.py install
-OK£¬ÕâÑù¾Í°²×°ºÃpipÁË£¬
-ÏÂÃæÀ´°²×° requests°É¡£
-¶¼ÓĞ°²×°ÎÄµµ
+OKï¼Œè¿™æ ·å°±å®‰è£…å¥½pipäº†ï¼Œ
+ä¸‹é¢æ¥å®‰è£… requestså§ã€‚
+éƒ½æœ‰å®‰è£…æ–‡æ¡£

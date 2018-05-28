@@ -1,88 +1,88 @@
-syslog syslog-ng ��־������
+syslog syslog-ng 日志服务器
 
-һ��syslog���
-1��syslog���
-syslog��ϵͳ��־,��¼linuxϵͳ���������еĹ����в�������Ϣ,�������ļ���/etc/syslog.conf��
+一、syslog详解
+1、syslog简介
+syslog是系统日志,记录linux系统启动及运行的过程中产生的信息,其配置文件在/etc/syslog.conf中
 
-2��syslog��Ĭ�Ͻ���
-klogd���ں���־���Ƚ���ϸ
-syslogd��ϵͳ��־
+2、syslog的默认进程
+klogd：内核日志，比较详细
+syslogd：系统日志
 
-3��syslog�����ļ�
-�����ļ���д��ʽΪ��facility����־��Դ��.priority����־����action������������ 
- facility,��־����Դ,���õ�facility
-    1.auth      		# ��֤��ص� 
-    2.authpriv  		# Ȩ��,��Ȩ��ص� 
-    3.cron      		# ����ƻ���ص� 
-    4.daemon    		# �ػ�������ص� 
-    5.kern      		# �ں���ص� 
-    6.lpr       		# ��ӡ��ص� 
-    7.mail      		# �ʼ���ص� 
-    8.mark      		# �����ص� 
-    9.news   			# ������ص� 
-    10.security 		# ��ȫ��ص�
-    11.syslog  			# syslog�������� 
-    12.user     		# �û���ص� 
-    14.local0 �� local7 		# �û��Զ���ʹ�� 
-    15.*        		# *��ʾ���е�facility 
+3、syslog配置文件
+配置文件书写格式为，facility（日志来源）.priority（日志级别）action（处理动作） 
+ facility,日志的来源,常用的facility
+    1.auth      		# 认证相关的 
+    2.authpriv  		# 权限,授权相关的 
+    3.cron      		# 任务计划相关的 
+    4.daemon    		# 守护进程相关的 
+    5.kern      		# 内核相关的 
+    6.lpr       		# 打印相关的 
+    7.mail      		# 邮件相关的 
+    8.mark      		# 标记相关的 
+    9.news   			# 新闻相关的 
+    10.security 		# 安全相关的
+    11.syslog  			# syslog服务自身 
+    12.user     		# 用户相关的 
+    14.local0 到 local7 		# 用户自定义使用 
+    15.*        		# *表示所有的facility 
      
  
- priority��־����,�ӵ͵���һ�������¼��ּ��� 
-    debug           		# �����ϵͳ�ĵ�����Ϣ 
-    info            		# һ����Ϣ
-    notice          		# ��Ӱ����������,��Ҫע�����Ϣ 
-    warning/warn    		# ����Ӱ��ϵͳ����,��Ҫ�����û�����Ҫ�¼� 
-    err/error       		# ������Ϣ 
-    crit            		# �Ƚ����ص� 
-    alert           		# �������ϴ����� 
-    emerg/oanic     		# �ᵼ��ϵͳ�����õ� 
-    *               		# ��ʾ���е���־���� 
-    none            		# ��*�෴,��ʾɶҲû�� 
+ priority日志级别,从低到高一般有以下几种级别 
+    debug           		# 程序或系统的调试信息 
+    info            		# 一般信息
+    notice          		# 不影响正常功能,需要注意的消息 
+    warning/warn    		# 可能影响系统功能,需要提醒用户的重要事件 
+    err/error       		# 错误信息 
+    crit            		# 比较严重的 
+    alert           		# 必须马上处理的 
+    emerg/oanic     		# 会导致系统不可用的 
+    *               		# 表示所有的日志级别 
+    none            		# 跟*相反,表示啥也没有 
      
  
- action(����)��־��¼��λ��
-    |			# �ܵ�     ͨ���ܵ��͸������������  
-    ϵͳ�ϵľ���·��	# ��ͨ�ļ� �磺 /var/log/xxx   
-    @HOST               # Զ������ �磺 @1.1.1.1      
-    �û�			# ϵͳ�û� �磺 root 
-    *                   # ��¼��ϵͳ�ϵ������û�
+ action(动作)日志记录的位置
+    |			# 管道     通过管道送给其他的命令处理  
+    系统上的绝对路径	# 普通文件 如： /var/log/xxx   
+    @HOST               # 远程主机 如： @1.1.1.1      
+    用户			# 系统用户 如： root 
+    *                   # 登录到系统上的所有用户
 
 
-�����ʽ�����ӣ� 
-mail.info   /var/log/mail.log # ��mail��ص�,����Ϊinfo�����ϼ������־�ļ����浽/var/log/mail.log 
-auth.=info  @10.0.0.1         # ��auth��ص�,����Ϊinfo����Ϣ��¼��1.1.1.1������ȥ 
-user.!=error                  # ��user��ص�,������error�������Ϣ 
-*.info                        # ��¼���е���־��Ϣ�����Ҽ�����info�����ϼ���
-mail.*                        # ��¼mail��ص����м������Ϣ 
-*.*                           # ��¼���е���־��Ϣ�����������м������Ϣ
-cron,mail.info                # ��¼cron��mail��صģ�����Ϊinfo���ϼ������Ϣ 
-mail.*;mail.!=info            # ��ʾ��¼mail��ص����м������Ϣ,���ǲ�����info����� 
+定义格式的例子： 
+mail.info   /var/log/mail.log # 将mail相关的,级别为info及以上级别的日志文件保存到/var/log/mail.log 
+auth.=info  @10.0.0.1         # 将auth相关的,级别为info的信息记录到1.1.1.1主机上去 
+user.!=error                  # 与user相关的,不包括error级别的信息 
+*.info                        # 记录所有的日志信息，并且级别是info及以上级别
+mail.*                        # 记录mail相关的所有级别的信息 
+*.*                           # 记录所有的日志信息，并且是所有级别的信息
+cron,mail.info                # 记录cron和mail相关的，级别为info以上级别的信息 
+mail.*;mail.!=info            # 表示记录mail相关的所有级别的信息,但是不包括info级别的 
 
 
 
-syslog�������ļ�/etc/syslog.conf 
-# ������facility��info����,��������mail,authpriv,cron��ص���Ϣ,��¼�� /var/log/messages�ļ� 
+syslog的配置文件/etc/syslog.conf 
+# 将所有facility的info级别,但不包括mail,authpriv,cron相关的信息,记录到 /var/log/messages文件 
 *.info;mail.none;authpriv.none;cron.none                /var/log/messages 
  
-# ��Ȩ��,��Ȩ��ص����л�������Ϣ,��¼��/var/log/secure�ļ��У�����ļ���Ȩ����600 
+# 将权限,授权相关的所有基本的信息,记录到/var/log/secure文件中，这个文件的权限是600 
 authpriv.*                                              /var/log/secure 
  
-# ��mail��ص����л�������Ϣ��¼��/var/log/maillog�ļ��У� "-" ��ʾ�첽д�����, һ�㲻��ʹ��
+# 将mail相关的所有基本的信息记录到/var/log/maillog文件中， "-" 表示异步写入磁盘, 一般不会使用
 mail.*                                                  -/var/log/maillog 
  
-# ������ƻ���ص����м������Ϣ��¼��/var/log/cron�ļ��� 
+# 将任务计划相关的所有级别的信息记录到/var/log/cron文件中 
 cron.*                                                  /var/log/cron 
  
-# ������facility��emerg�������Ϣ,���͸���¼��ϵͳ�ϵ������û� 
+# 将所有facility的emerg级别的信息,发送给登录到系统上的所有用户 
 *.emerg                                                 * 
  
-# ��uucp��news��crit�������Ϣ��¼��/var/log/spooler�ļ��� 
+# 将uucp及news的crit级别的信息记录到/var/log/spooler文件中 
 uucp,news.crit                                          /var/log/spooler 
  
-# ��local7�����м������Ϣ��¼��/var/log/boot.log�ļ���, 
-# local0��local7���û��Զ���ʹ�õ�,�����local7��¼����ϵͳ������ص���Ϣ 
+# 将local7的所有级别的信息记录到/var/log/boot.log文件中, 
+# local0到local7是用户自定义使用的,这里的local7记录的是系统启动相关的信息 
 local7.*                                                /var/log/boot.log 
 
-syslogĬ�ϼ�¼����־��ʽ���ĸ��ֶ�,ʱ���ǩ	����	��ϵͳ����	��Ϣ
-���Բ鿴/var/log/messages��֤
+syslog默认记录的日志格式有四个字段,时间标签	主机	子系统名称	消息
+可以查看/var/log/messages验证
 

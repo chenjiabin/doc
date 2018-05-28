@@ -1,46 +1,46 @@
-py�е���٣�
-1���κη�0���ֺͷǿն���Ϊ��
-2������0���ն���NoneΪ��
-3��True���棬False��
+py中的真假：
+1、任何非0数字和非空对象都为真
+2、数字0、空对象、None为假
+3、True：真，False假
 
-�߼����㣺
-x  and   y���߼���
-x   or   y���߼���
-not  y���߼���
+逻辑运算：
+x  and   y：逻辑与
+x   or   y：逻辑或
+not  y：逻辑非
 
 
-if�������������
-if  ��������:
-    ����Ϊ��ʱִ�е����
-elif ��������:
-    ����Ϊ��ʱִ�е����
+if：条件测试语句
+if  测试条件:
+    条件为真时执行的语句
+elif 测试条件:
+    条件为真时执行的语句
 else:
-    ������Ϊ��ʱִ�е����
+    条件都为假时执行的语句
 
 
 
-while�����ж���ѭ����������Ϊ��ʱ��ʼѭ��ֱ������Ϊ��
-while   �ж����:
-    ִ�����
+while条件判断试循环：当条件为真时开始循环直到条件为假
+while   判断语句:
+    执行语句
 else:
-    ѭ�������Ժ�ֻ����һ��Ĵ���
+    循环结束以后只运行一遍的代码
 
 
-for����ʽѭ����ִ��Ч�ʸ���whileѭ��������for������for
-for  i  in  xrange(����):
-    ִ�����
+for遍历式循环：执行效率高于while循环，能用for尽量用for
+for  i  in  xrange(序列):
+    执行语句
 else:
-    ѭ�������Ժ�ֻ����һ��Ĵ���
+    循环结束以后只运行一遍的代码
 
-else�ǿ�ѡ����
+else是可选参数
 
 
-ѭ���еĿ�����䣺
-break����ǰ����ѭ��
-continue����ǰ������һ��ѭ��
-else������飬ֻ��ѭ����������ʱ�Ż����У������break������ѭ������ִ��
-range��xrange��rangeֱ�����ڴ�������һ�����У�xrange�õ�һ��Ԫ��ʱ����һ��Ԫ��
-zip������Ԫ��Ԫ����б��������ڶ�̬�����ֵ�
+循环中的控制语句：
+break：提前结束循环
+continue：提前进入下一轮循环
+else：代码块，只有循环正常结束时才会运行，如果有break等跳出循环的则不执行
+range和xrange：range直接在内存中生成一个序列，xrange用到一个元素时生成一个元素
+zip：返回元素元组的列表，多用于动态生成字典
 
 
 

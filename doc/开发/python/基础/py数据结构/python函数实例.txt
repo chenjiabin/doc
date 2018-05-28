@@ -1,13 +1,13 @@
-1��λ�ò��������ݲ���ʱ�����ݵĲ����Ͷ���Ĳ���֮��һһ��Ӧ
-2���ؼ��ֲ�����ʹ�ùؼ��ֽ��д��ݲ���
-3��Ĭ�ϲ�����������һ��Ĭ��ֵ����û�и�Ĭ�ϲ�������ֵʱ��Ĭ�ϲ�����ֵ�������ȸ�������õ�ֵ
-4���ɱ��������û��ȷ�����ݹ����Ĳ�������ʱͨ��ʹ�ÿɱ����
-5���ɱ���������ͨ����һ���б���Ԫ�طֽ����Ԫ�ض�Ӧ�ı���
+1、位置参数：传递参数时，传递的参数和定义的参数之间一一对应
+2、关键字参数：使用关键字进行传递参数
+3、默认参数：给参数一个默认值，在没有给默认参数传递值时，默认产生的值等于事先给他定义好的值
+4、可变参数：在没有确定传递过来的参数个数时通常使用可变参数
+5、可变参数解包：通常将一个列表的元素分解成其元素对应的变量
 
 
 
-λ�ò�����
-��1��λ�ò����Ĵ���
+位置参数：
+例1：位置参数的传递
 In [28]: def fa(x,y,z):
     ...:     print x, y, z
   
@@ -15,18 +15,18 @@ In [29]: fa('aa','bb','cc')
 aa bb cc
 
 
-��2�����ݵĲ�������Ͷ���Ĳ���һһ��Ӧ
+列2：传递的参数必须和定义的参数一一对应
 In [31]: def fb(x,y,z):
   ...:     print x, y, z     
 
-In [32]: fb('a','b')						//���󴫵�
-TypeError: fb() takes exactly 3 arguments (2 given)   		//�����쳣
+In [32]: fb('a','b')						//错误传递
+TypeError: fb() takes exactly 3 arguments (2 given)   		//返回异常
 
 
 
 
-�ؼ��ֲ�����
-��1���ؼ��ֲ����Ĵ���
+关键字参数：
+列1：关键字参数的传递
 In [33]: def fc(x,y,z):
     ...:     print x, y, z
 
@@ -34,16 +34,16 @@ In [34]: fc(x=4,z=10,y=9)
 4 9 10
  
 
-��2�����ݲ����ĸ�ʽ����Ͷ���ĸ�����ͬ
+例2：传递参数的格式必须和定义的个数相同
 In [35]: def fe(x,y,z):
     ...:     print x, y, z,
 
-In [36]: fe(x=1,y=2,z=3,d=4)					//���󴫵�
-TypeError: fe() got an unexpected keyword argument 'd'		//�����쳣
+In [36]: fe(x=1,y=2,z=3,d=4)					//错误传递
+TypeError: fe() got an unexpected keyword argument 'd'		//返回异常
 
 
-��3���ؼ��ֺ�λ�ò����Ļ��ʹ��
-ʵ��1��
+例3：关键字和位置参数的混合使用
+实例1：
 In [37]: def ff(x,y,z):
     ...:     print x, y, z,
 
@@ -51,63 +51,63 @@ In [39]: ff('txt',z=3,y='yy')
 txt yy 3
 
 
-ʵ��2��
+实例2：
 In [37]: def f1(x,y,z):
     ...:     print x, y, z,  
 
-In [38]: f1('txt',x=3,y='ll')					//���󴫵ݣ�x�������'txt'
-TypeError: f1() got multiple values for keyword argument 'x'	//�����쳣	
+In [38]: f1('txt',x=3,y='ll')					//错误传递，x必须等于'txt'
+TypeError: f1() got multiple values for keyword argument 'x'	//返回异常	
 
 
-ʵ��3��
-In [42]: f2(z=3,'txt',x=4)  					//���󴫵ݣ�λ�ò�������λ�����
-SyntaxError: non-keyword arg after keyword arg			//�����쳣
+实例3：
+In [42]: f2(z=3,'txt',x=4)  					//错误传递，位置参数必须位于左侧
+SyntaxError: non-keyword arg after keyword arg			//返回异常
 
 
-ʵ��4��
-In [43]: f2(x=3,y=4,'txt')					//���󴫵ݣ�λ�ò�������λ�����			
-SyntaxError: non-keyword arg after keyword arg			//�����쳣
+实例4：
+In [43]: f2(x=3,y=4,'txt')					//错误传递，位置参数必须位于左侧			
+SyntaxError: non-keyword arg after keyword arg			//返回异常
 
 
 
 
-Ĭ�ϲ�����
-��1��Ĭ�ϲ����Ĵ���
+默认参数：
+例1：默认参数的传递
 In [44]: def f(x,y,z=9):					
     ...:     print x, y, z
 
-In [45]: f(1,2)						//�������Ĭ�ϲ�������ֵ�Ļ�����ô���������ʹ������Ĭ��ֵ
+In [45]: f(1,2)						//如果不给默认参数传递值的话，那么这个参数将使用它的默认值
 1 2 9									
 
 
-��2��Ĭ�ϲ����Ĵ���
-In [46]: f(1,2,7)					//�����Ĭ�ϲ�������һ��ֵ����ô����н�����Ĭ��ֵ	
+例2：默认参数的传递
+In [46]: f(1,2,7)					//如果给默认参数传递一个值，那么这个中将覆盖默认值	
 1 2 7								
 
-��3��Ĭ�ϲ����Ķ���
+例3：默认参数的定义
 In [48]: def f3(x,z=9,y):
     ...:     print x, y, z
-SyntaxError: non-default argument follows default argument	//����Ĭ�ϲ���ʱ��Ĭ�ϲ���������λ�ò���������
+SyntaxError: non-default argument follows default argument	//定义默认参数时，默认参数必须在位置参数的右面
 
 
 
 
-�ɱ������
-��һ���ɱ�����Ķ���
-In [49]: def fg(x,y,*z):				//����ɱ����
+可变参数：
+例一：可变参数的定义
+In [49]: def fg(x,y,*z):				//定义可变参数
     ...:     print x, y, z
 
-In [50]: fg(1,2,3,4,5,6,7,8,9)				//���ݲ���
-1 2 (3, 4, 5, 6, 7, 8, 9)				//�ɱ������û��ƥ�䵽�Ĳ����ռ�������������Ԫ�鷽ʽ��ʾ
+In [50]: fg(1,2,3,4,5,6,7,8,9)				//传递参数
+1 2 (3, 4, 5, 6, 7, 8, 9)				//可变参数将没有匹配到的参数收集起来，并且以元组方式显示
 
 
-��2���ɱ�����Ķ������
-In [51]: def fu(x,y*,z):				//�ɱ��������λ�ã��ؼ��ֲ���������
+例2：可变参数的定义规则
+In [51]: def fu(x,y*,z):				//可变参数必须位置，关键字参数的右面
 SyntaxError: invalid syntax
 
 
-��3���ؼ����ռ�
-In [60]: def fh(*z,**y):				//�ռ��ؼ��ֲ�������
+例3：关键字收集
+In [60]: def fh(*z,**y):				//收集关键字参数定义
     ...:     print y, z
     ...:     
 
@@ -115,21 +115,21 @@ In [61]: fh(1,2,3,4,a=12,b=23,c=45)
 {'a': 12, 'c': 45, 'b': 23} (1,2,3,4)
 
 
-��4���ؼ����ռ��Ķ������
-In [67]: def fh(**z,*y):				//�ռ��ؼ��ֵĲ������붨�������в���������				
+例4：关键字收集的定义规则
+In [67]: def fh(**z,*y):				//收集关键字的参数必须定义在所有参数的右面				
     ...:     print y, z
 SyntaxError: invalid syntax
 
 
 
-�ɱ����*��**������
-*���ռ�λ�ò���������Ԫ�鷽ʽ����
-**���ռ��ؼ��ֲ����������ֵ䷽ʽ����
+可变参数*和**的区别：
+*：收集位置参数，并以元组方式返回
+**：收集关键字参数，并以字典方式返回
 
 
 
-�ɱ���������
-��1�������б�
+可变解包参数：
+例1：解析列表
 In [57]: ll = ['aaa','bbb','ccc']
 
 In [58]: a,b,c = ll
@@ -138,7 +138,7 @@ In [59]: print a,b,c
 aaa bbb ccc
 
 
-��2���ɱ��������Ĵ���
+例2：可变解包参数的传递
 In [74]: w = zip('abcd','1234')
 
 In [75]: d = dict(w)
@@ -154,7 +154,7 @@ In [78]: fk(1,2,3,**d)
 
 
 
-lambda��ʹ�ø�ʽ��
+lambda的使用格式：
 In [13]: fa = lambda x,y: x + y
 
 In [14]: fa(1,2)
@@ -163,7 +163,7 @@ Out[14]: 3
 
 
 
-Ĭ�ϲ�����
+默认参数：
 In [30]: fa = (lambda x=10,y=20:x + y)
 
 In [31]: fa()
@@ -176,7 +176,7 @@ Out[32]: 5
 
 
 
-����ʵ����
+具体实例：
 In [36]: y = [(lambda x:x*2),(lambda y:y*3)]
 
 In [37]: for i in y:

@@ -12,11 +12,11 @@ class Producer(Thread):
     def run(self):
         while True:
             if self.queue.full():
-                print '\033[31mÉú²úÂúÁË\033[0m'
+                print '\033[31mç”Ÿäº§æ»¡äº†\033[0m'
                 sleep(2)
             else:
-                queue.put('°ü×Ó')
-                print 'Éú²úÁËÒ»¸ö°ü×Ó'
+                queue.put('åŒ…å­')
+                print 'ç”Ÿäº§äº†ä¸€ä¸ªåŒ…å­'
                 sleep(2)
 
 class Consumer(Thread):
@@ -27,20 +27,20 @@ class Consumer(Thread):
     def run(self):
         while True:
             if self.queue.empty():
-                print '\033[31mÃ»ÓĞ°ü×ÓÁË\033[0m'
+                print '\033[31mæ²¡æœ‰åŒ…å­äº†\033[0m'
                 sleep(2)
             else:
                 queue.get()
-                print 'Ïû·ÑÁËÒ»¸ö°ü×Ó'
+                print 'æ¶ˆè´¹äº†ä¸€ä¸ªåŒ…å­'
                 sleep(2)
 
 
 queue = Queue(maxsize=100)
-'''Éú²úÕß'''
+'''ç”Ÿäº§è€…'''
 pr = Producer(queue)
 pr.start()
 
-'''Ïû·ÑÕß'''
+'''æ¶ˆè´¹è€…'''
 for i in range(2):
     con = Consumer(queue)
     con.start()

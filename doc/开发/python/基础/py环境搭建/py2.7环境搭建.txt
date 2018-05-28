@@ -1,33 +1,33 @@
-Ò».±àÒë°²×°python2.7
+ä¸€.ç¼–è¯‘å®‰è£…python2.7
 
-1¡¢yum install readline-devel						//±ØĞë°²×°£¬·ñÔòpyµÄ½»»¥Ê½½Ó¿Ú¿ÉÄÜÎŞ·¨Ê¹ÓÃ¿ØÖÆ¼ü			
-2¡¢yum groupinstall "Development Tools"				//°²×°±àÒë»·¾³
-3¡¢tar zxvf Python-2.7.13.tgz -C /tmp				//½âÑ¹Ô´Âë°ü
-4¡¢cd /tmp/Python-2.7.13							//½øÈë°²×°Ä¿Â¼
-5¡¢sh configure --prefix=/usr/local/python2.7		//¼ì²é±àÒë»·¾³
-6¡¢make && make install								//±àÒë && °²×°
-7¡¢ln -sv /usr/local/python2.7/bin/python2.7 /usr/bin/py		//Á´½ÓÖÁ»·¾³±äÁ¿ÖĞ
-
-
-¶ş.±àÒë°²×°setuptools
-1¡¢tar zxvf setuptools-33.1.1.tar.gz -C /tmp
-2¡¢cd /tmp/setuptools-33.1.1			
-3¡¢py setup.py build 						//¼ì²é»·¾³
-4¡¢py setup.py install						//±àÒë°²×°pyÄ£¿é
+1ã€yum install readline-devel						//å¿…é¡»å®‰è£…ï¼Œå¦åˆ™pyçš„äº¤äº’å¼æ¥å£å¯èƒ½æ— æ³•ä½¿ç”¨æ§åˆ¶é”®			
+2ã€yum groupinstall "Development Tools"				//å®‰è£…ç¼–è¯‘ç¯å¢ƒ
+3ã€tar zxvf Python-2.7.13.tgz -C /tmp				//è§£å‹æºç åŒ…
+4ã€cd /tmp/Python-2.7.13							//è¿›å…¥å®‰è£…ç›®å½•
+5ã€sh configure --prefix=/usr/local/python2.7		//æ£€æŸ¥ç¼–è¯‘ç¯å¢ƒ
+6ã€make && make install								//ç¼–è¯‘ && å®‰è£…
+7ã€ln -sv /usr/local/python2.7/bin/python2.7 /usr/bin/py		//é“¾æ¥è‡³ç¯å¢ƒå˜é‡ä¸­
 
 
-Èı.±àÒë°²×°pip
-1¡¢tar zxvf pip-9.0.1.tar.gz -C /tmp
-2¡¢cd /tmp/pip-9.0.1
-3¡¢py setup.py build
-4¡¢py setup.py install
-5¡¢ln -sv /usr/local/python2.7/bin/pip /usr/bin/pip
+äºŒ.ç¼–è¯‘å®‰è£…setuptools
+1ã€tar zxvf setuptools-33.1.1.tar.gz -C /tmp
+2ã€cd /tmp/setuptools-33.1.1			
+3ã€py setup.py build 						//æ£€æŸ¥ç¯å¢ƒ
+4ã€py setup.py install						//ç¼–è¯‘å®‰è£…pyæ¨¡å—
 
 
-ËÄ.°²×°ipython£¨ĞèÒª»¥ÁªÍø£©
-1¡¢yum install python-devel		
-2¡¢pip install ipython						//°²×°ipython
-3¡¢ln -sv /usr/local/python2.7/bin/ipython /usr/bin/ipython
+ä¸‰.ç¼–è¯‘å®‰è£…pip
+1ã€tar zxvf pip-9.0.1.tar.gz -C /tmp
+2ã€cd /tmp/pip-9.0.1
+3ã€py setup.py build
+4ã€py setup.py install
+5ã€ln -sv /usr/local/python2.7/bin/pip /usr/bin/pip
+
+
+å››.å®‰è£…ipythonï¼ˆéœ€è¦äº’è”ç½‘ï¼‰
+1ã€yum install python-devel		
+2ã€pip install ipython						//å®‰è£…ipython
+3ã€ln -sv /usr/local/python2.7/bin/ipython /usr/bin/ipython
 
 
 

@@ -1,14 +1,14 @@
-http://rpmfind.net						#RMP°üÏÂÔØ
-http://www.rpm-find.net					#RMP°üÏÂÔØ
-http://pkgs.org							#RMP°üÏÂÔØ	
-https://pypi.python.org					#python³£ÓÃÄ£¿éÏÂÔØ
-http://linux.linuxidc.com				#linux½Ì³Ì
-https://www.processon.com/diagrams		#»­Í¼¹¤¾ß
+http://rpmfind.net						#RMPåŒ…ä¸‹è½½
+http://www.rpm-find.net					#RMPåŒ…ä¸‹è½½
+http://pkgs.org							#RMPåŒ…ä¸‹è½½	
+https://pypi.python.org					#pythonå¸¸ç”¨æ¨¡å—ä¸‹è½½
+http://linux.linuxidc.com				#linuxæ•™ç¨‹
+https://www.processon.com/diagrams		#ç”»å›¾å·¥å…·
 
 
 
 
 
-https://passport.csdn.net/account/login?ref=toolbar			#ÂÛÌ³
+https://passport.csdn.net/account/login?ref=toolbar			#è®ºå›
 https://yum.puppet.com/el/6.5/products/x86_64/				#puppet
 

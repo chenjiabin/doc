@@ -10,7 +10,7 @@ KVM
 	http://blog.csdn.net/wanglei_storage/article/details/51314740
 
 
-openvpn£º
+openvpnï¼š
 	http://blog.sina.com.cn/s/blog_5790709f0101nce3.html
 	http://blog.csdn.net/bytxl/article/details/26443147
 
@@ -36,7 +36,7 @@ jenkins
 	http://215687833.blog.51cto.com/6724358/d-13		
 
 
-lvm¿ìÕÕ	
+lvmå¿«ç…§	
 	http://blog.csdn.net/yanggd1987/article/details/50124997		
 
 
@@ -52,7 +52,7 @@ mha
 	http://blog.csdn.net/lichangzai/article/details/50470771
 
 
-postfixÐéÄâÓÃ»§
+postfixè™šæ‹Ÿç”¨æˆ·
 	http://ggvylf.blog.51cto.com/784661/1668737			
 
 

@@ -1,41 +1,41 @@
-worker_processes			#½ø³ÌÊı¡£×îÓÅÖµÈ¡¾öÓÚĞí¶àÒòËØ£¬°üÀ¨£¨µ«²»ÏŞÓÚ£©CPUºËµÄÊıÁ¿¡¢´æ´¢Êı¾İµÄÓ²ÅÌÊıÁ¿¼°¸ºÔØÄ£Ê½
-worker_rlimit_nofile		#¸ü¸Äworker½ø³ÌµÄ×î´ó´ò¿ªÎÄ¼şÊıÏŞÖÆ£¬Ä¬ÈÏÎª²Ù×÷ÏµÍ³"ulimit -a"µÄÖµ
+worker_processes			#è¿›ç¨‹æ•°ã€‚æœ€ä¼˜å€¼å–å†³äºè®¸å¤šå› ç´ ï¼ŒåŒ…æ‹¬ï¼ˆä½†ä¸é™äºï¼‰CPUæ ¸çš„æ•°é‡ã€å­˜å‚¨æ•°æ®çš„ç¡¬ç›˜æ•°é‡åŠè´Ÿè½½æ¨¡å¼
+worker_rlimit_nofile		#æ›´æ”¹workerè¿›ç¨‹çš„æœ€å¤§æ‰“å¼€æ–‡ä»¶æ•°é™åˆ¶ï¼Œé»˜è®¤ä¸ºæ“ä½œç³»ç»Ÿ"ulimit -a"çš„å€¼
 
 events { 
-	worker_connections 2048; 	#Ò»¸ö½ø³Ì×î´óµÄÁ¬½ÓÊı£¬±ØĞëĞ¡ÓÚworker_rlimit_nofile£¬ÊÜ²Ù×÷ÏµÍ³socketÁ¬½ÓÊıµÄÓ°Ïì£¬×î´ó64K
-	multi_accept on;			#¸æËßnginxÊÕµ½Ò»¸öĞÂÁ¬½ÓÍ¨Öªºó½ÓÊÜ¾¡¿ÉÄÜ¶àµÄÁ¬½Ó
-	use epoll; 					#¿Í»§¶ËÏß³ÌµÄÂÖÑ¯·½·¨¡£ÄÚºË2.6ÒÔÉÏ½¨ÒéÊ¹ÓÃepoll
+	worker_connections 2048; 	#ä¸€ä¸ªè¿›ç¨‹æœ€å¤§çš„è¿æ¥æ•°ï¼Œå¿…é¡»å°äºworker_rlimit_nofileï¼Œå—æ“ä½œç³»ç»Ÿsocketè¿æ¥æ•°çš„å½±å“ï¼Œæœ€å¤§64K
+	multi_accept on;			#å‘Šè¯‰nginxæ”¶åˆ°ä¸€ä¸ªæ–°è¿æ¥é€šçŸ¥åæ¥å—å°½å¯èƒ½å¤šçš„è¿æ¥
+	use epoll; 					#å®¢æˆ·ç«¯çº¿ç¨‹çš„è½®è¯¢æ–¹æ³•ã€‚å†…æ ¸2.6ä»¥ä¸Šå»ºè®®ä½¿ç”¨epoll
 } 
 
 
 http { 
-	server_tokens off; 				#½ûÖ¹ÔÚÒ³ÃæÉÏÏÔÊ¾nginx°æ±¾
-	keepalive_timeout 60;			#³¤Á¬½Ó³¬Ê±Ê±¼ä
-	#access_log off;				#¹Ø±Õ·ÃÎÊÈÕÖ¾¼õÉÙ´ÅÅÌio(·ÃÎÊÁ¿½Ï´óÊ±¿ªÆô)
-	access_log /var/log/nginx/access.log main buffer=32k;			#Èç¹ûÔÚ½Ï´ó¹æÄ£ÖĞĞèÒªÊ¹ÓÃ·ÃÎÊÈÕÖ¾¿ÉÒÔ´ò¿ª»º³å¹¦ÄÜ
-	error_log  logs/error.log  warn;		#¼õÉÙ´ÅÅÌio
+	server_tokens off; 				#ç¦æ­¢åœ¨é¡µé¢ä¸Šæ˜¾ç¤ºnginxç‰ˆæœ¬
+	keepalive_timeout 60;			#é•¿è¿æ¥è¶…æ—¶æ—¶é—´
+	#access_log off;				#å…³é—­è®¿é—®æ—¥å¿—å‡å°‘ç£ç›˜io(è®¿é—®é‡è¾ƒå¤§æ—¶å¼€å¯)
+	access_log /var/log/nginx/access.log main buffer=32k;			#å¦‚æœåœ¨è¾ƒå¤§è§„æ¨¡ä¸­éœ€è¦ä½¿ç”¨è®¿é—®æ—¥å¿—å¯ä»¥æ‰“å¼€ç¼“å†²åŠŸèƒ½
+	error_log  logs/error.log  warn;		#å‡å°‘ç£ç›˜io
 	
-	gzip on; 						#´ò¿ªÑ¹Ëõ¹¦ÄÜ
-	gzip_disable "msie6";			#ÎªÖ¸¶¨µÄ¿Í»§¶Ë½ûÓÃgzip¹¦ÄÜ¡£msie6±íÊ¾IE6¼°ÆäÒÔÏÂ°æ±¾²»Ê¹ÓÃgzip¹¦ÄÜ
-	gzip_proxied any; 				#Ñ¹ËõËùÓĞµÄÇëÇó¡£
-	gzip_min_length 1000; 			#ÉèÖÃĞ¡ÓÚ¶àÉÙ×Ö½Ú²»Ê¹ÓÃgzip¹¦ÄÜ
-	gzip_comp_level 5;				#Ñ¹Ëõ¼¶±ğ1-9 
-	gzip_types text/plain text/css  text/xml text/javascript; 		#ĞèÒªÑ¹ËõµÄÊı¾İ¸ñÊ½
+	gzip on; 						#æ‰“å¼€å‹ç¼©åŠŸèƒ½
+	gzip_disable "msie6";			#ä¸ºæŒ‡å®šçš„å®¢æˆ·ç«¯ç¦ç”¨gzipåŠŸèƒ½ã€‚msie6è¡¨ç¤ºIE6åŠå…¶ä»¥ä¸‹ç‰ˆæœ¬ä¸ä½¿ç”¨gzipåŠŸèƒ½
+	gzip_proxied any; 				#å‹ç¼©æ‰€æœ‰çš„è¯·æ±‚ã€‚
+	gzip_min_length 1000; 			#è®¾ç½®å°äºå¤šå°‘å­—èŠ‚ä¸ä½¿ç”¨gzipåŠŸèƒ½
+	gzip_comp_level 5;				#å‹ç¼©çº§åˆ«1-9 
+	gzip_types text/plain text/css  text/xml text/javascript; 		#éœ€è¦å‹ç¼©çš„æ•°æ®æ ¼å¼
 } 
 
 
-³£ÓÃÄ£¿é£º
-	rewrite				#urlÖØĞ´
-	access				#À´Ô´¿ØÖÆ
-	auth				#Éí·İÑéÖ¤
-	ssl					#°²È«¼ÓÃÜ
-	upstream			#¼¯Èº¶¨Òå
-	proxy_pass			#·´Ïò´úÀí
+å¸¸ç”¨æ¨¡å—ï¼š
+	rewrite				#urlé‡å†™
+	access				#æ¥æºæ§åˆ¶
+	auth				#èº«ä»½éªŒè¯
+	ssl					#å®‰å…¨åŠ å¯†
+	upstream			#é›†ç¾¤å®šä¹‰
+	proxy_pass			#åå‘ä»£ç†
 	
 
 
-http://www.nginx.cn/821.html										#ÓÅ»¯
-http://blog.csdn.net/gb4215287/article/details/51765110				#ÓÅ»¯
-http://blog.csdn.net/xifeijian/article/details/20956605				#ÓÅ»¯
+http://www.nginx.cn/821.html										#ä¼˜åŒ–
+http://blog.csdn.net/gb4215287/article/details/51765110				#ä¼˜åŒ–
+http://blog.csdn.net/xifeijian/article/details/20956605				#ä¼˜åŒ–
 
 

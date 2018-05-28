@@ -1,46 +1,46 @@
-    '''¶©ÔÄÕß¿ÉÒÔ¶©ÔÄÒ»¸ö»ò¶à¸öÆµµÀ£¬·¢²¼ÕßÏòÒ»¸öÆµµÀ·¢ËÍÏûÏ¢ºó£¬ËùÓĞ¶©ÔÄÕâ¸öÆµµÀµÄ¶©ÔÄÕß¶¼½«ÊÕµ½ÏûÏ¢£¬
-	¶ø·¢²¼ÕßÒ²½«ÊÕµ½Ò»¸öÊıÖµ£¬Õâ¸öÊıÖµÊÇÊÕµ½ÏûÏ¢µÄ¶©ÔÄÕßµÄÊıÁ¿¡£
-	¶©ÔÄÕßÖ»ÄÜÊÕµ½×ÔËü¿ªÊ¼¶©ÔÄºó·¢²¼ÕßËù·¢²¼µÄÏûÏ¢£¬
-	Ö®Ç°·¢²¼µÄÏûÏ¢ÄØ£¬¾Í²»¿ÉÄÜÊÕµ½ÁË¡£'''
+    '''è®¢é˜…è€…å¯ä»¥è®¢é˜…ä¸€ä¸ªæˆ–å¤šä¸ªé¢‘é“ï¼Œå‘å¸ƒè€…å‘ä¸€ä¸ªé¢‘é“å‘é€æ¶ˆæ¯åï¼Œæ‰€æœ‰è®¢é˜…è¿™ä¸ªé¢‘é“çš„è®¢é˜…è€…éƒ½å°†æ”¶åˆ°æ¶ˆæ¯ï¼Œ
+	è€Œå‘å¸ƒè€…ä¹Ÿå°†æ”¶åˆ°ä¸€ä¸ªæ•°å€¼ï¼Œè¿™ä¸ªæ•°å€¼æ˜¯æ”¶åˆ°æ¶ˆæ¯çš„è®¢é˜…è€…çš„æ•°é‡ã€‚
+	è®¢é˜…è€…åªèƒ½æ”¶åˆ°è‡ªå®ƒå¼€å§‹è®¢é˜…åå‘å¸ƒè€…æ‰€å‘å¸ƒçš„æ¶ˆæ¯ï¼Œ
+	ä¹‹å‰å‘å¸ƒçš„æ¶ˆæ¯å‘¢ï¼Œå°±ä¸å¯èƒ½æ”¶åˆ°äº†ã€‚'''
 
-#ÃæÏò¹ı³ÌµÄ·½·¨
+#é¢å‘è¿‡ç¨‹çš„æ–¹æ³•
 #!/usr/bin/python
 #coding:utf-8
 
-#·şÎñÆ÷¶Ë
+#æœåŠ¡å™¨ç«¯
 import redis  
-r = redis.Redis(host='127.0.0.1',port='6379')#Á¬½Óredis
-p = r.pubsub()  	    		#¿ªÆô¶©ÔÄ
-p.subscribe('6379') #½ÓÊÕ¶©ÔÄµÄÊı¾İ,¶©ÔÄµÄÆµµÀ 
+r = redis.Redis(host='127.0.0.1',port='6379')#è¿æ¥redis
+p = r.pubsub()  	    		#å¼€å¯è®¢é˜…
+p.subscribe('6379') #æ¥æ”¶è®¢é˜…çš„æ•°æ®,è®¢é˜…çš„é¢‘é“ 
 
-for item in p.listen(): #¶ÁÈ¡½ÓÊÕµÄÊı¾İ
+for item in p.listen(): #è¯»å–æ¥æ”¶çš„æ•°æ®
     print item 
-    if item['type'] == 'message':#ÅĞ¶ÏÊı¾İÊÇ·ñÊÇÓÃ»§·¢²¼µÄÊı¾İ   
-        data = item['data']     #È¡³öÓÃ»§Òª·¢²¼µÄÊı¾İ
-        print data  #´òÓ¡Òª·¢²¼µÄÊı¾İ
+    if item['type'] == 'message':#åˆ¤æ–­æ•°æ®æ˜¯å¦æ˜¯ç”¨æˆ·å‘å¸ƒçš„æ•°æ®   
+        data = item['data']     #å–å‡ºç”¨æˆ·è¦å‘å¸ƒçš„æ•°æ®
+        print data  #æ‰“å°è¦å‘å¸ƒçš„æ•°æ®
 
         if item['data'] == 'Q' or item['data'] == 'q':    
-            break;  			    #ÍË³ö³ÌĞò
-p.unsubscribe('6379')#¹Ø±ÕÆµµÀ  
-print 'È¡Ïû¶©ÔÄ'
+            break;  			    #é€€å‡ºç¨‹åº
+p.unsubscribe('6379')#å…³é—­é¢‘é“  
+print 'å–æ¶ˆè®¢é˜…'
 
-#¿Í»§¶Ë
+#å®¢æˆ·ç«¯
 #!/usr/bin/py
 #coding:utf-8
 import redis  
-r = redis.Redis(host='127.0.0.1',port=6379)#Á¬½Óredis
+r = redis.Redis(host='127.0.0.1',port=6379)#è¿æ¥redis
   
 while True:  
-    my_input = raw_input("ÇëÊäÈë·¢²¼ÄÚÈİ:")#ÊäÈë·¢²¼µÄÄÚÈİ  
-    r.publish('6379', my_input)#·¢ËÍµ½µÄÆµµÀ,·¢²¼µÄÄÚÈİ  
+    my_input = raw_input("è¯·è¾“å…¥å‘å¸ƒå†…å®¹:")#è¾“å…¥å‘å¸ƒçš„å†…å®¹  
+    r.publish('6379', my_input)#å‘é€åˆ°çš„é¢‘é“,å‘å¸ƒçš„å†…å®¹  
 
-    if my_input == 'Q' or my_input == 'q':  	    #ÅĞ¶ÏÓÃ»§ÊÇ·ñÒªÍË³ö³ÌĞò
-        print 'Í£Ö¹·¢²¼'  
+    if my_input == 'Q' or my_input == 'q':  	    #åˆ¤æ–­ç”¨æˆ·æ˜¯å¦è¦é€€å‡ºç¨‹åº
+        print 'åœæ­¢å‘å¸ƒ'  
         break; 
 
 
-#ÃæÏò¶ÔÏóµÄ·½·¨
-#·şÎñÆ÷¶Ë
+#é¢å‘å¯¹è±¡çš„æ–¹æ³•
+#æœåŠ¡å™¨ç«¯
 #!/usr/bin/python
 #coding:utf-8
 import redis
@@ -49,20 +49,20 @@ class server(object):
     def __init__(self,ip='127.0.0.1',port=6379,sub='A'):
         self.ip = ip
         self.port = port
-        self.connect = redis.Redis(host=self.ip,port=self.port)  #Á¬½Óredis
-        self.sub = sub #¼àÌıÆµµÀ
+        self.connect = redis.Redis(host=self.ip,port=self.port)  #è¿æ¥redis
+        self.sub = sub #ç›‘å¬é¢‘é“
     def se(self):
-        spub = self.connect.pubsub()#´ò¿ª¶©ÔÄ
-        spub.subscribe(self.sub)#¿ªÊ¼¼àÌı
-        spub.listen()#ÓÃ»§·¢²¼µÄÊı¾İ
+        spub = self.connect.pubsub()#æ‰“å¼€è®¢é˜…
+        spub.subscribe(self.sub)#å¼€å§‹ç›‘å¬
+        spub.listen()#ç”¨æˆ·å‘å¸ƒçš„æ•°æ®
         return spub
 
 x = server()
 p = x.se()
-for item in p.listen():				    #´òÓ¡½ÓÊÕµ½µÄÊı¾İ
+for item in p.listen():				    #æ‰“å°æ¥æ”¶åˆ°çš„æ•°æ®
     print item
 
-#¿Í»§¶Ë
+#å®¢æˆ·ç«¯
 #!/usr/bin/python
 #coding:utf-8
 import redis
@@ -72,13 +72,13 @@ class client(object):
         self.ip = ip
         self.port = port
         self.connect = redis.Redis(host=self.ip,port=self.port)
-        self.pub = pub		        #Á¬½ÓµÄÆµµÀ
+        self.pub = pub		        #è¿æ¥çš„é¢‘é“
     def cl(self,content):
-        self.connect.publish(self.pub,content)#ÆµµÀ,·¢ËÍµÄÊı¾İ
+        self.connect.publish(self.pub,content)#é¢‘é“,å‘é€çš„æ•°æ®
 
 x = client()
 while True:
-    my_input = raw_input('ÇëÊäÈë·¢²¼ÄÚÈİ£º')	    #·¢²¼µÄÊı¾İ
+    my_input = raw_input('è¯·è¾“å…¥å‘å¸ƒå†…å®¹ï¼š')	    #å‘å¸ƒçš„æ•°æ®
     x.cl(my_input)
 
 		

@@ -1,25 +1,25 @@
-URG£º±íÊ¾TCP°üµÄ½ô¼±Ö¸ÕëÓòÓÐÐ§£¬ÓÃÀ´±£Ö¤TCPÁ¬½Ó²»±»ÖÐ¶Ï 
-ACK£º±íÊ¾È·ÈÏÐòºÅÓÐÐ§
-PSH£º±íÊ¾Push²Ù×÷; ËùÎ½Push²Ù×÷¾ÍÊÇÖ¸ÔÚÊý¾Ý°üµ½´ï½ÓÊÕ¶ËÒÔºó, Á¢¼´´«ËÍ¸øÓ¦ÓÃ³ÌÐò,²»ÔÚ»º³åÇøÅÅ¶Ó
-RST£º±íÊ¾Á¬½Ó¸´Î»ÇëÇó; ÓÃÀ´¸´Î»ÄÇÐ©²úÉú´íÎóµÄÁ¬½Ó
-SYN£º±íÊ¾Í¬²½ÐòºÅ, ÓÃÀ´½¨Á¢Á¬½Ó;SYNºÍACK´îÅäÊ¹ÓÃ,ÇëÇóÁ¬½ÓÊ±,SYN=1,ACK=0;ÏìÓ¦Á¬½ÓÊ±,SYN=1,ACK=1
-FIN£º±íÊ¾·¢ËÍ¶ËÒÑ¾­´ïµ½Êý¾ÝÄ©Î²,Ò²¾ÍÊÇËµË«·½µÄÊý¾Ý´«ËÍÍê³É,·¢ËÍFIN±êÖ¾Î»µÄTCPÊý¾Ý°üºó,Á¬½Ó½«±»¶Ï¿ª
+URGï¼šè¡¨ç¤ºTCPåŒ…çš„ç´§æ€¥æŒ‡é’ˆåŸŸæœ‰æ•ˆï¼Œç”¨æ¥ä¿è¯TCPè¿žæŽ¥ä¸è¢«ä¸­æ–­ 
+ACKï¼šè¡¨ç¤ºç¡®è®¤åºå·æœ‰æ•ˆ
+PSHï¼šè¡¨ç¤ºPushæ“ä½œ; æ‰€è°“Pushæ“ä½œå°±æ˜¯æŒ‡åœ¨æ•°æ®åŒ…åˆ°è¾¾æŽ¥æ”¶ç«¯ä»¥åŽ, ç«‹å³ä¼ é€ç»™åº”ç”¨ç¨‹åº,ä¸åœ¨ç¼“å†²åŒºæŽ’é˜Ÿ
+RSTï¼šè¡¨ç¤ºè¿žæŽ¥å¤ä½è¯·æ±‚; ç”¨æ¥å¤ä½é‚£äº›äº§ç”Ÿé”™è¯¯çš„è¿žæŽ¥
+SYNï¼šè¡¨ç¤ºåŒæ­¥åºå·, ç”¨æ¥å»ºç«‹è¿žæŽ¥;SYNå’ŒACKæ­é…ä½¿ç”¨,è¯·æ±‚è¿žæŽ¥æ—¶,SYN=1,ACK=0;å“åº”è¿žæŽ¥æ—¶,SYN=1,ACK=1
+FINï¼šè¡¨ç¤ºå‘é€ç«¯å·²ç»è¾¾åˆ°æ•°æ®æœ«å°¾,ä¹Ÿå°±æ˜¯è¯´åŒæ–¹çš„æ•°æ®ä¼ é€å®Œæˆ,å‘é€FINæ ‡å¿—ä½çš„TCPæ•°æ®åŒ…åŽ,è¿žæŽ¥å°†è¢«æ–­å¼€
 
 
-TCPÈý´ÎÎÕÊÖ£º
-1¡¢½¨Á¢Á¬½ÓÊ±£¬Ö÷»úA·¢ËÍÇëÇó°ü(SYN=1)µ½Ö÷»úB£¬²¢½øÈëSYN_SEND×´Ì¬£¬µÈ´ýÖ÷»úBÈ·ÈÏ
+TCPä¸‰æ¬¡æ¡æ‰‹ï¼š
+1ã€å»ºç«‹è¿žæŽ¥æ—¶ï¼Œä¸»æœºAå‘é€è¯·æ±‚åŒ…(SYN=1)åˆ°ä¸»æœºBï¼Œå¹¶è¿›å…¥SYN_SENDçŠ¶æ€ï¼Œç­‰å¾…ä¸»æœºBç¡®è®¤
 
-2¡¢Ö÷»úBÊÕµ½SYN°ü,È·ÈÏÊÇÖ÷»úAµÄÇëÇó°ü(ACK=x+1),ÏòÖ÷»úA·¢ËÍÒ»¸ö°ü(SYN=1,ACK=1),Ö÷»úB½øÈëSYN_RECV×´Ì¬,Ò²ÕýÊÇÖ÷»úB½øÈëSYN_RECV(×èÈû)ËùÓÐ²ÅÓÐÁËDDOS¹¥»÷
+2ã€ä¸»æœºBæ”¶åˆ°SYNåŒ…,ç¡®è®¤æ˜¯ä¸»æœºAçš„è¯·æ±‚åŒ…(ACK=x+1),å‘ä¸»æœºAå‘é€ä¸€ä¸ªåŒ…(SYN=1,ACK=1),ä¸»æœºBè¿›å…¥SYN_RECVçŠ¶æ€,ä¹Ÿæ­£æ˜¯ä¸»æœºBè¿›å…¥SYN_RECV(é˜»å¡ž)æ‰€æœ‰æ‰æœ‰äº†DDOSæ”»å‡»
 
-3¡¢Ö÷»úAÊÕµ½Ö÷»úBµÄ»Ø¸´°ü(ack=y+1),ÏòÖ÷»úB·¢ËÍÈ·ÈÏ°ü(ACK=1),Ö÷»úAºÍÖ÷»úB½øÈëESTABLISHED×´Ì¬
-×¢£ºseqÊÇÐòÁÐºÅ,ÊÇÎªÁËÒÔºó´«ËÍÊý¾ÝÊ±Ê¹ÓÃ
+3ã€ä¸»æœºAæ”¶åˆ°ä¸»æœºBçš„å›žå¤åŒ…(ack=y+1),å‘ä¸»æœºBå‘é€ç¡®è®¤åŒ…(ACK=1),ä¸»æœºAå’Œä¸»æœºBè¿›å…¥ESTABLISHEDçŠ¶æ€
+æ³¨ï¼šseqæ˜¯åºåˆ—å·,æ˜¯ä¸ºäº†ä»¥åŽä¼ é€æ•°æ®æ—¶ä½¿ç”¨
 
 
-TCPËÄ´Î»ÓÊÖ£º
-1¡¢Ö÷»úA·¢ËÍÒ»¸öFIN,ÓÃÀ´¹Ø±ÕÖ÷»úAµ½Ö÷»úBµÄÊý¾Ý´«ËÍ
-2¡¢Ö÷»úBÊÕµ½Õâ¸öFIN£¬Ëü·¢»ØÒ»¸öACK£¬È·ÈÏÐòºÅÎªÊÕµ½µÄÐòºÅ¼Ó1 
-3¡¢Ö÷»úB¹Ø±ÕÓëÖ÷»úAµÄÁ¬½Ó£¬·¢ËÍÒ»¸öFIN¸ø¿Í»§¶ËA
-4¡¢Ö÷»úA·¢ËÍACK±¨ÎÄÈ·ÈÏ£¬²¢½«È·ÈÏÐòºÅÉèÖÃÎªÊÕµ½ÐòºÅ¼Ó1
+TCPå››æ¬¡æŒ¥æ‰‹ï¼š
+1ã€ä¸»æœºAå‘é€ä¸€ä¸ªFIN,ç”¨æ¥å…³é—­ä¸»æœºAåˆ°ä¸»æœºBçš„æ•°æ®ä¼ é€
+2ã€ä¸»æœºBæ”¶åˆ°è¿™ä¸ªFINï¼Œå®ƒå‘å›žä¸€ä¸ªACKï¼Œç¡®è®¤åºå·ä¸ºæ”¶åˆ°çš„åºå·åŠ 1 
+3ã€ä¸»æœºBå…³é—­ä¸Žä¸»æœºAçš„è¿žæŽ¥ï¼Œå‘é€ä¸€ä¸ªFINç»™å®¢æˆ·ç«¯A
+4ã€ä¸»æœºAå‘é€ACKæŠ¥æ–‡ç¡®è®¤ï¼Œå¹¶å°†ç¡®è®¤åºå·è®¾ç½®ä¸ºæ”¶åˆ°åºå·åŠ 1
 
 
 

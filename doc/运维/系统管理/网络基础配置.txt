@@ -1,80 +1,80 @@
-Íø¿¨ÐÅÏ¢ÎÄ¼þ£º/etc/udev/rules.d/70-persistent-net.rules
+ç½‘å¡ä¿¡æ¯æ–‡ä»¶ï¼š/etc/udev/rules.d/70-persistent-net.rules
 
-Íø¿¨ÅäÖÃÎÄ¼þ£º/etc/sysconfig/network-scripts/ifcfg-½Ó¿ÚÃû£¨eth:ÒÔÌ«ÍøÍø¿¨£¬lo±¾µØ»Ø»·Íø¿¨£©
+ç½‘å¡é…ç½®æ–‡ä»¶ï¼š/etc/sysconfig/network-scripts/ifcfg-æŽ¥å£åï¼ˆeth:ä»¥å¤ªç½‘ç½‘å¡ï¼Œloæœ¬åœ°å›žçŽ¯ç½‘å¡ï¼‰
 
-Â·ÓÉÅäÖÃÎÄ¼þ£º/etc/sysconfig/network-scripts/route-eth0(route-eth0¿ÉÄÜÐèÒª×Ô¼º´´½¨£¬eth0£ºÍø¿¨Ãû)
-		±à¼­¸ñÊ½£ºÄ¿±êÍø¶Î/×ÓÍø   via   Íø¹ØIPµØÖ·/×ÓÍø
+è·¯ç”±é…ç½®æ–‡ä»¶ï¼š/etc/sysconfig/network-scripts/route-eth0(route-eth0å¯èƒ½éœ€è¦è‡ªå·±åˆ›å»ºï¼Œeth0ï¼šç½‘å¡å)
+		ç¼–è¾‘æ ¼å¼ï¼šç›®æ ‡ç½‘æ®µ/å­ç½‘   via   ç½‘å…³IPåœ°å€/å­ç½‘
 
-Ö÷»úÃûÅäÖÃºÍÊÇ·ñÆô¶¯ÍøÂç¹¦ÄÜ£º/etc/sysconfig/network
-		ÖØÆôÏµÍ³ÉúÐ§
+ä¸»æœºåé…ç½®å’Œæ˜¯å¦å¯åŠ¨ç½‘ç»œåŠŸèƒ½ï¼š/etc/sysconfig/network
+		é‡å¯ç³»ç»Ÿç”Ÿæ•ˆ
 
-DNSÅäÖÃÎÄ¼þ£º/etc/resolv.conf
-		±à¼­¸ñÊ½£ºnameserver  dns·þÎñÆ÷µÄIPµØÖ·£¨×î¶à¿ÉÒÔ±à¼­Èý¸ö£©
-		±¾µØhostÎÄ¼þ£º/etc/hosts	
-		±à¼­¸ñÊ½£ºIPµØÖ·   ÓëIPËù¶ÔÓ¦µÄÓòÃû
-	DNS½âÎö¹ý³Ì£º±¾µØhostsÎÄ¼þ¡úDNS·þÎñÆ÷
+DNSé…ç½®æ–‡ä»¶ï¼š/etc/resolv.conf
+		ç¼–è¾‘æ ¼å¼ï¼šnameserver  dnsæœåŠ¡å™¨çš„IPåœ°å€ï¼ˆæœ€å¤šå¯ä»¥ç¼–è¾‘ä¸‰ä¸ªï¼‰
+		æœ¬åœ°hostæ–‡ä»¶ï¼š/etc/hosts	
+		ç¼–è¾‘æ ¼å¼ï¼šIPåœ°å€   ä¸ŽIPæ‰€å¯¹åº”çš„åŸŸå
+	DNSè§£æžè¿‡ç¨‹ï¼šæœ¬åœ°hostsæ–‡ä»¶â†’DNSæœåŠ¡å™¨
 
 
-setup£ºÅäÖÃ¹¤¾ß£¬ÅäÖÃÖ®ºóÐèÒªÖØÆô·þÎñ»òÏµÍ³£¬ÓÀ¾ÃÓÐÐ§
+setupï¼šé…ç½®å·¥å…·ï¼Œé…ç½®ä¹‹åŽéœ€è¦é‡å¯æœåŠ¡æˆ–ç³»ç»Ÿï¼Œæ°¸ä¹…æœ‰æ•ˆ
 	
-ntsysv£º·þÎñÅäÖÃ¹¤¾ß
+ntsysvï¼šæœåŠ¡é…ç½®å·¥å…·
 
 
-ping£º²é¿´Á¬Í¨ÐÔ
-	-c£ºÖ¸¶¨·¢¼¸´Î°ü£¨´ÎÊý£©
-	-W£ºÖ¸¶¨³¬Ê±Ê±¼ä£¨Ãë£©
+pingï¼šæŸ¥çœ‹è¿žé€šæ€§
+	-cï¼šæŒ‡å®šå‘å‡ æ¬¡åŒ…ï¼ˆæ¬¡æ•°ï¼‰
+	-Wï¼šæŒ‡å®šè¶…æ—¶æ—¶é—´ï¼ˆç§’ï¼‰
 
 
-ifconfig£º²é¿´Íø¿¨ÐÅÏ¢
-	-a£º²é¿´ËùÓÐÍø¿¨ÐÅÏ¢£¬°üÀ¨±»½ûÓÃµÄÍø¿¨
-	½ûÓÃÍø¿¨£ºifconfig   Íø¿¨Ãû  down
-	ÆôÓÃÍø¿¨£ºifconfig   Íø¿¨Ãû  up
+ifconfigï¼šæŸ¥çœ‹ç½‘å¡ä¿¡æ¯
+	-aï¼šæŸ¥çœ‹æ‰€æœ‰ç½‘å¡ä¿¡æ¯ï¼ŒåŒ…æ‹¬è¢«ç¦ç”¨çš„ç½‘å¡
+	ç¦ç”¨ç½‘å¡ï¼šifconfig   ç½‘å¡å  down
+	å¯ç”¨ç½‘å¡ï¼šifconfig   ç½‘å¡å  up
 
 
-ip£º²é¿´Íø¿¨ÐÅÏ¢£¨ifconfigµÄÉý¼¶°æ£©
-	ipÃüÁîÓÉiproute2Èí¼þ°üÌá¹©£¬ËûµÄ¹¦ÄÜÔ¶Ô¶³¬Ô½ÁËifconfigÃüÁî
-	Ö÷Òª·ÖÎªÈý´ó°å¿éÉèÖÃ£º
-			1.link£ºÍøÂç½Ó¿ÚÊôÐÔÅäÖÃ
-			2.addr£ºÐ­ÒéµØÖ·ÅäÖÃ£¨ÊÇ·ñ¶¯Ì¬»ñÈ¡IPµØÖ·µÈ£©
-			3.route£ºÂ·ÓÉÅäÖÃ
+ipï¼šæŸ¥çœ‹ç½‘å¡ä¿¡æ¯ï¼ˆifconfigçš„å‡çº§ç‰ˆï¼‰
+	ipå‘½ä»¤ç”±iproute2è½¯ä»¶åŒ…æä¾›ï¼Œä»–çš„åŠŸèƒ½è¿œè¿œè¶…è¶Šäº†ifconfigå‘½ä»¤
+	ä¸»è¦åˆ†ä¸ºä¸‰å¤§æ¿å—è®¾ç½®ï¼š
+			1.linkï¼šç½‘ç»œæŽ¥å£å±žæ€§é…ç½®
+			2.addrï¼šåè®®åœ°å€é…ç½®ï¼ˆæ˜¯å¦åŠ¨æ€èŽ·å–IPåœ°å€ç­‰ï¼‰
+			3.routeï¼šè·¯ç”±é…ç½®
 
 
-service NetworkManager stop				#Íø¿¨¼¤»îÊ§°Ü
+service NetworkManager stop				#ç½‘å¡æ¿€æ´»å¤±è´¥
 hkconfig NetworkManager off
 
-netstat£º¼ì²éÍøÂçÁ¬½Ó×´Ì¬
-	-a£ºÏÔÊ¾µ±Ç°ÏµÍ³ÉÏµÄËùÓÐÁ¬½Ó
-	-t£ºÁÐ³öºÍtcpÏà¹ØµÄÐÅÏ¢
-	-u£ºÁÐ³öºÍudpÏà¹ØµÄÐÅÏ¢
-	-n£º²»ÏÔÊ¾·þÎñµÄ½ø³ÌÃû£¬¶øÊÇÒÔ¶Ë¿ÚºÅÏÔÊ¾
-	-l£ºÁÐ³öµ±Ç°ÕýÔÚ¼àÌýµÄ·þÎñ
-	-p£ºÏÔÊ¾PIDºÅ
+netstatï¼šæ£€æŸ¥ç½‘ç»œè¿žæŽ¥çŠ¶æ€
+	-aï¼šæ˜¾ç¤ºå½“å‰ç³»ç»Ÿä¸Šçš„æ‰€æœ‰è¿žæŽ¥
+	-tï¼šåˆ—å‡ºå’Œtcpç›¸å…³çš„ä¿¡æ¯
+	-uï¼šåˆ—å‡ºå’Œudpç›¸å…³çš„ä¿¡æ¯
+	-nï¼šä¸æ˜¾ç¤ºæœåŠ¡çš„è¿›ç¨‹åï¼Œè€Œæ˜¯ä»¥ç«¯å£å·æ˜¾ç¤º
+	-lï¼šåˆ—å‡ºå½“å‰æ­£åœ¨ç›‘å¬çš„æœåŠ¡
+	-pï¼šæ˜¾ç¤ºPIDå·
 
 
-ss£º±ÈnetstatÃüÁî¸ü¸ßÐ§µÄÃüÁî
--n			ÒÔÊý×ÖÐÎÊ½ÏÔÊ¾²»½âÎö·þÎñÃû³Æ
--a			ÏÔÊ¾ËùÓÐÌ×½Ó×Ö
--l			ÏÔÊ¾¼àÌý×´Ì¬µÄÌ×½Ó×Ö
--e		        ÏÔÊ¾ÏêÏ¸µÄÌ×½Ó×ÖÐÅÏ¢
--m		        ÏÔÊ¾Ì×½Ó×ÖµÄÄÚ´æÊ¹ÓÃÇé¿ö
--p			ÏÔÊ¾Ê¹ÓÃÌ×½Ó×ÖµÄ½ø³Ì
--s			ÏÔÊ¾Ì×½Ó×ÖÊ¹ÓÃ¸Å¿ö
--4	                ½öÏÔÊ¾IPv4µÄÌ×½Ó×Ö
--t			½öÏÔÊ¾ TCPÌ×½Ó×Ö	
--u			½öÏÔÊ¾ UCPÌ×½Ó×Ö	
--x			½öÏÔÊ¾ UnixÌ×½Ó×Ö	
--F			ÐÅÏ¢¹ýÂË
+ssï¼šæ¯”netstatå‘½ä»¤æ›´é«˜æ•ˆçš„å‘½ä»¤
+-n			ä»¥æ•°å­—å½¢å¼æ˜¾ç¤ºä¸è§£æžæœåŠ¡åç§°
+-a			æ˜¾ç¤ºæ‰€æœ‰å¥—æŽ¥å­—
+-l			æ˜¾ç¤ºç›‘å¬çŠ¶æ€çš„å¥—æŽ¥å­—
+-e		        æ˜¾ç¤ºè¯¦ç»†çš„å¥—æŽ¥å­—ä¿¡æ¯
+-m		        æ˜¾ç¤ºå¥—æŽ¥å­—çš„å†…å­˜ä½¿ç”¨æƒ…å†µ
+-p			æ˜¾ç¤ºä½¿ç”¨å¥—æŽ¥å­—çš„è¿›ç¨‹
+-s			æ˜¾ç¤ºå¥—æŽ¥å­—ä½¿ç”¨æ¦‚å†µ
+-4	                ä»…æ˜¾ç¤ºIPv4çš„å¥—æŽ¥å­—
+-t			ä»…æ˜¾ç¤º TCPå¥—æŽ¥å­—	
+-u			ä»…æ˜¾ç¤º UCPå¥—æŽ¥å­—	
+-x			ä»…æ˜¾ç¤º Unixå¥—æŽ¥å­—	
+-F			ä¿¡æ¯è¿‡æ»¤
 
 
 
 
 
-route£º²é¿´Â·ÓÉÐÅÏ¢
-	-n£ºÒÔÊý×Ö·½Ê½ÏÔÊ¾
+routeï¼šæŸ¥çœ‹è·¯ç”±ä¿¡æ¯
+	-nï¼šä»¥æ•°å­—æ–¹å¼æ˜¾ç¤º
 
-hostname£º²é¿´ºÍÐÞ¸ÄÖ÷»úÃû
-	²é¿´Ö÷»úÃû£ºhostname
-	ÐÞ¸ÄÖ÷»úÃû£ºhostname   Ö÷»úÃû
+hostnameï¼šæŸ¥çœ‹å’Œä¿®æ”¹ä¸»æœºå
+	æŸ¥çœ‹ä¸»æœºåï¼šhostname
+	ä¿®æ”¹ä¸»æœºåï¼šhostname   ä¸»æœºå
 
 
 
