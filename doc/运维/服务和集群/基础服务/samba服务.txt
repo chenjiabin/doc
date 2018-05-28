@@ -20,16 +20,27 @@ testparm：配置文件检查工具
 将全局配置里的；security = share    #设置访问级别（share：匿名访问，user本地身份验证；只能二选一）
 
 
+<<<<<<< HEAD
 身份验证共享：
+=======
+身份验证共享：			
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 pdbedit：共享用户账户管理	#本地身份验证时需要的配置
 -a：添加用户			#添加的用户或组时必须当前系统上有这个用户或组
 -x：删除用户
 -L：查看用户数据库
 
+<<<<<<< HEAD
 [benet]					#自定义共享名
 path = /benet				#共享目录
 public = no  				#是否所有用户可见
 writable = no 				#是否有修改权（共享权限由共享权和本地权限的交集）
+=======
+[benet]					#自定义共享名	
+path = /benet				#共享目录
+public = no  				#是否所有用户可见
+writable = no 				#是否有修改权（共享权限由共享权和本地权限的交集）		
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 valid users = @smb,root			#是否可读     @后面是组(优先级高于其他)
 write list = zhangsan,root		#设置更改权限	  直接写名是用户（优先级高于其他）
 
@@ -38,7 +49,11 @@ write list = zhangsan,root		#设置更改权限	  直接写名是用户（优先
 [share]					#自定义共享名
 public = yes				#是否所有用户可见
 writable = no				#是否有修改权
+<<<<<<< HEAD
 将全局配置改为；security = share		#允许匿名访问
+=======
+将全局配置改为；security = share		#允许匿名访问	
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 
 
 别名：
@@ -61,7 +76,11 @@ guest ok=是否来宾可见
 public=是否来宾可见
 
 writable=是否有修改权限
+<<<<<<< HEAD
 read only=是否有读取权限
+=======
+read only=是否有修改权限
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 
 
 guest ok=yes 等于 public=yes
