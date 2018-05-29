@@ -8,6 +8,7 @@ pymysql：
 
 pymysql基本操作：
 <<<<<<< HEAD
+<<<<<<< HEAD
 	conn = pymysql.connect(host='主机地址',[user='用户'],[passwd='密码'],[db='数据库'], [charset='字符类型'])	#连接方法
 	cursor = conn.cursor()												#创建游标
 	cursor = connect.cursor(cursor=pymysql.cursors.DictCursor)			#创建游标，以字典方式返回数据(默认以元组方式返回)
@@ -20,6 +21,8 @@ pymysql基本操作：
 	data4 = cursor.fetchall()							#获取剩余结果所有数据
 
 =======
+=======
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 	conn = pymysql.connecthost='主机地址',[user='用户'],[passwd='密码'],[db='数据库'], [charset='字符类型'])	#连接方法
 	cursor = conn.cursor()												#创建游标
 	cursor = connect.cursor(cursor=pymysql.cursors.DictCursor)			#创建游标，以字典方式返回数据(默认以元组方式返回)
@@ -31,6 +34,9 @@ pymysql基本操作：
 	
 	data4 = cursor.fetchall()							#获取剩余结果所有数据
 	
+<<<<<<< HEAD
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
+=======
 >>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 	参数化查询，在执行execute时必须使用参数化查询，避免SQL注入
 	user='root'									#定义参数
@@ -38,8 +44,13 @@ pymysql基本操作：
 	row = cursor.execute("select user,password from mysql.user where user=%s and password=%s",(user,passwd))	#参数化查询
 	data_all = cursor.fetchall()				#获取查找到的所有数据
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+	
+	
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 =======
 	
 	
@@ -49,7 +60,11 @@ pymysql基本操作：
 	conn.close()			#断开连接
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
 =======
 	
 >>>>>>> 290d673c21f39f2c5b43d125e6a4544149e7816b
