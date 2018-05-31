@@ -1,0 +1,117 @@
+
+wget http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.27.tar.gz              #下载squid3.5以上版本
+
+tar zxvf squid-3.5.27.tar.gz -C /usr/src/
+cd /usr/src/
+
+./configure \
+  --prefix=/usr \
+  --exec-prefix=/usr \
+  --includedir=/usr/include \
+  --datadir=/usr/share \
+  --libdir=/usr/lib64 \
+  --libexecdir=/usr/lib64/squid \
+  --localstatedir=/var \
+  --sysconfdir=/etc/squid \
+  --sharedstatedir=/var/lib \
+  --with-logdir=/var/log/squid \
+  --with-pidfile=/var/run/squid.pid \
+  --with-default-user=squid \
+  --enable-silent-rules \
+  --enable-dependency-tracking \
+  --with-openssl \                        #一定要加上这个参数,支持https代理
+  --enable-icmp \
+  --enable-delay-pools \
+  --enable-useragent-log \
+  --enable-esi \
+  --enable-auth
+
+make && make install
+
+
+使用openssl生成自签证书:
+    #生成顶级CA的公钥证书和私钥文件 (即根证书)，有效期10年
+    openssl req -new -x509 -days 3650 -keyout CARoot1024.key -out CARoot1024.crt
+    #为顶级CA的私钥文件去除保护口令
+    openssl rsa -in CARoot1024.key -out CARoot1024.key
+
+
+    #为应用证书/中级证书生成私钥文件
+    openssl genrsa -out app.key 2048
+
+    #根据私钥文件，为应用证书/中级证书生成csr文件 (即证书请求文件)
+    openssl req -new -key app.key -out app.csr
+
+    #使用CA的公私钥文件给csr文件签名，生成应用证书，有效期5年
+    openssl ca -in app.csr -out app.crt -cert CARoot1024.crt -keyfile CARoot1024.key -days 1826 -policy policy_anything
+
+    #使用CA的公私钥文件给 csr 文件签名，生成中级证书，有效期5年
+    openssl ca -extensions v3_ca -in app.csr -out app.crt -cert CARoot1024.crt -keyfile CARoot1024.key -days 1826 -policy policy_anything
+
+    注意:生产证书时可以需要清除一下index.txt文件
+
+
+cd /etc/squid/
+mkdir ssl       #将生成的app.crt和app.key放到ssl目录下面
+
+
+squid.conf
+
+
+acl localnet src 10.0.0.0/8     # RFC1918 possible internal network
+acl localnet src 172.16.0.0/12  # RFC1918 possible internal network
+acl localnet src 192.168.0.0/16 # RFC1918 possible internal network
+acl localnet src fc00::/7       # RFC 4193 local private network range
+acl localnet src fe80::/10      # RFC 4291 link-local (directly plugged) machines
+
+acl SSL_ports port 443
+acl Safe_ports port 80          # http
+acl Safe_ports port 21          # ftp
+acl Safe_ports port 443         # https
+acl Safe_ports port 70          # gopher
+acl Safe_ports port 210         # wais
+acl Safe_ports port 1025-65535  # unregistered ports
+acl Safe_ports port 280         # http-mgmt
+acl Safe_ports port 488         # gss-http
+acl Safe_ports port 591         # filemaker
+acl Safe_ports port 777         # multiling http
+acl CONNECT method CONNECT
+
+http_access allow localhost manager
+http_access deny manager
+
+#忽略证书错误
+sslproxy_cert_error allow all
+sslproxy_flags DONT_VERIFY_PEER
+
+#使用TLSv1.0连接
+sslproxy_version 4
+sslproxy_options ALL
+
+http_access allow localnet
+http_access allow localhost
+
+http_access allow all
+
+#指定证书路径和监听地址
+http_port 1085 ssl-bump cert=/etc/squid/ssl/app.crt key=/etc/squid/ssl/app.key generate-host-certificates=on
+
+#在access.log中记录详细的url链接,解决url路径不全问题
+strip_query_terms off
+
+#日志保留的天数
+#logfile_rotate 3
+
+#日志格式
+logformat squid %ts.%03tu %6tr %>a %Ss/%03Hs %<st %rm %ru %un %Sh/%<A %mt
+
+ssl_bump stare all
+ssl_bump bump all
+
+#缓存目录
+coredump_dir /var/cache/squid
+
+refresh_pattern ^ftp:           1440    20%     10080
+refresh_pattern ^gopher:        1440    0%      1440
+refresh_pattern -i (/cgi-bin/|\?) 0     0%      0
+refresh_pattern .               0       20%     4320
