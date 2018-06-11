@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Simple client</title>
+
+<script type="text/javascript">
+
+var ws;
+
+function init() {
+    ws = new WebSocket('ws://' + '127.0.0.1' +':9001');         //创建一个websocket对象
+
+    //打开连接
+    ws.onopen = function() {
+        output("打开连接");									//将内容输出到页面
+    };
+
+    //处理服务器推送到客户端的数据,e数据对象
+    ws.onmessage = function(e) {
+        output("onmessage: " + e.data);
+    };
+
+    //关闭websocket连接
+    ws.onclose = function() {
+        output("onclose");
+    };
+
+    //连接错误或连接失败时的处理函数,e错误信息对象
+    ws.onerror = function(e) {
+        output("onerror");
+        console.log(e)
+    };
+}
+
+function onSubmit() {
+    var input = document.getElementById("input");
+
+    ws.send(input.value);									//将input输入的内容发送到
+    output("send: " + input.value);
+    input.value = "";											//清空input框
+    input.focus();
+}
+
+function onCloseClick() {
+    ws.close();														//关闭websocket连接
+}
+
+
+//替换特殊字符
+function output(str) {
+    var log = document.getElementById("log");
+    var escaped = str.replace(/&/, "&amp;").replace(/</, "&lt;").replace(/>/, "&gt;").replace(/"/, "&quot;");
+     log.innerHTML = escaped + "<br>" + log.innerHTML;
+}
+
+</script>
+</head>
+<body>
+
+
+
+<form onsubmit="onSubmit(); return false;">
+    <input type="text" id="input"><br>
+    <input type="submit" value="发送信息">
+    <input type="button" name="websocket" onclick="init()" value="连接websocket服务器">
+    <button onclick="onCloseClick(); return false;">关闭</button>
+</form>
+<div id="log"></div>
+</body>
+</html>

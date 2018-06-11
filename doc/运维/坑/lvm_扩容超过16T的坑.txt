@@ -1,0 +1,157 @@
+centos 6 lvm扩展到24G遇见的坑
+
+
+首先创建lvm(2个8T的盘,由于硬件制造商的原因8T的盘在操作系统识别来看并没有8T)
+
+
+parted /dev/sdb
+parted /dev/sdc
+    (parted) mklabel gpt                        #标记为gpt格式的硬盘
+    (parted) mkpart                             #分区
+    文件系统类型？  [ext2]? ext4                  #ext4文件系统
+    起始点？ 0
+    结束点？-1
+    toggle lvm                                  #给分区打上lvm标签
+
+
+mkfs.ext4 /dev/sdb1               #格式化
+mkfs.ext4 /dev/sdc1               #格式化
+
+
+tune2fs -m 1 /dev/sdb1            #调整系统为root用户保留的空间,默认为5%
+tune2fs -m 1 /dev/sdc1
+
+pvcreate  /dev/sdb1 /dev/sdc1                     #创建pv
+vgcreate vr_vg  /dev/sdb1  /dev/sdc1              #创建vg
+vgdisplay                                         #查看vg所有的PE,默认4M为一个PE
+lvcreate -l 3815442 -n lv_vr vg_vr                #将所有的空间创建一个lv
+
+
+
+#第一次创建pv就这样结束了,并没有遇见任何坑;但是第二次扩展的时候却遇见了一个大坑
+
+#由于业务的变迁,16T的硬盘已经不再够用,需要将剩下的一块盘(8T)扩展到lvm中
+
+
+扩展lvm:
+    首先将硬盘分区格式(参照上面的步骤)
+    pvcreate  /dev/sdd1
+    vgvgextend   vg_vr  /dev/sdd1                                 #扩展vg
+    lvresize  -l  +1907720  /dev/mapper/vr_vg-vr_lv               #扩展lv
+
+
+
+    执行lvdisplay可以看见lv已经扩展了,但是使用df -hl查看的时候分区还是这么大,这时候我执行 resize2fs /dev/mapper/vr_vg-vr_lv 刷新逻辑卷的时候 "坑出现了"
+
+
+    $ resize2fs  /dev/mapper/vr_vg-vr_lv
+      resize2fs: New size too large to be expressed in 32 bits                            #报错了,说32文件系统最大只支持16T的分区,emmm 出现问题就要解决,没办法只能 百度了结果没有找到换Google试试,最好总算找到了解决办法
+    https://askubuntu.com/questions/779754/how-do-i-resize-an-ext4-partition-beyond-the-16tb-limit      #Google找到的文档,国内也可以访问
+
+    更具文档的相关描述是因为 resize2fs 低版本有个bug(其实也不算bug),既然知道了原因那么接开始干,将resize2fs升级为最新版本
+
+    umount /dev/mapper/vr_vg-vr_lv            #先把挂载去掉
+    git clone -b v1.44.2 https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git e2fsprogs && cd e2fsprogs       #下载resize2fs 版本必须高于1.44
+    ./configure                               #检查依赖关系(一般都不会遇见什么坑)
+    make                                      #编译,千万别执行make install 因为系统默认有 resize2fs 除非你不想用他把他卸了,否则不用执行make install
+
+    cd resize/
+    ./resize2fs /dev/mapper/vr_vg-vr_lv               #运行这条命令会把32位文件系统转换为64为文件系统(分区小于16T不会装换),并且会扩大超级块的数量
+    #转换完之后提示需要使用e2fsck -f 检查分区
+
+    e2fsck -f  /dev/mapper/vr_vg-vr_lv              #擦,又报错,说e2fsck不支持64位的文件系统, emmmmm, 想了一下可能 e2fsck 和 resize2fs 一样版本过低不支持64位文件系统,用最新版本试试,e2fsck和resize2fs是由一个包提供的
+    cd ..
+    cd e2fsck/
+    ./e2fsck  /dev/mapper/vr_vg-vr_lv               #果然使用新版本的e2fsck就可以了
+    ./resize/resize2fs /dev/mapper/vr_vg-vr_lv      #然后刷新文件系统
+    df -hl                                          #看见22T分区大小(硬件制造商的锅)
+
+
+    #到这儿我心想应该没问题了,结果更大的坑还在后面等着我
+    执行 lvdisplay 看看没问题
+    执行 vgdisplay 看看没问题
+    执行 pvdisplay 看看,.....坑来了
+    --- Physical volume ---
+    PV Name               /dev/sdb1
+    VG Name               vr_vg
+    PV Size               7.28 TiB / not usable 1.30 MiB
+    Allocatable           yes (but full)
+    PE Size               4.00 MiB
+    Total PE              1907721
+    Free PE               0
+    Allocated PE          1907721
+    PV UUID               PCFu9x-SEGH-W941-0hc9-NHBb-0Nox-QdT79y
+
+    --- Physical volume ---
+    PV Name               /dev/sdc1
+    VG Name               vr_vg
+    PV Size               7.28 TiB / not usable 1.30 MiB
+    Allocatable           yes (but full)
+    PE Size               4.00 MiB
+    Total PE              1907721
+    Free PE               0
+    Allocated PE          1907721
+    PV UUID               VHZUiE-in7U-RljG-WrvU-rO5u-lLf4-gpuMqE
+
+    --- Physical volume ---
+    PV Name               unknown device                                                              #未识别的设备????这是什么情况
+    VG Name               vr_vg
+    PV Size               7.28 TiB / not usable 4.37 MiB
+    Allocatable           yes (but full)
+    PE Size               4.00 MiB
+    Total PE              1907720
+    Free PE               0
+    Allocated PE          1907720
+    PV UUID               x38382-rjUg-Fj5B-h5hC-LvrK-tq2h-HcZrkJ
+
+
+
+
+#没办法解决了半天没还是解决不了.....,重启一下试试,结果一重启机器起不来了,叫机房的人看看....最后发现是系统检查 /dev/mapper/vr_vg-vr_lv 失败了,果然是个坑啊,没办法机房的人解决不了,自己去一下机房解决吧!!!
+
+#来到机房第一件事进单用户模式,结果进不去...原因是因为fsck检查/dev/mapper/vr_vg-vr_lv失败
+
+/dev/mapper/vr_vg-vr_lv                   /data                   ext4    defaults       1 2                #/etc/fstab配置
+
+硬盘检查不过进不了系统,那么就只能把服务器的系统盘卸下来挂载到其他的服务器上,修改挂载盘的 etc/fstab 把挂载lvm的哪行去掉,然后放回原来的服务器
+
+#做完这些操作之后成功进入系统....但是检查lvm却发现/dev/mapper/不存在vr_vg-vr_lv.... 这是什么情况???
+
+lvdisplay                 #没问题一切正常
+vgdisplay                 #没问题一切正常
+pvdisplay                 #/dev/sdd还是显示unknown device
+
+那么先解决unknown device这个问题吧:
+  首先肯定要卸掉/dev/sdd这个盘:
+    vgreduce vr_vg --removemissing --force              #强行卸掉vr_vg里面未知的设备
+
+    lvdisplay             #查看lv大小还是22T,但是现在两块盘只有16T,所有要将lvm恢复成两块盘时候的大小
+
+  恢复lvm:
+    cd /etc/lvm/          #在lvm目录下有两个主要的目录 archive:保存lvm每次发生改变的源数据  backup:lvm的备份文件
+    cd archive/           #找到lvm还是两块盘的时候的备份
+
+    cp vr_vg_00002-1529881488.vg ../backup/     #vgcfgrestore 恢复时只会在这个目录查找
+    cd ../backup/
+    mv vr_vg vr_vg.back1                        #备份当前的vr_vg(vg的名字)
+    mv vr_vg_00002-1529881488.vg vr_vg
+    vgcfgrestore vr_vg                          #恢复备份
+
+
+    lvdisplay                             #查看lv大小已经恢复成16T,现在需要把剩下的那块盘加上
+
+    首先还是将硬盘分区格式,然后使用pvcreate创建pv,使用vgextend扩展vg,使用lvresize扩展lv
+
+    扩展完后/dev/mapper/还是不存在vr_vg-vr_lv,那是因为vg还没有激活
+
+    vgchange -ay vr_vg                              #激活vg,这个时候再去查看/dev/mapper/发现vr_vg-vr_lv已经有了,但是这时候还不能直接使用,因为刚加了的盘还没有执行resize2fs
+
+    ./e2fsck -f  /dev/mapper/vr_vg-vr_lv            #先检查硬盘(因为lv已经扩展过一次了所以会提示实际的块小于应有的块,是否检查,回复 y 就行,当检查到所有的块之后会询问你是否将这些加入现有分区,回复y即可)
+
+    ./resize/resize2fs /dev/mapper/vr_vg-vr_lv      #刷新lv大小
+
+    最后刷新完之后,一切正常,由于lvm的线性存储,数据也没有丢失
+
+  最后:
+    修改
+      /etc/fstab配置/dev/mapper/vr_vg-vr_lv                   /data                   ext4    defaults       0 0
